@@ -1,0 +1,107 @@
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  text-align: center;
+  vertical-align: center;
+  margin: 10px;
+}
+
+table tr.hole,
+table tr.par {
+  height: 25px;
+  background-color: rgb(140, 145, 165);
+  color: white;
+}
+
+table tr.yards,
+table tr.handicap {
+  height: 20px;
+  background-color: rgb(110, 115, 130);
+  color: white;
+  font-size: 13px;
+}
+
+table tr.handicap-strokes {
+  margin: auto;
+}
+
+.hole-get-stroke {
+  height: 4px;
+  width: 4px;
+  margin: auto;
+  background-color: black;
+  border-radius: 50%;
+}
+
+.hole-give-stroke {
+  height: 4px;
+  width: 4px;
+  margin: auto;
+  background-color: red;
+  border-radius: 50%;
+}
+
+table tr.gross {
+  height: 25px;
+  background-color: rgb(255, 255, 255);
+}
+
+table tr.net {
+  height: 25px;
+  background-color: rgb(240, 245, 255);
+}
+
+table td {
+  border-right: 1px solid rgb(0, 0, 0, 0.10);
+  width: 30px;
+}
+
+table td.bold {
+  width: 40px;
+  font-weight: bold;
+  border-left: 1px solid rgb(0, 0, 0, 0.25);
+  border-right: 1px solid rgb(0, 0, 0, 0.25);
+}
+
+.container {
+  display: flex;
+  box-sizing: border-box;
+  width: 25px;
+  height: 25px;
+  margin: auto;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.container2 {
+  flex: 1;
+  margin: 1.5px;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.score {
+  margin: auto;
+}
+
+.circle {
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.square {
+  border-radius: 0%;
+  border: 1px solid black;
+}
+
+.crosshatch {
+  background-image: linear-gradient(
+      -45deg,
+      rgba(0,0,0,0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(0,0,0,0.2) 50%,
+      rgba(0,0,0,0.2) 75%,
+      transparent 75%,
+      transparent
+  );
+  background-size: 5px 5px;
+}
