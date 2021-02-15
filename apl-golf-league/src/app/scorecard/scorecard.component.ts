@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { GolfRound } from '../shared/golf-models';
+import { MOCK_ROUND } from '../shared/mock-data';
+
 @Component({
   selector: 'app-scorecard',
   templateUrl: './scorecard.component.html',
@@ -7,24 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScorecardComponent implements OnInit {
 
-  private MOCK_HOLES = [
-    new GolfHole(1, 5, 9, 510, 2, 2),
-    new GolfHole(2, 4, 8, 380, 2, 2),
-    new GolfHole(3, 5, 7, 510, 4, 4),
-    new GolfHole(4, 4, 6, 380, 4, 4),
-    new GolfHole(5, 3, 5, 155, 4, 4),
-    new GolfHole(6, 4, 4, 380, 6, 6),
-    new GolfHole(7, 4, 3, 380, 7, 7),
-    new GolfHole(8, 3, 2, 155, 3, 4),
-    new GolfHole(9, 4, 1, 380, 4, 3)
-  ];
-
-  holes: GolfHole[];
+  round: GolfRound;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.holes = this.MOCK_HOLES;
+    this.round = MOCK_ROUND;
   }
 
   getScoreClass(score: number, par: number): string {
@@ -43,48 +34,27 @@ export class ScorecardComponent implements OnInit {
   }
 
   computeTotalPar(): number {
-    return this.holes.reduce(function(prev, cur) {
-      return prev + cur.par;
+    return this.round.holeResults.reduce(function(prev, cur) {
+      return prev + cur.hole.par;
     }, 0);
   }
 
   computeTotalYardage(): number {
-    return this.holes.reduce(function(prev, cur) {
-      return prev + cur.yardage;
+    return this.round.holeResults.reduce(function(prev, cur) {
+      return prev + cur.hole.yardage;
     }, 0);
   }
 
   computeTotalNetScore(): number {
-    return this.holes.reduce(function(prev, cur) {
+    return this.round.holeResults.reduce(function(prev, cur) {
       return prev + cur.netScore;
     }, 0);
   }
 
   computeTotalGrossScore(): number {
-    return this.holes.reduce(function(prev, cur) {
+    return this.round.holeResults.reduce(function(prev, cur) {
       return prev + cur.grossScore;
     }, 0);
   }
 
-}
-
-class GolfHole {
-  number: number;
-  par: number;
-  handicap: number;
-  yardage: number;
-  grossScore: number;
-  netScore: number;
-  handicapStrokes: number;
-
-  constructor(number: number, par: number, handicap: number, yardage: number, grossScore: number, netScore: number) {
-    this.number = number;
-    this.par = par;
-    this.handicap = handicap;
-    this.yardage = yardage;
-    this.grossScore = grossScore;
-    this.netScore = netScore;
-
-    this.handicapStrokes = grossScore - netScore;
-  }
 }
