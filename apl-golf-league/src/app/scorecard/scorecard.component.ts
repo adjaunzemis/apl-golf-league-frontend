@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScorecardComponent implements OnInit {
 
-  holes = [
+  private MOCK_HOLES = [
     new GolfHole(1, 5, 9, 510, 2, 2),
     new GolfHole(2, 4, 8, 380, 2, 2),
     new GolfHole(3, 5, 7, 510, 4, 4),
@@ -19,9 +19,12 @@ export class ScorecardComponent implements OnInit {
     new GolfHole(9, 4, 1, 380, 4, 3)
   ];
 
+  holes: GolfHole[];
+
   constructor() { }
 
   ngOnInit(): void {
+    this.holes = this.MOCK_HOLES;
   }
 
   getScoreClass(score: number, par: number): string {
