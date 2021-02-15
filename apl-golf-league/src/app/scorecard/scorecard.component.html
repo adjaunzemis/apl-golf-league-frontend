@@ -1,147 +1,47 @@
 <table>
   <tr class="hole">
       <td class="bold">Hole</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
-      <td>7</td>
-      <td>8</td>
-      <td>9</td>
+      <td *ngFor="let hole of holes">{{ hole.number }}</td>
       <td class="bold">TOT</td>
   </tr>
   <tr class="par">
       <td class="bold">Par</td>
-      <td>5</td>
-      <td>4</td>
-      <td>5</td>
-      <td>4</td>
-      <td>3</td>
-      <td>4</td>
-      <td>4</td>
-      <td>3</td>
-      <td>4</td>
-      <td class="bold">36</td>
+      <td *ngFor="let hole of holes">{{ hole.par }}</td>
+      <td class="bold">{{ computeTotalPar() }}</td>
   </tr>
   <tr class="yards">
       <td class="bold">Yards</td>
-      <td>510</td>
-      <td>380</td>
-      <td>510</td>
-      <td>380</td>
-      <td>155</td>
-      <td>380</td>
-      <td>380</td>
-      <td>155</td>
-      <td>380</td>
-      <td class="bold">3230</td>
+      <td *ngFor="let hole of holes">{{ hole.yardage }}</td>
+      <td class="bold">{{ computeTotalYardage() }}</td>
   </tr>
   <tr class="handicap">
       <td class="bold">Hcp</td>
-      <td>9</td>
-      <td>8</td>
-      <td>7</td>
-      <td>6</td>
-      <td>5</td>
-      <td>4</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
+      <td *ngFor="let hole of holes">{{ hole.handicap }}</td>
       <td class="bold">--</td>
   </tr>
   <tr class="handicap-strokes">
       <td class="bold"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><div class="hole-give-stroke"></div></td>
-      <td><div class="hole-get-stroke"></div></td>
+      <td *ngFor="let hole of holes">
+        <div [ngClass]="{'red-dot' : hole.handicapStrokes < 0, 'black-dot' : hole.handicapStrokes > 0}"></div>
+      </td>
       <td class="bold"></td>
   </tr>
   <tr class="gross">
       <td class="bold">Gross</td>
-      <td>
-          <div class="container circle">
-              <div class="container2 circle crosshatch">
-                  <div class="score">2</div>
-              </div>
-          </div>
+      <td *ngFor="let hole of holes">
+        <div [ngClass]="{'circle' : hole.grossScore <= hole.par - 1, 'square' : hole.grossScore >= hole.par + 1, 'crosshatch' : (hole.grossScore >= hole.par + 2) || (hole.grossScore <= hole.par - 2)}">
+          {{ hole.grossScore }}
+        </div>
       </td>
-      <td>
-          <div class="container circle">
-              <div class="container2 circle">
-                  <div class="score">2</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container circle">
-              <div class="container2">
-                  <div class="score">4</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container">
-              <div class="container2">
-                  <div class="score">4</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container square">
-              <div class="container2">
-                  <div class="score">4</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container square">
-              <div class="container2 square">
-                  <div class="score">6</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container square">
-              <div class="container2 square crosshatch">
-                  <div class="score">7</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container">
-              <div class="container2">
-                  <div class="score">3</div>
-              </div>
-          </div>
-      </td>
-      <td>
-          <div class="container">
-              <div class="container2">
-                  <div class="score">4</div>
-              </div>
-          </div>
-      </td>
-      <td class="bold">36</td>
+      <td class="bold">{{ computeTotalGrossScore() }}</td>
   </tr>
   <tr class="net">
       <td class="bold">Net</td>
-      <td>2</td>
-      <td>2</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>6</td>
-      <td>7</td>
-      <td>4</td>
-      <td>3</td>
-      <td class="bold">36</td>
+      <td *ngFor="let hole of holes">
+        <div [ngClass]="{'circle' : hole.netScore <= hole.par - 1, 'square' : hole.netScore >= hole.par + 1, 'crosshatch' : (hole.netScore >= hole.par + 2) || (hole.netScore <= hole.par - 2)}">
+          {{ hole.netScore }}
+        </div>
+      </td>
+      <td class="bold">{{ computeTotalNetScore() }}</td>
   </tr>
 </table>
