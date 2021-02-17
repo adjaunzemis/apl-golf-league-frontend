@@ -14,7 +14,17 @@ export const MOCK_COURSE_HOLES: GolfHole[] = [
 
 export const MOCK_PLAYER: GolfPlayer = {"firstName": "Mock", "lastName": "Player"};
 
-export const MOCK_COURSE: GolfCourse = {"courseName": "Mock Course Data", "holes": MOCK_COURSE_HOLES};
+export const MOCK_COURSE: GolfCourse = {
+  "courseName": "Mock Course",
+  "trackName": "Front",
+  "abbreviation": "MCF",
+  "teeName": "White",
+  "gender": "M",
+  "rating": 72.1,
+  "slope": 132,
+  "holes": MOCK_COURSE_HOLES,
+  par: 37
+};
 
 export const MOCK_ROUND_HOLE_RESULTS: GolfHoleResult[] = [
   {"hole": MOCK_COURSE_HOLES[0], "grossScore": 2, "netScore": 2},
@@ -28,4 +38,4 @@ export const MOCK_ROUND_HOLE_RESULTS: GolfHoleResult[] = [
   {"hole": MOCK_COURSE_HOLES[8], "grossScore": 4, "netScore": 3}
 ];
 
-export const MOCK_ROUND: GolfRound = {"course": MOCK_COURSE, "player": MOCK_PLAYER, "datePlayed": new Date(), "playerHandicapIndex": 16.2, "holeResults": MOCK_ROUND_HOLE_RESULTS};
+export const MOCK_ROUND: GolfRound = {"course": MOCK_COURSE, "player": MOCK_PLAYER, "datePlayed": new Date(), "playerHandicapIndex": 16.2, "holeResults": MOCK_ROUND_HOLE_RESULTS, "grossScore": 36, "netScore": 36};

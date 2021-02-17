@@ -1,6 +1,22 @@
 export interface GolfCourse {
   courseName: string;
+  trackName: string;
+  abbreviation: string;
+  teeName: string;
+  gender: string;
+  rating: number;
+  slope: number;
   holes: GolfHole[];
+
+  teeColor?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: number;
+  phone?: string;
+  website?: string;
+
+  par?: number;
 }
 
 export interface GolfHole {
@@ -22,6 +38,9 @@ export interface GolfRound {
   datePlayed: Date;
   playerHandicapIndex: number;
   holeResults: GolfHoleResult[];
+
+  grossScore?: number;
+  netScore?: number;
 }
 
 export interface GolfPlayer {

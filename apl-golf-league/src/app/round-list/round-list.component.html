@@ -3,8 +3,9 @@
         <h4>Round List Here</h4>
         <a href="#" class="list-group-item clearfix" *ngFor="let round of rounds">
             <div class="pull-left">
-                <h4 class="list-group-item-heading">{{ round.course.courseName }}</h4>
-                <p class="list-group-item-text">{{ round.datePlayed }}</p>
+                <h4 class="list-group-item-heading round-info">{{ round.course.courseName }} ({{ (round.datePlayed | date : 'yyyy-MM-dd')}})</h4>
+                <p class="list-group-item-text">Gross: {{ round.grossScore }} ({{ (round.grossScore - round.course.par) }}) | Net: {{ round.netScore }} ({{ (round.netScore - round.course.par) }})</p>
+                <p class="list-group-item-text">{{ round.player.lastName }}, {{ round.player.firstName }}</p>
             </div>
         </a>
     </div>
