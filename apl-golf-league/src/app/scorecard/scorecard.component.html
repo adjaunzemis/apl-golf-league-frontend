@@ -22,7 +22,7 @@
   <tr class="handicap-strokes">
       <td class="bold"></td>
       <td *ngFor="let holeResult of round.holeResults">
-        <div [ngClass]="{'red-dot' : holeResult.handicapStrokes < 0, 'black-dot' : holeResult.handicapStrokes > 0}"></div>
+        <div [ngClass]="{'red-dot' : (holeResult.grossScore - holeResult.netScore) < 0, 'black-dot' : (holeResult.grossScore - holeResult.netScore) > 0}"></div>
       </td>
       <td class="bold"></td>
   </tr>

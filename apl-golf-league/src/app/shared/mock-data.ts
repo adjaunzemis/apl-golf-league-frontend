@@ -1,31 +1,31 @@
 import { GolfHoleResult, GolfCourse, GolfHole, GolfRound, GolfPlayer } from './golf-models';
 
-export const MOCK_COURSE_HOLES = [
-  new GolfHole(1, 5, 9, 510),
-  new GolfHole(2, 4, 8, 380),
-  new GolfHole(3, 5, 7, 510),
-  new GolfHole(4, 4, 6, 380),
-  new GolfHole(5, 3, 5, 155),
-  new GolfHole(6, 4, 4, 380),
-  new GolfHole(7, 4, 3, 380),
-  new GolfHole(8, 3, 2, 155),
-  new GolfHole(9, 4, 1, 380)
+export const MOCK_COURSE_HOLES: GolfHole[] = [
+  {"number": 1, "par": 5, "handicap": 9, "yardage": 510},
+  {"number": 2, "par": 4, "handicap": 8, "yardage": 380},
+  {"number": 3, "par": 5, "handicap": 7, "yardage": 510},
+  {"number": 4, "par": 3, "handicap": 6, "yardage": 155},
+  {"number": 5, "par": 4, "handicap": 5, "yardage": 380},
+  {"number": 6, "par": 4, "handicap": 4, "yardage": 380},
+  {"number": 7, "par": 3, "handicap": 3, "yardage": 155},
+  {"number": 8, "par": 4, "handicap": 2, "yardage": 380},
+  {"number": 9, "par": 5, "handicap": 1, "yardage": 510}
 ];
 
-export const MOCK_PLAYER = new GolfPlayer("Mock", "Player");
+export const MOCK_PLAYER: GolfPlayer = {"firstName": "Mock", "lastName": "Player"};
 
-export const MOCK_COURSE = new GolfCourse("Mock Course Data", MOCK_COURSE_HOLES);
+export const MOCK_COURSE: GolfCourse = {"courseName": "Mock Course Data", "holes": MOCK_COURSE_HOLES};
 
-export const MOCK_ROUND_HOLE_RESULTS = [
-  new GolfHoleResult(MOCK_COURSE_HOLES[0], 2, 2),
-  new GolfHoleResult(MOCK_COURSE_HOLES[1], 2, 2),
-  new GolfHoleResult(MOCK_COURSE_HOLES[2], 4, 4),
-  new GolfHoleResult(MOCK_COURSE_HOLES[3], 4, 4),
-  new GolfHoleResult(MOCK_COURSE_HOLES[4], 4, 4),
-  new GolfHoleResult(MOCK_COURSE_HOLES[5], 6, 6),
-  new GolfHoleResult(MOCK_COURSE_HOLES[6], 7, 7),
-  new GolfHoleResult(MOCK_COURSE_HOLES[7], 3, 4),
-  new GolfHoleResult(MOCK_COURSE_HOLES[8], 4, 3),
+export const MOCK_ROUND_HOLE_RESULTS: GolfHoleResult[] = [
+  {"hole": MOCK_COURSE_HOLES[0], "grossScore": 2, "netScore": 2},
+  {"hole": MOCK_COURSE_HOLES[1], "grossScore": 2, "netScore": 2},
+  {"hole": MOCK_COURSE_HOLES[2], "grossScore": 4, "netScore": 4},
+  {"hole": MOCK_COURSE_HOLES[3], "grossScore": 4, "netScore": 4},
+  {"hole": MOCK_COURSE_HOLES[4], "grossScore": 4, "netScore": 4},
+  {"hole": MOCK_COURSE_HOLES[5], "grossScore": 6, "netScore": 6},
+  {"hole": MOCK_COURSE_HOLES[6], "grossScore": 7, "netScore": 7},
+  {"hole": MOCK_COURSE_HOLES[7], "grossScore": 3, "netScore": 4},
+  {"hole": MOCK_COURSE_HOLES[8], "grossScore": 4, "netScore": 3}
 ];
 
-export const MOCK_ROUND = new GolfRound(MOCK_COURSE, MOCK_PLAYER, new Date(), 16.2, MOCK_ROUND_HOLE_RESULTS);
+export const MOCK_ROUND: GolfRound = {"course": MOCK_COURSE, "player": MOCK_PLAYER, "datePlayed": new Date(), "playerHandicapIndex": 16.2, "holeResults": MOCK_ROUND_HOLE_RESULTS};
