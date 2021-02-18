@@ -46,6 +46,11 @@ table tr.gross {
   background-color: rgb(255, 255, 255);
 }
 
+table tr.adjustedGross {
+  height: 25px;
+  background-color: rgb(240, 245, 255);
+}
+
 table tr.net {
   height: 25px;
   background-color: rgb(240, 245, 255);

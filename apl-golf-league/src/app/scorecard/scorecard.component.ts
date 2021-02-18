@@ -18,21 +18,6 @@ export class ScorecardComponent implements OnInit {
     this.round = MOCK_ROUND;
   }
 
-  getScoreClass(score: number, par: number): string {
-    const scoreToPar = score - par;
-    if (scoreToPar < -2) {
-      return "'circle crosshatch'";
-    } else if (scoreToPar < -1) {
-      return "'circle'";
-    } else if (scoreToPar == 0) {
-      return "";
-    } else if (scoreToPar == 1) {
-      return "'square'";
-    } else {
-      return "'square crosshatch'";
-    }
-  }
-
   computeTotalPar(): number {
     return this.round.holeResults.reduce(function(prev, cur) {
       return prev + cur.hole.par;
@@ -45,15 +30,21 @@ export class ScorecardComponent implements OnInit {
     }, 0);
   }
 
-  computeTotalNetScore(): number {
-    return this.round.holeResults.reduce(function(prev, cur) {
-      return prev + cur.netScore;
-    }, 0);
-  }
-
   computeTotalGrossScore(): number {
     return this.round.holeResults.reduce(function(prev, cur) {
       return prev + cur.grossScore;
+    }, 0);
+  }
+
+  computeTotalAdjustedGrossScore(): number {
+    return this.round.holeResults.reduce(function(prev, cur) {
+      return prev + cur.adjustedGrossScore;
+    }, 0);
+  }
+
+  computeTotalNetScore(): number {
+    return this.round.holeResults.reduce(function(prev, cur) {
+      return prev + cur.netScore;
     }, 0);
   }
 

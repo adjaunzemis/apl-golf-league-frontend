@@ -22,7 +22,7 @@
   <tr class="handicap-strokes">
       <td class="bold"></td>
       <td *ngFor="let holeResult of round.holeResults">
-        <div [ngClass]="{'red-dot' : (holeResult.grossScore - holeResult.netScore) < 0, 'black-dot' : (holeResult.grossScore - holeResult.netScore) > 0}"></div>
+        <div [ngClass]="{'red-dot' : (holeResult.adjustedGrossScore - holeResult.netScore) < 0, 'black-dot' : (holeResult.adjustedGrossScore - holeResult.netScore) > 0}"></div>
       </td>
       <td class="bold"></td>
   </tr>
@@ -34,6 +34,15 @@
         </div>
       </td>
       <td class="bold">{{ computeTotalGrossScore() }}</td>
+  </tr>
+  <tr class="adjustedGross">
+    <td class="bold">AG</td>
+      <td *ngFor="let holeResult of round.holeResults">
+        <div [ngClass]="{'circle' : holeResult.adjustedGrossScore <= holeResult.hole.par - 1, 'square' : holeResult.adjustedGrossScore >= holeResult.hole.par + 1, 'crosshatch' : (holeResult.adjustedGrossScore >= holeResult.hole.par + 2) || (holeResult.adjustedGrossScore <= holeResult.hole.par - 2)}">
+          {{ holeResult.adjustedGrossScore }}
+        </div>
+      </td>
+      <td class="bold">{{ computeTotalAdjustedGrossScore() }}</td>
   </tr>
   <tr class="net">
       <td class="bold">Net</td>

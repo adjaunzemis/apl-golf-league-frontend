@@ -40,7 +40,7 @@ export const MOCK_ROUND_HOLE_RESULTS: GolfHoleResult[] = [
   {roundID: 1, hole: MOCK_COURSE_HOLES[3], grossScore: 4, adjustedGrossScore:4, netScore: 4},
   {roundID: 1, hole: MOCK_COURSE_HOLES[4], grossScore: 4, adjustedGrossScore:4, netScore: 4},
   {roundID: 1, hole: MOCK_COURSE_HOLES[5], grossScore: 6, adjustedGrossScore:6, netScore: 6},
-  {roundID: 1, hole: MOCK_COURSE_HOLES[6], grossScore: 7, adjustedGrossScore:7, netScore: 7},
+  {roundID: 1, hole: MOCK_COURSE_HOLES[6], grossScore: 7, adjustedGrossScore:5, netScore: 5},
   {roundID: 1, hole: MOCK_COURSE_HOLES[7], grossScore: 3, adjustedGrossScore:3, netScore: 4},
   {roundID: 1, hole: MOCK_COURSE_HOLES[8], grossScore: 4, adjustedGrossScore:4, netScore: 3}
 ];
@@ -53,8 +53,8 @@ export const MOCK_ROUND: GolfRound = {
   playerHandicapIndex: 16.2,
   playerCourseHandicap: 14,
   grossScore: 36,
-  adjustedGrossScore: 36,
-  netScore: 36,
-  scoreDifferential: -1,
+  adjustedGrossScore: 34,
+  netScore: 34,
+  scoreDifferential: -3,
   holeResults: MOCK_ROUND_HOLE_RESULTS,
 };
