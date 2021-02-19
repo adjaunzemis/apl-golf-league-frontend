@@ -15,7 +15,7 @@ export interface GolfCourse {
   zipCode?: number;
   phone?: string;
   website?: string;
-  dateUpdated?: Date;
+  dateUpdated?: string; // TODO: Make Date type?
 
   par?: number;
 }
@@ -26,7 +26,7 @@ export interface GolfHole {
   par: number;
   handicap: number;
   yardage: number;
-  dateUpdated?: Date;
+  dateUpdated?: string; // TODO: Make Date type?
 }
 
 export interface GolfHoleResult {

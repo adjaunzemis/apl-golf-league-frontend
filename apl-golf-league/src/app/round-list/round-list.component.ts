@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { GolfRound } from './../shared/golf-models';
-import { MOCK_ROUND } from '../shared/mock-data';
+import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../shared/mock-data';
 
 @Component({
   selector: 'app-round-list',
@@ -11,8 +11,8 @@ import { MOCK_ROUND } from '../shared/mock-data';
 export class RoundListComponent implements OnInit {
 
   rounds: GolfRound[] = [
-    MOCK_ROUND,
-    MOCK_ROUND,
+    TIMBERS_FRONT_ROUND,
+    WOODHOLME_FRONT_ROUND,
     MOCK_ROUND
   ];
 
