@@ -6,13 +6,19 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ScorecardComponent } from './scorecard/scorecard.component';
 import { RoundListComponent } from './round-list/round-list.component';
+import { RoundDetailComponent } from './round-detail/round-detail.component';
+import { RoundsComponent } from './rounds/rounds.component';
+import { RoundItemComponent } from './round-item/round-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     ScorecardComponent,
-    RoundListComponent
+    RoundListComponent,
+    RoundDetailComponent,
+    RoundsComponent,
+    RoundItemComponent
   ],
   imports: [
     BrowserModule,

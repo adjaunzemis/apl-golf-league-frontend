@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { GolfRound } from './../shared/golf-models';
 import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../shared/mock-data';
@@ -9,7 +9,7 @@ import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../share
   styleUrls: ['./round-list.component.css']
 })
 export class RoundListComponent implements OnInit {
-
+  @Output() roundWasSelected = new EventEmitter<GolfRound>();
   rounds: GolfRound[] = [
     TIMBERS_FRONT_ROUND,
     WOODHOLME_FRONT_ROUND,
@@ -19,6 +19,10 @@ export class RoundListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onRoundSelected(round: GolfRound) {
+    this.roundWasSelected.emit(round);
   }
 
 }

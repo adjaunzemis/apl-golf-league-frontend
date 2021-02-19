@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-md-6">
+    <h4>Round List</h4>
+    <app-round-list (roundWasSelected)="selectedRound = $event"></app-round-list>
+  </div>
+  <div class="col-md-6">
+    <h4>Round Detail</h4>
+    <app-round-detail *ngIf="selectedRound; else infoText" [round]="selectedRound"></app-round-detail>
+    <ng-template #infoText>
+      <p>Select a Round</p>
+    </ng-template>
+  </div>
+</div>

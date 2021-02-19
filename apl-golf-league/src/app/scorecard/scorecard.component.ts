@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { GolfRound } from '../shared/golf-models';
 import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../shared/mock-data';
@@ -9,13 +9,11 @@ import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../share
   styleUrls: ['./scorecard.component.css']
 })
 export class ScorecardComponent implements OnInit {
-
-  round: GolfRound;
+  @Input() round: GolfRound;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.round = TIMBERS_FRONT_ROUND;
   }
 
   computeTotalPar(): number {
