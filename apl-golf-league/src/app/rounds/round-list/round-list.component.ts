@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { GolfRound } from './../shared/golf-models';
-import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../shared/mock-data';
+import { GolfRound } from '../../shared/golf-models';
+import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../../shared/mock-data';
 
 @Component({
   selector: 'app-round-list',

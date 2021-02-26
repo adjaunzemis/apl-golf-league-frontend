@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { GolfRound } from './../shared/golf-models';
+import { GolfRound } from '../../shared/golf-models';
 
 @Component({
   selector: 'app-round-item',

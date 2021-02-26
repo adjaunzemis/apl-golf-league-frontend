@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { GolfRound } from '../shared/golf-models';
+import { GolfRound } from '../../shared/golf-models';
 
 @Component({
   selector: 'app-round-detail',
