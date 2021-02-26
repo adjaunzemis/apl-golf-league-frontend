@@ -9,6 +9,10 @@ import { RoundListComponent } from './round-list/round-list.component';
 import { RoundDetailComponent } from './round-detail/round-detail.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { RoundItemComponent } from './round-item/round-item.component';
+import { CoursesComponent } from './courses/courses.component';
+import { CourseListComponent } from './courses/course-list/course-list.component';
+import { CourseItemComponent } from './courses/course-item/course-item.component';
+import { CourseDetailComponent } from './courses/course-detail/course-detail.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { RoundItemComponent } from './round-item/round-item.component';
     RoundListComponent,
     RoundDetailComponent,
     RoundsComponent,
-    RoundItemComponent
+    RoundItemComponent,
+    CoursesComponent,
+    CourseListComponent,
+    CourseItemComponent,
+    CourseDetailComponent
   ],
   imports: [
     BrowserModule,

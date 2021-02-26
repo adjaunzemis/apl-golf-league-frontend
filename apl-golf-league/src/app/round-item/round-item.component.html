@@ -1,4 +1,4 @@
-<a href="#" class="list-group-item clearfix" (click)="onSelected()">
+<a class="list-group-item clearfix" (click)="onSelected()">
   <div class="pull-left">
       <h4 class="list-group-item-heading round-info">{{ round.course.courseName }} ({{ (round.datePlayed | date : 'yyyy-MM-dd')}})</h4>
       <p class="list-group-item-text">Gross: {{ round.grossScore }} ({{ (round.grossScore - round.course.par) }}) | Net: {{ round.netScore }} ({{ (round.netScore - round.course.par) }})</p>
