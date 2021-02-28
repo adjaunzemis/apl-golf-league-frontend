@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { GolfRound } from '../shared/golf-models';
+import { GolfRound, GolfCourse } from '../shared/golf-models';
 import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../shared/mock-data';
 
 @Component({
@@ -9,6 +9,7 @@ import { MOCK_ROUND, WOODHOLME_FRONT_ROUND, TIMBERS_FRONT_ROUND } from '../share
   styleUrls: ['./scorecard.component.css']
 })
 export class ScorecardComponent implements OnInit {
+  @Input() course: GolfCourse;
   @Input() round: GolfRound;
 
   constructor() { }
@@ -17,14 +18,14 @@ export class ScorecardComponent implements OnInit {
   }
 
   computeTotalPar(): number {
-    return this.round.holeResults.reduce(function(prev, cur) {
-      return prev + cur.hole.par;
+    return this.course.holes.reduce(function(prev, cur) {
+      return prev + cur.par;
     }, 0);
   }
 
   computeTotalYardage(): number {
-    return this.round.holeResults.reduce(function(prev, cur) {
-      return prev + cur.hole.yardage;
+    return this.course.holes.reduce(function(prev, cur) {
+      return prev + cur.yardage;
     }, 0);
   }
 
