@@ -1,9 +1,12 @@
+import { GolfHole } from "./golf-hole.model";
+
 export interface GolfTeeSet {
-  name: string;
+  id: number;
   trackId: number;
+  name: string;
   color: string;
   gender: string;
   rating: number;
   slope: number;
-  id: number;
+  holes?: GolfHole[];
 }
