@@ -20,7 +20,8 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div *ngFor="let teeSet of track.teeSets">
-          <p>{{ teeSet.name }} ({{ teeSet.gender}}): {{ teeSet.rating }}/{{ teeSet.slope }}</p>
+          <!-- <p>{{ teeSet.name }} ({{ teeSet.gender }}): {{ teeSet.rating }}/{{ teeSet.slope }}</p> -->
+          <app-scorecard [teeSet]="teeSet"></app-scorecard>
         </div>
       </mat-expansion-panel>
     </div>

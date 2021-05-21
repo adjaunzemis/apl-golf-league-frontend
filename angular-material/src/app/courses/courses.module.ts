@@ -4,10 +4,12 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { CourseListComponent } from "./course-list/course-list.component";
+import { ScorecardComponent } from "./../shared/scorecard/scorecard.component";
 
 @NgModule({
   declarations: [
-    CourseListComponent
+    CourseListComponent,
+    ScorecardComponent
   ],
   imports: [
     CommonModule,
