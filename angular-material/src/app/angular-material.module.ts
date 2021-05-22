@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   exports: [
@@ -24,8 +23,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatIconModule,
     MatSortModule,
     MatInputModule,
-    MatFormFieldModule,
-    FlexLayoutModule
+    MatFormFieldModule
   ]
 })
 export class AngularMaterialModule {}

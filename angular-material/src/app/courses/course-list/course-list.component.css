@@ -29,3 +29,7 @@ th.mat-header-cell {
   text-align: left;
   max-width: 300px;
 }
+
+.filter-field {
+  padding-left: 5rem;
+}
