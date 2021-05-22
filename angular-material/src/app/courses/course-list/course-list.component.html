@@ -1,4 +1,51 @@
-<mat-accordion multi="true" *ngIf="courses.length > 0">
+<div fxLayout fxLayoutAlign="center center">
+  <mat-form-field fxFlex="40%">
+    <!-- <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter"> -->
+    <input matInput type="text" placeholder="Filter">
+  </mat-form-field>
+</div>
+
+<table mat-table [dataSource]="courses" matSort matSortStart="asc">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+    <td mat-cell *matCellDef="let course">{{ course.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="city">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+    <td mat-cell *matCellDef="let course">{{ course.city }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="state">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+    <td mat-cell *matCellDef="let course">{{ course.state }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="zipCode">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Zip Code</th>
+    <td mat-cell *matCellDef="let course">{{ course.zipCode }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef>Phone</th>
+    <td mat-cell *matCellDef="let course">{{ course.phone }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="website">
+    <th mat-header-cell *matHeaderCellDef>Website</th>
+    <td mat-cell *matCellDef="let course">
+      <a mat-icon-button color="primary" [title]="course.website">
+        <mat-icon class="mat-18">language</mat-icon>
+      </a>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<!-- <mat-accordion multi="true" *ngIf="courses.length > 0">
   <mat-expansion-panel *ngFor="let course of courses">
     <mat-expansion-panel-header>
       <mat-panel-title class="course-name">{{ course.name }}</mat-panel-title>
@@ -20,7 +67,6 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div *ngFor="let teeSet of track.teeSets">
-          <!-- <p>{{ teeSet.name }} ({{ teeSet.gender }}): {{ teeSet.rating }}/{{ teeSet.slope }}</p> -->
           <app-scorecard [teeSet]="teeSet"></app-scorecard>
         </div>
       </mat-expansion-panel>
@@ -30,4 +76,4 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<mat-paginator [length]="totalCourses" [pageSize]="coursesPerPage" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+<mat-paginator [length]="totalCourses" [pageSize]="coursesPerPage" [pageSizeOptions]="pageSizeOptions"></mat-paginator> -->

@@ -13,7 +13,7 @@ export class CoursesService {
   getCourses(): void {
     // TODO: use http.get<GolfCourse[]>()
     this.coursesUpdated.next({
-      courses: [MOCK_COURSE, MOCK_COURSE],
+      courses: [MOCK_COURSE, MOCK_COURSE_2, MOCK_COURSE],
       courseCount: 2
     });
   }
@@ -124,7 +124,7 @@ const MOCK_COURSE : GolfCourse = {
           ]
         },
         {
-          id: 0,
+          id: 1,
           trackId: 111,
           name: "Blue",
           color: "#0000ff",
@@ -134,7 +134,7 @@ const MOCK_COURSE : GolfCourse = {
           holes: [
             {
               id: 1,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 1,
               par: 4,
               handicap: 9,
@@ -142,7 +142,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 2,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 2,
               par: 4,
               handicap: 9,
@@ -150,7 +150,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 3,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 3,
               par: 4,
               handicap: 9,
@@ -158,7 +158,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 4,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 4,
               par: 4,
               handicap: 9,
@@ -166,7 +166,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 5,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 5,
               par: 4,
               handicap: 9,
@@ -174,7 +174,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 6,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 6,
               par: 4,
               handicap: 9,
@@ -182,7 +182,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 7,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 7,
               par: 4,
               handicap: 9,
@@ -190,7 +190,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 8,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 8,
               par: 4,
               handicap: 9,
@@ -198,7 +198,7 @@ const MOCK_COURSE : GolfCourse = {
             },
             {
               id: 9,
-              teeSetId: 0,
+              teeSetId: 1,
               number: 9,
               par: 4,
               handicap: 9,
@@ -210,3 +210,191 @@ const MOCK_COURSE : GolfCourse = {
     }
   ]
 }
+
+const MOCK_COURSE_2: GolfCourse = {
+  id: 121,
+  name: "Other Mock Course",
+  abbreviation: "MC",
+  city: "Different City",
+  state: "OS",
+  zipCode: 54321,
+  phone: "111-222-3333",
+  website: "www.google.com",
+  tracks: [
+    {
+      id: 131,
+      courseId: 121,
+      name: "Front",
+      abbreviation: "F",
+      teeSets: [
+        {
+          id: 14,
+          trackId: 131,
+          name: "White",
+          color: "#00ff00",
+          gender: "M",
+          rating: 69.7,
+          slope: 117,
+          holes: [
+            {
+              id: 1,
+              teeSetId: 14,
+              number: 1,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 2,
+              teeSetId: 14,
+              number: 2,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 3,
+              teeSetId: 14,
+              number: 3,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 4,
+              teeSetId: 14,
+              number: 4,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 5,
+              teeSetId: 14,
+              number: 5,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 6,
+              teeSetId: 14,
+              number: 6,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 7,
+              teeSetId: 14,
+              number: 7,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 8,
+              teeSetId: 14,
+              number: 8,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 9,
+              teeSetId: 14,
+              number: 9,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            }
+          ]
+        },
+        {
+          id: 15,
+          trackId: 111,
+          name: "Blue",
+          color: "#0000ff",
+          gender: "M",
+          rating: 71.6,
+          slope: 132,
+          holes: [
+            {
+              id: 1,
+              teeSetId: 15,
+              number: 1,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 2,
+              teeSetId: 15,
+              number: 2,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 3,
+              teeSetId: 15,
+              number: 3,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 4,
+              teeSetId: 15,
+              number: 4,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 5,
+              teeSetId: 15,
+              number: 5,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 6,
+              teeSetId: 15,
+              number: 6,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 7,
+              teeSetId: 15,
+              number: 7,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 8,
+              teeSetId: 15,
+              number: 8,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            },
+            {
+              id: 9,
+              teeSetId: 15,
+              number: 9,
+              par: 4,
+              handicap: 9,
+              yardage: 395
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
