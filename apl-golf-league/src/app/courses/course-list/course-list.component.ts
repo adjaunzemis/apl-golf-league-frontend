@@ -17,7 +17,7 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   courses = new MatTableDataSource<GolfCourse>();
   private coursesSub: Subscription;
 
-  displayedColumns = ['name', 'city', 'state', 'zipCode', 'phone', 'website'];
+  displayedColumns = ['name', 'address', 'city', 'state', 'zipCode', 'phone', 'website'];
   @ViewChild(MatSort) sort: MatSort;
 
   totalCourses = 0;
