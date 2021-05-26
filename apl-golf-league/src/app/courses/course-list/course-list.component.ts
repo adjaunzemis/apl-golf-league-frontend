@@ -12,6 +12,8 @@ import { GolfCourse } from "../../shared/golf-course.model";
   styleUrls: ["./course-list.component.css"]
 })
 export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
+  isLoading = false;
+
   courses = new MatTableDataSource<GolfCourse>();
   private coursesSub: Subscription;
 
@@ -26,8 +28,10 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private coursesService: CoursesService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.coursesSub = this.coursesService.getCourseUpdateListener()
       .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
+        this.isLoading = false;
         this.courses = new MatTableDataSource<GolfCourse>(courseData.courses);
         this.totalCourses = courseData.courseCount;
       });
