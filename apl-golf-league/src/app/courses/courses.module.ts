@@ -4,11 +4,13 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { CourseListComponent } from "./course-list/course-list.component";
+import { CourseScorecardComponent } from "./course-scorecard/course-scorecard.component";
 import { ScorecardComponent } from "./../shared/scorecard/scorecard.component";
 
 @NgModule({
   declarations: [
     CourseListComponent,
+    CourseScorecardComponent,
     ScorecardComponent
   ],
   imports: [
