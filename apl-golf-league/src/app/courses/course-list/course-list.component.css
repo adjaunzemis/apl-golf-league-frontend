@@ -11,20 +11,13 @@ mat-paginator {
   margin-top: 1rem;
 }
 
-.course-name {
-  font-weight: bold;
-}
-
-.course-details {
-  padding-left: 1rem;
-}
-
 table {
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   min-width: 500px;
 }
+
 th.mat-header-cell {
   text-align: left;
   max-width: 300px;
@@ -32,4 +25,33 @@ th.mat-header-cell {
 
 .filter-field {
   padding-left: 2rem;
+}
+
+tr.course-detail-row {
+  height: 0;
+}
+
+tr.course-row:not(.course-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.course-row:not(.course-expanded-row):active {
+  background: #efefef;
+}
+
+.course-row td {
+  border-bottom-width: 0;
+}
+
+.course-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.course-track-detail {
+  font-weight: bold;
+}
+
+.course-tee-set-detail {
+  font-weight: normal;
 }

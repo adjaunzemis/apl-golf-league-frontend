@@ -5,82 +5,38 @@
     <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
   </mat-form-field>
 
-  <table mat-table [dataSource]="courses" matSort matSortStart="asc">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let course">{{ course.name }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="address">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
-      <td mat-cell *matCellDef="let course">{{ course.address }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="city">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
-      <td mat-cell *matCellDef="let course">{{ course.city }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="state">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
-      <td mat-cell *matCellDef="let course">{{ course.state }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="zipCode">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Zip Code</th>
-      <td mat-cell *matCellDef="let course">{{ course.zipCode }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef>Phone</th>
-      <td mat-cell *matCellDef="let course">{{ course.phone }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="website">
-      <th mat-header-cell *matHeaderCellDef>Website</th>
+  <table mat-table [dataSource]="courses" multiTemplateDataRows matSort matSortStart="asc">
+    <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
       <td mat-cell *matCellDef="let course">
-        <a mat-icon-button color="primary" [title]="course.website">
+        <a mat-icon-button color="primary" [title]="course.website" *ngIf="column === 'website'">
           <mat-icon class="mat-18">language</mat-icon>
         </a>
+        <div *ngIf="column !== 'website'">
+          {{ course[column] }}
+        </div>
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-</div>
-
-<!-- <div *ngIf="courses.length > 0 && !isLoading">
-  <mat-accordion multi="true" *ngIf="courses.length > 0">
-    <mat-expansion-panel *ngFor="let course of courses">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="course-name">{{ course.name }}</mat-panel-title>
-        <mat-panel-description *ngFor="let track of course.tracks">
-          <span class="course-details" >{{ course.city }}, {{ course.state }} {{ course.zipCode }}</span>
-          <span class="course-details" *ngIf="course.phone">{{ course.phone }}</span>
-          <span class="course-details" *ngIf="course.website">{{ course.website }}</span>
-          <span class="course-details" *ngIf="course.dateUpdated">(Updated: {{ course.dateUpdated }})</span>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <div>
-        <mat-expansion-panel multi="true" *ngFor="let track of course.tracks">
-          <mat-expansion-panel-header>
-            <mat-panel-title class="course-name">{{ track.name }} ({{ course.abbreviation }}-{{ track.abbreviation }})</mat-panel-title>
-            <mat-panel-description>
-              <span class="course-details" *ngFor="let teeSet of track.teeSets">
-                {{ teeSet.name }} ({{ teeSet.gender }}): {{ teeSet.rating }}/{{ teeSet.slope }}
-              </span>
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <div *ngFor="let teeSet of track.teeSets">
-            <app-scorecard [teeSet]="teeSet"></app-scorecard>
+    <ng-container matColumnDef="expandedCourseDetail">
+      <td mat-cell *matCellDef="let course" [attr.colspan]="columnsToDisplay.length">
+        <div class="course-detail" [@detailExpand]="course == expandedCourse ? 'expanded' : 'collapsed'">
+          <div class="course-track-detail" *ngFor="let track of course.tracks">
+            <span>{{ track.name }}</span>
+            <div class="course-tee-set-detail" *ngFor="let teeSet of track.teeSets">
+              <span>{{ teeSet.name }}: {{ teeSet.rating }} / {{ teeSet.slope }}</span>
+              <span>, Par: {{ computeTeeSetPar(teeSet) }}</span>
+              <span>, Yardage: {{ computeTeeSetYardage(teeSet) }}</span>
+            </div>
           </div>
-        </mat-expansion-panel>
-      </div>
-      <mat-action-row>
-        <a mat-button color="primary" [routerLink]="">EDIT</a>
-      </mat-action-row>
-    </mat-expansion-panel>
-  </mat-accordion>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let course; columns: columnsToDisplay;" class="course-row" [class.course-expanded-row]="expandedCourse === course" (click)="expandedCourse = expandedCourse === course ? null : course"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedCourseDetail']" class="course-detail-row"></tr>
+  </table>
+
   <mat-paginator [length]="totalCourses" [pageSize]="coursesPerPage" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
-</div> -->
+</div>
