@@ -8,17 +8,21 @@ table {
 
 table tr.hole,
 table tr.par {
-  height: 25px;
+  height: 26px;
   background-color: rgb(140, 145, 165);
   color: white;
 }
 
 table tr.yards,
 table tr.handicap {
-  height: 20px;
+  height: 13px;
   background-color: rgb(110, 115, 130);
   color: white;
-  font-size: 13px;
+  font-size: 10px;
+}
+
+table tr.yards td.rating {
+  font-size: 14px;
 }
 
 table tr.handicap-strokes {
