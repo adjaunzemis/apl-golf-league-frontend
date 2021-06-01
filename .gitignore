@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# APL golf backend server start script (local testing)
+startServerLocal.bat
