@@ -1,27 +1,29 @@
-<table>
-  <tr class="hole">
-    <td class="tee-set-info"></td>
-    <td class="bold">Hole</td>
-    <td *ngFor="let hole of teeSets[0].holes">{{ hole.number }}</td>
-    <td class="bold">TOT</td>
-  </tr>
+<table class="styled-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Hole</th>
+      <th *ngFor="let hole of teeSets[0].holes">{{ hole.number }}</th>
+      <th>TOT</th>
+    </tr>
+  </thead>
   <tbody *ngFor="let teeSet of teeSets">
     <tr class="par">
       <td class="tee-set-info" style.color="#{{ teeSet.color }}">{{ teeSet.name }} ({{ teeSet.gender }})</td>
-      <td class="bold">Par</td>
+      <td>Par</td>
       <td *ngFor="let hole of teeSet.holes">{{ hole.par }}</td>
-      <td class="bold">{{ computeTeeSetPar(teeSet) }}</td>
+      <td>{{ computeTeeSetPar(teeSet) }}</td>
     </tr>
     <tr class="yards">
-      <td class="rating" rowspan=2 style.color="#{{ teeSet.color }}">{{ teeSet.rating }} / {{ teeSet.slope }}</td>
-      <td class="bold">Yards</td>
+      <td class="tee-set-info" rowspan=2 style.color="#{{ teeSet.color }}">{{ teeSet.rating }} / {{ teeSet.slope }}</td>
+      <td>Yards</td>
       <td *ngFor="let hole of teeSet.holes">{{ hole.yardage }}</td>
-      <td class="bold">{{ computeTeeSetYardage(teeSet) }}</td>
+      <td>{{ computeTeeSetYardage(teeSet) }}</td>
     </tr>
     <tr class="handicap">
-      <td class="bold">Hcp</td>
+      <td>Hcp</td>
       <td *ngFor="let hole of teeSet.holes">{{ hole.handicap }}</td>
-      <td class="bold">--</td>
+      <td>--</td>
     </tr>
   </tbody>
 </table>

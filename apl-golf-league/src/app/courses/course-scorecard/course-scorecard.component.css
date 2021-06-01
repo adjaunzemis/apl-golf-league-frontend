@@ -1,101 +1,42 @@
-table {
-  border-spacing: 0;
+.styled-table {
   border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+  background-color: #3f51b5;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 5px 5px;
+}
+
+.styled-table tbody tr {
+  border-bottom: thin solid #dddddd;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #3f51b5;
+}
+
+.styled-table tbody tr.yards,
+.styled-table tbody tr.handicap {
+  font-size: 0.8em;
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr.par td.tee-set-info {
   text-align: center;
-  vertical-align: center;
-  margin: 10px;
 }
 
-table tr.hole,
-table tr.par {
-  height: 26px;
-  background-color: rgb(140, 145, 165);
-  color: white;
-}
-
-table tr.yards,
-table tr.handicap {
-  height: 13px;
-  background-color: rgb(110, 115, 130);
-  color: white;
-  font-size: 10px;
-}
-
-table tr.yards td.rating {
-  font-size: 14px;
-}
-
-table tr.handicap-strokes {
-  margin: auto;
-}
-
-.black-dot {
-  height: 4px;
-  width: 4px;
-  margin: auto;
-  background-color: black;
-  border-radius: 50%;
-}
-
-.red-dot {
-  height: 4px;
-  width: 4px;
-  margin: auto;
-  background-color: red;
-  border-radius: 50%;
-}
-
-table tr.gross {
-  height: 25px;
-  background-color: rgb(255, 255, 255);
-}
-
-table tr.adjustedGross {
-  height: 25px;
-  background-color: rgb(240, 245, 255);
-}
-
-table tr.net {
-  height: 25px;
-  background-color: rgb(240, 245, 255);
-}
-
-table td {
-  border-right: 1px solid rgb(0, 0, 0, 0.10);
-  width: 30px;
-}
-
-table td.tee-set-info {
-  width: 100px;
-}
-
-table td.bold {
-  width: 40px;
-  font-weight: bold;
-  border-left: 1px solid rgb(0, 0, 0, 0.25);
-  border-right: 1px solid rgb(0, 0, 0, 0.25);
-}
-
-.circle {
-  border-radius: 50%;
-  border: 1px solid black;
-}
-
-.square {
-  border-radius: 0%;
-  border: 1px solid black;
-}
-
-.crosshatch {
-  background-image: linear-gradient(
-      -45deg,
-      rgba(0,0,0,0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(0,0,0,0.2) 50%,
-      rgba(0,0,0,0.2) 75%,
-      transparent 75%,
-      transparent
-  );
-  background-size: 5px 5px;
+.styled-table tbody tr.yards td.tee-set-info {
+  font-size: 1.2em;
+  text-align: center;
 }
