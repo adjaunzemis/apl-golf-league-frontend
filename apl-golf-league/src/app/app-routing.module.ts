@@ -3,9 +3,10 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { AppComponent } from "./app.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
+import { CreateCourseComponent } from "./courses/create-course/create-course.component";
 
 const routes: Routes = [
-  { path: "", component: CourseListComponent },
+  { path: "", component: CreateCourseComponent },
   { path: "flights", component: AppComponent },
   { path: "tournaments", component: AppComponent },
   { path: "courses", component: CourseListComponent },
