@@ -1,0 +1,19 @@
+<mat-card class="course-card">
+    <div>
+        <p>Course Information</p>
+    </div>
+    <mat-card class="track-card" *ngFor="let track of trackData">
+        <p>Track #{{ track.trackId }}</p>
+        <mat-card class="tee-set-card" *ngFor="let teeSet of track.teeSetIds">
+            <p>Tee Set #{{ teeSet }}</p>
+        </mat-card>
+        <mat-action-row>
+            <button mat-raised-button color="basic" (click)="addTeeSet(track.trackId)">Add Tee Set</button>
+        </mat-action-row>
+    </mat-card>
+    <mat-action-row>
+        <button mat-raised-button color="basic" (click)="addTrack()">Add Track</button>
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+        <button mat-raised-button color="warn" (click)="clear()">Clear</button>
+    </mat-action-row>
+</mat-card>

@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
+import { FormsModule } from "@angular/forms";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { CourseListComponent } from "./course-list/course-list.component";
@@ -16,7 +17,8 @@ import { CreateCourseComponent } from "./create-course/create-course.component";
   imports: [
     CommonModule,
     RouterModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    FormsModule
   ]
 })
 export class CoursesModule {}
