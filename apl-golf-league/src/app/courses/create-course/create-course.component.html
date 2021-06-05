@@ -2,17 +2,17 @@
     <mat-card class="course-info-card">
         <p>Course Information</p>
     </mat-card>
-    <mat-card class="track-card" *ngFor="let track of trackData">
-        <p>Track #{{ track.trackId }}</p>
-        <mat-card class="tee-set-card" *ngFor="let teeSet of track.teeSetIds">
-            <p>Tee Set #{{ teeSet }}</p>
+    <mat-card class="track-card" *ngFor="let track of courseData.tracks">
+        <p>Track #{{ track.id }}</p>
+        <mat-card class="tee-set-card" *ngFor="let teeSet of track.teeSets">
+            <p>Tee Set #{{ teeSet.id }}</p>
             <mat-action-row>
-                <button mat-mini-fab (click)="removeTeeSet(track.trackId, teeSet)"><mat-icon>delete</mat-icon></button>
+                <button mat-mini-fab (click)="removeTeeSet(teeSet)"><mat-icon>delete</mat-icon></button>
             </mat-action-row>
         </mat-card>
         <mat-action-row>
-            <button mat-raised-button color="basic" (click)="addTeeSet(track.trackId)">Add Tee Set</button>
-            <button mat-mini-fab (click)="removeTrack(track.trackId)"><mat-icon>delete</mat-icon></button>
+            <button mat-raised-button color="basic" (click)="addTeeSet(track)">Add Tee Set</button>
+            <button mat-mini-fab (click)="removeTrack(track)"><mat-icon>delete</mat-icon></button>
         </mat-action-row>
     </mat-card>
     <mat-action-row>

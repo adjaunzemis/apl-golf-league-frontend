@@ -1,52 +1,82 @@
 import { Component } from "@angular/core";
 
+import { GolfCourse } from "src/app/shared/golf-course.model";
+import { GolfTrack } from 'src/app/shared/golf-track.model';
+import { GolfTeeSet } from './../../shared/golf-tee-set.model';
+
 @Component({
     selector: "app-create-course",
     templateUrl: "./create-course.component.html",
     styleUrls: ["./create-course.component.css"]
 })
 export class CreateCourseComponent {
-    trackData : {trackId: number, teeSetIds: number[]}[] = [];
+    courseData: GolfCourse = {
+        id: -1,
+        name: "",
+        abbreviation: ""
+    }
 
     submit(): void {
-        this.clear();
+        this.clear(); // TODO: connect to database to send course data
     }
 
     clear(): void {
-        this.trackData = [];
+        this.courseData.tracks = [];
     }
 
     addTrack(): void {
-        this.trackData = [...this.trackData, {
-                trackId: this.trackData.length + 1,
-                teeSetIds: []
-            }
-        ];
+        const newTrack: GolfTrack = {
+            id: -1,
+            courseId: -1,
+            name: "",
+            abbreviation: ""
+        };
+        if (!this.courseData.tracks) {
+            this.courseData.tracks = [];
+        }
+        this.courseData.tracks.push(newTrack);
     }
 
-    removeTrack(trackId: number): void {
-        const trackIdIndex = this.trackData.findIndex((track) => {
-            return track.trackId === trackId;
+    removeTrack(trackToRemove: GolfTrack): void {
+        if (this.courseData.tracks) {
+            const trackIndex = this.courseData.tracks?.findIndex((track) => {
+                return track === trackToRemove;
+            });
+            if (trackIndex > -1) {
+                this.courseData.tracks.splice(trackIndex, 1);
+            }
+        }
+    }
+
+    addTeeSet(track: GolfTrack): void {
+        let trackData = this.courseData.tracks?.find((t) => {
+            return t === track;
         });
-        if (trackIdIndex > -1) {
-            this.trackData.splice(trackIdIndex, 1);
-        }
-    }
-
-    addTeeSet(trackId: number): void {
-        for (let tIdx = 0; tIdx < this.trackData.length; tIdx += 1) {
-            if (this.trackData[tIdx].trackId === trackId) {
-                this.trackData[tIdx].teeSetIds = [...this.trackData[tIdx].teeSetIds, this.trackData[tIdx].teeSetIds.length + 1];
+        if (trackData) {
+            const newTeeSet: GolfTeeSet = {
+                id: -1,
+                trackId: -1,
+                name: "",
+                color: "",
+                gender: "",
+                rating: -1,
+                slope: -1
+            };
+            if (!trackData.teeSets) {
+                trackData.teeSets = [];
             }
+            trackData.teeSets.push(newTeeSet);
         }
     }
 
-    removeTeeSet(trackId: number, teeSetId: number): void {
-        this.trackData.forEach((track) => {
-            if (track.trackId === trackId) {
-                const teeSetIdIndex = track.teeSetIds.indexOf(teeSetId);
-                if (teeSetIdIndex > -1) {
-                    track.teeSetIds.splice(teeSetIdIndex, 1);
+    removeTeeSet(teeSetToRemove: GolfTeeSet): void {
+        this.courseData.tracks?.forEach((track) => {
+            if (track.teeSets) {
+                const teeSetIndex = track.teeSets.findIndex((teeSet) => {
+                    return teeSet === teeSetToRemove;
+                });
+                if (teeSetIndex > -1) {
+                    track.teeSets.splice(teeSetIndex, 1);
                 }
             }
         });
