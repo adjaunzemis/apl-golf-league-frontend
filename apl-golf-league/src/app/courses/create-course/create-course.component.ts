@@ -11,7 +11,7 @@ export class CreateCourseComponent {
     submit(): void {
         this.clear();
     }
-    
+
     clear(): void {
         this.trackData = [];
     }
@@ -24,11 +24,31 @@ export class CreateCourseComponent {
         ];
     }
 
+    removeTrack(trackId: number): void {
+        const trackIdIndex = this.trackData.findIndex((track) => {
+            return track.trackId === trackId;
+        });
+        if (trackIdIndex > -1) {
+            this.trackData.splice(trackIdIndex, 1);
+        }
+    }
+
     addTeeSet(trackId: number): void {
         for (let tIdx = 0; tIdx < this.trackData.length; tIdx += 1) {
             if (this.trackData[tIdx].trackId === trackId) {
                 this.trackData[tIdx].teeSetIds = [...this.trackData[tIdx].teeSetIds, this.trackData[tIdx].teeSetIds.length + 1];
             }
         }
+    }
+
+    removeTeeSet(trackId: number, teeSetId: number): void {
+        this.trackData.forEach((track) => {
+            if (track.trackId === trackId) {
+                const teeSetIdIndex = track.teeSetIds.indexOf(teeSetId);
+                if (teeSetIdIndex > -1) {
+                    track.teeSetIds.splice(teeSetIdIndex, 1);
+                }
+            }
+        });
     }
 }
