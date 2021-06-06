@@ -2,14 +2,14 @@ import { Component } from "@angular/core";
 
 import { GolfCourse } from "src/app/shared/golf-course.model";
 import { GolfTrack } from 'src/app/shared/golf-track.model';
-import { GolfTeeSet } from './../../shared/golf-tee-set.model';
+import { GolfTeeSet } from '../../shared/golf-tee-set.model';
 
 @Component({
-    selector: "app-create-course",
-    templateUrl: "./create-course.component.html",
-    styleUrls: ["./create-course.component.css"]
+    selector: "app-course-create",
+    templateUrl: "./course-create.component.html",
+    styleUrls: ["./course-create.component.css"]
 })
-export class CreateCourseComponent {
+export class CourseCreateComponent {
     courseData: GolfCourse = {
         id: -1,
         name: "",

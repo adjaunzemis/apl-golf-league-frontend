@@ -6,13 +6,13 @@ import { FormsModule } from "@angular/forms";
 import { AngularMaterialModule } from "../angular-material.module";
 import { CourseListComponent } from "./course-list/course-list.component";
 import { CourseScorecardComponent } from "./course-scorecard/course-scorecard.component";
-import { CreateCourseComponent } from "./create-course/create-course.component";
+import { CourseCreateComponent } from "./course-create/course-create.component";
 
 @NgModule({
   declarations: [
     CourseListComponent,
     CourseScorecardComponent,
-    CreateCourseComponent
+    CourseCreateComponent
   ],
   imports: [
     CommonModule,
