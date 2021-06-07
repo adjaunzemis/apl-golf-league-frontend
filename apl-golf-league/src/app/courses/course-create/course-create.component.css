@@ -1,19 +1,9 @@
-.course-card {
-    margin: 1rem;
-}
-
-.course-info-card {
+mat-card {
+    width: 95%;
+    margin: auto;
     margin-bottom: 1rem;
 }
 
-.track-card {
-    margin-bottom: 1rem;
-}
-
-.tee-set-card {
-    margin-bottom: 1rem;
-}
-
-button {
-    margin: 0rem 1rem;
+mat-card input {
+    width: 100%;
 }

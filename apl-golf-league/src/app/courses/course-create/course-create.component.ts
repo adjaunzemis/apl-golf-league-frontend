@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 import { GolfCourse } from "src/app/shared/golf-course.model";
 import { GolfTrack } from 'src/app/shared/golf-track.model';
@@ -16,15 +17,19 @@ export class CourseCreateComponent {
         abbreviation: ""
     }
 
-    submit(): void {
-        this.clear(); // TODO: connect to database to send course data
+    onAddCourse(form: NgForm): void {
+        if (form.valid) {
+            console.log("Adding course: " + form.value.courseName);
+            this.onClearCourse(form); // TODO: validate entries and connect to database to add course data
+        }
     }
 
-    clear(): void {
+    onClearCourse(form: NgForm): void {
         this.courseData.tracks = [];
+        form.reset();
     }
 
-    addTrack(): void {
+    onAddTrack(): void {
         const newTrack: GolfTrack = {
             id: -1,
             courseId: -1,
@@ -37,7 +42,7 @@ export class CourseCreateComponent {
         this.courseData.tracks.push(newTrack);
     }
 
-    removeTrack(trackToRemove: GolfTrack): void {
+    onRemoveTrack(trackToRemove: GolfTrack): void {
         if (this.courseData.tracks) {
             const trackIndex = this.courseData.tracks?.findIndex((track) => {
                 return track === trackToRemove;
@@ -48,7 +53,7 @@ export class CourseCreateComponent {
         }
     }
 
-    addTeeSet(track: GolfTrack): void {
+    onAddTeeSet(track: GolfTrack): void {
         let trackData = this.courseData.tracks?.find((t) => {
             return t === track;
         });
@@ -69,7 +74,7 @@ export class CourseCreateComponent {
         }
     }
 
-    removeTeeSet(teeSetToRemove: GolfTeeSet): void {
+    onRemoveTeeSet(teeSetToRemove: GolfTeeSet): void {
         this.courseData.tracks?.forEach((track) => {
             if (track.teeSets) {
                 const teeSetIndex = track.teeSets.findIndex((teeSet) => {

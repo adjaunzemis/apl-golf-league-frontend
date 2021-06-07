@@ -1,23 +1,28 @@
 <mat-card class="course-card">
-    <mat-card class="course-info-card">
-        <p>Course Information</p>
-    </mat-card>
-    <mat-card class="track-card" *ngFor="let track of courseData.tracks">
-        <p>Track</p>
-        <mat-card class="tee-set-card" *ngFor="let teeSet of track.teeSets">
-            <p>Tee Set</p>
+    <form (submit)="onAddCourse(courseForm)" #courseForm="ngForm">
+        <mat-card class="course-info-card">
+            <mat-form-field>
+                <mat-label>Course Name</mat-label>
+                <input matInput type="text" name="courseName" ngModel required>
+            </mat-form-field>
+        </mat-card>
+        <mat-card class="track-card" *ngFor="let track of courseData.tracks">
+            <p>Track</p>
+            <mat-card class="tee-set-card" *ngFor="let teeSet of track.teeSets">
+                <p>Tee Set</p>
+                <mat-action-row>
+                    <button mat-mini-fab type="button" (click)="onRemoveTeeSet(teeSet)"><mat-icon>delete</mat-icon></button>
+                </mat-action-row>
+            </mat-card>
             <mat-action-row>
-                <button mat-mini-fab (click)="removeTeeSet(teeSet)"><mat-icon>delete</mat-icon></button>
+                <button mat-raised-button color="basic" type="button" (click)="onAddTeeSet(track)">Add Tee Set</button>
+                <button mat-mini-fab type="button" (click)="onRemoveTrack(track)"><mat-icon>delete</mat-icon></button>
             </mat-action-row>
         </mat-card>
         <mat-action-row>
-            <button mat-raised-button color="basic" (click)="addTeeSet(track)">Add Tee Set</button>
-            <button mat-mini-fab (click)="removeTrack(track)"><mat-icon>delete</mat-icon></button>
+            <button mat-raised-button color="basic" type="button" (click)="onAddTrack()">Add Track</button>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+            <button mat-raised-button color="warn" type="button" (click)="onClearCourse(courseForm)">Clear</button>
         </mat-action-row>
-    </mat-card>
-    <mat-action-row>
-        <button mat-raised-button color="basic" (click)="addTrack()">Add Track</button>
-        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
-        <button mat-raised-button color="warn" (click)="clear()">Clear</button>
-    </mat-action-row>
+    </form>
 </mat-card>
