@@ -1,9 +1,41 @@
+button {
+    margin: 0rem 1rem;
+}
+
 mat-card {
     width: 95%;
     margin: auto;
     margin-bottom: 1rem;
 }
 
-mat-card input {
-    width: 100%;
+mat-form-field {
+    margin: 0rem 1rem;
+}
+
+.course-name-field {
+    width: 45%;
+}
+
+.course-address-field {
+    width: 45%;
+}
+
+.course-city-field {
+    width: 20%;
+}
+
+.course-state-field {
+    width: 10%;
+}
+
+.course-zip-code-field {
+    width: 10%;
+}
+
+.course-phone {
+    width: 20%;
+}
+
+.course-website {
+    width: 40%;
 }
