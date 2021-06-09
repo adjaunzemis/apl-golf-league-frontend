@@ -27,11 +27,14 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
           .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
             this.course = courseData.courses[0];
           });
-        this.coursesService.getCourses();
     }
 
     ngOnDestroy(): void {
         this.coursesSub.unsubscribe();
+    }
+
+    onLoadCourse(): void {
+        this.coursesService.getCourses();
     }
 
     onSubmitCourse(form: NgForm): void {
