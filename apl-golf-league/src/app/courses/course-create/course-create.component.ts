@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 
@@ -15,18 +15,23 @@ import { CoursesService } from "../courses.service";
 export class CourseCreateComponent implements OnInit, OnDestroy {
     courseForm: FormGroup;
 
-    course: GolfCourse;
+    @Input() course: GolfCourse;
     private coursesSub: Subscription;
+
+    private HOLES_PER_TEE_SET = 9;
 
     constructor(private coursesService: CoursesService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getCourseUpdateListener()
-          .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
-            // this.course = courseData.courses[0];
-          });
+            .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
+                this.course = courseData.courses[0];
+                this.initFormsFromCourse(this.course);
+            });
 
         this.courseForm = this.formBuilder.group({
+            id: new FormControl(""),
+            dateUpdated: new FormControl(""),
             name: new FormControl("", Validators.required),
             abbreviation: new FormControl("", Validators.required),
             address: new FormControl(""),
@@ -37,14 +42,33 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             website: new FormControl(""),
             tracks: this.formBuilder.array([])
         });
+
+        this.coursesService.getCourses();
     }
+
+    initFormsFromCourse(course: GolfCourse): void {
+        if (course.tracks) {
+            for (let trIdx = 0; trIdx < course.tracks.length; trIdx++) {
+                this.onAddTrack();
+                const track = course.tracks[trIdx];
+                if (track.teeSets) {
+                    for (let tsIdx = 0; tsIdx < track.teeSets.length; tsIdx++) {
+                        this.onAddTeeSet(trIdx);
+                        const teeSet = track.teeSets[tsIdx];
+                        // if (teeSet.holes) {
+                        //     this.onAddHole(trIdx, tsIdx);
+                        // }
+                    }
+                }
+            }
+        }
+
+        this.courseForm.setValue(course);
+    }
+    
 
     ngOnDestroy(): void {
         this.coursesSub.unsubscribe();
-    }
-
-    onLoadCourse(): void {
-        this.coursesService.getCourses();
     }
 
     onSubmitCourse(): void {
@@ -96,7 +120,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
             // TODO: validate entries and connect to database to add course data
 
-            // this.onClearCourse(form);
+            // TODO: Redirect back to courses list
         }
     }
 
@@ -110,6 +134,8 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     private createTrackForm(): FormGroup {
         return this.formBuilder.group({
+            id: new FormControl(""),
+            courseId: new FormControl(""),
             name: new FormControl("", Validators.required),
             abbreviation: new FormControl("", Validators.required),
             teeSets: this.formBuilder.array([])
@@ -130,19 +156,47 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     private createTeeSetForm(): FormGroup {
         return this.formBuilder.group({
+            id: new FormControl(""),
+            trackId: new FormControl(""),
             name: new FormControl("", Validators.required),
             color: new FormControl("", Validators.required),
             gender: new FormControl("", Validators.required),
             rating: new FormControl("", Validators.required),
-            slope: new FormControl("", Validators.required)
-        })
+            slope: new FormControl("", Validators.required),
+            holes: this.formBuilder.array([])
+        });
     }
 
     onAddTeeSet(trIdx: number): void {
         this.getTeeSetsArray(trIdx).push(this.createTeeSetForm());
+
+        // TODO: Remove this to allow variable number of holes per tee set
+        const tsIdx = this.getTeeSetsArray(trIdx).length - 1;
+        for (let hIdx = 0; hIdx < this.HOLES_PER_TEE_SET; hIdx++) {
+            this.onAddHole(trIdx, tsIdx);
+        }
     }
 
     onRemoveTeeSet(trIdx: number, tsIdx: number): void {
         this.getTeeSetsArray(trIdx).removeAt(tsIdx);
+    }
+
+    getHolesArray(trIdx: number, tsIdx: number): FormArray {
+        return (this.getTeeSetsArray(trIdx).at(tsIdx).get('holes') as FormArray);
+    }
+
+    private createHoleForm(): FormGroup {
+        return this.formBuilder.group({
+            id: new FormControl(""),
+            teeSetId: new FormControl(""),
+            number: new FormControl("", Validators.required),
+            par: new FormControl("", Validators.required),
+            handicap: new FormControl("", Validators.required),
+            yardage: new FormControl("", Validators.required)
+        });
+    }
+
+    onAddHole(trIdx: number, tsIdx: number): void {
+        this.getHolesArray(trIdx, tsIdx).push(this.createHoleForm());
     }
 }

@@ -9,6 +9,14 @@
                 <mat-label>Abbreviation</mat-label>
                 <input matInput type="text" formControlName="abbreviation">
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Course ID</mat-label>
+                <input matInput type="text" formControlName="id">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Date Updated</mat-label>
+                <input matInput type="text" formControlName="dateUpdated">
+            </mat-form-field>
         </div>
         <div class="course-address">
             <mat-form-field class="course-address-field">
@@ -48,6 +56,14 @@
                     <mat-label>Abbreviation</mat-label>
                     <input matInput type="text" formControlName="abbreviation">
                 </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Track ID</mat-label>
+                    <input matInput type="text" formControlName="id">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Course ID</mat-label>
+                    <input matInput type="text" formControlName="courseId">
+                </mat-form-field>
                 <mat-card class="tee-set-card" formArrayName="teeSets" *ngFor="let teeSet of getTeeSetsArray(trIdx).controls; let tsIdx = index">
                     <div class="tee-set-info" formGroupName="{{ tsIdx }}">
                         <mat-form-field>
@@ -63,6 +79,14 @@
                             <input matInput type="text" formControlName="gender">
                         </mat-form-field>
                         <mat-form-field>
+                            <mat-label>Tee Set ID</mat-label>
+                            <input matInput type="text" formControlName="id">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Track ID</mat-label>
+                            <input matInput type="text" formControlName="trackId">
+                        </mat-form-field>
+                        <mat-form-field>
                             <mat-label>Rating</mat-label>
                             <input matInput type="text" formControlName="rating">
                         </mat-form-field>
@@ -70,6 +94,26 @@
                             <mat-label>Slope</mat-label>
                             <input matInput type="text" formControlName="slope">
                         </mat-form-field>
+                        <span formArrayName="holes" *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index">
+                            <div formGroupName="{{ hIdx }}">
+                                <mat-form-field>
+                                    <mat-label>Number</mat-label>
+                                    <input matInput type="text" formControlName="number">
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Par</mat-label>
+                                    <input matInput type="text" formControlName="par">
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Handicap</mat-label>
+                                    <input matInput type="text" formControlName="handicap">
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Yardage</mat-label>
+                                    <input matInput type="text" formControlName="yardage">
+                                </mat-form-field>
+                            </div>
+                        </span>
                     </div>
                     <mat-action-row>
                         <button mat-mini-fab type="button" (click)="onRemoveTeeSet(trIdx, tsIdx)"><mat-icon>delete</mat-icon></button>
@@ -85,7 +129,6 @@
             <button mat-raised-button color="basic" type="button" (click)="onAddTrack()">Add Track</button>
             <button mat-raised-button color="primary" type="submit">Submit</button>
             <button mat-raised-button color="warn" type="button" (click)="onClearCourse()">Clear</button>
-            <button mat-raised-button color="accent" type="button" (click)="onLoadCourse()">Load</button>
         </mat-action-row>
     </form>
 </mat-card>
