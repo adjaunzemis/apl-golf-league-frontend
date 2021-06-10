@@ -1,90 +1,90 @@
 <mat-card class="course-card">
-    <form (submit)="onSubmitCourse(courseForm)" #courseForm="ngForm">
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmitCourse()">
         <div class="course-name">
             <mat-form-field class="course-name-field">
                 <mat-label>Course Name</mat-label>
-                <input matInput type="text" name="courseName" [(ngModel)]="course.name" required>
+                <input matInput type="text" formControlName="name">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Abbreviation</mat-label>
-                <input matInput type="text" name="courseAbbreviation" [(ngModel)]="course.abbreviation" required>
+                <input matInput type="text" formControlName="abbreviation">
             </mat-form-field>
         </div>
         <div class="course-address">
             <mat-form-field class="course-address-field">
                 <mat-label>Address</mat-label>
-                <input matInput type="text" name="address" [(ngModel)]="course.address">
+                <input matInput type="text" formControlName="address">
             </mat-form-field>
             <mat-form-field class="course-city-field">
                 <mat-label>City</mat-label>
-                <input matInput type="text" name="city" [(ngModel)]="course.city">
+                <input matInput type="text" formControlName="city">
             </mat-form-field>
             <mat-form-field class="course-state-field">
                 <mat-label>State</mat-label>
-                <input matInput type="text" name="state" [(ngModel)]="course.state">
+                <input matInput type="text" formControlName="state">
             </mat-form-field>
             <mat-form-field class="course-zip-code-field">
                 <mat-label>Zip Code</mat-label>
-                <input matInput type="text" name="zipCode" [(ngModel)]="course.zipCode">
+                <input matInput type="text" formControlName="zipCode">
             </mat-form-field>
         </div>
         <div class="course-contact">
             <mat-form-field class="course-phone">
                 <mat-label>Phone</mat-label>
-                <input matInput type="text" name="phone" [(ngModel)]="course.phone">
+                <input matInput type="text" formControlName="phone">
             </mat-form-field>
             <mat-form-field class="course-website">
                 <mat-label>Website</mat-label>
-                <input matInput type="text" name="website" [(ngModel)]="course.website">
+                <input matInput type="text" formControlName="website">
             </mat-form-field>
         </div>
-        <mat-card class="track-card" *ngFor="let track of course.tracks; let trIdx = index">
-            <div class="track-info">
+        <mat-card class="track-card" formArrayName="tracks" *ngFor="let track of getTracksArray().controls; let trIdx = index">
+            <div class="track-info" formGroupName="{{ trIdx }}">
                 <mat-form-field class="track-name">
                     <mat-label>Track Name</mat-label>
-                    <input matInput type="text" name="track[{{ trIdx }}].name" [(ngModel)]="track.name" required>
+                    <input matInput type="text" formControlName="name">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Abbreviation</mat-label>
-                    <input matInput type="text" name="track[{{ trIdx }}].abbreviation" [(ngModel)]="track.abbreviation" required>
+                    <input matInput type="text" formControlName="abbreviation">
                 </mat-form-field>
+                <mat-card class="tee-set-card" formArrayName="teeSets" *ngFor="let teeSet of getTeeSetsArray(trIdx).controls; let tsIdx = index">
+                    <div class="tee-set-info" formGroupName="{{ tsIdx }}">
+                        <mat-form-field>
+                            <mat-label>Tee Set Name</mat-label>
+                            <input matInput type="text" formControlName="name">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Color</mat-label>
+                            <input matInput type="text" formControlName="color">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Gender</mat-label>
+                            <input matInput type="text" formControlName="gender">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Rating</mat-label>
+                            <input matInput type="text" formControlName="rating">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Slope</mat-label>
+                            <input matInput type="text" formControlName="slope">
+                        </mat-form-field>
+                    </div>
+                    <mat-action-row>
+                        <button mat-mini-fab type="button" (click)="onRemoveTeeSet(trIdx, tsIdx)"><mat-icon>delete</mat-icon></button>
+                    </mat-action-row>
+                </mat-card>
             </div>
-            <mat-card class="tee-set-card" *ngFor="let teeSet of track.teeSets; let tsIdx = index">
-                <div class="tee-set-info">
-                    <mat-form-field>
-                        <mat-label>Tee Set Name</mat-label>
-                        <input matInput type="text" name="track[{{ trIdx }}].teeSet[{{ tsIdx }}].name" [(ngModel)]="teeSet.name">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Color</mat-label>
-                        <input matInput type="text" name="track[{{ trIdx }}].teeSet[{{ tsIdx }}].color" [(ngModel)]="teeSet.color">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Gender</mat-label>
-                        <input matInput type="text" name="track[{{ trIdx }}].teeSet[{{ tsIdx }}].gender" [(ngModel)]="teeSet.gender">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Rating</mat-label>
-                        <input matInput type="text" name="track[{{ trIdx }}].teeSet[{{ tsIdx }}].rating" [(ngModel)]="teeSet.rating">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Slope</mat-label>
-                        <input matInput type="text" name="track[{{ trIdx }}].teeSet[{{ tsIdx }}].slope" [(ngModel)]="teeSet.slope">
-                    </mat-form-field>
-                </div>
-                <mat-action-row>
-                    <button mat-mini-fab type="button" (click)="onRemoveTeeSet(teeSet)"><mat-icon>delete</mat-icon></button>
-                </mat-action-row>
-            </mat-card>
             <mat-action-row>
-                <button mat-raised-button color="basic" type="button" (click)="onAddTeeSet(track)">Add Tee Set</button>
-                <button mat-mini-fab type="button" (click)="onRemoveTrack(track)"><mat-icon>delete</mat-icon></button>
+                <button mat-raised-button color="basic" type="button" (click)="onAddTeeSet(trIdx)">Add Tee Set</button>
+                <button mat-mini-fab type="button" (click)="onRemoveTrack(trIdx)"><mat-icon>delete</mat-icon></button>
             </mat-action-row>
         </mat-card>
         <mat-action-row>
             <button mat-raised-button color="basic" type="button" (click)="onAddTrack()">Add Track</button>
             <button mat-raised-button color="primary" type="submit">Submit</button>
-            <button mat-raised-button color="warn" type="button" (click)="onClearCourse(courseForm)">Clear</button>
+            <button mat-raised-button color="warn" type="button" (click)="onClearCourse()">Clear</button>
             <button mat-raised-button color="accent" type="button" (click)="onLoadCourse()">Load</button>
         </mat-action-row>
     </form>

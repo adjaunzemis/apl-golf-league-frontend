@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 import { GolfCourse } from "src/app/shared/golf-course.model";
-import { GolfTrack } from 'src/app/shared/golf-track.model';
-import { GolfTeeSet } from '../../shared/golf-tee-set.model';
 import { CoursesService } from "../courses.service";
 
 @Component({
@@ -13,20 +11,30 @@ import { CoursesService } from "../courses.service";
     styleUrls: ["./course-create.component.css"]
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
-    course: GolfCourse = {
-        id: -1,
-        name: "",
-        abbreviation: ""
-    }
+    courseForm: FormGroup;
+
+    course: GolfCourse;
     private coursesSub: Subscription;
 
-    constructor(private coursesService: CoursesService) {}
+    constructor(private coursesService: CoursesService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getCourseUpdateListener()
           .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
-            this.course = courseData.courses[0];
+            // this.course = courseData.courses[0];
           });
+
+        this.courseForm = this.formBuilder.group({
+            name: new FormControl("", Validators.required),
+            abbreviation: new FormControl("", Validators.required),
+            address: new FormControl(""),
+            city: new FormControl(""),
+            state: new FormControl(""),
+            zipCode: new FormControl(""),
+            phone: new FormControl(""),
+            website: new FormControl(""),
+            tracks: this.formBuilder.array([])
+        });
     }
 
     ngOnDestroy(): void {
@@ -37,77 +45,60 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         this.coursesService.getCourses();
     }
 
-    onSubmitCourse(form: NgForm): void {
-        console.log(form.value)
-        if (form.valid) {
-            console.log("Adding course: " + form.value.courseName);
+    onSubmitCourse(): void {
+        console.log(this.courseForm.value)
+        if (this.courseForm.valid) {
+            console.log("Adding course: " + this.courseForm.value.courseName);
 
             // TODO: validate entries and connect to database to add course data
 
-            this.onClearCourse(form);
+            // this.onClearCourse(form);
         }
     }
 
-    onClearCourse(form: NgForm): void {
-        this.course.tracks = [];
-        form.reset();
+    onClearCourse(): void {
+        this.courseForm.reset();
+    }
+
+    getTracksArray(): FormArray {
+        return (this.courseForm.get('tracks') as FormArray);
+    }
+
+    private createTrackForm(): FormGroup {
+        return this.formBuilder.group({
+            name: new FormControl("", Validators.required),
+            abbreviation: new FormControl("", Validators.required),
+            teeSets: this.formBuilder.array([])
+        });
     }
 
     onAddTrack(): void {
-        const newTrack: GolfTrack = {
-            id: -1,
-            courseId: this.course.id,
-            name: "",
-            abbreviation: ""
-        };
-        if (!this.course.tracks) {
-            this.course.tracks = [];
-        }
-        this.course.tracks.push(newTrack);
+        this.getTracksArray().push(this.createTrackForm());
     }
 
-    onRemoveTrack(trackToRemove: GolfTrack): void {
-        if (this.course.tracks) {
-            const trackIndex = this.course.tracks?.findIndex((track) => {
-                return track === trackToRemove;
-            });
-            if (trackIndex > -1) {
-                this.course.tracks.splice(trackIndex, 1);
-            }
-        }
+    onRemoveTrack(trIdx: number): void {
+        this.getTracksArray().removeAt(trIdx);
     }
 
-    onAddTeeSet(track: GolfTrack): void {
-        let trackData = this.course.tracks?.find((t) => {
-            return t === track;
-        });
-        if (trackData) {
-            const newTeeSet: GolfTeeSet = {
-                id: -1,
-                trackId: track.id,
-                name: "",
-                color: "",
-                gender: "",
-                rating: -1,
-                slope: -1
-            };
-            if (!trackData.teeSets) {
-                trackData.teeSets = [];
-            }
-            trackData.teeSets.push(newTeeSet);
-        }
+    getTeeSetsArray(trIdx: number): FormArray {
+        return (this.getTracksArray().at(trIdx).get('teeSets') as FormArray);
     }
 
-    onRemoveTeeSet(teeSetToRemove: GolfTeeSet): void {
-        this.course.tracks?.forEach((track) => {
-            if (track.teeSets) {
-                const teeSetIndex = track.teeSets.findIndex((teeSet) => {
-                    return teeSet === teeSetToRemove;
-                });
-                if (teeSetIndex > -1) {
-                    track.teeSets.splice(teeSetIndex, 1);
-                }
-            }
-        });
+    private createTeeSetForm(): FormGroup {
+        return this.formBuilder.group({
+            name: new FormControl("", Validators.required),
+            color: new FormControl("", Validators.required),
+            gender: new FormControl("", Validators.required),
+            rating: new FormControl("", Validators.required),
+            slope: new FormControl("", Validators.required)
+        })
+    }
+
+    onAddTeeSet(trIdx: number): void {
+        this.getTeeSetsArray(trIdx).push(this.createTeeSetForm());
+    }
+
+    onRemoveTeeSet(trIdx: number, tsIdx: number): void {
+        this.getTeeSetsArray(trIdx).removeAt(tsIdx);
     }
 }
