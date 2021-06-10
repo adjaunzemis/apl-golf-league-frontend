@@ -3,6 +3,8 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@ang
 import { Subscription } from "rxjs";
 
 import { GolfCourse } from "src/app/shared/golf-course.model";
+import { GolfTeeSet } from "src/app/shared/golf-tee-set.model";
+import { GolfTrack } from "src/app/shared/golf-track.model";
 import { CoursesService } from "../courses.service";
 
 @Component({
@@ -48,7 +50,49 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     onSubmitCourse(): void {
         console.log(this.courseForm.value)
         if (this.courseForm.valid) {
-            console.log("Adding course: " + this.courseForm.value.courseName);
+            const course: GolfCourse = {
+                id: -1,
+                name: this.courseForm.value.name,
+                abbreviation: this.courseForm.value.abbreviation,
+                address: this.courseForm.value.address,
+                city: this.courseForm.value.city,
+                state: this.courseForm.value.state,
+                zipCode: this.courseForm.value.zipCode,
+                phone: this.courseForm.value.phone,
+                website: this.courseForm.value.website,
+                tracks: []
+            };
+
+            for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
+                const trackForm = this.courseForm.value.tracks[trIdx];
+                const track: GolfTrack = {
+                    id: -1,
+                    courseId: -1,
+                    name: trackForm.name,
+                    abbreviation: trackForm.abbreviation,
+                    teeSets: []
+                };
+
+                for (let tsIdx = 0; tsIdx < trackForm.teeSets.length; tsIdx++) {
+                    const teeSetForm = trackForm.teeSets[tsIdx];
+                    const teeSet: GolfTeeSet = {
+                        id: -1,
+                        trackId: -1,
+                        name: teeSetForm.name,
+                        color: teeSetForm.color,
+                        gender: teeSetForm.gender,
+                        rating: teeSetForm.rating,
+                        slope: teeSetForm.slope
+                    };
+
+                    track.teeSets?.push(teeSet);
+                }
+
+                course.tracks?.push(track);
+            }
+
+            console.log("Adding course: " + course.name);
+            console.log(course);
 
             // TODO: validate entries and connect to database to add course data
 
