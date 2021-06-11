@@ -1,5 +1,9 @@
 <mat-card class="course-card">
     <form [formGroup]="courseForm" (ngSubmit)="onSubmitCourse()">
+        <div>
+            <p>Course ID: {{ courseForm.value.id }}</p>
+            <p>Date Updated: {{ courseForm.value.dateUpdated }}</p>
+        </div>
         <div class="course-name">
             <mat-form-field class="course-name-field">
                 <mat-label>Course Name</mat-label>
@@ -8,14 +12,6 @@
             <mat-form-field>
                 <mat-label>Abbreviation</mat-label>
                 <input matInput type="text" formControlName="abbreviation">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Course ID</mat-label>
-                <input matInput type="text" formControlName="id">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Date Updated</mat-label>
-                <input matInput type="text" formControlName="dateUpdated">
             </mat-form-field>
         </div>
         <div class="course-address">
@@ -48,6 +44,10 @@
         </div>
         <mat-card class="track-card" formArrayName="tracks" *ngFor="let track of getTracksArray().controls; let trIdx = index">
             <div class="track-info" formGroupName="{{ trIdx }}">
+                <div>
+                    <p>Track ID: {{ track.value.id }}</p>
+                    <p>Course ID: {{ track.value.courseId }}</p>
+                </div>
                 <mat-form-field class="track-name">
                     <mat-label>Track Name</mat-label>
                     <input matInput type="text" formControlName="name">
@@ -56,16 +56,12 @@
                     <mat-label>Abbreviation</mat-label>
                     <input matInput type="text" formControlName="abbreviation">
                 </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Track ID</mat-label>
-                    <input matInput type="text" formControlName="id">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Course ID</mat-label>
-                    <input matInput type="text" formControlName="courseId">
-                </mat-form-field>
                 <mat-card class="tee-set-card" formArrayName="teeSets" *ngFor="let teeSet of getTeeSetsArray(trIdx).controls; let tsIdx = index">
                     <div class="tee-set-info" formGroupName="{{ tsIdx }}">
+                        <div>
+                            <p>Tee Set ID: {{ teeSet.value.id }}</p>
+                            <p>Track ID: {{ teeSet.value.trackId }}</p>
+                        </div>
                         <mat-form-field>
                             <mat-label>Tee Set Name</mat-label>
                             <input matInput type="text" formControlName="name">
@@ -77,14 +73,6 @@
                         <mat-form-field>
                             <mat-label>Gender</mat-label>
                             <input matInput type="text" formControlName="gender">
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Tee Set ID</mat-label>
-                            <input matInput type="text" formControlName="id">
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Track ID</mat-label>
-                            <input matInput type="text" formControlName="trackId">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Rating</mat-label>
