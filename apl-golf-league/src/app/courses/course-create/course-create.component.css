@@ -12,6 +12,16 @@ mat-form-field {
     margin: 0rem 1rem;
 }
 
+.database-identifiers {
+    color: gray;
+    font-size: x-small;
+    margin-bottom: 1rem;
+}
+
+.database-identifiers span {
+    margin-right: 1rem;
+}
+
 .course-name-field {
     width: 45%;
 }

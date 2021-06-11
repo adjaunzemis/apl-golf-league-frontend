@@ -1,8 +1,8 @@
 <mat-card class="course-card">
     <form [formGroup]="courseForm" (ngSubmit)="onSubmitCourse()">
-        <div>
-            <p>Course ID: {{ courseForm.value.id }}</p>
-            <p>Date Updated: {{ courseForm.value.dateUpdated }}</p>
+        <div class="database-identifiers" *ngIf="course">
+            <span>Course ID: {{ course.id }}</span>
+            <span>Date Updated: {{ course.dateUpdated }}</span>
         </div>
         <div class="course-name">
             <mat-form-field class="course-name-field">
@@ -44,9 +44,9 @@
         </div>
         <mat-card class="track-card" formArrayName="tracks" *ngFor="let track of getTracksArray().controls; let trIdx = index">
             <div class="track-info" formGroupName="{{ trIdx }}">
-                <div>
-                    <p>Track ID: {{ track.value.id }}</p>
-                    <p>Course ID: {{ track.value.courseId }}</p>
+                <div class="database-identifiers" *ngIf="course.tracks">
+                    <span>Track ID: {{ course.tracks[trIdx].id }}</span>
+                    <span>Course ID: {{ course.tracks[trIdx].courseId }}</span>
                 </div>
                 <mat-form-field class="track-name">
                     <mat-label>Track Name</mat-label>
@@ -58,10 +58,10 @@
                 </mat-form-field>
                 <mat-card class="tee-set-card" formArrayName="teeSets" *ngFor="let teeSet of getTeeSetsArray(trIdx).controls; let tsIdx = index">
                     <div class="tee-set-info" formGroupName="{{ tsIdx }}">
-                        <div>
-                            <p>Tee Set ID: {{ teeSet.value.id }}</p>
-                            <p>Track ID: {{ teeSet.value.trackId }}</p>
-                        </div>
+                        <!-- <div class="database-identifiers" *ngIf="course.tracks && course.tracks[trIdx].teeSets">
+                            <span>Tee Set ID: {{ course.tracks[trIdx].teeSets[tsIdx].id }}</span>
+                            <span>Track ID: {{ course.tracks[trIdx].teeSets[tsIdx].trackId }}</span>
+                        </div> -->
                         <mat-form-field>
                             <mat-label>Tee Set Name</mat-label>
                             <input matInput type="text" formControlName="name">
@@ -84,6 +84,10 @@
                         </mat-form-field>
                         <span formArrayName="holes" *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index">
                             <div formGroupName="{{ hIdx }}">
+                                <!-- <div class="database-identifiers" *ngIf="course.tracks && course.tracks[trIdx].teeSets && course.tracks[trIdx].teeSets[tsIdx].holes">
+                                    <span>Hole ID: {{ course.tracks[trIdx].teeSets[tsIdx].holes[hIdx].id }}</span>
+                                    <span>Tee Set ID: {{ course.tracks[trIdx].teeSets[tsIdx].holes[hIdx].teeSetId }}</span>
+                                </div> -->
                                 <mat-form-field>
                                     <mat-label>Number</mat-label>
                                     <input matInput type="text" formControlName="number">
