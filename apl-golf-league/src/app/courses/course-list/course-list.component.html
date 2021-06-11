@@ -30,6 +30,9 @@
             </div>
             <app-course-scorecard [teeSets]="track.teeSets"></app-course-scorecard>
           </div>
+          <mat-action-row>
+            <a routerLink="edit/" [queryParams]="{ id: course.id }"><button mat-raised-button color="accent">Edit</button></a>
+          </mat-action-row>
         </div>
       </td>
     </ng-container>

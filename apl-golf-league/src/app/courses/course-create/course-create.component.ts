@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { GolfCourse } from "src/app/shared/golf-course.model";
@@ -18,9 +19,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     @Input() course: GolfCourse;
     private coursesSub: Subscription;
 
-    private HOLES_PER_TEE_SET = 9;
-
-    constructor(private coursesService: CoursesService, private formBuilder: FormBuilder) {}
+    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getCourseUpdateListener()
@@ -28,10 +27,18 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 this.course = courseData.courses[0];
                 this.initFormsFromCourse(this.course);
             });
+            
+        this.route.queryParams.subscribe(params => {
+            console.log(params);
+            if (params) {
+                const courseName = params.name;
+                console.log(courseName);
+
+                this.coursesService.getCourses();
+            }
+        });
 
         this.courseForm = this.createCourseForm();
-
-        this.coursesService.getCourses();
     }
 
     private createCourseForm(): FormGroup {

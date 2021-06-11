@@ -6,10 +6,11 @@ import { CourseListComponent } from "./courses/course-list/course-list.component
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
 
 const routes: Routes = [
-  { path: "", component: CourseCreateComponent },
+  { path: "", component: AppComponent },
   { path: "flights", component: AppComponent },
   { path: "tournaments", component: AppComponent },
   { path: "courses", component: CourseListComponent },
+  { path: "courses/edit", component: CourseCreateComponent },
   { path: "players", component: AppComponent },
   { path: "teams", component: AppComponent }
 ]
