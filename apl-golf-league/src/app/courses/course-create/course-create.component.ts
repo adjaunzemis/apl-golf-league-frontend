@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -157,7 +157,8 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                         color: teeSetForm.color,
                         gender: teeSetForm.gender,
                         rating: teeSetForm.rating,
-                        slope: teeSetForm.slope
+                        slope: teeSetForm.slope,
+                        holes: []
                     };
 
                     for (let hIdx = 0; hIdx < teeSetForm.holes.length; hIdx++) {
