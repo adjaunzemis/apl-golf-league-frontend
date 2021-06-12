@@ -3,10 +3,11 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@ang
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 
+import { CoursesService } from "../courses.service";
 import { GolfCourse } from "src/app/shared/golf-course.model";
 import { GolfTeeSet } from "src/app/shared/golf-tee-set.model";
 import { GolfTrack } from "src/app/shared/golf-track.model";
-import { CoursesService } from "../courses.service";
+import { GolfHole } from "src/app/shared/golf-hole.model";
 
 @Component({
     selector: "app-course-create",
@@ -16,22 +17,27 @@ import { CoursesService } from "../courses.service";
 export class CourseCreateComponent implements OnInit, OnDestroy {
     courseForm: FormGroup;
 
-    @Input() course: GolfCourse;
+    course: GolfCourse;
     private coursesSub: Subscription;
+
+    private readonly NUM_HOLES_PER_TEE_SET = 9;
 
     constructor(private coursesService: CoursesService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
             .subscribe(courseData => {
+                console.log("[CourseCreateComponent] Initializing forms for course '" + courseData.name + "' (id=" + courseData.id + ")");
                 this.course = courseData;
                 this.initFormsFromCourse(this.course);
             });
             
         this.route.queryParams.subscribe(params => {
             if (params) {
-                const courseId = params.id;
-                this.coursesService.getCourse(courseId);
+                if (params.id) {
+                    console.log("[CourseCreateComponent] Processing route with query parameter: id=" + params.id);
+                    this.coursesService.getCourse(params.id);
+                }
             }
         });
 
@@ -78,7 +84,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
                 if (track.teeSets) {
                     for (let tsIdx = 0; tsIdx < track.teeSets.length; tsIdx++) {
-                        this.onAddTeeSet(trIdx);
+                        this.onAddTeeSet(trIdx, false);
 
                         const teeSet = track.teeSets[tsIdx];
                         courseData.tracks[trIdx].teeSets.push({
@@ -154,6 +160,20 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                         slope: teeSetForm.slope
                     };
 
+                    for (let hIdx = 0; hIdx < teeSetForm.holes.length; hIdx++) {
+                        const holeForm = teeSetForm.holes[hIdx];
+                        const hole: GolfHole = {
+                            id: -1,
+                            teeSetId: -1,
+                            number: holeForm.number,
+                            par: holeForm.par,
+                            handicap: holeForm.handicap,
+                            yardage: holeForm.yardage
+                        }
+
+                        teeSet.holes?.push(hole);
+                    }
+
                     track.teeSets?.push(teeSet);
                 }
 
@@ -208,8 +228,15 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         });
     }
 
-    onAddTeeSet(trIdx: number): void {
+    onAddTeeSet(trIdx: number, addDefaultHoles: boolean): void {
         this.getTeeSetsArray(trIdx).push(this.createTeeSetForm());
+
+        if (addDefaultHoles) {
+            const tsIdx = this.getTeeSetsArray(trIdx).length - 1;
+            for (let hIdx = 0; hIdx < this.NUM_HOLES_PER_TEE_SET; hIdx++) {
+                this.onAddHole(trIdx, tsIdx);
+            }
+        }
     }
 
     onRemoveTeeSet(trIdx: number, tsIdx: number): void {

@@ -44,7 +44,7 @@
         </div>
         <mat-card class="track-card" formArrayName="tracks" *ngFor="let track of getTracksArray().controls; let trIdx = index">
             <div class="track-info" formGroupName="{{ trIdx }}">
-                <div class="database-identifiers" *ngIf="course.tracks">
+                <div class="database-identifiers" *ngIf="course && course.tracks">
                     <span>Track ID: {{ course.tracks[trIdx].id }}</span>
                     <span>Course ID: {{ course.tracks[trIdx].courseId }}</span>
                 </div>
@@ -58,7 +58,7 @@
                 </mat-form-field>
                 <mat-card class="tee-set-card" formArrayName="teeSets" *ngFor="let teeSet of getTeeSetsArray(trIdx).controls; let tsIdx = index">
                     <div class="tee-set-info" formGroupName="{{ tsIdx }}">
-                        <!-- <div class="database-identifiers" *ngIf="course.tracks && course.tracks[trIdx].teeSets">
+                        <!-- <div class="database-identifiers" *ngIf="course && course.tracks && course.tracks[trIdx].teeSets">
                             <span>Tee Set ID: {{ course.tracks[trIdx].teeSets[tsIdx].id }}</span>
                             <span>Track ID: {{ course.tracks[trIdx].teeSets[tsIdx].trackId }}</span>
                         </div> -->
@@ -84,7 +84,7 @@
                         </mat-form-field>
                         <span formArrayName="holes" *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index">
                             <div formGroupName="{{ hIdx }}">
-                                <!-- <div class="database-identifiers" *ngIf="course.tracks && course.tracks[trIdx].teeSets && course.tracks[trIdx].teeSets[tsIdx].holes">
+                                <!-- <div class="database-identifiers" *ngIf="course && course.tracks && course.tracks[trIdx].teeSets && course.tracks[trIdx].teeSets[tsIdx].holes">
                                     <span>Hole ID: {{ course.tracks[trIdx].teeSets[tsIdx].holes[hIdx].id }}</span>
                                     <span>Tee Set ID: {{ course.tracks[trIdx].teeSets[tsIdx].holes[hIdx].teeSetId }}</span>
                                 </div> -->
@@ -113,7 +113,7 @@
                 </mat-card>
             </div>
             <mat-action-row>
-                <button mat-raised-button color="basic" type="button" (click)="onAddTeeSet(trIdx)">Add Tee Set</button>
+                <button mat-raised-button color="basic" type="button" (click)="onAddTeeSet(trIdx, true)">Add Tee Set</button>
                 <button mat-mini-fab type="button" (click)="onRemoveTrack(trIdx)"><mat-icon>delete</mat-icon></button>
             </mat-action-row>
         </mat-card>
