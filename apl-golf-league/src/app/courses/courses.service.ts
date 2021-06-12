@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 
 import { GolfCourse } from "../shared/golf-course.model"
@@ -13,6 +13,9 @@ const API_COURSES_ENDPOINT = environment.apiUrl + "/courses";
 export class CoursesService {
   private courses: GolfCourse[] = [];
   private coursesUpdated = new Subject<{ courses: GolfCourse[], courseCount: number }>();
+
+  private selectedCourse: GolfCourse;
+  private selectedCourseUpdated = new Subject<GolfCourse>();
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +32,20 @@ export class CoursesService {
 
   getCourseUpdateListener() : Observable<{ courses: GolfCourse[], courseCount: number }> {
     return this.coursesUpdated.asObservable();
+  }
+
+  getCourse(id: number): void {
+    this.http.get<GolfCourse[]>(API_COURSES_ENDPOINT + "?id=" + id)
+      .subscribe(courseData => {
+        if (courseData.length > 0) {
+          this.selectedCourse = courseData[0];
+          this.selectedCourseUpdated.next(courseData[0]);
+        }
+      })
+  }
+
+  getSelectedCourseUpdateListener(): Observable<GolfCourse> {
+    return this.selectedCourseUpdated.asObservable();
   }
 
 }

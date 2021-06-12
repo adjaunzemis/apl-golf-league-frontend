@@ -22,19 +22,16 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     constructor(private coursesService: CoursesService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
-        this.coursesSub = this.coursesService.getCourseUpdateListener()
-            .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
-                this.course = courseData.courses[0];
+        this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
+            .subscribe(courseData => {
+                this.course = courseData;
                 this.initFormsFromCourse(this.course);
             });
             
         this.route.queryParams.subscribe(params => {
-            console.log(params);
             if (params) {
-                const courseName = params.name;
-                console.log(courseName);
-
-                this.coursesService.getCourses();
+                const courseId = params.id;
+                this.coursesService.getCourse(courseId);
             }
         });
 
