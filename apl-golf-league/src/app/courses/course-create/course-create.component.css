@@ -49,3 +49,47 @@ mat-form-field {
 .course-website {
     width: 40%;
 }
+
+.tee-set-holes-table {
+    border-collapse: collapse;
+    margin: auto;
+    font-size: 0.9em;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.tee-set-holes-table thead tr {
+    background-color: #3f51b5;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.tee-set-holes-table th,
+.tee-set-holes-table td {
+    padding: 0rem 0.25em;
+    text-align: center;
+}
+
+.tee-set-holes-table td.bold {
+    font-weight: bold;
+}
+
+.tee-set-holes-table mat-form-field {
+    width: 2rem;
+    margin: 0px;
+    text-align: center;
+}
+
+.tee-set-holes-table tbody tr {
+    border-bottom: thin solid #dddddd;
+}
+
+.tee-set-holes-table tbody tr:last-of-type {
+    border-bottom: 2px solid #3f51b5;
+}
+
+.tee-set-holes-table tbody tr.hole-yardage,
+.tee-set-holes-table tbody tr.hole-handicap {
+    background-color: #f3f3f3;
+}
