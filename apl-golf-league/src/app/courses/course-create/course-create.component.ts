@@ -31,7 +31,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 this.course = courseData;
                 this.initFormsFromCourse(this.course);
             });
-            
+
         this.route.queryParams.subscribe(params => {
             if (params) {
                 if (params.id) {
@@ -99,7 +99,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                         if (teeSet.holes) {
                             for (let hIdx = 0; hIdx < teeSet.holes.length; hIdx++) {
                                 this.onAddHole(trIdx, tsIdx);
-    
+
                                 const hole = teeSet.holes[hIdx];
                                 courseData.tracks[trIdx].teeSets[tsIdx].holes.push({
                                     number: hole.number,
@@ -116,7 +116,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
         this.courseForm.setValue(courseData);
     }
-    
+
 
     ngOnDestroy(): void {
         this.coursesSub.unsubscribe();
@@ -181,8 +181,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 course.tracks?.push(track);
             }
 
-            console.log("Adding course: " + course.name);
-            console.log(course);
+            this.coursesService.addCourse(course);
 
             // TODO: validate entries and connect to database to add course data
 

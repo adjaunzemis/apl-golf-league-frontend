@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 
@@ -17,7 +18,7 @@ export class CoursesService {
   private selectedCourse: GolfCourse;
   private selectedCourseUpdated = new Subject<GolfCourse>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getCourses(): void {
     this.http.get<GolfCourse[]>(API_COURSES_ENDPOINT)
@@ -46,6 +47,14 @@ export class CoursesService {
 
   getSelectedCourseUpdateListener(): Observable<GolfCourse> {
     return this.selectedCourseUpdated.asObservable();
+  }
+
+  addCourse(courseData: GolfCourse): void {
+    this.http.post<{ message: string, course: GolfCourse }>(API_COURSES_ENDPOINT, courseData)
+      .subscribe(responseData => {
+        console.log("[CoursesService] Added course: " + courseData.name);
+        this.router.navigate(["courses/"]);
+      });
   }
 
 }
