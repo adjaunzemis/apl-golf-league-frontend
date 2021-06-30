@@ -132,7 +132,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 address: this.courseForm.value.address,
                 city: this.courseForm.value.city,
                 state: this.courseForm.value.state,
-                zipCode: this.courseForm.value.zipCode,
+                zipCode: +this.courseForm.value.zipCode,
                 phone: this.courseForm.value.phone,
                 website: this.courseForm.value.website,
                 tracks: []
@@ -156,8 +156,8 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                         name: teeSetForm.name,
                         color: teeSetForm.color,
                         gender: teeSetForm.gender,
-                        rating: teeSetForm.rating,
-                        slope: teeSetForm.slope,
+                        rating: +teeSetForm.rating,
+                        slope: +teeSetForm.slope,
                         holes: []
                     };
 
@@ -166,10 +166,10 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                         const hole: GolfHole = {
                             id: -1,
                             teeSetId: -1,
-                            number: holeForm.number,
-                            par: holeForm.par,
-                            handicap: holeForm.handicap,
-                            yardage: holeForm.yardage
+                            number: +holeForm.number,
+                            par: +holeForm.par,
+                            handicap: +holeForm.handicap,
+                            yardage: +holeForm.yardage
                         }
 
                         teeSet.holes?.push(hole);
