@@ -98,7 +98,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
                         if (teeSet.holes) {
                             for (let hIdx = 0; hIdx < teeSet.holes.length; hIdx++) {
-                                this.onAddHole(trIdx, tsIdx);
+                                this.onAddHole(trIdx, tsIdx, hIdx + 1);
 
                                 const hole = teeSet.holes[hIdx];
                                 courseData.tracks[trIdx].teeSets[tsIdx].holes.push({
@@ -181,11 +181,10 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 course.tracks?.push(track);
             }
 
+            // TODO: Validate course entries here? Or in service?
+
+            // Add to database
             this.coursesService.addCourse(course);
-
-            // TODO: validate entries and connect to database to add course data
-
-            // TODO: Redirect back to courses list
         }
     }
 
@@ -234,7 +233,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         if (addDefaultHoles) {
             const tsIdx = this.getTeeSetsArray(trIdx).length - 1;
             for (let hIdx = 0; hIdx < this.NUM_HOLES_PER_TEE_SET; hIdx++) {
-                this.onAddHole(trIdx, tsIdx);
+                this.onAddHole(trIdx, tsIdx, hIdx + 1);
             }
         }
     }
@@ -247,16 +246,16 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         return (this.getTeeSetsArray(trIdx).at(tsIdx).get('holes') as FormArray);
     }
 
-    private createHoleForm(): FormGroup {
+    private createHoleForm(holeNum: number): FormGroup {
         return this.formBuilder.group({
-            number: new FormControl("", Validators.required),
+            number: new FormControl(holeNum, Validators.required),
             par: new FormControl("", Validators.required),
             handicap: new FormControl("", Validators.required),
             yardage: new FormControl("", Validators.required)
         });
     }
 
-    onAddHole(trIdx: number, tsIdx: number): void {
-        this.getHolesArray(trIdx, tsIdx).push(this.createHoleForm());
+    onAddHole(trIdx: number, tsIdx: number, holeNum: number): void {
+        this.getHolesArray(trIdx, tsIdx).push(this.createHoleForm(holeNum));
     }
 }
