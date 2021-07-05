@@ -1,15 +1,14 @@
 import { GolfTrack } from "./golf-track.model";
 
 export interface GolfCourse {
-  id: number;
+  course_id: number;
   name: string;
-  abbreviation: string;
   address?: string;
   city?: string;
   state?: string;
-  zipCode?: number;
+  zip_code?: number;
   phone?: string;
   website?: string;
-  dateUpdated?: Date;
+  date_updated?: Date;
   tracks?: GolfTrack[];
 }

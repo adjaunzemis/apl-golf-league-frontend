@@ -27,7 +27,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
             .subscribe(courseData => {
-                console.log("[CourseCreateComponent] Initializing forms for course '" + courseData.name + "' (id=" + courseData.id + ")");
+                console.log("[CourseCreateComponent] Initializing forms for course '" + courseData.name + "' (id=" + courseData.course_id + ")");
                 this.course = courseData;
                 this.initFormsFromCourse(this.course);
             });
@@ -47,7 +47,6 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     private createCourseForm(): FormGroup {
         return this.formBuilder.group({
             name: new FormControl("", Validators.required),
-            abbreviation: new FormControl("", Validators.required),
             address: new FormControl(""),
             city: new FormControl(""),
             state: new FormControl(""),
@@ -61,14 +60,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     initFormsFromCourse(course: GolfCourse): void {
         const courseData = {
             name: course.name,
-            abbreviation: course.abbreviation,
             address: course.address,
             city: course.city,
             state: course.state,
-            zipCode: course.zipCode,
+            zipCode: course.zip_code,
             phone: course.phone,
             website: course.website,
-            tracks: [] as { name: string, abbreviation: string, teeSets: { name: string, color: string, gender: string, rating: number, slope: number, holes: { number: number, par: number, handicap: number, yardage: number }[] }[] }[]
+            tracks: [] as { name: string, teeSets: { name: string, color: string, gender: string, rating: number, slope: number, holes: { number: number, par: number, handicap: number, yardage: number }[] }[] }[]
         };
 
         if (course.tracks) {
@@ -78,15 +76,14 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 const track = course.tracks[trIdx];
                 courseData.tracks.push({
                     name: track.name,
-                    abbreviation: track.abbreviation,
                     teeSets: [] as { name: string, color: string, gender: string, rating: number, slope: number, holes: { number: number, par: number, handicap: number, yardage: number }[] }[]
                 });
 
-                if (track.teeSets) {
-                    for (let tsIdx = 0; tsIdx < track.teeSets.length; tsIdx++) {
+                if (track.tee_sets) {
+                    for (let tsIdx = 0; tsIdx < track.tee_sets.length; tsIdx++) {
                         this.onAddTeeSet(trIdx, false);
 
-                        const teeSet = track.teeSets[tsIdx];
+                        const teeSet = track.tee_sets[tsIdx];
                         courseData.tracks[trIdx].teeSets.push({
                             name: teeSet.name,
                             color: teeSet.color,
@@ -123,16 +120,14 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     }
 
     onSubmitCourse(): void {
-        console.log(this.courseForm.value)
         if (this.courseForm.valid) {
             const course: GolfCourse = {
-                id: -1,
+                course_id: -1,
                 name: this.courseForm.value.name,
-                abbreviation: this.courseForm.value.abbreviation,
                 address: this.courseForm.value.address,
                 city: this.courseForm.value.city,
                 state: this.courseForm.value.state,
-                zipCode: +this.courseForm.value.zipCode,
+                zip_code: +this.courseForm.value.zip_code,
                 phone: this.courseForm.value.phone,
                 website: this.courseForm.value.website,
                 tracks: []
@@ -141,18 +136,17 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
                 const trackForm = this.courseForm.value.tracks[trIdx];
                 const track: GolfTrack = {
-                    id: -1,
-                    courseId: -1,
+                    track_id: -1,
+                    course_id: -1,
                     name: trackForm.name,
-                    abbreviation: trackForm.abbreviation,
-                    teeSets: []
+                    tee_sets: []
                 };
 
                 for (let tsIdx = 0; tsIdx < trackForm.teeSets.length; tsIdx++) {
                     const teeSetForm = trackForm.teeSets[tsIdx];
                     const teeSet: GolfTeeSet = {
-                        id: -1,
-                        trackId: -1,
+                        tee_set_id: -1,
+                        track_id: -1,
                         name: teeSetForm.name,
                         color: teeSetForm.color,
                         gender: teeSetForm.gender,
@@ -164,8 +158,8 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                     for (let hIdx = 0; hIdx < teeSetForm.holes.length; hIdx++) {
                         const holeForm = teeSetForm.holes[hIdx];
                         const hole: GolfHole = {
-                            id: -1,
-                            teeSetId: -1,
+                            hole_id: -1,
+                            tee_set_id: -1,
                             number: +holeForm.number,
                             par: +holeForm.par,
                             handicap: +holeForm.handicap,
@@ -175,7 +169,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                         teeSet.holes?.push(hole);
                     }
 
-                    track.teeSets?.push(teeSet);
+                    track.tee_sets?.push(teeSet);
                 }
 
                 course.tracks?.push(track);
@@ -199,7 +193,6 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     private createTrackForm(): FormGroup {
         return this.formBuilder.group({
             name: new FormControl("", Validators.required),
-            abbreviation: new FormControl("", Validators.required),
             teeSets: this.formBuilder.array([])
         });
     }

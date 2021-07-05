@@ -1,8 +1,8 @@
 import { GolfHole } from "./golf-hole.model";
 
 export interface GolfTeeSet {
-  id: number;
-  trackId: number;
+  tee_set_id: number;
+  track_id: number;
   name: string;
   color: string;
   gender: string;

@@ -23,15 +23,15 @@
         <div class="course-detail" [@detailExpand]="course == expandedCourse ? 'expanded' : 'collapsed'">
           <div class="course-track-detail" *ngFor="let track of course.tracks">
             <span>{{ track.name }}</span>
-            <div class="course-tee-set-detail" *ngFor="let teeSet of track.teeSets">
+            <div class="course-tee-set-detail" *ngFor="let teeSet of track.tee_sets">
               <span>{{ teeSet.name }}: {{ teeSet.rating }} / {{ teeSet.slope }}</span>
               <span>, Par: {{ computeTeeSetPar(teeSet) }}</span>
               <span>, Yardage: {{ computeTeeSetYardage(teeSet) }}</span>
             </div>
-            <app-course-scorecard [teeSets]="track.teeSets"></app-course-scorecard>
+            <app-course-scorecard [teeSets]="track.tee_sets"></app-course-scorecard>
           </div>
           <mat-action-row>
-            <a routerLink="edit/" [queryParams]="{ id: course.id }"><button mat-raised-button color="accent">Edit</button></a>
+            <a routerLink="edit/" [queryParams]="{ id: course.course_id }"><button mat-raised-button color="accent">Edit</button></a>
           </mat-action-row>
         </div>
       </td>

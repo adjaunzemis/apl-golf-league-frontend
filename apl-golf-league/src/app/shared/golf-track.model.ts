@@ -1,9 +1,8 @@
 import { GolfTeeSet } from "./golf-tee-set.model";
 
 export interface GolfTrack {
-  id: number;
-  courseId: number;
+  track_id: number;
+  course_id: number;
   name: string;
-  abbreviation: string;
-  teeSets?: GolfTeeSet[];
+  tee_sets?: GolfTeeSet[];
 }
