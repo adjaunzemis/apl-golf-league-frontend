@@ -5,9 +5,9 @@ import { MatSort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 
 import { CoursesService } from "../courses.service";
-import { GolfCourse } from "../../shared/golf-course.model";
-import { GolfTeeSet } from './../../shared/golf-tee-set.model';
-import { GolfHole } from './../../shared/golf-hole.model';
+import { Course } from "../../shared/course.model";
+import { Tee } from '../../shared/tee.model';
+import { Hole } from '../../shared/hole.model';
 
 @Component({
   selector: "app-course-list",
@@ -24,11 +24,11 @@ import { GolfHole } from './../../shared/golf-hole.model';
 export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = false;
 
-  courses = new MatTableDataSource<GolfCourse>();
-  expandedCourse: GolfCourse | null;
+  courses = new MatTableDataSource<Course>();
+  expandedCourse: Course | null;
   private coursesSub: Subscription;
 
-  columnsToDisplay = ['name', 'address', 'city', 'state', 'zipCode', 'phone', 'website'];
+  columnsToDisplay = ['name', 'address', 'phone', 'website'];
   @ViewChild(MatSort) sort: MatSort;
 
   totalCourses = 0;
@@ -41,9 +41,9 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.coursesSub = this.coursesService.getCourseUpdateListener()
-      .subscribe((courseData: { courses: GolfCourse[], courseCount: number }) => {
+      .subscribe((courseData: { courses: Course[], courseCount: number }) => {
         this.isLoading = false;
-        this.courses = new MatTableDataSource<GolfCourse>(courseData.courses);
+        this.courses = new MatTableDataSource<Course>(courseData.courses);
         this.totalCourses = courseData.courseCount;
       });
     this.coursesService.getCourses();
@@ -62,21 +62,21 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courses.filter = target.value.trim().toLocaleLowerCase();
   }
 
-  computeTeeSetPar(teeSet: GolfTeeSet): number {
-    if (!teeSet.holes) {
+  computeTeePar(tee: Tee): number {
+    if (!tee.holes) {
       return -1;
     }
-    return teeSet.holes.reduce(function(prev: number, cur: GolfHole) {
+    return tee.holes.reduce(function(prev: number, cur: Hole) {
       return prev + cur.par;
     }, 0);
   }
 
-  computeTeeSetYardage(teeSet: GolfTeeSet): number {
-    if (!teeSet.holes) {
+  computeTeeYardage(tee: Tee): number {
+    if (!tee.holes) {
       return -1;
     }
-    return teeSet.holes.reduce(function(prev: number, cur: GolfHole) {
-      return prev + cur.yardage;
+    return tee.holes.reduce(function(prev: number, cur: Hole) {
+      return cur.yardage ? prev + cur.yardage : 0;
     }, 0);
   }
 

@@ -1,7 +1,7 @@
 <mat-card class="course-card">
     <form [formGroup]="courseForm" (ngSubmit)="onSubmitCourse()">
         <div class="database-identifiers" *ngIf="course">
-            <span>Course ID: {{ course.course_id }}</span>
+            <span>Course ID: {{ course.id }}</span>
             <span>Date Updated: {{ course.date_updated }}</span>
         </div>
         <div class="course-name">
@@ -14,18 +14,6 @@
             <mat-form-field class="course-address-field">
                 <mat-label>Address</mat-label>
                 <input matInput type="text" formControlName="address">
-            </mat-form-field>
-            <mat-form-field class="course-city-field">
-                <mat-label>City</mat-label>
-                <input matInput type="text" formControlName="city">
-            </mat-form-field>
-            <mat-form-field class="course-state-field">
-                <mat-label>State</mat-label>
-                <input matInput type="text" formControlName="state">
-            </mat-form-field>
-            <mat-form-field class="course-zip-code-field">
-                <mat-label>Zip Code</mat-label>
-                <input matInput type="text" formControlName="zipCode">
             </mat-form-field>
         </div>
         <div class="course-contact">
@@ -41,18 +29,18 @@
         <mat-card class="track-card" formArrayName="tracks" *ngFor="let track of getTracksArray().controls; let trIdx = index">
             <div class="track-info" formGroupName="{{ trIdx }}">
                 <div class="database-identifiers" *ngIf="course && course.tracks">
-                    <span>Track ID: {{ course.tracks[trIdx].track_id }}</span>
+                    <span>Track ID: {{ course.tracks[trIdx].id }}</span>
                     <span>Course ID: {{ course.tracks[trIdx].course_id }}</span>
                 </div>
                 <mat-form-field class="track-name">
                     <mat-label>Track Name</mat-label>
                     <input matInput type="text" formControlName="name">
                 </mat-form-field>
-                <mat-card class="tee-set-card" formArrayName="teeSets" *ngFor="let teeSet of getTeeSetsArray(trIdx).controls; let tsIdx = index">
-                    <div class="tee-set-info" formGroupName="{{ tsIdx }}">
-                        <!-- <div class="database-identifiers" *ngIf="course && course.tracks && course.tracks[trIdx].teeSets">
-                            <span>Tee Set ID: {{ course.tracks[trIdx].teeSets[tsIdx].tee_set_id }}</span>
-                            <span>Track ID: {{ course.tracks[trIdx].teeSets[tsIdx].track_id }}</span>
+                <mat-card class="tee-card" formArrayName="tees" *ngFor="let teeSet of getTeesArray(trIdx).controls; let tsIdx = index">
+                    <div class="tee-info" formGroupName="{{ tsIdx }}">
+                        <!-- <div class="database-identifiers" *ngIf="course && course.tracks && course.tracks[trIdx].tees">
+                            <span>Tee Set ID: {{ course.tracks[trIdx].tees[tsIdx].tee_set_id }}</span>
+                            <span>Track ID: {{ course.tracks[trIdx].tees[tsIdx].track_id }}</span>
                         </div> -->
                         <mat-form-field>
                             <mat-label>Tee Set Name</mat-label>
@@ -74,7 +62,7 @@
                             <mat-label>Slope</mat-label>
                             <input matInput type="text" formControlName="slope">
                         </mat-form-field>
-                        <table class="tee-set-holes-table">
+                        <table class="tee-holes-table">
                             <thead>
                                 <tr class="hole-number">
                                     <td class="bold">Hole</td>
@@ -102,11 +90,11 @@
                                         </mat-form-field>
                                     </td>
                                 </tr>
-                                <tr class="hole-handicap">
+                                <tr class="hole-stroke-index">
                                     <td class="bold">Hcp</td>
                                     <td formArrayName="holes" *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index">
                                         <mat-form-field formGroupName="{{ hIdx }}">
-                                            <input matInput type="text" formControlName="handicap">
+                                            <input matInput type="text" formControlName="stroke_index">
                                         </mat-form-field>
                                     </td>
                                 </tr>
@@ -114,12 +102,12 @@
                         </table>
                     </div>
                     <mat-action-row>
-                        <button mat-mini-fab type="button" (click)="onRemoveTeeSet(trIdx, tsIdx)"><mat-icon>delete</mat-icon></button>
+                        <button mat-mini-fab type="button" (click)="onRemoveTee(trIdx, tsIdx)"><mat-icon>delete</mat-icon></button>
                     </mat-action-row>
                 </mat-card>
             </div>
             <mat-action-row>
-                <button mat-raised-button color="basic" type="button" (click)="onAddTeeSet(trIdx, true)">Add Tee Set</button>
+                <button mat-raised-button color="basic" type="button" (click)="onAddTee(trIdx, true)">Add Tee</button>
                 <button mat-mini-fab type="button" (click)="onRemoveTrack(trIdx)"><mat-icon>delete</mat-icon></button>
             </mat-action-row>
         </mat-card>

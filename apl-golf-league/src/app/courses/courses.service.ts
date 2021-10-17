@@ -3,25 +3,23 @@ import { Router } from "@angular/router";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 
-import { GolfCourse } from "../shared/golf-course.model"
+import { Course } from "../shared/course.model"
 import { environment } from './../../environments/environment';
-
-const API_COURSES_ENDPOINT = environment.apiUrl + "/courses";
 
 @Injectable({
   providedIn: "root"
 })
 export class CoursesService {
-  private courses: GolfCourse[] = [];
-  private coursesUpdated = new Subject<{ courses: GolfCourse[], courseCount: number }>();
+  private courses: Course[] = [];
+  private coursesUpdated = new Subject<{ courses: Course[], courseCount: number }>();
 
-  private selectedCourse: GolfCourse;
-  private selectedCourseUpdated = new Subject<GolfCourse>();
+  private selectedCourse: Course;
+  private selectedCourseUpdated = new Subject<Course>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   getCourses(): void {
-    this.http.get<GolfCourse[]>(API_COURSES_ENDPOINT)
+    this.http.get<Course[]>(environment.apiUrl + "courses/")
       .subscribe(coursesData => {
         this.courses = coursesData;
         this.coursesUpdated.next({
@@ -31,26 +29,24 @@ export class CoursesService {
       });
   }
 
-  getCourseUpdateListener() : Observable<{ courses: GolfCourse[], courseCount: number }> {
+  getCourseUpdateListener() : Observable<{ courses: Course[], courseCount: number }> {
     return this.coursesUpdated.asObservable();
   }
 
   getCourse(id: number): void {
-    this.http.get<GolfCourse[]>(API_COURSES_ENDPOINT + "?id=" + id)
+    this.http.get<Course>(environment.apiUrl + "courses/" + id)
       .subscribe(courseData => {
-        if (courseData.length > 0) {
-          this.selectedCourse = courseData[0];
-          this.selectedCourseUpdated.next(courseData[0]);
-        }
+        this.selectedCourse = courseData;
+        this.selectedCourseUpdated.next(courseData);
       })
   }
 
-  getSelectedCourseUpdateListener(): Observable<GolfCourse> {
+  getSelectedCourseUpdateListener(): Observable<Course> {
     return this.selectedCourseUpdated.asObservable();
   }
 
-  addCourse(courseData: GolfCourse): void {
-    this.http.post<{ message: string, course: GolfCourse }>(API_COURSES_ENDPOINT, courseData)
+  addCourse(courseData: Course): void {
+    this.http.post<{ message: string, course: Course }>(environment.apiUrl + "/courses/", courseData)
       .subscribe(responseData => {
         console.log("[CoursesService] Added course: " + courseData.name);
         this.router.navigate(["courses/"]);

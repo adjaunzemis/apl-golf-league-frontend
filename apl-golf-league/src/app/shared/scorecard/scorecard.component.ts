@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { GolfTeeSet } from '../golf-tee-set.model';
-import { GolfHole } from '../golf-hole.model';
+import { Tee } from '../tee.model';
+import { Hole } from '../hole.model';
 
 @Component({
   selector: 'app-scorecard',
@@ -9,7 +9,7 @@ import { GolfHole } from '../golf-hole.model';
   styleUrls: ['./scorecard.component.css']
 })
 export class ScorecardComponent implements OnInit {
-  @Input() teeSet: GolfTeeSet;
+  @Input() tee: Tee;
 
   constructor() { }
 
@@ -17,20 +17,20 @@ export class ScorecardComponent implements OnInit {
   }
 
   computeTotalPar(): number {
-    if (!this.teeSet.holes) {
+    if (!this.tee.holes) {
       return -1;
     }
-    return this.teeSet.holes.reduce(function(prev: number, cur: GolfHole) {
+    return this.tee.holes.reduce(function(prev: number, cur: Hole) {
       return prev + cur.par;
     }, 0);
   }
 
   computeTotalYardage(): number {
-    if (!this.teeSet.holes) {
+    if (!this.tee.holes) {
       return -1;
     }
-    return this.teeSet.holes.reduce(function(prev: number, cur: GolfHole) {
-      return prev + cur.yardage;
+    return this.tee.holes.reduce(function(prev: number, cur: Hole) {
+      return cur.yardage ? prev + cur.yardage : 0;
     }, 0);
   }
 

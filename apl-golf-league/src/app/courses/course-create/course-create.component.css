@@ -50,7 +50,7 @@ mat-form-field {
     width: 40%;
 }
 
-.tee-set-holes-table {
+.tee-holes-table {
     border-collapse: collapse;
     margin: auto;
     font-size: 0.9em;
@@ -58,38 +58,38 @@ mat-form-field {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-.tee-set-holes-table thead tr {
+.tee-holes-table thead tr {
     background-color: #3f51b5;
     color: #ffffff;
     text-align: left;
     font-weight: bold;
 }
 
-.tee-set-holes-table th,
-.tee-set-holes-table td {
+.tee-holes-table th,
+.tee-holes-table td {
     padding: 0rem 0.25em;
     text-align: center;
 }
 
-.tee-set-holes-table td.bold {
+.tee-holes-table td.bold {
     font-weight: bold;
 }
 
-.tee-set-holes-table mat-form-field {
+.tee-holes-table mat-form-field {
     width: 2rem;
     margin: 0px;
     text-align: center;
 }
 
-.tee-set-holes-table tbody tr {
+.tee-holes-table tbody tr {
     border-bottom: thin solid #dddddd;
 }
 
-.tee-set-holes-table tbody tr:last-of-type {
+.tee-holes-table tbody tr:last-of-type {
     border-bottom: 2px solid #3f51b5;
 }
 
-.tee-set-holes-table tbody tr.hole-yardage,
-.tee-set-holes-table tbody tr.hole-handicap {
+.tee-holes-table tbody tr.hole-yardage,
+.tee-holes-table tbody tr.hole-stroke-index {
     background-color: #f3f3f3;
 }

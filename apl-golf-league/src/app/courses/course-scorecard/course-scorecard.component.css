@@ -27,16 +27,16 @@
 }
 
 .styled-table tbody tr.yards,
-.styled-table tbody tr.handicap {
+.styled-table tbody tr.stroke-index {
   font-size: 0.8em;
   background-color: #f3f3f3;
 }
 
-.styled-table tbody tr.par td.tee-set-info {
+.styled-table tbody tr.par td.tee-info {
   text-align: center;
 }
 
-.styled-table tbody tr.yards td.tee-set-info {
+.styled-table tbody tr.yards td.tee-info {
   font-size: 1.2em;
   text-align: center;
 }
