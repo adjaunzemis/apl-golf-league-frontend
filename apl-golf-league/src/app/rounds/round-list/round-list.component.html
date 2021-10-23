@@ -1,0 +1,23 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div *ngIf="rounds.data.length > 0 && !isLoading">
+  <mat-form-field class="filter-field">
+    <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="rounds" multiTemplateDataRows matSort matSortStart="asc">
+    <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
+      <td mat-cell *matCellDef="let round">
+        <div>
+          {{ round[column] }}
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let round; columns: columnsToDisplay;" class="round-row" [class.round-expanded-row]="expandedRound === round" (click)="expandedRound = expandedRound === round ? null : round"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: ['expandedRoundDetail']" class="round-detail-row"></tr> -->
+  </table>
+  <mat-paginator [length]="totalRounds" [pageSize]="roundsPerPage" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+</div>

@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
 import { CoursesModule } from './courses/courses.module';
+import { RoundsModule } from './rounds/rounds.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CoursesModule } from './courses/courses.module';
     HttpClientModule,
     AppRoutingModule,
     AngularMaterialModule,
-    CoursesModule
+    CoursesModule,
+    RoundsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
