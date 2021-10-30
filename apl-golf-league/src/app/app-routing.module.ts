@@ -8,11 +8,12 @@ import { RoundListComponent } from "./rounds/round-list/round-list.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
-  { path: "flights", component: RoundListComponent }, // TODO: Using for round data list temporarily
+  { path: "flights", component: AppComponent },
   { path: "tournaments", component: AppComponent },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "players", component: AppComponent },
+  { path: "rounds", component: RoundListComponent },
   { path: "teams", component: AppComponent }
 ]
 
