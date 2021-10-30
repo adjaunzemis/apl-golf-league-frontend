@@ -4,7 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Subscription } from "rxjs";
 
 import { RoundsService } from "../rounds.service";
-import { Round } from "../../shared/round.model";
+import { Round, RoundSummary } from "../../shared/round.model";
 
 @Component({
   selector: "app-round-list",
@@ -14,11 +14,11 @@ import { Round } from "../../shared/round.model";
 export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = false;
 
-  rounds = new MatTableDataSource<{ date: Date, course: string, tee: string, golfer: string, strokes: number }>();
+  roundSummaries = new MatTableDataSource<RoundSummary>();
   expandedRound: Round | null;
   private roundsSub: Subscription;
 
-  columnsToDisplay = ['date', 'course', 'tee', 'golfer', 'strokes'];
+  columnsToDisplay = ['date_played', 'course_name', 'tee_name', 'golfer_name', 'golfer_handicap_index'];
   @ViewChild(MatSort) sort: MatSort;
 
   totalRounds = 0;
@@ -31,16 +31,16 @@ export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.roundsSub = this.roundsService.getRoundUpdateListener()
-      .subscribe((roundData: { rounds: { date: Date, course: string, tee: string, golfer: string, strokes: number }[] }) => {
+      .subscribe((roundData: {rounds: RoundSummary[]}) => {
         this.isLoading = false;
-        this.rounds = new MatTableDataSource<{ date: Date, course: string, tee: string, golfer: string, strokes: number }>(roundData.rounds);
+        this.roundSummaries = new MatTableDataSource<RoundSummary>(roundData.rounds);
         this.totalRounds = roundData.rounds.length;
       });
     this.roundsService.getRounds();
   }
 
   ngAfterViewInit(): void {
-    this.rounds.sort = this.sort;
+    this.roundSummaries.sort = this.sort;
   }
 
   ngOnDestroy(): void {
@@ -49,7 +49,7 @@ export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   doFilter = (event: Event) => {
     const target = <HTMLInputElement> event.target;
-    this.rounds.filter = target.value.trim().toLocaleLowerCase();
+    this.roundSummaries.filter = target.value.trim().toLocaleLowerCase();
   }
 
 }

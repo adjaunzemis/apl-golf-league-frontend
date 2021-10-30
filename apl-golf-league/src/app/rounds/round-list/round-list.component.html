@@ -1,11 +1,11 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div *ngIf="rounds.data.length > 0 && !isLoading">
+<div *ngIf="roundSummaries.data.length > 0 && !isLoading">
   <mat-form-field class="filter-field">
     <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
   </mat-form-field>
 
-  <table mat-table [dataSource]="rounds" multiTemplateDataRows matSort matSortStart="asc">
+  <table mat-table [dataSource]="roundSummaries" multiTemplateDataRows matSort matSortStart="asc">
     <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
       <td mat-cell *matCellDef="let round">

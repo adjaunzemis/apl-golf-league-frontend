@@ -10,3 +10,14 @@ export interface Round {
   date_played: Date;
   hole_results?: HoleResult[];
 }
+
+export interface RoundSummary {
+  round_id: number;
+  date_played: Date;
+  golfer_name: string;
+  golfer_handicap_index: number;
+  course_name: string;
+  tee_name: string;
+  tee_rating: number;
+  tee_slope: number;
+}

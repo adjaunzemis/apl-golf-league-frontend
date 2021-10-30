@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { Round } from "../shared/round.model";
+import { Round, RoundSummary } from "../shared/round.model";
 import { HoleResult } from "../shared/hole-result.model";
 import { environment } from './../../environments/environment';
 
@@ -11,8 +11,8 @@ import { environment } from './../../environments/environment';
   providedIn: "root"
 })
 export class RoundsService {
-  private rounds: { date: Date, course: string, tee: string, golfer: string, strokes: number }[] = [];
-  private roundsUpdated = new Subject<{ rounds: { date: Date, course: string, tee: string, golfer: string, strokes: number }[] }>();
+  private roundSummaries: RoundSummary[] = []
+  private roundSummariesUpdated = new Subject<{rounds: RoundSummary[]}>();
 
   private selectedRound: Round;
   private selectedRoundUpdated = new Subject<Round>();
@@ -20,20 +20,17 @@ export class RoundsService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getRounds(): void {
-    this.http.get<Round[]>(environment.apiUrl + "rounds/details/")
+    this.http.get<RoundSummary[]>(environment.apiUrl + "rounds/")
       .subscribe(roundsData => {
-        this.rounds = [];
-        roundsData.forEach((roundData) => {
-          this.rounds.push({ date: roundData.date_played, course: "TODO", tee: roundData.tee.name, golfer: roundData.golfer.name, strokes: roundData.hole_results ? this.computeTotalStrokes(roundData.hole_results) : 0 })
-        });
-        this.roundsUpdated.next({
-          rounds: [...this.rounds]
+        this.roundSummaries = roundsData;
+        this.roundSummariesUpdated.next({
+          rounds: [...this.roundSummaries]
         });
       });
   }
 
-  getRoundUpdateListener(): Observable<{ rounds: { date: Date, course: string, tee: string, golfer: string, strokes: number }[] }> {
-    return this.roundsUpdated.asObservable();
+  getRoundUpdateListener(): Observable<{ rounds: RoundSummary[] }> {
+    return this.roundSummariesUpdated.asObservable();
   }
 
   getRound(id: number): void {
