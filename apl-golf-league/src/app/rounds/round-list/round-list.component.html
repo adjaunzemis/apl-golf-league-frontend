@@ -19,5 +19,6 @@
     <tr mat-row *matRowDef="let round; columns: columnsToDisplay;" class="round-row" [class.round-expanded-row]="expandedRound === round" (click)="expandedRound = expandedRound === round ? null : round"></tr>
     <!-- <tr mat-row *matRowDef="let row; columns: ['expandedRoundDetail']" class="round-detail-row"></tr> -->
   </table>
-  <mat-paginator [length]="totalRounds" [pageSize]="roundsPerPage" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+  <mat-paginator [length]="totalRounds" [pageIndex]="pageIndex" [pageSize]="roundsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="roundSummaries.data.length > 0"></mat-paginator>
+  <p class="info-text mat-body-1" *ngIf="roundSummaries.data.length <= 0 && !isLoading">No round data available</p>
 </div>

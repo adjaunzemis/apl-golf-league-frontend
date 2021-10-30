@@ -12,24 +12,26 @@ import { environment } from './../../environments/environment';
 })
 export class RoundsService {
   private roundSummaries: RoundSummary[] = []
-  private roundSummariesUpdated = new Subject<{rounds: RoundSummary[]}>();
+  private roundSummariesUpdated = new Subject<{ totalRounds: number, rounds: RoundSummary[] }>();
 
   private selectedRound: Round;
   private selectedRoundUpdated = new Subject<Round>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getRounds(): void {
-    this.http.get<RoundSummary[]>(environment.apiUrl + "rounds/")
+  getRounds(offset: number, limit: number): void {
+    const queryParams = `?offset=${offset}&limit=${limit}`
+    this.http.get<{ totalRounds: number, rounds: RoundSummary[] }>(environment.apiUrl + "rounds/" + queryParams)
       .subscribe(roundsData => {
-        this.roundSummaries = roundsData;
+        this.roundSummaries = roundsData.rounds;
         this.roundSummariesUpdated.next({
+          totalRounds: roundsData.totalRounds,
           rounds: [...this.roundSummaries]
         });
       });
   }
 
-  getRoundUpdateListener(): Observable<{ rounds: RoundSummary[] }> {
+  getRoundUpdateListener(): Observable<{ rounds: RoundSummary[], totalRounds: number }> {
     return this.roundSummariesUpdated.asObservable();
   }
 
