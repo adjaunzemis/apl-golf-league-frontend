@@ -15,9 +15,65 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="expandedRoundDetail">
+      <td mat-cell *matCellDef="let round" [attr.colspan]="columnsToDisplay.length">
+        <div class="round-detail" [@detailExpand]="round == expandedRound ? 'expanded' : 'collapsed'">
+          <table>
+            <tr>
+              <td>Hole</td>
+              <td *ngFor="let hole of round.round_holes">{{ hole.hole_number }}</td>
+              <td>TOT</td>
+            </tr>
+            <tr>
+              <td>Par</td>
+              <td *ngFor="let hole of round.round_holes">{{ hole.hole_par }}</td>
+              <td>{{ computeRoundPar(round) }}</td>
+            </tr>
+            <tr>
+              <td>Hcp</td>
+              <td *ngFor="let hole of round.round_holes">{{ hole.hole_stroke_index }}</td>
+              <td>--</td>
+            </tr>
+            <tr>
+              <td>Gross</td>
+              <td *ngFor="let hole of round.round_holes">{{ hole.hole_result_strokes }}</td>
+              <td>{{ computeRoundGross(round) }} ({{ getRoundRelativeGrossString(round) }})</td>
+            </tr>
+            <tr>
+              <td>AG</td>
+              <td *ngFor="let hole of round.round_holes">{{ computeHoleAdjustedGross(round, hole) }}</td>
+              <td>{{ computeRoundAdjustedGross(round) }} ({{ getRoundRelativeAdjustedGrossString(round) }})</td>
+            </tr>
+            <tr>
+              <td>HS</td>
+              <td *ngFor="let hole of round.round_holes">{{ computeHoleHandicapStrokes(hole.hole_stroke_index, round.golfer_handicap_index) }}</td>
+              <td>--</td>
+            </tr>
+            <tr>
+              <td>Net</td>
+              <td *ngFor="let hole of round.round_holes">{{ computeHoleNet(hole, round.golfer_handicap_index) }}</td>
+              <td>{{ computeRoundNet(round) }} ({{ getRoundRelativeNetString(round) }})</td>
+            </tr>
+          </table>
+          <!-- <div class="course-track-detail" *ngFor="let track of course.tracks">
+            <span>{{ track.name }}</span>
+            <div class="course-tee-set-detail" *ngFor="let tee of track.tees">
+              <span>{{ tee.name }}: {{ tee.rating }} / {{ tee.slope }}</span>
+              <span>, Par: {{ computeTeePar(tee) }}</span>
+              <span>, Yardage: {{ computeTeeYardage(tee) }}</span>
+            </div>
+            <app-course-scorecard [tees]="track.tees"></app-course-scorecard>
+          </div> -->
+          <!-- <mat-action-row>
+            <a routerLink="edit/" [queryParams]="{ id: round.round_id }"><button mat-raised-button color="accent">Edit</button></a>
+          </mat-action-row> -->
+        </div>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let round; columns: columnsToDisplay;" class="round-row" [class.round-expanded-row]="expandedRound === round" (click)="expandedRound = expandedRound === round ? null : round"></tr>
-    <!-- <tr mat-row *matRowDef="let row; columns: ['expandedRoundDetail']" class="round-detail-row"></tr> -->
+    <tr mat-row *matRowDef="let row; columns: ['expandedRoundDetail']" class="round-detail-row"></tr>
   </table>
   <mat-paginator [length]="totalRounds" [pageIndex]="pageIndex" [pageSize]="roundsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)" *ngIf="roundSummaries.data.length > 0"></mat-paginator>
   <p class="info-text mat-body-1" *ngIf="roundSummaries.data.length <= 0 && !isLoading">No round data available</p>

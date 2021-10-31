@@ -1,6 +1,6 @@
 import { Tee } from "./tee.model";
 import { Golfer } from "./golfer.model";
-import { HoleResult } from "./hole-result.model";
+import { HoleResult, HoleResultSummary } from "./hole-result.model";
 
 export interface Round {
   id: number;
@@ -20,4 +20,5 @@ export interface RoundSummary {
   tee_name: string;
   tee_rating: number;
   tee_slope: number;
+  round_holes: HoleResultSummary[];
 }
