@@ -1,0 +1,57 @@
+<table class="styled-table">
+  <thead>
+    <tr class="hole">
+      <td>Hole</td>
+      <td *ngFor="let hole of round.round_holes">{{ hole.hole_number }}</td>
+      <td>TOT</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="par">
+      <td>Par</td>
+      <td *ngFor="let hole of round.round_holes">{{ hole.hole_par }}</td>
+      <td>{{ computeRoundPar() }}</td>
+    </tr>
+    <tr class="stroke-index">
+      <td>Hcp</td>
+      <td *ngFor="let hole of round.round_holes">{{ hole.hole_stroke_index }}</td>
+      <td>--</td>
+    </tr>
+    <tr class="yardage">
+      <td>Yds</td>
+      <td *ngFor="let hole of round.round_holes">
+        <div *ngIf="hole.hole_yardage">{{ hole.hole_yardage }}</div>
+        <div *ngIf="!hole.hole_yardage">--</div>
+      </td>
+      <td>--</td>
+    </tr>
+    <tr class="handicap-strokes">
+      <td></td> <!-- blank to preserve column alignment  -->
+      <td *ngFor="let hole of round.round_holes">
+        <div [ngClass]="{'red-dot' : computeHoleHandicapStrokes(hole.hole_stroke_index) < 0, 'black-dot' : computeHoleHandicapStrokes(hole.hole_stroke_index) > 0}"></div>
+      </td>
+      <td></td> <!-- blank to preserve column alignment  -->
+    </tr>
+    <tr class="gross-score">
+      <td>Gross</td>
+      <td *ngFor="let hole of round.round_holes">
+        <div class="hole-score">
+          <div [ngClass]="{'circle' : hole.hole_result_strokes <= hole.hole_par - 1, 'square' : hole.hole_result_strokes >= hole.hole_par + 1, 'crosshatch' : (hole.hole_result_strokes >= hole.hole_par + 2) || (hole.hole_result_strokes <= hole.hole_par - 2)}">
+            {{ hole.hole_result_strokes }}
+          </div>
+        </div>
+      </td>
+      <td>{{ computeRoundGrossScore() }} ({{ getRoundRelativeGrossScoreString() }})</td>
+    </tr>
+    <tr class="adjusted-gross-score">
+      <td>AG</td>
+      <td *ngFor="let hole of round.round_holes">{{ computeHoleAdjustedGrossScore(hole) }}</td>
+      <td>{{ computeRoundAdjustedGrossScore() }} ({{ getRoundRelativeAdjustedGrossScoreString() }})</td>
+    </tr>
+    <tr class="net-score">
+      <td>Net</td>
+      <td *ngFor="let hole of round.round_holes">{{ computeHoleNetScore(hole) }}</td>
+      <td>{{ computeRoundNetScore() }} ({{ getRoundRelativeNetScoreString() }})</td>
+    </tr>
+  </tbody>
+</table>

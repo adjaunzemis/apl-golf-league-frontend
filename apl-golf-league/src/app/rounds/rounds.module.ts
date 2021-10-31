@@ -4,11 +4,13 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { RoundListComponent } from "./round-list/round-list.component";
+import { RoundScorecardComponent } from "./round-scorecard/round-scorecard.component";
 
 
 @NgModule({
   declarations: [
-    RoundListComponent
+    RoundListComponent,
+    RoundScorecardComponent
   ],
   imports: [
     CommonModule,
