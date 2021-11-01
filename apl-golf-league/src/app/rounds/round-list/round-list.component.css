@@ -23,6 +23,10 @@ th.mat-header-cell {
   max-width: 300px;
 }
 
+tr.mat-row {
+  height: 35px;
+}
+
 .filter-field {
   padding-left: 2rem;
 }
@@ -45,6 +49,6 @@ tr.round-row:not(.round-expanded-row):active {
 
 .round-detail {
   overflow: hidden;
-  width: 90%;
-  margin-left: 5%;
+  width: 96%;
+  margin-left: 2%;
 }

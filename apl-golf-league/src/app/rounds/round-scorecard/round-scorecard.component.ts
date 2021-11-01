@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 
 import { RoundSummary } from "src/app/shared/round.model";
 import { HoleResultSummary } from "src/app/shared/hole-result.model";
@@ -8,10 +8,45 @@ import { HoleResultSummary } from "src/app/shared/hole-result.model";
   templateUrl: "./round-scorecard.component.html",
   styleUrls: ["./round-scorecard.component.css"]
 })
-export class RoundScorecardComponent {
+export class RoundScorecardComponent implements OnInit {
   @Input() round: RoundSummary;
 
-  computeRoundPar(): number {
+  roundPar: number;
+  holeHandicapStrokes: number[];
+
+  scoreMode: string = "gross";
+  roundScore: number;
+  holeScores: number[];
+  holeRelativeScores: number[];
+
+  ngOnInit(): void {
+    this.roundPar = this.computeRoundPar();
+
+    this.holeHandicapStrokes = [];
+    for (const hole of this.round.round_holes) {
+      this.holeHandicapStrokes.push(this.computeHoleHandicapStrokes(hole.hole_stroke_index));
+    }
+
+    this.updateScores();
+  }
+
+  onScoreModeChanged(scoreMode: string): void {
+    this.scoreMode = scoreMode;
+    this.updateScores();
+  }
+
+  private updateScores(): void {
+    this.roundScore = this.computeRoundScore();
+
+    this.holeScores = [];
+    this.holeRelativeScores = [];
+    for (const hole of this.round.round_holes) {
+      this.holeScores.push(this.computeHoleScore(hole));
+      this.holeRelativeScores.push(this.computeHoleScore(hole) - hole.hole_par);
+    }
+  }
+
+  private computeRoundPar(): number {
     if (!this.round.round_holes) {
       return -1;
     }
@@ -20,7 +55,27 @@ export class RoundScorecardComponent {
     }, 0);
   }
 
-  computeRoundGrossScore(): number {
+  private computeRoundScore(): number {
+    if (this.scoreMode === "adjusted gross") {
+      return this.computeRoundAdjustedGrossScore();
+    } else if (this.scoreMode === "net") {
+      return this.computeRoundNetScore();
+    } else {
+      return this.computeRoundGrossScore();
+    }
+  }
+
+  private computeHoleScore(hole: HoleResultSummary): number {
+    if (this.scoreMode === "adjusted gross") {
+      return this.computeHoleAdjustedGrossScore(hole);
+    } else if (this.scoreMode === "net") {
+      return this.computeHoleNetScore(hole);
+    } else {
+      return hole.hole_result_strokes;
+    }
+  }
+
+  private computeRoundGrossScore(): number {
     if (!this.round.round_holes) {
       return -1;
     }
@@ -29,13 +84,13 @@ export class RoundScorecardComponent {
     }, 0);
   }
 
-  computeHoleAdjustedGrossScore(hole: HoleResultSummary): number {
+  private computeHoleAdjustedGrossScore(hole: HoleResultSummary): number {
     // TODO Account for equitable stroke control
     // TODO Compute on backend, store in database with results?
     return hole.hole_result_strokes;
   }
 
-  computeRoundAdjustedGrossScore(): number {
+  private computeRoundAdjustedGrossScore(): number {
     // TODO Account for equitable stroke control
     // TODO Compute on backend, store in database with results?
     if (!this.round.round_holes) {
@@ -46,7 +101,7 @@ export class RoundScorecardComponent {
     }, 0);
   }
 
-  computeHoleHandicapStrokes(holeStrokeIndex: number): number {
+  private computeHoleHandicapStrokes(holeStrokeIndex: number): number {
     // TODO Compute on backend, store in database with results?
     if (this.round.golfer_handicap_index < 0) {
       return 0; // TODO Account for plus-handicap golfers
@@ -72,11 +127,11 @@ export class RoundScorecardComponent {
     return 0;
   }
 
-  computeHoleNetScore(hole: HoleResultSummary): number {
+  private computeHoleNetScore(hole: HoleResultSummary): number {
     return hole.hole_result_strokes - this.computeHoleHandicapStrokes(hole.hole_stroke_index);
   }
 
-  computeRoundNetScore(): number {
+  private computeRoundNetScore(): number {
     if (!this.round.round_holes) {
       return -1;
     }
@@ -96,18 +151,6 @@ export class RoundScorecardComponent {
     } else {
       return "E"
     }
-  }
-
-  getRoundRelativeGrossScoreString(): string {
-    return this.getRelativeScoreString(this.computeRoundGrossScore(), this.computeRoundPar());
-  }
-
-  getRoundRelativeAdjustedGrossScoreString(): string {
-    return this.getRelativeScoreString(this.computeRoundAdjustedGrossScore(), this.computeRoundPar());
-  }
-
-  getRoundRelativeNetScoreString(): string {
-    return this.getRelativeScoreString(this.computeRoundNetScore(), this.computeRoundPar());
   }
 
 }

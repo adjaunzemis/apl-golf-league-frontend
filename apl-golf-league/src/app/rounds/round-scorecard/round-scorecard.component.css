@@ -42,29 +42,33 @@
   background-color: #f3f3f3;
 }
 
-.styled-table tbody tr.gross-score {
+.styled-table .label,
+.styled-table .total {
+  width: 12.5%;
+}
+
+.styled-table .hole {
+  width: 8.333%;
+}
+
+.styled-table tbody tr.score {
   height: 25px;
   background-color: #ffffff;
 }
 
-.styled-table tbody tr.adjusted-gross-score {
-  height: 25px;
-  background-color: #f3f3f3;
-}
-
-.styled-table tbody tr.net-score {
-  height: 25px;
-  background-color: #ffffff;
+.styled-table tr.score td {
+  padding: 2px 0px;
 }
 
 .handicap-strokes {
   margin: auto;
+  margin-bottom: 2px;
+  height: 5px;
 }
 
 .black-dot {
   height: 4px;
   width: 4px;
-  margin: auto;
   background-color: black;
   border-radius: 50%;
 }
@@ -72,7 +76,6 @@
 .red-dot {
   height: 4px;
   width: 4px;
-  margin: auto;
   background-color: red;
   border-radius: 50%;
 }
@@ -82,16 +85,19 @@
   width: 22px;
   margin: auto;
   margin-bottom: 0px;
+  font-weight: bold;
 }
 
 .circle {
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid rgb(114, 122, 218);
+  background-color: rgb(200, 202, 228);
 }
 
 .square {
   border-radius: 0%;
-  border: 1px solid black;
+  border: 1px solid rgb(160, 160, 160);
+  background-color: rgb(231, 231, 231);
 }
 
 .crosshatch {
@@ -106,4 +112,11 @@
       transparent
   );
   background-size: 5px 5px;
+}
+
+.mat-button-toggle-group {
+  font-size: 0.8em;
+  height: 15px;
+  margin-left: 80%;
+  align-items: center;
 }

@@ -7,7 +7,6 @@ import { Subscription } from "rxjs";
 
 import { RoundsService } from "../rounds.service";
 import { RoundSummary } from "../../shared/round.model";
-import { HoleResultSummary } from "src/app/shared/hole-result.model";
 
 @Component({
   selector: "app-round-list",
