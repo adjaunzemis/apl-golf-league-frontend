@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -16,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   exports: [
     MatToolbarModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatCardModule,
     MatExpansionModule,
