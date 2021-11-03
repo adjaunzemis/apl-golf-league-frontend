@@ -1,6 +1,6 @@
 import { Tee } from "./tee.model";
 import { Golfer } from "./golfer.model";
-import { HoleResult, HoleResultSummary } from "./hole-result.model";
+import { HoleResult, HoleResultData } from "./hole-result.model";
 
 export interface Round {
   id: number;
@@ -11,14 +11,19 @@ export interface Round {
   hole_results?: HoleResult[];
 }
 
-export interface RoundSummary {
+export interface RoundData {
   round_id: number;
   date_played: Date;
   golfer_name: string;
-  golfer_handicap_index: number;
+  handicap_index: number;
+  playing_handicap: number;
   course_name: string;
   tee_name: string;
   tee_rating: number;
   tee_slope: number;
-  round_holes: HoleResultSummary[];
+  tee_par: number;
+  gross_score: number;
+  adjusted_gross_score: number;
+  net_score: number;
+  holes: HoleResultData[];
 }

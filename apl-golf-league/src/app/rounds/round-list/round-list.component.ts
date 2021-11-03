@@ -1,3 +1,4 @@
+import { HoleResultData } from './../../shared/hole-result.model';
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -6,7 +7,7 @@ import { animate, state, style, transition, trigger } from "@angular/animations"
 import { Subscription } from "rxjs";
 
 import { RoundsService } from "../rounds.service";
-import { RoundSummary } from "../../shared/round.model";
+import { RoundData } from "../../shared/round.model";
 
 @Component({
   selector: "app-round-list",
@@ -23,14 +24,14 @@ import { RoundSummary } from "../../shared/round.model";
 export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = false;
 
-  roundSummaries = new MatTableDataSource<RoundSummary>();
-  expandedRound: RoundSummary | null;
+  roundsData = new MatTableDataSource<RoundData>();
+  expandedRound: RoundData | null;
   private roundsSub: Subscription;
 
-  columnsToDisplay = ['date_played', 'course_name', 'tee_name', 'golfer_name', 'golfer_handicap_index'];
+  columnsToDisplay = ['date_played', 'golfer_name', 'course_name', 'tee_name', 'tee_par', 'gross_score'];
   @ViewChild(MatSort) sort: MatSort;
 
-  totalRounds = 0;
+  numRounds = 0;
   roundsPerPage = 20;
   pageIndex = 0;
   pageSizeOptions = [10, 25, 50, 100];
@@ -40,16 +41,16 @@ export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.roundsSub = this.roundsService.getRoundUpdateListener()
-      .subscribe((roundData: {rounds: RoundSummary[], totalRounds: number}) => {
+      .subscribe((result: {rounds: RoundData[], numRounds: number}) => {
         this.isLoading = false;
-        this.roundSummaries = new MatTableDataSource<RoundSummary>(roundData.rounds);
-        this.totalRounds = roundData.totalRounds;
+        this.roundsData = new MatTableDataSource<RoundData>(result.rounds);
+        this.numRounds = result.numRounds;
       });
     this.roundsService.getRounds(0, this.roundsPerPage);
   }
 
   ngAfterViewInit(): void {
-    this.roundSummaries.sort = this.sort;
+    this.roundsData.sort = this.sort;
   }
 
   ngOnDestroy(): void {
@@ -58,7 +59,7 @@ export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   doFilter = (event: Event) => {
     const target = <HTMLInputElement> event.target;
-    this.roundSummaries.filter = target.value.trim().toLocaleLowerCase();
+    this.roundsData.filter = target.value.trim().toLocaleLowerCase();
   }
 
   onChangedPage(pageData: PageEvent): void {
@@ -66,6 +67,17 @@ export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageIndex = pageData.pageIndex;
     this.roundsPerPage = pageData.pageSize;
     this.roundsService.getRounds(this.pageIndex * this.roundsPerPage, this.roundsPerPage);
+  }
+
+  getRelativeScoreString(score: number, par: number): string {
+    const relativeScore = score - par;
+    if (relativeScore > 0) {
+      return "+" + relativeScore;
+    } else if (relativeScore < 0) {
+      return "" + relativeScore;
+    } else {
+      return "E"
+    }
   }
 
 }

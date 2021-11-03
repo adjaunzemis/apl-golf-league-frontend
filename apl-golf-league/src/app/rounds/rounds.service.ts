@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { Round, RoundSummary } from "../shared/round.model";
+import { Round, RoundData } from "../shared/round.model";
 import { HoleResult } from "../shared/hole-result.model";
 import { environment } from './../../environments/environment';
 
@@ -11,8 +11,8 @@ import { environment } from './../../environments/environment';
   providedIn: "root"
 })
 export class RoundsService {
-  private roundSummaries: RoundSummary[] = []
-  private roundSummariesUpdated = new Subject<{ totalRounds: number, rounds: RoundSummary[] }>();
+  private roundsData: RoundData[] = []
+  private roundsDataUpdated = new Subject<{ numRounds: number, rounds: RoundData[] }>();
 
   private selectedRound: Round;
   private selectedRoundUpdated = new Subject<Round>();
@@ -21,18 +21,18 @@ export class RoundsService {
 
   getRounds(offset: number, limit: number): void {
     const queryParams = `?offset=${offset}&limit=${limit}`
-    this.http.get<{ totalRounds: number, rounds: RoundSummary[] }>(environment.apiUrl + "rounds/" + queryParams)
-      .subscribe(roundsData => {
-        this.roundSummaries = roundsData.rounds;
-        this.roundSummariesUpdated.next({
-          totalRounds: roundsData.totalRounds,
-          rounds: [...this.roundSummaries]
+    this.http.get<{ num_rounds: number, rounds: RoundData[] }>(environment.apiUrl + "rounds/" + queryParams)
+      .subscribe(result => {
+        this.roundsData = result.rounds;
+        this.roundsDataUpdated.next({
+          numRounds: result.num_rounds,
+          rounds: [...this.roundsData]
         });
       });
   }
 
-  getRoundUpdateListener(): Observable<{ rounds: RoundSummary[], totalRounds: number }> {
-    return this.roundSummariesUpdated.asObservable();
+  getRoundUpdateListener(): Observable<{ rounds: RoundData[], numRounds: number }> {
+    return this.roundsDataUpdated.asObservable();
   }
 
   getRound(id: number): void {
@@ -45,14 +45,6 @@ export class RoundsService {
 
   getSelectedRoundUpdateListener(): Observable<Round> {
     return this.selectedRoundUpdated.asObservable();
-  }
-
-  computeTotalStrokes(holeResults: HoleResult[]): number {
-    let strokes = 0;
-    holeResults.forEach((holeResult) => {
-      strokes += holeResult.strokes;
-    })
-    return strokes;
   }
 
 }

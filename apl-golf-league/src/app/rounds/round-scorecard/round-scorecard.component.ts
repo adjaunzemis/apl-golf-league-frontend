@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
-import { RoundSummary } from "src/app/shared/round.model";
-import { HoleResultSummary } from "src/app/shared/hole-result.model";
+import { RoundData } from "src/app/shared/round.model";
+import { HoleResultData } from "src/app/shared/hole-result.model";
 
 @Component({
   selector: "app-round-scorecard",
@@ -9,10 +9,7 @@ import { HoleResultSummary } from "src/app/shared/hole-result.model";
   styleUrls: ["./round-scorecard.component.css"]
 })
 export class RoundScorecardComponent implements OnInit {
-  @Input() round: RoundSummary;
-
-  roundPar: number;
-  holeHandicapStrokes: number[];
+  @Input() round: RoundData;
 
   scoreMode: string = "gross";
   roundScore: number;
@@ -20,13 +17,6 @@ export class RoundScorecardComponent implements OnInit {
   holeRelativeScores: number[];
 
   ngOnInit(): void {
-    this.roundPar = this.computeRoundPar();
-
-    this.holeHandicapStrokes = [];
-    for (const hole of this.round.round_holes) {
-      this.holeHandicapStrokes.push(this.computeHoleHandicapStrokes(hole.hole_stroke_index));
-    }
-
     this.updateScores();
   }
 
@@ -36,110 +26,34 @@ export class RoundScorecardComponent implements OnInit {
   }
 
   private updateScores(): void {
-    this.roundScore = this.computeRoundScore();
+    this.roundScore = this.getRoundScore();
 
     this.holeScores = [];
     this.holeRelativeScores = [];
-    for (const hole of this.round.round_holes) {
-      this.holeScores.push(this.computeHoleScore(hole));
-      this.holeRelativeScores.push(this.computeHoleScore(hole) - hole.hole_par);
+    for (const hole of this.round.holes) {
+      this.holeScores.push(this.getHoleScore(hole));
+      this.holeRelativeScores.push(this.getHoleScore(hole) - hole.par);
     }
   }
 
-  private computeRoundPar(): number {
-    if (!this.round.round_holes) {
-      return -1;
-    }
-    return this.round.round_holes.reduce(function(prev: number, cur: HoleResultSummary) {
-      return prev + cur.hole_par;
-    }, 0);
-  }
-
-  private computeRoundScore(): number {
+  private getRoundScore(): number {
     if (this.scoreMode === "adjusted gross") {
-      return this.computeRoundAdjustedGrossScore();
+      return this.round.adjusted_gross_score;
     } else if (this.scoreMode === "net") {
-      return this.computeRoundNetScore();
+      return this.round.net_score;
     } else {
-      return this.computeRoundGrossScore();
+      return this.round.gross_score;
     }
   }
 
-  private computeHoleScore(hole: HoleResultSummary): number {
+  private getHoleScore(hole: HoleResultData): number {
     if (this.scoreMode === "adjusted gross") {
-      return this.computeHoleAdjustedGrossScore(hole);
+      return hole.adjusted_gross_score;
     } else if (this.scoreMode === "net") {
-      return this.computeHoleNetScore(hole);
+      return hole.net_score;
     } else {
-      return hole.hole_result_strokes;
+      return hole.gross_score;
     }
-  }
-
-  private computeRoundGrossScore(): number {
-    if (!this.round.round_holes) {
-      return -1;
-    }
-    return this.round.round_holes.reduce(function(prev: number, cur: HoleResultSummary) {
-      return prev + cur.hole_result_strokes;
-    }, 0);
-  }
-
-  private computeHoleAdjustedGrossScore(hole: HoleResultSummary): number {
-    // TODO Account for equitable stroke control
-    // TODO Compute on backend, store in database with results?
-    return hole.hole_result_strokes;
-  }
-
-  private computeRoundAdjustedGrossScore(): number {
-    // TODO Account for equitable stroke control
-    // TODO Compute on backend, store in database with results?
-    if (!this.round.round_holes) {
-      return -1;
-    }
-    return this.round.round_holes.reduce(function(prev: number, cur: HoleResultSummary) {
-      return prev + cur.hole_result_strokes;
-    }, 0);
-  }
-
-  private computeHoleHandicapStrokes(holeStrokeIndex: number): number {
-    // TODO Compute on backend, store in database with results?
-    if (this.round.golfer_handicap_index < 0) {
-      return 0; // TODO Account for plus-handicap golfers
-    }
-    if (this.round.golfer_handicap_index < 19) {
-      if (holeStrokeIndex <= this.round.golfer_handicap_index) {
-        return 1;
-      }
-      return 0;
-    }
-    if (this.round.golfer_handicap_index < 37) {
-      if (holeStrokeIndex <= this.round.golfer_handicap_index - 18) {
-        return 2;
-      }
-      return 1;
-    }
-    if (this.round.golfer_handicap_index < 55) {
-      if (holeStrokeIndex <= this.round.golfer_handicap_index - 18) {
-        return 3;
-      }
-      return 2;
-    }
-    return 0;
-  }
-
-  private computeHoleNetScore(hole: HoleResultSummary): number {
-    return hole.hole_result_strokes - this.computeHoleHandicapStrokes(hole.hole_stroke_index);
-  }
-
-  private computeRoundNetScore(): number {
-    if (!this.round.round_holes) {
-      return -1;
-    }
-    let score = 0;
-    for (const hole of this.round.round_holes) {
-      score += this.computeHoleNetScore(hole);
-    }
-    return score;
   }
 
   getRelativeScoreString(score: number, par: number): string {
@@ -147,7 +61,7 @@ export class RoundScorecardComponent implements OnInit {
     if (relativeScore > 0) {
       return "+" + relativeScore;
     } else if (relativeScore < 0) {
-      return "-" + relativeScore;
+      return "" + relativeScore;
     } else {
       return "E"
     }
