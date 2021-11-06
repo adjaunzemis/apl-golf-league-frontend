@@ -19,8 +19,12 @@ export class RoundsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getRounds(offset: number, limit: number): void {
-    const queryParams = `?offset=${offset}&limit=${limit}`
+  getRounds(offset: number, limit: number, golferId?: number): void {
+    let queryParams: string = `?`;
+    if (golferId) {
+      queryParams = `?golfer_id=${golferId}&`;
+    }
+    queryParams += `offset=${offset}&limit=${limit}`
     this.http.get<{ num_rounds: number, rounds: RoundData[] }>(environment.apiUrl + "rounds/" + queryParams)
       .subscribe(result => {
         this.roundsData = result.rounds;
