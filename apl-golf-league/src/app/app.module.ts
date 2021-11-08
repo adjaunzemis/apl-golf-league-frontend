@@ -9,6 +9,7 @@ import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
 import { CoursesModule } from './courses/courses.module';
 import { RoundsModule } from './rounds/rounds.module';
+import { FlightsModule } from './flights/flights.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RoundsModule } from './rounds/rounds.module';
     AppRoutingModule,
     AngularMaterialModule,
     CoursesModule,
-    RoundsModule
+    RoundsModule,
+    FlightsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
