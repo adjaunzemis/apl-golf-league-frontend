@@ -45,7 +45,7 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.flightsSub = this.flightsService.getFlightUpdateListener()
       .subscribe((result: {flights: FlightData[], numFlights: number}) => {
-        console.log(`[FlightListComponent] Displaying rounds ${this.pageIndex * this.flightsPerPage + 1}-${this.pageIndex * this.flightsPerPage + result.flights.length} of ${result.numFlights}`);
+        console.log(`[FlightListComponent] Displaying flights ${this.pageIndex * this.flightsPerPage + 1}-${this.pageIndex * this.flightsPerPage + result.flights.length} of ${result.numFlights}`);
         this.isLoading = false;
         this.flightsData = new MatTableDataSource<FlightData>(result.flights);
         this.numFlights = result.numFlights;

@@ -8,8 +8,8 @@
   <table mat-table [dataSource]="flightsData" multiTemplateDataRows matSort matSortStart="asc">
     <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
-      <td mat-cell *matCellDef="let round">
-        <div>{{ round[column] }}</div>
+      <td mat-cell *matCellDef="let golfer">
+        <div>{{ golfer[column] }}</div>
       </td>
     </ng-container>
 
