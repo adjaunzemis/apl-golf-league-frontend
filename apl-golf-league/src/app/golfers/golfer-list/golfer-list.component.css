@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  margin-top: 1rem;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+mat-paginator {
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 500px;
+}
+
+th.mat-header-cell {
+  text-align: left;
+  max-width: 300px;
+}
+
+tr.mat-row {
+  height: 35px;
+}
+
+.filter-field {
+  padding-left: 2rem;
+}
+
+tr.golfer-detail-row {
+  height: 0;
+}
+
+tr.golfer-row:not(.flight-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.golfer-row:not(.flight-expanded-row):active {
+  background: #efefef;
+}
+
+.golfer-row td {
+  border-bottom-width: 0;
+}
+
+.golfer-detail {
+  overflow: hidden;
+  width: 96%;
+  margin-left: 2%;
+}

@@ -10,6 +10,7 @@ import { HeaderComponent } from './header/header.component';
 import { CoursesModule } from './courses/courses.module';
 import { RoundsModule } from './rounds/rounds.module';
 import { FlightsModule } from './flights/flights.module';
+import { GolfersModule } from './golfers/golfers.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FlightsModule } from './flights/flights.module';
     AngularMaterialModule,
     CoursesModule,
     RoundsModule,
-    FlightsModule
+    FlightsModule,
+    GolfersModule
   ],
   providers: [],
   bootstrap: [AppComponent]
