@@ -16,7 +16,7 @@
     <ng-container matColumnDef="expandedMatchDetail">
       <td mat-cell *matCellDef="let match" [attr.colspan]="columnsToDisplay.length">
         <div class="match-detail" [@detailExpand]="match == expandedMatch ? 'expanded' : 'collapsed'">
-          <!-- <app-match-scorecard [match]="match"></app-match-scorecard> -->
+          <app-match-scorecard [match]="match"></app-match-scorecard>
           <!-- <mat-action-row>
             <a routerLink="edit/" [queryParams]="{ id: match.match_id }"><button mat-raised-button color="accent">Edit</button></a>
           </mat-action-row> -->

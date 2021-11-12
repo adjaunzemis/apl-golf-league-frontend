@@ -1,0 +1,50 @@
+<mat-action-row>
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="onScoreModeChanged($event.value)">
+        <mat-button-toggle value="gross" checked="true">Gross</mat-button-toggle>
+        <mat-button-toggle value="adjusted gross">Adj Gross</mat-button-toggle>
+        <mat-button-toggle value="net">Net</mat-button-toggle>
+    </mat-button-toggle-group>
+</mat-action-row>
+
+<table class="styled-table">
+    <thead>
+        <tr class="hole">
+        <td class="label">Hole</td>
+        <td class="hole" *ngFor="let hole of match.rounds[0].holes">{{ hole.number }}</td>
+        <td class="total">TOT</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="par">
+            <td class="label">Par</td>
+            <td class="hole" *ngFor="let hole of match.rounds[0].holes">{{ hole.par }}</td>
+            <td class="total">{{ match.rounds[0].tee_par }}</td>
+        </tr>
+        <tr class="stroke-index">
+            <td class="label">Hcp</td>
+            <td class="hole" *ngFor="let hole of match.rounds[0].holes">{{ hole.stroke_index }}</td>
+            <td class="total">--</td>
+        </tr>
+        <tr class="yardage">
+            <td class="label">Yds</td>
+            <td class="hole" *ngFor="let hole of match.rounds[0].holes">
+                <div *ngIf="hole.yardage">{{ hole.yardage }}</div>
+                <div *ngIf="!hole.yardage">--</div>
+            </td>
+            <td class="total">--</td>
+        </tr>
+        <tr class="score" *ngFor="let round of match.rounds; let roundIdx = index">
+            <td class="label">{{ round.golfer_name | titlecase }}</td>
+            <td class="hole" *ngFor="let holeScore of holeScores[roundIdx]; let holeIdx = index">
+                <div class="handicap-strokes" [ngClass]="{'red-dot' : round.holes[holeIdx].handicap_strokes < 0, 'black-dot' : round.holes[holeIdx].handicap_strokes > 0}"></div>
+                <div class="hole-score">
+                <div [ngClass]="{'circle' : holeRelativeScores[roundIdx][holeIdx] < 0, 'square' : holeRelativeScores[roundIdx][holeIdx] > 0, 'crosshatch' : (holeRelativeScores[roundIdx][holeIdx] > 1) || (holeRelativeScores[roundIdx][holeIdx] < -1)}">
+                    {{ holeScore }}
+                </div>
+                </div>
+            </td>
+            <td class="total">{{ roundScore[roundIdx] }} ({{ getRelativeScoreString(roundScore[roundIdx], round.tee_par) }})</td>
+        </tr>
+    </tbody>
+</table>
+  

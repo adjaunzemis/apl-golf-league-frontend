@@ -4,11 +4,12 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { MatchListComponent } from "./match-list/match-list.component";
-
+import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.component";
 
 @NgModule({
   declarations: [
-    MatchListComponent
+    MatchListComponent,
+    MatchScorecardComponent
   ],
   imports: [
     CommonModule,
