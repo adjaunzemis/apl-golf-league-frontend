@@ -7,6 +7,7 @@ import { CourseCreateComponent } from "./courses/course-create/course-create.com
 import { RoundListComponent } from "./rounds/round-list/round-list.component";
 import { FlightListComponent } from "./flights/flight-list/flight-list.component";
 import { GolferListComponent } from "./golfers/golfer-list/golfer-list.component";
+import { MatchListComponent } from "./matches/match-list/match-list.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "golfers", component: GolferListComponent },
+  { path: "matches", component: MatchListComponent},
   { path: "rounds", component: RoundListComponent },
   { path: "teams", component: AppComponent }
 ]

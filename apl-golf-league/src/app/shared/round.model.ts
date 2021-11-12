@@ -13,10 +13,13 @@ export interface Round {
 
 export interface RoundData {
   round_id: number;
+  match_id?: number;
+  team_id?: number;
   date_played: Date;
   golfer_name: string;
   handicap_index: number;
   playing_handicap: number;
+  team_name?: string;
   course_name: string;
   tee_name: string;
   tee_rating: number;
