@@ -1,0 +1,32 @@
+<table class="styled-table">
+  <thead>
+    <tr class="hole">
+    <td class="label">Hole</td>
+    <td class="hole" *ngFor="let hole of holes">{{ hole.number }}</td>
+    <td class="total">TOT</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="par">
+      <td class="label">Par</td>
+      <td class="hole" *ngFor="let hole of holes">{{ hole.par }}</td>
+      <td class="total">{{ totalPar }}</td>
+    </tr>
+    <tr class="stroke-index">
+      <td class="label">Hcp</td>
+      <td class="hole" *ngFor="let hole of holes">{{ hole.stroke_index }}</td>
+      <td class="total">--</td>
+    </tr>
+    <tr class="yardage">
+      <td class="label">Yds</td>
+      <td class="hole" *ngFor="let hole of holes">
+        <div *ngIf="hole.yardage">{{ hole.yardage }}</div>
+        <div *ngIf="!hole.yardage">--</div>
+      </td>
+      <td class="total">
+        <div *ngIf="totalYardage !== 0">{{ totalYardage }}</div>
+        <div *ngIf="totalYardage === 0">--</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
