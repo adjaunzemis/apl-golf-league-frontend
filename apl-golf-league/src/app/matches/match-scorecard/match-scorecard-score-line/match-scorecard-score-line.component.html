@@ -1,0 +1,18 @@
+<table class="styled-table">
+  <tbody>
+    <tr class="score">
+      <td class="label"></td>
+      <td class="hole" *ngFor="let score of homeTeamHoleNetScores; let holeIdx = index">
+        <div [ngClass]="{'arrow-up' : homeTeamHoleNetScores[holeIdx] < awayTeamHoleNetScores[holeIdx], 'arrow-down' : homeTeamHoleNetScores[holeIdx] > awayTeamHoleNetScores[holeIdx], 'dash' : homeTeamHoleNetScores[holeIdx] === awayTeamHoleNetScores[holeIdx]}"></div>
+      </td>
+      <td class="total">
+        <ng-container *ngIf="winningTeamId !== -1; else tie">
+          <div [ngClass]="{'arrow-up' : winningTeamId === homeTeamId, 'arrow-down' : winningTeamId === awayTeamId}"></div>
+        </ng-container>
+        <ng-template #tie>
+          <div class="hole-score, dash"></div>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>

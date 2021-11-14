@@ -1,16 +1,16 @@
 <table class="styled-table">
   <tbody>
-      <tr class="score">
-          <td class="label">{{ round.golfer_name | titlecase }}</td>
-          <td class="hole" *ngFor="let holeScore of holeScores; let holeIdx = index">
-              <div class="handicap-strokes" [ngClass]="{'red-dot' : round.holes[holeIdx].handicap_strokes < 0, 'black-dot' : round.holes[holeIdx].handicap_strokes > 0}"></div>
-              <div class="hole-score">
-              <div [ngClass]="{'circle' : holeRelativeScores[holeIdx] < 0, 'square' : holeRelativeScores[holeIdx] > 0, 'crosshatch' : (holeRelativeScores[holeIdx] > 1) || (holeRelativeScores[holeIdx] < -1)}">
-                  {{ holeScore }}
-              </div>
-              </div>
-          </td>
-          <td class="total">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</td>
-      </tr>
+    <tr class="score">
+      <td class="label">{{ round.golfer_name | titlecase }}</td>
+      <td class="hole" *ngFor="let holeScore of holeScores; let holeIdx = index">
+        <div class="handicap-strokes" [ngClass]="{'red-dot' : round.holes[holeIdx].handicap_strokes < 0, 'black-dot' : round.holes[holeIdx].handicap_strokes > 0}"></div>
+        <div class="hole-score">
+          <div [ngClass]="{'circle' : holeRelativeScores[holeIdx] < 0, 'square' : holeRelativeScores[holeIdx] > 0, 'crosshatch' : (holeRelativeScores[holeIdx] > 1) || (holeRelativeScores[holeIdx] < -1)}">
+            {{ holeScore }}
+          </div>
+        </div>
+      </td>
+      <td class="total">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</td>
+    </tr>
   </tbody>
 </table>

@@ -7,5 +7,11 @@
     </mat-button-toggle-group>
   </mat-action-row>
   <app-scorecard-tee-info [holes]="match.rounds[0].holes"></app-scorecard-tee-info>
-  <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngFor="let round of match.rounds"></app-scorecard-score-line>
+  <ng-container *ngFor="let round of match.rounds">
+    <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngIf="round.team_id === match.home_team_id"></app-scorecard-score-line>
+  </ng-container>
+  <app-match-scorecard-score-line [match]="match" [homeTeamId]="match.home_team_id" [awayTeamId]="match.away_team_id"></app-match-scorecard-score-line>
+  <ng-container *ngFor="let round of match.rounds">
+    <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngIf="round.team_id === match.away_team_id"></app-scorecard-score-line>
+  </ng-container>
 </div>
