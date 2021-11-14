@@ -3,8 +3,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
-import { ScorecardScoreLineComponent } from "../shared/scorecard-score-line/scorecard-score-line.component";
-import { ScorecardTeeInfoComponent } from "../shared/scorecard-tee-info/scorecard-tee-info.component";
+import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 import { MatchListComponent } from "./match-list/match-list.component";
 import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.component";
 
@@ -12,13 +11,12 @@ import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.compo
   declarations: [
     MatchListComponent,
     MatchScorecardComponent,
-    ScorecardTeeInfoComponent,
-    ScorecardScoreLineComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    ScorecardModule
   ]
 })
 export class MatchesModule {}

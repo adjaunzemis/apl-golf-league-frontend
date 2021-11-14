@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
 import { HoleResultData } from "src/app/shared/hole-result.model";
 import { RoundData } from "src/app/shared/round.model";
@@ -8,10 +8,9 @@ import { RoundData } from "src/app/shared/round.model";
   templateUrl: "./scorecard-score-line.component.html",
   styleUrls: ["./scorecard-score-line.component.css"]
 })
-export class ScorecardScoreLineComponent implements OnInit {
+export class ScorecardScoreLineComponent implements OnInit, OnChanges {
   @Input() round: RoundData;
-
-  scoreMode: string = "gross";
+  @Input() scoreMode: string = "gross";
 
   roundScore: number;
   holeScores: number[];
@@ -21,8 +20,8 @@ export class ScorecardScoreLineComponent implements OnInit {
     this.updateScores();
   }
 
-  onScoreModeChanged(scoreMode: string): void {
-    this.scoreMode = scoreMode;
+  ngOnChanges(changes: SimpleChanges): void {
+    this.scoreMode = changes['scoreMode'].currentValue;
     this.updateScores();
   }
 

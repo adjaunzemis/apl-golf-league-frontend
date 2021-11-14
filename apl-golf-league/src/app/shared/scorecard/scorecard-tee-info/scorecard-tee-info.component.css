@@ -1,9 +1,7 @@
 .styled-table {
   border-collapse: collapse;
-  margin: 5px 0;
   width: 100%;
   min-width: 400px;
-  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
   font-size: 1em;
   font-family: sans-serif;
   text-align: center;
@@ -25,9 +23,9 @@
   border-bottom: thin solid #dddddd;
 }
 
-/* .styled-table tbody tr:last-of-type {
+.styled-table tbody tr:last-of-type {
   border-bottom: 2px solid #3f51b5;
-} */
+}
 
 .styled-table tbody tr.hole,
 .styled-table tbody tr.par {
@@ -49,11 +47,4 @@
 
 .styled-table .hole {
   width: 8.333%;
-}
-
-.mat-button-toggle-group {
-  font-size: 0.8em;
-  height: 15px;
-  margin-left: 80%;
-  align-items: center;
 }

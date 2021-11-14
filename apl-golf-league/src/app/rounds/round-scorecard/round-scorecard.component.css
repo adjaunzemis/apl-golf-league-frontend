@@ -1,122 +1,14 @@
-.styled-table {
-  border-collapse: collapse;
+.scorecard {
   margin: 5px 0;
-  width: 100%;
-  min-width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  font-size: 1em;
-  font-family: sans-serif;
-  text-align: center;
-  vertical-align: center;
-}
-
-.styled-table thead tr {
-  background-color: #3f51b5;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.styled-table th,
-.styled-table td {
-    padding: 5px 5px;
-}
-
-.styled-table tbody tr {
-  border-bottom: thin solid #dddddd;
-}
-
-.styled-table tbody tr:last-of-type {
   border-bottom: 2px solid #3f51b5;
-}
-
-.styled-table tbody tr.hole,
-.styled-table tbody tr.par {
-  height: 25px;
-  background-color: #f3f3f3;
-  color: black;
-}
-
-.styled-table tbody tr.yardage,
-.styled-table tbody tr.stroke-index {
-  font-size: 0.8em;
-  background-color: #f3f3f3;
-}
-
-.styled-table .label,
-.styled-table .total {
-  width: 12.5%;
-}
-
-.styled-table .hole {
-  width: 8.333%;
-}
-
-.styled-table tbody tr.score {
-  height: 25px;
-  background-color: #ffffff;
-}
-
-.styled-table tr.score td {
-  padding: 2px 0px;
-}
-
-.handicap-strokes {
-  margin: auto;
-  margin-bottom: 2px;
-  height: 5px;
-}
-
-.black-dot {
-  height: 4px;
-  width: 4px;
-  background-color: black;
-  border-radius: 50%;
-}
-
-.red-dot {
-  height: 4px;
-  width: 4px;
-  background-color: red;
-  border-radius: 50%;
-}
-
-.hole-score {
-  height: 22px;
-  width: 22px;
-  margin: auto;
-  margin-bottom: 0px;
-  font-weight: bold;
-}
-
-.circle {
-  border-radius: 50%;
-  border: 1px solid rgb(114, 122, 218);
-  background-color: rgb(200, 202, 228);
-}
-
-.square {
-  border-radius: 0%;
-  border: 1px solid rgb(160, 160, 160);
-  background-color: rgb(231, 231, 231);
-}
-
-.crosshatch {
-  background-image: linear-gradient(
-      -45deg,
-      rgba(0,0,0,0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(0,0,0,0.2) 50%,
-      rgba(0,0,0,0.2) 75%,
-      transparent 75%,
-      transparent
-  );
-  background-size: 5px 5px;
+  /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15); */
 }
 
 .mat-button-toggle-group {
   font-size: 0.8em;
   height: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   margin-left: 80%;
   align-items: center;
 }

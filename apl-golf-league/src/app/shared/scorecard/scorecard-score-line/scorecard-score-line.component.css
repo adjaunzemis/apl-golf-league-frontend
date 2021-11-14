@@ -1,9 +1,7 @@
 .styled-table {
   border-collapse: collapse;
-  margin: 5px 0;
   width: 100%;
   min-width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   font-size: 1em;
   font-family: sans-serif;
   text-align: center;
@@ -18,15 +16,11 @@
 
 .styled-table th,
 .styled-table td {
-    padding: 5px 5px;
+  padding: 5px 5px;
 }
 
 .styled-table tbody tr {
   border-bottom: thin solid #dddddd;
-}
-
-.styled-table tbody tr:last-of-type {
-  border-bottom: 2px solid #3f51b5;
 }
 
 .styled-table tbody tr.hole,
@@ -102,21 +96,14 @@
 
 .crosshatch {
   background-image: linear-gradient(
-      -45deg,
-      rgba(0,0,0,0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(0,0,0,0.2) 50%,
-      rgba(0,0,0,0.2) 75%,
-      transparent 75%,
-      transparent
+    -45deg,
+    rgba(0,0,0,0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.2) 75%,
+    transparent 75%,
+    transparent
   );
   background-size: 5px 5px;
-}
-
-.mat-button-toggle-group {
-  font-size: 0.8em;
-  height: 15px;
-  margin-left: 80%;
-  align-items: center;
 }
