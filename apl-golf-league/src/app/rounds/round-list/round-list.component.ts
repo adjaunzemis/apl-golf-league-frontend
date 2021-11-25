@@ -30,7 +30,7 @@ export class RoundListComponent implements OnInit, OnDestroy, AfterViewInit {
   expandedRound: RoundData | null;
   private roundsSub: Subscription;
 
-  columnsToDisplay = ['date_played', 'golfer_name', 'golfer_handicap_index', 'course_name', 'tee_name', 'tee_par', 'tee_rating', 'tee_slope', 'gross_score'];
+  columnsToDisplay = ['date_played', 'golfer_name', 'golfer_handicap_index', 'golfer_playing_handicap', 'course_name', 'tee_name', 'tee_par', 'tee_rating', 'tee_slope', 'gross_score'];
   @ViewChild(MatSort) sort: MatSort;
 
   numRounds = 0;

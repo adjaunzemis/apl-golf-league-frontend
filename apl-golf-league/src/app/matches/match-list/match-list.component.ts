@@ -34,9 +34,9 @@ export class MatchListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   numMatches = 0;
-  matchesPerPage = 5;
+  matchesPerPage = 20;
   pageIndex = 0;
-  pageSizeOptions = [5, 10, 20];
+  pageSizeOptions = [10, 25, 50, 100];
 
   constructor(private matchesService: MatchesService, private route: ActivatedRoute) {}
 
