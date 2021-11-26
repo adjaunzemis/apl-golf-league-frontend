@@ -47,6 +47,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     private createCourseForm(): FormGroup {
         return this.formBuilder.group({
             name: new FormControl("", Validators.required),
+            year: new FormControl("", Validators.required),
             address: new FormControl(""),
             phone: new FormControl(""),
             website: new FormControl(""),
@@ -57,6 +58,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     initFormsFromCourse(course: Course): void {
         const courseData = {
             name: course.name,
+            year: course.year,
             address: course.address,
             phone: course.phone,
             website: course.website,
@@ -118,6 +120,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             const course: Course = {
                 id: -1,
                 name: this.courseForm.value.name,
+                year: this.courseForm.value.year,
                 address: this.courseForm.value.address,
                 phone: this.courseForm.value.phone,
                 website: this.courseForm.value.website,

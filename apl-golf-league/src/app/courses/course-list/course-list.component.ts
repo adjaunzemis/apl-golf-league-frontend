@@ -28,7 +28,7 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   expandedCourse: Course | null;
   private coursesSub: Subscription;
 
-  columnsToDisplay = ['name', 'address', 'phone', 'website'];
+  columnsToDisplay = ['name', 'year', 'address', 'phone', 'website'];
   @ViewChild(MatSort) sort: MatSort;
 
   totalCourses = 0;

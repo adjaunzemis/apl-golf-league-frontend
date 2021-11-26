@@ -48,7 +48,7 @@ export class CoursesService {
   addCourse(courseData: Course): void {
     this.http.post<{ message: string, course: Course }>(environment.apiUrl + "/courses/", courseData)
       .subscribe(responseData => {
-        console.log("[CoursesService] Added course: " + courseData.name);
+        console.log("[CoursesService] Added course: " + courseData.name + " (" + courseData.year + ")");
         this.router.navigate(["courses/"]);
       });
   }
