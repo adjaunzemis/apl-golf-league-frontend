@@ -22,9 +22,11 @@ export interface RoundData {
   team_name?: string;
   course_name: string;
   tee_name: string;
+  tee_gender: string;
   tee_rating: number;
   tee_slope: number;
   tee_par: number;
+  tee_color: string;
   gross_score: number;
   adjusted_gross_score: number;
   net_score: number;

@@ -10,6 +10,12 @@ import { HoleResultData } from "src/app/shared/hole-result.model";
 export class ScorecardTeeInfoComponent implements OnInit{
   @Input() holes: HoleResultData[];
 
+  @Input() name: string;
+  @Input() gender: string;
+  @Input() rating: number;
+  @Input() slope: number;
+  @Input() color = "none";
+
   totalPar: number = 0;
   totalYardage: number = 0;
 
