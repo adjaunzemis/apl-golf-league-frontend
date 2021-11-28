@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div *ngIf="courses.data.length > 0 && !isLoading">
+<div *ngIf="courses.data.length > 0 && !isLoading" style="width: 90%; margin: 0% 5%;">
   <mat-form-field class="filter-field">
     <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
   </mat-form-field>

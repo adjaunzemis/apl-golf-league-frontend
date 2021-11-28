@@ -4,11 +4,13 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { FlightListComponent } from "./flight-list/flight-list.component";
+import { FlightsHomeComponent } from './flights-home/flights-home.component';
 
 
 @NgModule({
   declarations: [
-    FlightListComponent
+    FlightListComponent,
+    FlightsHomeComponent
   ],
   imports: [
     CommonModule,
