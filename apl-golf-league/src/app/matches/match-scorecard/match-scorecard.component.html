@@ -6,6 +6,7 @@
       <mat-button-toggle value="net">Net</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-action-row>
+  <app-scorecard-hole-line [holes]=match.rounds[0].holes></app-scorecard-hole-line>
   <app-scorecard-tee-info [holes]="match.rounds[0].holes"></app-scorecard-tee-info>
   <ng-container *ngFor="let round of match.rounds">
     <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngIf="round.team_id === match.home_team_id"></app-scorecard-score-line>
