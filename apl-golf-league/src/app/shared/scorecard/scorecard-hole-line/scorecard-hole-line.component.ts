@@ -9,6 +9,8 @@ import { Hole } from '../../hole.model';
   styleUrls: ["./scorecard-hole-line.component.css"]
 })
 export class ScorecardHoleLineComponent implements OnInit {
+  @Input() title = "";
+
   @Input() holes: Hole[];
   @Input() holeResultData: HoleResultData[];
 
