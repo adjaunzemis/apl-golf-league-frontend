@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
+import { LeagueHomeComponent } from './league-home/league-home.component';
 import { CoursesModule } from './courses/courses.module';
 import { RoundsModule } from './rounds/rounds.module';
 import { FlightsModule } from './flights/flights.module';
@@ -16,7 +17,8 @@ import { MatchesModule } from './matches/matches.module';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    LeagueHomeComponent
   ],
   imports: [
     BrowserModule,

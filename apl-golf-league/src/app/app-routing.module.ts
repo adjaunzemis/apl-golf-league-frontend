@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AppComponent } from "./app.component";
+import { LeagueHomeComponent } from "./league-home/league-home.component";
 import { FlightsHomeComponent } from "./flights/flights-home/flights-home.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
@@ -11,14 +11,14 @@ import { FlightListComponent } from "./flights/flight-list/flight-list.component
 import { MatchListComponent } from "./matches/match-list/match-list.component";
 
 const routes: Routes = [
-  { path: "", component: AppComponent },
+  { path: "", component: LeagueHomeComponent },
   { path: "flights", component: FlightsHomeComponent },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "golfer-list", component: GolferListComponent },
   { path: "flight-list", component: FlightListComponent },
   { path: "round-list", component: RoundListComponent },
-  { path: "match-list", component: MatchListComponent},
+  { path: "match-list", component: MatchListComponent },
 ]
 
 @NgModule({
