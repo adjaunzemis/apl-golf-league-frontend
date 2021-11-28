@@ -7,7 +7,7 @@
     </mat-button-toggle-group>
   </mat-action-row>
   <app-scorecard-hole-line [holeResultData]=match.rounds[0].holes></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holeResultData]="match.rounds[0].holes" [name]="match.rounds[0].tee_name" [rating]="match.rounds[0].tee_rating" [slope]="match.rounds[0].tee_slope" [color]="match.rounds[0].tee_color"></app-scorecard-tee-info>
+  <app-scorecard-tee-info [holeResultData]="match.rounds[0].holes" [name]="match.rounds[0].tee_name" [gender]="match.rounds[0].tee_gender" [rating]="match.rounds[0].tee_rating" [slope]="match.rounds[0].tee_slope" [color]="match.rounds[0].tee_color"></app-scorecard-tee-info>
   <ng-container *ngFor="let round of match.rounds">
     <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngIf="round.team_id === match.home_team_id"></app-scorecard-score-line>
   </ng-container>

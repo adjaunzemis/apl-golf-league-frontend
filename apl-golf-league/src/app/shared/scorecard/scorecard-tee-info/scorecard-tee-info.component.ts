@@ -25,8 +25,7 @@ export class ScorecardTeeInfoComponent implements OnInit{
     if (!this.holes) {
       this.holes = this.holeResultData.map(function(holeResult: HoleResultData, index: number, array: HoleResultData[]) {
         return {
-          id: -1, // TODO: Add hole id to HoleResultData
-          tee_id: -1, // TODO: Add tee id to HoleResultData
+          id: holeResult.hole_id,
           number: holeResult.number,
           par: holeResult.par,
           stroke_index: holeResult.stroke_index,

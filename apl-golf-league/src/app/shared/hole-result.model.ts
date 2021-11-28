@@ -10,6 +10,8 @@ export interface HoleResult {
 export interface HoleResultData {
   hole_result_id: number;
   round_id: number;
+  tee_id: number;
+  hole_id: number;
   number: number;
   par: number;
   yardage: number;
