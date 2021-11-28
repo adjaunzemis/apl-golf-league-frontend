@@ -8,5 +8,5 @@ export interface Tee {
   gender: string;
   rating: number;
   slope: number;
-  holes?: Hole[];
+  holes: Hole[];
 }

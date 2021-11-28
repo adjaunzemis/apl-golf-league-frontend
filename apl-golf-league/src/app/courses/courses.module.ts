@@ -6,6 +6,7 @@ import { AngularMaterialModule } from "../angular-material.module";
 import { CourseListComponent } from "./course-list/course-list.component";
 import { CourseScorecardComponent } from "./course-scorecard/course-scorecard.component";
 import { CourseCreateComponent } from "./course-create/course-create.component";
+import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CourseCreateComponent } from "./course-create/course-create.component";
   imports: [
     CommonModule,
     RouterModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    ScorecardModule
   ]
 })
 export class CoursesModule {}

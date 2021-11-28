@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
-import { HoleResultData } from "src/app/shared/hole-result.model";
+import { HoleResultData } from "../../hole-result.model";
+import { Hole } from "../../hole.model";
 
 @Component({
   selector: "app-scorecard-tee-info",
@@ -8,7 +9,8 @@ import { HoleResultData } from "src/app/shared/hole-result.model";
   styleUrls: ["./scorecard-tee-info.component.css"]
 })
 export class ScorecardTeeInfoComponent implements OnInit{
-  @Input() holes: HoleResultData[];
+  @Input() holes: Hole[];
+  @Input() holeResultData: HoleResultData[];
 
   @Input() name: string;
   @Input() gender: string;
@@ -20,11 +22,24 @@ export class ScorecardTeeInfoComponent implements OnInit{
   totalYardage: number = 0;
 
   ngOnInit(): void {
-    this.totalPar = this.holes.reduce(function(prev: number, cur: HoleResultData) {
+    if (!this.holes) {
+      this.holes = this.holeResultData.map(function(holeResult: HoleResultData, index: number, array: HoleResultData[]) {
+        return {
+          id: -1, // TODO: Add hole id to HoleResultData
+          tee_id: -1, // TODO: Add tee id to HoleResultData
+          number: holeResult.number,
+          par: holeResult.par,
+          stroke_index: holeResult.stroke_index,
+          yardage: holeResult.yardage
+        };
+      });
+    }
+
+    this.totalPar = this.holes.reduce(function(prev: number, cur: Hole) {
       return cur.par ? prev + cur.par : 0;
     }, 0);
 
-    this.totalYardage = this.holes.reduce(function(prev: number, cur: HoleResultData) {
+    this.totalYardage = this.holes.reduce(function(prev: number, cur: Hole) {
       return cur.yardage ? prev + cur.yardage : 0;
     }, 0);
   }

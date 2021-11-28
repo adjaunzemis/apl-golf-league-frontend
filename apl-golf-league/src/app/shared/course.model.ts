@@ -8,5 +8,5 @@ export interface Course {
   phone?: string;
   website?: string;
   date_updated?: Date;
-  tracks?: Track[];
+  tracks: Track[];
 }

@@ -45,13 +45,8 @@ tr.course-row:not(.course-expanded-row):active {
 
 .course-detail {
   overflow: hidden;
-  display: flex;
 }
 
-.course-track-detail {
+.track-name {
   font-weight: bold;
-}
-
-.course-tee-set-detail {
-  font-weight: normal;
 }
