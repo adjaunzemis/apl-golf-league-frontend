@@ -1,0 +1,38 @@
+:host {
+    display: block;
+    margin-top: 1rem;
+}
+  
+ mat-spinner {
+    margin: auto;
+}
+
+mat-card {
+    width: 95%;
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+mat-panel-title {
+    font-weight: bold;
+}
+
+.team-tile {
+    background-color: whitesmoke;
+    box-shadow: 0px 1px 2px grey;
+}
+
+.team-name {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.team-player-table {
+    padding: 10px 10px;
+    width: 100%;
+}
+
+.team-player-table thead {
+    text-align: center;
+    font-weight: bold;
+}

@@ -1,5 +1,35 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%;">
-  <p>flights-home works!</p>
+
+<div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%; margin-top: 5px;">
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+    <mat-expansion-panel [hideToggle]="false" *ngFor="let flight of flights">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ flight.name }} - {{ flight.year }}</mat-panel-title>
+        <mat-panel-description>
+          <span>{{ flight.home_course_name }}, Flight Secretary: [name]</span>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-grid-list cols="3" rowHeight="2:1" gutterSize="5px">
+        <mat-grid-tile class="team-tile" *ngFor="let team of flight.teams" (click)="selectTeam(team)">
+          <table class="team-player-table">
+            <thead>
+              <tr>
+                <td colspan=2>{{ team.name }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of team.players">
+                <td>
+                  <span>{{ player.golfer_name }}</span>
+                  <span *ngIf="player.role == 'CAPTAIN'"> (C)</span>
+                </td>
+                <td>{{ player.division_name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
