@@ -1,6 +1,5 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-
 <div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%; margin-top: 5px;">
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
     <mat-expansion-panel [hideToggle]="false" *ngFor="let flight of flights">

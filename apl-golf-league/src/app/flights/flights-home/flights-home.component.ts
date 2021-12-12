@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TeamData } from 'src/app/shared/team.model';
 
 import { FlightData } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
+import { TeamData } from '../../shared/team.model';
 
 @Component({
   selector: 'app-flights-home',
@@ -19,14 +19,14 @@ export class FlightsHomeComponent implements OnInit, OnDestroy {
   flights: FlightData[];
   flightsSub: Subscription;
 
-  constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
+  constructor(private flightsService: FlightsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.isLoading = true;
 
     this.flightsSub = this.flightsService.getFlightUpdateListener()
       .subscribe((result: {flights: FlightData[], numFlights: number}) => {
-        console.log(`[FlightHomeComponent] Fetching flight data`);
+        console.log(`[FlightsHomeComponent] Fetching flight data`);
         this.isLoading = false;
         this.flights = result.flights;
       });
@@ -34,7 +34,7 @@ export class FlightsHomeComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       if (params) {
         if (params.year) {
-          console.log("[FlightListComponent] Setting query parameter year=" + params.year);
+          console.log("[FlightsHomeComponent] Setting query parameter year=" + params.year);
           this.year = params.year;
         }
       }
@@ -52,12 +52,6 @@ export class FlightsHomeComponent implements OnInit, OnDestroy {
   }
 
   selectTeam(team: TeamData): void {
-    // TODO: Navigate to team page
-    console.log(team);
+    this.router.navigate(['/flights/team'], { queryParams: { id: team.team_id } });
   }
-}
-
-interface FlightDataByYear {
-  year: number;
-  flights: FlightData[];
 }

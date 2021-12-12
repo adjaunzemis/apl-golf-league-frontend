@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { FlightData } from "../shared/flight.model";
+import { TeamData } from "../shared/team.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -12,6 +13,9 @@ import { environment } from './../../environments/environment';
 export class FlightsService {
   private flightsData: FlightData[] = []
   private flightsDataUpdated = new Subject<{ numFlights: number, flights: FlightData[] }>();
+
+  private teamData: TeamData;
+  private teamDataUpdated = new Subject<TeamData>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -33,6 +37,18 @@ export class FlightsService {
 
   getFlightUpdateListener(): Observable<{ flights: FlightData[], numFlights: number }> {
     return this.flightsDataUpdated.asObservable();
+  }
+
+  getTeam(id: number): void {
+    this.http.get<TeamData>(environment.apiUrl + `flights/teams/${id}`)
+      .subscribe(result => {
+        this.teamData = result;
+        this.teamDataUpdated.next(result);
+      });
+  }
+
+  getTeamUpdateListener(): Observable<TeamData> {
+    return this.teamDataUpdated.asObservable();
   }
 
 }
