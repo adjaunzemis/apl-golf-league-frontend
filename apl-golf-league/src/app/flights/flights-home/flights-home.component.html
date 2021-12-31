@@ -9,8 +9,28 @@
           <span>{{ flight.home_course_name }}, Flight Secretary: [name]</span>
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-grid-list cols="3" rowHeight="2:1" gutterSize="5px">
-        <mat-grid-tile class="team-tile" *ngFor="let team of flight.teams" (click)="selectTeam(team)">
+      <div class="full-width flex-row flex-wrap justify-content-space-around">
+        <div class="width-3 frost-background border-solid-thin box-shadow" *ngFor="let team of flight.teams" (click)="selectTeam(team)">
+          <table class="team-player-table">
+            <thead>
+              <tr>
+                <td colspan=2>{{ team.name }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of team.players">
+                <td>
+                  <span>{{ player.golfer_name }}</span>
+                  <span *ngIf="player.role == 'CAPTAIN'"> (C)</span>
+                </td>
+                <td>{{ player.division_name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- <mat-grid-list cols="3" rowHeight="2:1" gutterSize="5px">
+        <mat-grid-tile class="frost-background border-solid-thin box-shadow" *ngFor="let team of flight.teams" (click)="selectTeam(team)">
           <table class="team-player-table">
             <thead>
               <tr>
@@ -28,7 +48,7 @@
             </tbody>
           </table>
         </mat-grid-tile>
-      </mat-grid-list>
+      </mat-grid-list> -->
     </mat-expansion-panel>
   </mat-accordion>
 </div>

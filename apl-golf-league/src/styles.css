@@ -2,3 +2,135 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Angular Material styling */
+mat-spinner {
+    margin: auto;
+}
+
+/* Element styling */
+.frost-background {
+    background-color: rgba(70, 70, 70, 0.2);
+}
+
+.border-solid-thin {
+    border: 1px solid rgba(70, 70, 70, 0.8);
+    border-radius: 5px;;
+}
+
+.box-shadow {
+    box-shadow: 0px 1px 2px grey;
+}
+
+/* Bootstrap-like styling */
+.full-width {
+    width: 100%;
+}
+
+.half-width {
+    width: 50.0%;
+}
+
+.width-12 {
+    width: 100.0%;
+}
+
+.width-10 {
+    width: 83.33%;
+}
+
+.width-8 {
+    width: 66.67%;
+}
+
+.width-6 {
+    width: 50.0%;
+}
+
+.width-4 {
+    width: 33.33%;
+}
+
+.width-3 {
+    width: 25.0%;
+}
+
+.width-2 {
+    width: 16.67%;
+}
+
+.width-1 {
+    width: 8.33%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+
+.margin-left-30 {
+    margin-left: 30px;
+}
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-top-30 {
+    margin-top: 30px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.justify-content-start {
+    justify-content: flex-start;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-space-between {
+    justify-content: space-between;
+}
+
+.justify-content-space-around {
+    justify-content: space-around;
+}
+
+.align-items-start {
+    align-items: flex-start;
+}
+
+.align-items-end {
+    align-items: flex-end;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.align-items-stretch {
+    align-items: stretch;
+}
