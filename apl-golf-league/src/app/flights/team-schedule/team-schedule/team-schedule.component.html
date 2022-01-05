@@ -1,0 +1,13 @@
+<mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+    <mat-expansion-panel [hideToggle]="false" *ngFor="let match of team.matches">
+        <mat-expansion-panel-header>
+            <mat-panel-title>Week {{ match.week }}: {{ match.home_score }} - {{ match.away_score }}</mat-panel-title>
+            <mat-panel-description>
+                <span>{{ match.flight_name }}</span>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- <div class="full-width">
+            <app-match-scorecard></app-match-scorecard>
+        </div> -->
+    </mat-expansion-panel>
+</mat-accordion>
