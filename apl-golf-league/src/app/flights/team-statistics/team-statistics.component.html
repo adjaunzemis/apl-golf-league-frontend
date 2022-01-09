@@ -1,0 +1,69 @@
+<table mat-table [dataSource]="statsData" multiTemplateDataRows matSort matSortStart="asc">
+    <ng-container matColumnDef="golfer_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.golfer_name }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_rounds">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Rounds</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_rounds }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_holes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Holes</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_holes }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="avg_gross_score">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg Gross</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.avg_gross_score }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="avg_net_score">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg Net</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.avg_net_score }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_eagles">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Eagles+</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_eagles }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_birdies">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Birdies</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_birdies }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_pars">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pars</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_pars }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_bogeys">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Bogeys</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_bogeys }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_double_bogeys">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Double Bogeys</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_double_bogeys }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="num_others">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Others</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.num_others }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="points">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Points</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.points }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="avg_points">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg Points</th>
+        <td mat-cell *matCellDef="let stats">{{ stats.avg_points }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let stats; columns: columnsToDisplay;" class="stats-row"></tr>
+</table>
