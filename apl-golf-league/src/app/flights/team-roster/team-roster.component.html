@@ -1,0 +1,19 @@
+<table mat-table [dataSource]="playersData" multiTemplateDataRows matSort matSortStart="asc">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let player">{{ player.golfer_name }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let player">{{ player.role }}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="division">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Division</th>
+        <td mat-cell *matCellDef="let player">{{ player.division_name }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let golfer; columns: columnsToDisplay;" class="player-row"></tr>
+</table>

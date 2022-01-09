@@ -8,6 +8,7 @@ import { FlightListComponent } from "./flight-list/flight-list.component";
 import { FlightsHomeComponent } from './flights-home/flights-home.component';
 import { TeamHomeComponent } from "./team-home/team-home.component";
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
+import { TeamRosterComponent } from './team-roster/team-roster.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
     FlightListComponent,
     FlightsHomeComponent,
     TeamHomeComponent,
-    TeamScheduleComponent
+    TeamScheduleComponent,
+    TeamRosterComponent
   ],
   imports: [
     CommonModule,
