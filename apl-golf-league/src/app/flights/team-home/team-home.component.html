@@ -1,10 +1,18 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%; margin-top: 5px;">
-    <div class="flex-row full-width">
-        <div class="full-width padding-top-10 padding-left-10 padding-right-10 padding-bottom-10 frost-background border-solid-thin box-shadow">
+    <div class="flex-row full-width justify-content-space-around">
+        <div class="width-6 padding-10 frost-background border-solid-thin box-shadow">
             <h4>Team Schedule</h4>
             <app-team-schedule [team]="team"></app-team-schedule>
+        </div>
+        <div class="flex-column width-4">
+            <div class="padding-10 frost-background border-solid-thin box-shadow">
+                <h4>Roster placeholder</h4>
+            </div>
+            <div class="padding-10 frost-background border-solid-thin box-shadow">
+                <h4>Statistics placeholder</h4>
+            </div>
         </div>
     </div>
 </div>
