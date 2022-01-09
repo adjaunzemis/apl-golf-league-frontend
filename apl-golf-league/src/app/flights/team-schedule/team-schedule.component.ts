@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { TeamData } from '../../../shared/team.model';
+import { TeamData } from '../../shared/team.model';
 
 @Component({
   selector: 'app-team-schedule',
