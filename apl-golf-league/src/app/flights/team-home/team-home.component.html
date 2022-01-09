@@ -1,7 +1,10 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%; margin-top: 5px;">
-    <p>team-home works!</p>
-
-    <app-team-schedule [team]="team"></app-team-schedule>
+    <div class="flex-row full-width">
+        <div class="full-width padding-top-10 padding-left-10 padding-right-10 padding-bottom-10 frost-background border-solid-thin box-shadow">
+            <h4>Team Schedule</h4>
+            <app-team-schedule [team]="team"></app-team-schedule>
+        </div>
+    </div>
 </div>
