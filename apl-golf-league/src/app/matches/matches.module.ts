@@ -19,6 +19,9 @@ import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.compo
     RouterModule,
     AngularMaterialModule,
     ScorecardModule
+  ],
+  exports: [
+    MatchScorecardComponent
   ]
 })
 export class MatchesModule {}

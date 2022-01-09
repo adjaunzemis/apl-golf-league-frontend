@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { TeamData } from '../../../shared/team.model';
 
@@ -7,14 +7,10 @@ import { TeamData } from '../../../shared/team.model';
   templateUrl: './team-schedule.component.html',
   styleUrls: ['./team-schedule.component.css']
 })
-export class TeamScheduleComponent implements OnInit {
+export class TeamScheduleComponent {
 
   @Input() team : TeamData;
 
   constructor() { }
-
-  ngOnInit(): void {
-
-  }
 
 }
