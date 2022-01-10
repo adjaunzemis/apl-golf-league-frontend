@@ -1,3 +1,5 @@
+import { GolferStatistics } from "./golfer.model"
+
 export class PlayerData {
     player_id: number
     team_id: number
@@ -6,4 +8,5 @@ export class PlayerData {
     flight_name?: string
     team_name?: string
     role: string
+    statistics?: GolferStatistics
 }

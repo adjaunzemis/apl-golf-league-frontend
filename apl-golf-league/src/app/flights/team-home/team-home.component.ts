@@ -28,7 +28,6 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
         console.log(`[TeamHomeComponent] Fetching team data`);
         this.isLoading = false;
         this.team = result;
-        console.log(result);
       });
 
     this.route.queryParams.subscribe(params => {

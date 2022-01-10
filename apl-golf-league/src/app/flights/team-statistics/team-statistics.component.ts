@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { TeamData } from '../../shared/team.model';
-import { PlayerStatistics } from '../../shared/player-statistics.model';
+import { GolferStatistics } from '../../shared/golfer.model';
 
 @Component({
   selector: 'app-team-statistics',
@@ -13,9 +13,9 @@ export class TeamStatisticsComponent implements OnInit {
 
   @Input() team: TeamData;
 
-  statsData = new MatTableDataSource<PlayerStatistics>();
+  statsData = new MatTableDataSource<GolferStatistics>();
 
-  columnsToDisplay = ['golfer_name', '_num_rounds', 'num_holes', 'avg_gross_score', 'avg_net_score', 'num_eagles', 'num_birdies', 'pars', 'num_bogeys', 'num_double_bogeys', 'num_others', 'num_points', 'avg_points']
+  columnsToDisplay = ['golfer_name', 'num_rounds', 'avg_gross_score', 'avg_net_score', 'num_holes', 'num_eagles', 'num_birdies', 'num_pars', 'num_bogeys', 'num_double_bogeys', 'num_others']
 
   constructor() { }
 
