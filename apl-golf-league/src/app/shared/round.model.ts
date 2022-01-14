@@ -16,6 +16,7 @@ export interface RoundData {
   match_id?: number;
   team_id?: number;
   date_played: Date;
+  round_type: string;
   golfer_name: string;
   handicap_index: number;
   playing_handicap: number;
