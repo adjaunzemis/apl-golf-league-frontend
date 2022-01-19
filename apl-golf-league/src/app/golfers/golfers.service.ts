@@ -13,6 +13,9 @@ export class GolfersService {
   private golfersData: GolferData[] = []
   private golfersDataUpdated = new Subject<{ numGolfers: number, golfers: GolferData[] }>();
 
+  private golferData: GolferData
+  private golferDataUpdated = new Subject<GolferData>();
+
   constructor(private http: HttpClient, private router: Router) {}
 
   getGolfers(offset: number, limit: number, year?: number): void {
@@ -31,9 +34,20 @@ export class GolfersService {
       });
   }
 
-  getGolferUpdateListener(): Observable<{ golfers: GolferData[], numGolfers: number }> {
+  getGolfersUpdateListener(): Observable<{ golfers: GolferData[], numGolfers: number }> {
     return this.golfersDataUpdated.asObservable();
   }
 
+  getGolfer(id: number): void {
+    this.http.get<GolferData>(environment.apiUrl + `golfers/${id}`)
+      .subscribe(result => {
+        this.golferData = result;
+        this.golferDataUpdated.next(this.golferData);
+      });
+  }
+
+  getGolferUpdateListener(): Observable<GolferData> {
+    return this.golferDataUpdated.asObservable();
+  }
 }
 

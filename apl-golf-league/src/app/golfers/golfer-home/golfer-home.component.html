@@ -1,1 +1,12 @@
-<p>Golfer Home, id={{ golferId }}</p>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%;">
+  <h3>Name: {{ golfer.name }}</h3>
+  <p>Affiliation: {{ golfer.affiliation }}</p>
+  <p>Golfer ID: {{ golfer.golfer_id }}</p>
+  <div *ngFor="let player of golfer.player_data">
+    <p>Player ID: {{ player.player_id }}</p>
+    <p>Team: {{ player.team_name }} (id={{ player.team_id }})</p>
+    <p>Role: {{ player.role }}</p>
+  </div>
+</div>

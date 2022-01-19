@@ -14,7 +14,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   golferId: number;
-  
+
   golfer: GolferData;
   golferSub: Subscription;
 
@@ -23,12 +23,12 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading = true;
 
-    // this.golferSub = this.golfersService.getGolferUpdateListener()
-    //   .subscribe((result: GolferData) => {
-    //     console.log(`[GolferHomeComponent] Received golfer data`);
-    //     this.isLoading = false;
-    //     this.golfer = result;
-    //   });
+    this.golferSub = this.golfersService.getGolferUpdateListener()
+      .subscribe((result: GolferData) => {
+        console.log(`[GolferHomeComponent] Received golfer data`);
+        this.isLoading = false;
+        this.golfer = result;
+      });
 
     this.route.queryParams.subscribe(params => {
       if (params) {
@@ -48,6 +48,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   getGolferData(): void {
     console.log("[GolferHomeComponent] Fetching golfer data");
+    this.golfersService.getGolfer(this.golferId);
   }
 
 }

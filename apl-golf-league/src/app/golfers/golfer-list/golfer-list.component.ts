@@ -43,7 +43,7 @@ export class GolferListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.flightsSub = this.golfersService.getGolferUpdateListener()
+    this.flightsSub = this.golfersService.getGolfersUpdateListener()
       .subscribe((result: {golfers: GolferData[], numGolfers: number}) => {
         console.log(`[GolferListComponent] Displaying golfers ${this.pageIndex * this.golfersPerPage + 1}-${this.pageIndex * this.golfersPerPage + result.golfers.length} of ${result.numGolfers}`);
         this.isLoading = false;
