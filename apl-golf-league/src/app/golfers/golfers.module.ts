@@ -4,11 +4,13 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { GolferListComponent } from "./golfer-list/golfer-list.component";
+import { GolferHomeComponent } from './golfer-home/golfer-home.component';
 
 
 @NgModule({
   declarations: [
-    GolferListComponent
+    GolferListComponent,
+    GolferHomeComponent
   ],
   imports: [
     CommonModule,

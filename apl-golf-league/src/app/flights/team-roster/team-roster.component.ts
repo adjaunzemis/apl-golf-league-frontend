@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { TeamData } from '../../shared/team.model';
@@ -17,9 +18,13 @@ export class TeamRosterComponent implements OnInit {
 
   columnsToDisplay = ['name', 'role', 'division'];
   
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.playersData = new MatTableDataSource<PlayerData>(this.team.players);
+  }
+
+  selectPlayer(player: PlayerData): void {
+    this.router.navigate(['/golfers'], { queryParams: { id: player.player_id } }); // TODO: Change for golfer_id
   }
 }

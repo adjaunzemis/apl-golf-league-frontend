@@ -25,7 +25,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
     this.teamSub = this.flightsService.getTeamUpdateListener()
       .subscribe((result: TeamData) => {
-        console.log(`[TeamHomeComponent] Fetching team data`);
+        console.log(`[TeamHomeComponent] Received team data`);
         this.isLoading = false;
         this.team = result;
       });
