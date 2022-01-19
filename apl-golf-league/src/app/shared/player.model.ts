@@ -3,6 +3,7 @@ import { GolferStatistics } from "./golfer.model"
 export class PlayerData {
     player_id: number
     team_id: number
+    golfer_id: number
     golfer_name: string
     division_name: string
     flight_name?: string
