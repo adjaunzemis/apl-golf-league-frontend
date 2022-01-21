@@ -43,8 +43,10 @@
 .styled-table .label,
 .styled-table .total {
   width: 12.5%;
+  font-weight: bold;
 }
 
 .styled-table .hole {
   width: 8.333%;
+  font-weight: bold;
 }

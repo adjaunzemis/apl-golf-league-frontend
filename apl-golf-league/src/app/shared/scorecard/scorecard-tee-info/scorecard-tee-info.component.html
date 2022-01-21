@@ -1,22 +1,22 @@
 <table class="styled-table">
   <tbody>
-    <tr class="par">
-      <td class="label" [ngStyle]="{'background-color': color}">{{ name }} ({{ gender }}: {{ rating }}/{{ slope }})</td>
+    <tr class="par" (click)="toggleDetails()">
+      <td class="label" [ngStyle]="{'background-color': color}">Par</td>
       <td class="hole" *ngFor="let hole of holes">{{ hole.par }}</td>
       <td class="total">{{ totalPar }}</td>
     </tr>
-    <tr class="stroke-index">
+    <tr class="stroke-index" *ngIf="showDetails">
       <td class="label" [ngStyle]="{'background-color': color}">Hcp</td>
       <td class="hole" *ngFor="let hole of holes">{{ hole.stroke_index }}</td>
       <td class="total">--</td>
     </tr>
-    <tr class="yardage">
+    <tr class="yardage" *ngIf="showDetails">
       <td class="label" [ngStyle]="{'background-color': color}">Yds</td>
       <td class="hole" *ngFor="let hole of holes">
         <div *ngIf="hole.yardage">{{ hole.yardage }}</div>
         <div *ngIf="!hole.yardage">--</div>
       </td>
-      <td class="total">
+      <td class="total" *ngIf="showDetails">
         <div *ngIf="totalYardage !== 0">{{ totalYardage }}</div>
         <div *ngIf="totalYardage === 0">--</div>
       </td>

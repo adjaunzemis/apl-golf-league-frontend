@@ -1,8 +1,8 @@
 <table class="styled-table">
   <tbody>
     <tr class="score">
-      <td class="label">{{ round.golfer_name | titlecase }}</td>
-      <td class="hole" *ngFor="let holeScore of holeScores; let holeIdx = index">
+      <td class="label" rowspan="1">{{ round.golfer_name | titlecase }}</td>
+      <td class="hole" rowspan="2" *ngFor="let holeScore of holeScores; let holeIdx = index">
         <div class="handicap-strokes" [ngClass]="{'red-dot' : round.holes[holeIdx].handicap_strokes < 0, 'black-dot' : round.holes[holeIdx].handicap_strokes > 0}"></div>
         <div class="hole-score">
           <div [ngClass]="{'circle' : holeRelativeScores[holeIdx] < 0, 'square' : holeRelativeScores[holeIdx] > 0, 'crosshatch' : (holeRelativeScores[holeIdx] > 1) || (holeRelativeScores[holeIdx] < -1)}">
@@ -10,7 +10,10 @@
           </div>
         </div>
       </td>
-      <td class="total">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</td>
+      <td class="total" rowspan="2">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</td>
+    </tr>
+    <tr class="score">
+      <td class="detail" rowspan="1">{{ round.playing_handicap }} - {{ round.tee_name | titlecase }} ({{ round.tee_gender }}: {{ round.tee_rating }}/{{ round.tee_slope }})</td>
     </tr>
   </tbody>
 </table>

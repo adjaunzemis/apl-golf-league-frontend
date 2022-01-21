@@ -9,6 +9,8 @@ import { Hole } from "../../hole.model";
   styleUrls: ["./scorecard-tee-info.component.css"]
 })
 export class ScorecardTeeInfoComponent implements OnInit{
+  @Input() showDetails = false;
+
   @Input() holes: Hole[];
   @Input() holeResultData: HoleResultData[];
 
@@ -41,5 +43,9 @@ export class ScorecardTeeInfoComponent implements OnInit{
     this.totalYardage = this.holes.reduce(function(prev: number, cur: Hole) {
       return cur.yardage ? prev + cur.yardage : 0;
     }, 0);
+  }
+
+  toggleDetails(): void {
+    this.showDetails = !this.showDetails;
   }
 }
