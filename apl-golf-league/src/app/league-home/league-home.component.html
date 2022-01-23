@@ -1,5 +1,60 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%;">
-  <p>league-home works!</p>
+<div class="content">
+
+  <div class="card highlight-card card-small">
+    <span>Announcements</span>
+  </div>
+
+  <h1>APL Golf League</h1>
+
+  <h2>Flights</h2>
+
+  <div class="card-container">
+    <a class="card" routerLink="flights/{{ flight.id }}" *ngFor="let flight of flights">
+      <img src="assets/{{ flight.image }}" alt="{{ flight.name }}" width="50" height="50">
+
+      <span>{{ flight.name }} ({{ flight.year }})</span>
+
+      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </a>
+  </div>
+
+  <h2>Tournaments</h2>
+
+  <div class="card-container">
+    <a class="card" routerLink="tournaments" *ngFor="let tournament of tournaments">
+      <img src="assets/{{ tournament.image }}" alt="" width="50" height="50">
+
+      <span>{{ tournament.name }} ({{ tournament.year }})</span>
+
+      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </a>
+  </div>
+
+  <h2>Officers</h2>
+
+  <div class="card-container">
+    <div class="card card-small" routerLink="#" *ngFor="let officer of officers">
+      <span class="bold">{{ officer.title }}</span>
+      <span>{{ officer.name }}</span>
+    </div>
+  </div>
+
+  <h2>Helpful Links</h2>
+
+  <div class="card-container">
+    <a class="card card-small" routerLink="#">
+      <span>League Rules</span>
+
+      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+      </svg>
+    </a>
+  </div>
+
 </div>
