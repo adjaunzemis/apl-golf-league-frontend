@@ -52,6 +52,6 @@ export class FlightsHomeComponent implements OnInit, OnDestroy {
   }
 
   selectTeam(team: TeamData): void {
-    this.router.navigate(['/flights/team'], { queryParams: { id: team.team_id } });
+    this.router.navigate(['/flights/team'], { queryParams: { id: team.id } });
   }
 }

@@ -1,10 +1,18 @@
+import { Golfer, TeamGolferData } from "./golfer.model"
 import { MatchData } from "./match.model"
-import { PlayerData } from "./player.model"
 
-export class TeamData {
+export interface TeamData {
+    id: number
+    flight_id: number
+    name: string
+    golfers: Golfer[]
+    matches: MatchData[]
+}
+
+export interface TeamDataWithMatches {
     team_id: number
     flight_id: number
     name: string
-    players: PlayerData[]
+    golfers: TeamGolferData[]
     matches: MatchData[]
 }

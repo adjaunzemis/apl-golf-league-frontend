@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { TeamData } from '../../shared/team.model';
+import { TeamDataWithMatches } from '../../shared/team.model';
 import { GolferStatistics } from '../../shared/golfer.model';
 
 @Component({
@@ -11,7 +11,7 @@ import { GolferStatistics } from '../../shared/golfer.model';
 })
 export class TeamStatisticsComponent implements OnInit {
 
-  @Input() team: TeamData;
+  @Input() team: TeamDataWithMatches;
 
   statsData = new MatTableDataSource<GolferStatistics>();
 

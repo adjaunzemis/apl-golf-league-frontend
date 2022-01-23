@@ -1,5 +1,3 @@
-import { PlayerData } from "./player.model";
-
 export interface Golfer {
   id: number;
   name: string;
@@ -10,7 +8,18 @@ export interface GolferData {
   golfer_id: number;
   name: string;
   affiliation: string;
-  player_data?: PlayerData[];
+  team_golfer_data?: TeamGolferData[];
+}
+
+export class TeamGolferData {
+  team_id: number
+  golfer_id: number
+  golfer_name: string
+  division_name: string
+  flight_name: string
+  team_name: string
+  role: string
+  statistics?: GolferStatistics
 }
 
 export interface GolferStatistics {

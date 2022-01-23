@@ -18,12 +18,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let player of team.players">
-                <td>
-                  <span>{{ player.golfer_name }}</span>
-                  <span *ngIf="player.role == 'CAPTAIN'"> (C)</span>
-                </td>
-                <td>{{ player.division_name }}</td>
+              <tr *ngFor="let golfer of team.golfers">
+                <td>{{ golfer.name }}</td>
               </tr>
             </tbody>
           </table>

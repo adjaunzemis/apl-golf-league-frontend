@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { TeamData } from '../../shared/team.model';
+import { TeamDataWithMatches } from '../../shared/team.model';
 import { FlightsService } from '../flights.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   teamId: number;
 
-  team: TeamData;
+  team: TeamDataWithMatches;
   teamSub: Subscription;
 
   constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
@@ -24,7 +24,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.teamSub = this.flightsService.getTeamUpdateListener()
-      .subscribe((result: TeamData) => {
+      .subscribe((result: TeamDataWithMatches) => {
         console.log(`[TeamHomeComponent] Received team data`);
         this.isLoading = false;
         this.team = result;

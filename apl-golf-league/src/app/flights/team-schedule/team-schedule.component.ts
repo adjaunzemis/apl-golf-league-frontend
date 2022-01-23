@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { TeamData } from '../../shared/team.model';
+import { TeamDataWithMatches } from '../../shared/team.model';
 
 @Component({
   selector: 'app-team-schedule',
@@ -9,7 +9,7 @@ import { TeamData } from '../../shared/team.model';
 })
 export class TeamScheduleComponent {
 
-  @Input() team : TeamData;
+  @Input() team : TeamDataWithMatches;
 
   constructor() { }
 
