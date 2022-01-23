@@ -21,7 +21,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.flightSub = this.flightsService.getFlightUpdateListener()
       .subscribe(flightData => {
-          console.log(`[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=" + ${flightData.flight_id}`);
+          console.log(`[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.flight_id}`);
           this.flight = flightData;
           this.isLoading = false;
           console.log(flightData);
