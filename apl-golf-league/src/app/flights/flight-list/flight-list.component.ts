@@ -43,7 +43,7 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.flightsSub = this.flightsService.getFlightUpdateListener()
+    this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe((result: {flights: FlightData[], numFlights: number}) => {
         console.log(`[FlightListComponent] Displaying flights ${this.pageIndex * this.flightsPerPage + 1}-${this.pageIndex * this.flightsPerPage + result.flights.length} of ${result.numFlights}`);
         this.isLoading = false;
@@ -73,9 +73,9 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getFlightData(): void {
     if (this.year) {
-      this.flightsService.getFlights(this.pageIndex * this.flightsPerPage, this.flightsPerPage, this.year);
+      this.flightsService.getFlightsList(this.pageIndex * this.flightsPerPage, this.flightsPerPage, this.year);
     } else {
-      this.flightsService.getFlights(this.pageIndex * this.flightsPerPage, this.flightsPerPage);
+      this.flightsService.getFlightsList(this.pageIndex * this.flightsPerPage, this.flightsPerPage);
     }
   }
 

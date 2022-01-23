@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div class="content">
+<div class="content" *ngIf="!isLoading">
 
   <div class="card highlight-card card-small">
     <span>Announcements</span>
@@ -11,7 +11,7 @@
   <h2>Flights</h2>
 
   <div class="card-container">
-    <a class="card" routerLink="flights/{{ flight.id }}" *ngFor="let flight of flights">
+    <a class="card" routerLink="flight" [queryParams]="{id: flight.id}" *ngFor="let flight of flights">
       <img src="assets/{{ flight.image }}" alt="{{ flight.name }}" width="50" height="50">
 
       <span>{{ flight.name }} ({{ flight.year }})</span>
@@ -25,7 +25,7 @@
   <h2>Tournaments</h2>
 
   <div class="card-container">
-    <a class="card" routerLink="tournaments" *ngFor="let tournament of tournaments">
+    <a class="card" routerLink="tournaments" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
       <img src="assets/{{ tournament.image }}" alt="" width="50" height="50">
 
       <span>{{ tournament.name }} ({{ tournament.year }})</span>
@@ -39,7 +39,7 @@
   <h2>Officers</h2>
 
   <div class="card-container">
-    <div class="card card-small" routerLink="#" *ngFor="let officer of officers">
+    <div class="card card-small" *ngFor="let officer of officers">
       <span class="bold">{{ officer.title }}</span>
       <span>{{ officer.name }}</span>
     </div>

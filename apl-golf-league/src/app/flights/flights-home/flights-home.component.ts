@@ -6,6 +6,9 @@ import { FlightData } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
 import { TeamData } from '../../shared/team.model';
 
+/**
+ * @deprecated Replaced with individual FlightHomeComponents
+ */
 @Component({
   selector: 'app-flights-home',
   templateUrl: './flights-home.component.html',
@@ -24,7 +27,7 @@ export class FlightsHomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isLoading = true;
 
-    this.flightsSub = this.flightsService.getFlightUpdateListener()
+    this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe((result: {flights: FlightData[], numFlights: number}) => {
         console.log(`[FlightsHomeComponent] Fetching flight data`);
         this.isLoading = false;
@@ -48,7 +51,7 @@ export class FlightsHomeComponent implements OnInit, OnDestroy {
   }
 
   private getFlightData(): void {
-    this.flightsService.getFlights(0, 100, this.year);
+    this.flightsService.getFlightsList(0, 100, this.year);
   }
 
   selectTeam(team: TeamData): void {

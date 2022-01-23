@@ -11,15 +11,18 @@ import { environment } from './../../environments/environment';
   providedIn: "root"
 })
 export class FlightsService {
-  private flightsData: FlightData[] = []
-  private flightsDataUpdated = new Subject<{ numFlights: number, flights: FlightData[] }>();
+  private flightsList: FlightData[] = []
+  private flightsListUpdated = new Subject<{ numFlights: number, flights: FlightData[] }>();
+
+  private flightData: FlightData;
+  private flightDataUpdated = new Subject<FlightData>();
 
   private teamData: TeamDataWithMatches;
   private teamDataUpdated = new Subject<TeamDataWithMatches>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getFlights(offset: number, limit: number, year?: number): void {
+  getFlightsList(offset: number, limit: number, year?: number): void {
     let queryParams: string = `?`;
     if (year) {
       queryParams = `?year=${year}&`;
@@ -27,16 +30,28 @@ export class FlightsService {
     queryParams += `offset=${offset}&limit=${limit}`
     this.http.get<{ num_flights: number, flights: FlightData[] }>(environment.apiUrl + "flights/" + queryParams)
       .subscribe(result => {
-        this.flightsData = result.flights;
-        this.flightsDataUpdated.next({
+        this.flightsList = result.flights;
+        this.flightsListUpdated.next({
           numFlights: result.num_flights,
-          flights: [...this.flightsData]
+          flights: [...this.flightsList]
         });
       });
   }
 
-  getFlightUpdateListener(): Observable<{ flights: FlightData[], numFlights: number }> {
-    return this.flightsDataUpdated.asObservable();
+  getFlightsListUpdateListener(): Observable<{ flights: FlightData[], numFlights: number }> {
+    return this.flightsListUpdated.asObservable();
+  }
+
+  getFlight(id: number): void {
+    this.http.get<FlightData>(environment.apiUrl + `flights/${id}`)
+      .subscribe(result => {
+        this.flightData = result;
+        this.flightDataUpdated.next(result);
+      });
+  }
+
+  getFlightUpdateListener(): Observable<FlightData> {
+    return this.flightDataUpdated.asObservable();
   }
 
   getTeam(id: number): void {

@@ -1,6 +1,7 @@
 svg.material-icons {
   height: 24px;
   width: auto;
+  margin-left: 16px;
 }
 
 svg.material-icons path {

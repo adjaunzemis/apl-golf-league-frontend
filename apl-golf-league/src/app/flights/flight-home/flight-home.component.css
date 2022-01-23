@@ -1,0 +1,13 @@
+.team-card {
+  height: 160px;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.team-name {
+  font-weight: bold;
+  margin-right: 16px;
+}

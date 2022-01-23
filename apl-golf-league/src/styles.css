@@ -68,8 +68,7 @@ p {
   line-height: 24px;
 }
 
-.card img,
-.card span {
+.card img {
   margin-right: 16px;
 }
 
@@ -150,6 +149,7 @@ a:hover {
 /* Angular Material styling */
 mat-spinner {
     margin: auto;
+    margin-top: 36px;
 }
 
 /* Element styling */
