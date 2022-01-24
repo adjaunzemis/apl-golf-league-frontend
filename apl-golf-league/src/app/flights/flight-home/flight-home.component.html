@@ -1,7 +1,7 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content" *ngIf="!isLoading">
-  <h1>{{ flight.name }} Flight ({{ flight.year }})</h1>
+  <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
   <div class="card-container">
     <div class="card card-small">
@@ -12,11 +12,13 @@
 
   <h2>Standings</h2>
 
+  <app-flight-standings [flight]="flight"></app-flight-standings>
+
   <h2>Schedule</h2>
 
   <h2>Teams</h2>
 
-  <div class="card-container">
+  <div class="card-container team-list">
     <a class="card team-card" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
       <span class="bold">{{ team.name }}</span>
       <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
@@ -24,5 +26,11 @@
   </div>
 
   <h2>Statistics</h2>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Coming soon...</span>
+    </div>
+  </div>
 
 </div>
