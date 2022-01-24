@@ -12,7 +12,7 @@
 
   <div class="card-container">
     <a class="card" routerLink="flight" [queryParams]="{id: flight.id}" *ngFor="let flight of flights">
-      <img src="assets/{{ flight.image }}" alt="{{ flight.name }}" width="50" height="50">
+      <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" width="50" height="50">
 
       <span>{{ flight.name }} ({{ flight.year }})</span>
 
@@ -26,7 +26,7 @@
 
   <div class="card-container">
     <a class="card" routerLink="tournaments" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
-      <img src="assets/{{ tournament.image }}" alt="" width="50" height="50">
+      <img src="assets/{{ tournament.logo_url }}" alt="" width="50" height="50">
 
       <span>{{ tournament.name }} ({{ tournament.year }})</span>
 
