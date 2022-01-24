@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { TeamDataWithMatches } from '../../shared/team.model';
+import { MatchData } from '../../shared/match.model';
 import { FlightsService } from '../flights.service';
 
 @Component({
@@ -11,18 +12,19 @@ import { FlightsService } from '../flights.service';
   styleUrls: ['./team-home.component.css']
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
-  isLoading = false;
+  isLoading = true;
+  showScorecard = false;
 
   teamId: number;
 
   team: TeamDataWithMatches;
   teamSub: Subscription;
 
+  focusedMatch: MatchData;
+
   constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.isLoading = true;
-
     this.teamSub = this.flightsService.getTeamUpdateListener()
       .subscribe((result: TeamDataWithMatches) => {
         console.log(`[TeamHomeComponent] Received team data`);
@@ -48,5 +50,10 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   private getTeamData(): void {
     this.flightsService.getTeam(this.teamId);
+  }
+
+  focusMatch(match: MatchData) {
+    this.focusedMatch = match;
+    this.showScorecard = true;
   }
 }
