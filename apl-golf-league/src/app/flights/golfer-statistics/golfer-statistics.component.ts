@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { TeamDataWithMatches } from '../../shared/team.model';
+import { GolferData, TeamGolferData } from '../../shared/golfer.model';
 
 @Component({
-  selector: 'app-team-statistics',
-  templateUrl: './team-statistics.component.html',
-  styleUrls: ['./team-statistics.component.css']
+  selector: 'app-golfer-statistics',
+  templateUrl: './golfer-statistics.component.html',
+  styleUrls: ['./golfer-statistics.component.css']
 })
-export class TeamStatisticsComponent implements OnInit {
-  @Input() team: TeamDataWithMatches;
+export class GolferStatisticsComponent implements OnInit {
+  @Input() golfers: TeamGolferData[];
   @Input() hideEmptyColumns = false;
   columnsToDisplay = ['golfer_name', 'num_rounds', 'avg_gross_score', 'avg_net_score', 'num_holes', 'num_aces', 'num_albatrosses', 'num_eagles', 'num_birdies', 'num_pars', 'num_bogeys', 'num_double_bogeys', 'num_others']
 
@@ -30,7 +30,7 @@ export class TeamStatisticsComponent implements OnInit {
     let num_double_bogeys = 0;
     let num_others = 0;
 
-    for (let golfer of this.team.golfers) {
+    for (let golfer of this.golfers) {
       if (golfer.statistics) {
         num_aces += golfer.statistics.num_aces;
         num_albatrosses += golfer.statistics.num_albatrosses;

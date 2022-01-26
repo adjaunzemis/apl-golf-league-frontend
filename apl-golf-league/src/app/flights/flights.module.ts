@@ -9,7 +9,7 @@ import { FlightsHomeComponent } from './flights-home/flights-home.component';
 import { TeamHomeComponent } from "./team-home/team-home.component";
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { TeamRosterComponent } from './team-roster/team-roster.component';
-import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
+import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
 import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 
@@ -21,7 +21,7 @@ import { FlightStandingsComponent } from './flight-standings/flight-standings.co
     TeamHomeComponent,
     TeamScheduleComponent,
     TeamRosterComponent,
-    TeamStatisticsComponent,
+    GolferStatisticsComponent,
     FlightHomeComponent,
     FlightStandingsComponent
   ],
