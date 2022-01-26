@@ -53,14 +53,18 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   }
 
   focusMatch(match: MatchData) {
+    if (this.showScorecard && this.focusedMatch === match) {
+      this.showScorecard = false;
+      return;
+    }
     this.focusedMatch = match;
     this.showScorecard = true;
   }
 
   setMatchSelectorBackgroundColor(match: MatchData) {
-    if (this.focusedMatch === match) {
+    if (this.showScorecard && this.focusedMatch === match) {
       return '#b8cefd8c';
     }
-    return 'none';
+    return '#fafafa';
   }
 }

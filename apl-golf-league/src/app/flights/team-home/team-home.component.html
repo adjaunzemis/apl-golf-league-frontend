@@ -15,7 +15,7 @@
 
   <h2>Matches</h2>
 
-  <p *ngIf="!showScorecard">- select match to view scorecard -</p>
+  <p *ngIf="!showScorecard" style="font-style: italic;">Select a match to view scorecard</p>
 
   <div class="scorecard-container" *ngIf="showScorecard">
     <app-match-scorecard [match]="focusedMatch"></app-match-scorecard>
