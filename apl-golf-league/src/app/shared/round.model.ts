@@ -18,8 +18,8 @@ export interface RoundData {
   date_played: Date;
   round_type: string;
   golfer_name: string;
-  handicap_index: number;
-  playing_handicap: number;
+  golfer_handicap_index: number;
+  golfer_playing_handicap: number;
   team_name?: string;
   course_name: string;
   track_name: string;

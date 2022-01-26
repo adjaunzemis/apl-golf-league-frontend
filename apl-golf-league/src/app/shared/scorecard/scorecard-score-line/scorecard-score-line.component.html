@@ -12,8 +12,8 @@
       </td>
       <td class="total" rowspan="2">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</td>
     </tr>
-    <tr class="score">
-      <td class="detail" rowspan="1">{{ round.playing_handicap }} - {{ round.tee_name | titlecase }} ({{ round.tee_gender }}: {{ round.tee_rating }}/{{ round.tee_slope }})</td>
+    <tr>
+      <td class="detail" rowspan="1">{{ round.tee_name | titlecase }} - PH: {{ round.golfer_playing_handicap | number }}</td>
     </tr>
   </tbody>
 </table>
