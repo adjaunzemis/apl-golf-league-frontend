@@ -22,6 +22,7 @@ export interface RoundData {
   playing_handicap: number;
   team_name?: string;
   course_name: string;
+  track_name: string;
   tee_name: string;
   tee_gender: string;
   tee_rating: number;
