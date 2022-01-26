@@ -27,6 +27,8 @@ export interface GolferStatistics {
   num_holes: number;
   avg_gross_score: number;
   avg_net_score: number;
+  num_aces: number;
+  num_albatrosses: number;
   num_eagles: number;
   num_birdies: number;
   num_pars: number;

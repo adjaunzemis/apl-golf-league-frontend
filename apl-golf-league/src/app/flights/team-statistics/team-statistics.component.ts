@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 
 import { TeamDataWithMatches } from '../../shared/team.model';
-import { GolferStatistics } from '../../shared/golfer.model';
 
 @Component({
   selector: 'app-team-statistics',
@@ -10,16 +8,73 @@ import { GolferStatistics } from '../../shared/golfer.model';
   styleUrls: ['./team-statistics.component.css']
 })
 export class TeamStatisticsComponent implements OnInit {
-
   @Input() team: TeamDataWithMatches;
-
-  statsData = new MatTableDataSource<GolferStatistics>();
-
-  columnsToDisplay = ['golfer_name', 'num_rounds', 'avg_gross_score', 'avg_net_score', 'num_holes', 'num_eagles', 'num_birdies', 'num_pars', 'num_bogeys', 'num_double_bogeys', 'num_others']
+  @Input() hideEmptyColumns = false;
+  columnsToDisplay = ['golfer_name', 'num_rounds', 'avg_gross_score', 'avg_net_score', 'num_holes', 'num_aces', 'num_albatrosses', 'num_eagles', 'num_birdies', 'num_pars', 'num_bogeys', 'num_double_bogeys', 'num_others']
 
   constructor() { }
 
   ngOnInit(): void {
+    if (this.hideEmptyColumns) {
+      this.filterColumnsToDisplay();
+    }
+  }
+
+  private filterColumnsToDisplay() {
+    let num_aces = 0;
+    let num_albatrosses = 0;
+    let num_eagles = 0;
+    let num_birdies = 0;
+    let num_pars = 0;
+    let num_bogeys = 0;
+    let num_double_bogeys = 0;
+    let num_others = 0;
+
+    for (let golfer of this.team.golfers) {
+      if (golfer.statistics) {
+        num_aces += golfer.statistics.num_aces;
+        num_albatrosses += golfer.statistics.num_albatrosses;
+        num_eagles += golfer.statistics.num_eagles;
+        num_birdies += golfer.statistics.num_birdies;
+        num_pars += golfer.statistics.num_pars;
+        num_bogeys += golfer.statistics.num_bogeys;
+        num_double_bogeys += golfer.statistics.num_double_bogeys;
+        num_others += golfer.statistics.num_others;
+      }
+    }
+
+    if (num_aces == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_aces");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_albatrosses == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_albatrosses");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_eagles == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_eagles");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_birdies == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_birdies");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_pars == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_pars");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_bogeys == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_bogeys");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_double_bogeys == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_double_bogeys");
+      this.columnsToDisplay.splice(idx, 1);
+    }
+    if (num_others == 0) {
+      let idx = this.columnsToDisplay.indexOf("num_others");
+      this.columnsToDisplay.splice(idx, 1);
+    }
   }
 
 }

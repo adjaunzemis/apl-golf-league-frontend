@@ -24,6 +24,16 @@
         <td mat-cell *matCellDef="let player">{{ player.statistics.num_holes }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="num_aces">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Aces</th>
+      <td mat-cell *matCellDef="let player">{{ player.statistics.num_aces }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="num_albatrosses">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Albatrosses</th>
+      <td mat-cell *matCellDef="let player">{{ player.statistics.num_albatrosses }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="num_eagles">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Eagles</th>
         <td mat-cell *matCellDef="let player">{{ player.statistics.num_eagles }}</td>
@@ -45,7 +55,7 @@
     </ng-container>
 
     <ng-container matColumnDef="num_double_bogeys">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Double Bogeys</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>D. Bogeys</th>
         <td mat-cell *matCellDef="let player">{{ player.statistics.num_double_bogeys }}</td>
     </ng-container>
 
