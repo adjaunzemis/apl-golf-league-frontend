@@ -6,7 +6,7 @@
       <mat-button-toggle value="net">Net</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-action-row>
-  <app-scorecard-title-line [round]=match.rounds[0]></app-scorecard-title-line>
+  <app-scorecard-title-line [rounds]=match.rounds></app-scorecard-title-line>
   <app-scorecard-hole-line [holeResultData]=match.rounds[0].holes></app-scorecard-hole-line>
   <app-scorecard-tee-info [holeResultData]="match.rounds[0].holes"></app-scorecard-tee-info>
   <ng-container *ngFor="let round of match.rounds">

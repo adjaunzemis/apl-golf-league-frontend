@@ -6,7 +6,7 @@
       <mat-button-toggle value="net">Net</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-action-row>
-  <app-scorecard-title-line [round]=round></app-scorecard-title-line>
+  <app-scorecard-title-line [rounds]=round></app-scorecard-title-line>
   <app-scorecard-hole-line [holeResultData]="round.holes"></app-scorecard-hole-line>
   <app-scorecard-tee-info [holeResultData]="round.holes" [showDetails]="true"></app-scorecard-tee-info>
   <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode"></app-scorecard-score-line>
