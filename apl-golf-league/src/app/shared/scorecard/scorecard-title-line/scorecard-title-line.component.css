@@ -8,17 +8,6 @@
   vertical-align: center;
 }
 
-.styled-table thead tr {
-  background-color: #3f51b5;
-  color: #ffffff;
-  font-weight: bold;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 5px 5px;
-}
-
 .styled-table tbody tr {
   border-bottom: thin solid #dddddd;
 }
@@ -27,39 +16,32 @@
   border-top: 2px solid #3f51b5;
 }
 
-.styled-table tbody tr.hole,
-.styled-table tbody tr.par {
-  height: 25px;
-  background-color: #f3f3f3;
-  color: black;
-}
-
-.styled-table .label,
-.styled-table .total {
-  width: 12.5%;
-}
-
-.styled-table .hole {
-  width: 8.333%;
-}
-
 .styled-table .info {
-  width: 60%;
   text-align: left;
-  font-size: 16px;
-  padding-left: 16px;
-  padding-bottom: 4px;
-}
-
-.styled-table .date {
-  width: 40%;
-  text-align: right;
-}
-
-.info {
-  width: 100%;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   padding-left: 16px;
   padding-bottom: 4px;
+}
+
+.styled-table .tee-list {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding-right: 8px;
+}
+
+.tee-card {
+  height: 8px;
+  width: 48px;
+  margin: 2px 4px 2px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.tee-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
 }
