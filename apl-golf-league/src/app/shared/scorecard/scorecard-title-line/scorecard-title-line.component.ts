@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import { RoundData } from '../../round.model';
 
@@ -9,6 +9,9 @@ import { RoundData } from '../../round.model';
 })
 export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData | RoundData[];
+
+  @Input() selectedTeeRoundIdx!: number;
+  @Output() selectedTeeRoundIdxChange = new EventEmitter<number>();
 
   course_name: string;
   track_name: string;
@@ -23,15 +26,38 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
     this.setRoundInfo();
     this.setTeeList();
 
-    this.selectedTee = this.tees[0];
+    if (!this.selectedTee) {
+      this.selectedTee = this.tees[0];
+    }
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.ngOnInit();
+    if (changes['rounds']) {
+      this.selectedTee = this.tees[0];
+      this.selectedTeeRoundIdxChange.emit(0); // TODO: fix NG0100 error
+    }
+  }
+
+  selectTee(tee: TeeInfo): void {
+    this.selectedTee = tee;
+
+    // Find a matching round for displaying tee details
+    let roundIdx = -1;
+    if (this.rounds instanceof Array) {
+      for (let rIdx = 0; rIdx < this.rounds.length; rIdx++) {
+        const round = this.rounds[rIdx];
+        if ((round.tee_name === tee.name) && (round.tee_gender == tee.gender)) {
+          roundIdx = rIdx;
+          break;
+        }
+      }
+    }
+    this.selectedTeeRoundIdxChange.emit(roundIdx);
   }
 
   setTeeSelectorBackgroundColor(tee: TeeInfo): string {
-    if (this.selectedTee === tee) {
+    if ((this.selectedTee.name === tee.name) && (this.selectedTee.gender == tee.gender)) {
       return '#b8cefd8c';
     }
     return '#fafafa';

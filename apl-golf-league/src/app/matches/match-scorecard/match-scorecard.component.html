@@ -6,9 +6,9 @@
       <mat-button-toggle value="net">Net</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-action-row>
-  <app-scorecard-title-line [rounds]="match.rounds"></app-scorecard-title-line>
-  <app-scorecard-hole-line [holeResultData]="match.rounds[0].holes"></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holeResultData]="match.rounds[0].holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-title-line [rounds]="match.rounds" [(selectedTeeRoundIdx)]="roundIdx"></app-scorecard-title-line>
+  <app-scorecard-hole-line [holeResultData]="match.rounds[roundIdx].holes"></app-scorecard-hole-line>
+  <app-scorecard-tee-info [holeResultData]="match.rounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
   <ng-container *ngFor="let round of match.rounds">
     <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngIf="round.team_id === match.home_team_id"></app-scorecard-score-line>
   </ng-container>

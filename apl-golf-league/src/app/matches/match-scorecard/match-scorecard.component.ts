@@ -11,6 +11,8 @@ export class MatchScorecardComponent {
   @Input() match: MatchData;
   scoreMode: string = "gross";
 
+  roundIdx: number = 0;
+
   onScoreModeChanged(scoreMode: string): void {
     this.scoreMode = scoreMode;
   }

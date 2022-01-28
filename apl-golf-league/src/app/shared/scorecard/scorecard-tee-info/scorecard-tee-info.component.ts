@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
 import { HoleResultData } from "../../hole-result.model";
 import { Hole } from "../../hole.model";
@@ -8,10 +8,10 @@ import { Hole } from "../../hole.model";
   templateUrl: "./scorecard-tee-info.component.html",
   styleUrls: ["./scorecard-tee-info.component.css"]
 })
-export class ScorecardTeeInfoComponent implements OnInit{
+export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
   @Input() showDetails = false;
 
-  @Input() holes: Hole[];
+  @Input() holes: Hole[] = [];
   @Input() holeResultData: HoleResultData[];
 
   @Input() name: string;
@@ -24,7 +24,7 @@ export class ScorecardTeeInfoComponent implements OnInit{
   totalYardage: number = 0;
 
   ngOnInit(): void {
-    if (!this.holes) {
+    if (this.holes.length == 0) {
       this.holes = this.holeResultData.map(function(holeResult: HoleResultData, index: number, array: HoleResultData[]) {
         return {
           id: holeResult.hole_id,
@@ -43,6 +43,13 @@ export class ScorecardTeeInfoComponent implements OnInit{
     this.totalYardage = this.holes.reduce(function(prev: number, cur: Hole) {
       return cur.yardage ? prev + cur.yardage : 0;
     }, 0);
+  }
+
+  ngOnChanges(): void {
+    if (this.holeResultData) {
+      this.holes = [];
+    }
+    this.ngOnInit();
   }
 
   toggleDetails(): void {
