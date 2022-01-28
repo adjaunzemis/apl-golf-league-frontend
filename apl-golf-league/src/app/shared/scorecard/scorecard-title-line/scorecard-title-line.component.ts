@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { RoundData } from '../../round.model';
 
@@ -7,21 +7,27 @@ import { RoundData } from '../../round.model';
   templateUrl: './scorecard-title-line.component.html',
   styleUrls: ['./scorecard-title-line.component.css']
 })
-export class ScorecardTitleLineComponent implements OnInit {
+export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData | RoundData[];
 
   course_name: string;
   track_name: string;
   date_played: Date;
 
-  tees: TeeInfo[] = [];
+  tees: TeeInfo[];
 
   constructor() { }
 
   ngOnInit(): void {
-    // TODO: Fix non-reloading when switching between rounds (e.g. team homepage)
-    
-    // Get general round info from first round
+    this.setRoundInfo();
+    this.setTeeList();
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
+  }
+
+  private setRoundInfo(): void {
     let firstRound: RoundData;
     if (this.rounds instanceof Array) {
       firstRound = this.rounds[0];
@@ -31,8 +37,10 @@ export class ScorecardTitleLineComponent implements OnInit {
     this.course_name = firstRound.course_name;
     this.track_name = firstRound.track_name;
     this.date_played = firstRound.date_played;
+  }
 
-    // Get unique tee info from rounds
+  private setTeeList(): void {
+    this.tees = [];
     if (this.rounds instanceof Array) {
       for (let round of this.rounds) {
         const tee = {
@@ -51,7 +59,6 @@ export class ScorecardTitleLineComponent implements OnInit {
     }
     console.log(this.tees);
   }
-
 }
 
 interface TeeInfo {
