@@ -50,14 +50,18 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
           slope: round.tee_slope,
           color: round.tee_color
         };
+        this.tees.push(tee)
 
-        // TODO: Fix duplicates in tee info list
-        if (!this.tees.includes(tee)) {
-          this.tees.push(tee);
-        }
+        // Remove duplicate tees
+        this.tees = this.tees.reduce((tees: TeeInfo[], current: TeeInfo) => {
+          const teeIdx = tees.find(item => (item.name === current.name && item.gender === current.gender));
+          if (!teeIdx) {
+            return tees.concat([current]);
+          }
+          return tees;
+        }, []);
       }
     }
-    console.log(this.tees);
   }
 }
 
