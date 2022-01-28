@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { HoleResultData } from '../../hole-result.model';
 import { Hole } from '../../hole.model';
@@ -8,14 +8,14 @@ import { Hole } from '../../hole.model';
   templateUrl: "./scorecard-hole-line.component.html",
   styleUrls: ["./scorecard-hole-line.component.css"]
 })
-export class ScorecardHoleLineComponent implements OnInit {
+export class ScorecardHoleLineComponent implements OnInit, OnChanges {
   @Input() title = "";
 
-  @Input() holes: Hole[];
+  @Input() holes: Hole[] = [];
   @Input() holeResultData: HoleResultData[];
 
   ngOnInit(): void {
-    if (!this.holes) {
+    if (this.holes.length === 0) {
       this.holes = this.holeResultData.map(function(holeResult: HoleResultData, index: number, array: HoleResultData[]) {
         return {
           id: holeResult.hole_id,
@@ -26,5 +26,12 @@ export class ScorecardHoleLineComponent implements OnInit {
         };
       });
     }
+  }
+
+  ngOnChanges(): void {
+    if (this.holeResultData) {
+      this.holes = [];
+    }
+    this.ngOnInit();
   }
 }
