@@ -4,10 +4,10 @@
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
   <div class="card-container">
-    <div class="card card-small">
+    <a class="card card-small" *ngIf="flight.secretary">
       <span class="bold">Flight Secretary</span>
-      <span>-Flight Secretary Name-</span>
-    </div>
+      <span>{{ flight.secretary }}</span>
+    </a>
   </div>
 
   <h2>Standings</h2>

@@ -7,6 +7,8 @@ export class FlightData {
     year: number
     name: string
     logo_url: string
+    secretary?: string
+    secretary_contact?: string
     home_course_name?: string
     divisions?: DivisionData[]
     teams?: TeamData[]
