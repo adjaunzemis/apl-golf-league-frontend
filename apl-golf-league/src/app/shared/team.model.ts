@@ -11,7 +11,6 @@ export interface TeamData {
 
 export interface TeamDataWithMatches {
     team_id: number
-    flight_id: number
     name: string
     golfers: TeamGolferData[]
     matches: MatchData[]
