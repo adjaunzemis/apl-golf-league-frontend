@@ -54,8 +54,9 @@ export class FlightsService {
     return this.flightDataUpdated.asObservable();
   }
 
+  // TODO: Move team routes to own service
   getTeam(id: number): void {
-    this.http.get<TeamDataWithMatches>(environment.apiUrl + `flights/teams/${id}`)
+    this.http.get<TeamDataWithMatches>(environment.apiUrl + `teams/${id}`)
       .subscribe(result => {
         this.teamData = result;
         this.teamDataUpdated.next(result);
