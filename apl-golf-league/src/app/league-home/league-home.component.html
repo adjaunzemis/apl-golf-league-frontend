@@ -1,6 +1,4 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
-
-<div class="content" *ngIf="!isLoading">
+<div class="content">
 
   <div class="card highlight-card card-small">
     <span>Announcements</span>
@@ -10,7 +8,9 @@
 
   <h2>Flights</h2>
 
-  <div class="card-container">
+  <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
+
+  <div class="card-container" *ngIf="!isLoadingFlights">
     <a class="card" routerLink="flight" [queryParams]="{id: flight.id}" *ngFor="let flight of flights">
       <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="50" *ngIf="flight.logo_url">
 
@@ -24,7 +24,9 @@
 
   <h2>Tournaments</h2>
 
-  <div class="card-container">
+  <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
+
+  <div class="card-container" *ngIf="!isLoadingTournaments">
     <a class="card" routerLink="tournaments" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
       <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="50" *ngIf="tournament.logo_url">
 

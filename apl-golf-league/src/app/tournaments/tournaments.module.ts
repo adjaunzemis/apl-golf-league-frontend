@@ -1,0 +1,19 @@
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+
+import { AngularMaterialModule } from "../angular-material.module";
+import { TournamentHomeComponent } from './tournament-home/tournament-home.component';
+
+
+@NgModule({
+  declarations: [
+    TournamentHomeComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    AngularMaterialModule
+  ]
+})
+export class TournamentsModule {}

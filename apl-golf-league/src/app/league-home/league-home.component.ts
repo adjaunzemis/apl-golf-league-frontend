@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { FlightsService } from '../flights/flights.service';
+import { TournamentsService } from '../tournaments/tournaments.service';
 
 @Component({
   selector: 'app-league-home',
@@ -9,20 +10,13 @@ import { FlightsService } from '../flights/flights.service';
   styleUrls: ['./league-home.component.css']
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
-  isLoading = true;
-
+  isLoadingFlights = true;
   flights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
-  // TODO: Replace placeholder tournament info with database query
-  tournaments: TournamentInfo[] = [
-    { id: 1, name: "Maryland National", year: 2021, logo_url: "", course: "Maryland National GC"},
-    { id: 2, name: "Lake Presidential", year: 2021, logo_url: "", course: "Lake Presidential GC"},
-    { id: 3, name: "Down in the Valley", year: 2021, logo_url: "", course: "Turf Valley GC"},
-    { id: 4, name: "Grab Your Guns", year: 2021, logo_url: "", course: "Musket Ridge GC"},
-    { id: 5, name: "Ryder Cup", year: 2021, logo_url: "", course: "South Hills GC"},
-    { id: 6, name: "Banquet Tournament", year: 2021, logo_url: "", course: "Woodlands GC"}
-  ];
+  isLoadingTournaments = true;
+  tournaments: TournamentInfo[] = [];
+  private tournamentsSub: Subscription;
 
   // TODO: Replace placeholder officer info with database query
   officers: OfficerInfo[] = [
@@ -32,28 +26,47 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     { name: "Andris Jaunzemis", title: "Handicapper", email: "#" }
   ]
 
-  constructor(private flightsService: FlightsService) { }
+  constructor(private flightsService: FlightsService, private tournamentsService: TournamentsService) { }
 
   ngOnInit(): void {
     // TODO: make FlightInfo-specific route
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
-          console.log(`[LeagueHomeComponent] Received flight list`);
+          console.log(`[LeagueHomeComponent] Received flights list`);
           for (let flight of result.flights) {
             this.flights.push({
               id: flight.flight_id,
               name: flight.name,
               year: flight.year,
               logo_url: flight.logo_url
-            })
+            });
           }
-          this.isLoading = false;
+          this.isLoadingFlights = false;
       });
+
+    // TODO: make TournamentInfo-specific route
+    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
+      .subscribe(result => {
+        console.log(`[LeagueHomeComponent] Received tournaments list`);
+        for (let tournament of result.tournaments) {
+          this.tournaments.push({
+            id: tournament.tournament_id,
+            name: tournament.name,
+            year: tournament.year,
+            course: tournament.course_name,
+            logo_url: tournament.logo_url
+          });
+          this.isLoadingTournaments = false;
+        }
+      });
+      
     this.flightsService.getFlightsList(0, 100);
+    this.tournamentsService.getTournamentsList(0, 100);
   }
 
   ngOnDestroy(): void {
       this.flightsSub.unsubscribe();
+      this.tournamentsSub.unsubscribe
   }
 
 }
@@ -62,7 +75,7 @@ interface FlightInfo {
   id: number
   name: string
   year: number
-  logo_url: string
+  logo_url?: string
 }
 
 interface TournamentInfo {
@@ -70,7 +83,7 @@ interface TournamentInfo {
   name: string
   year: number
   course: string
-  logo_url: string
+  logo_url?: string
 }
 
 interface OfficerInfo {
