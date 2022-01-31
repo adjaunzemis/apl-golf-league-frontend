@@ -4,6 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { LeagueHomeComponent } from "./league-home/league-home.component";
 import { FlightsHomeComponent } from "./flights/flights-home/flights-home.component";
 import { FlightHomeComponent } from "./flights/flight-home/flight-home.component";
+import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from "./flights/team-home/team-home.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: "flight", component: FlightHomeComponent},
   { path: "flights", component: FlightsHomeComponent },
   { path: "flight/team", component: TeamHomeComponent },
+  { path: "tournament", component: TournamentHomeComponent },
   { path: "golfers", component: GolferHomeComponent },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
