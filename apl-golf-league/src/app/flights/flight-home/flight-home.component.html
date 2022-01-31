@@ -8,6 +8,18 @@
       <span class="bold">Flight Secretary</span>
       <span>{{ flight.secretary }}</span>
     </a>
+
+    <div class="card card-small" *ngIf="flight.home_course_name">
+      <span class="bold">Course</span>
+      <span>{{ flight.home_course_name }}</span>
+    </div>
+  </div>
+
+  <div class="card-container division-list">
+    <div class="card division-card" *ngFor="let division of flight.divisions">
+      <span class="bold">{{ division.name }} - {{ division.tee_name }}</span>
+      <span>{{ division.track_name }}: {{ division.tee_rating }} / {{ division.tee_slope }}</span>
+    </div>
   </div>
 
   <h2>Standings</h2>
