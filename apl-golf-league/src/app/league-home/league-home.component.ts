@@ -16,12 +16,12 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
 
   // TODO: Replace placeholder tournament info with database query
   tournaments: TournamentInfo[] = [
-    { id: 1, name: "Maryland National", year: 2021, logo_url: "#", course: "Maryland National GC"},
-    { id: 2, name: "Lake Presidential", year: 2021, logo_url: "#", course: "Lake Presidential GC"},
-    { id: 3, name: "Down in the Valley", year: 2021, logo_url: "#", course: "Turf Valley GC"},
-    { id: 4, name: "Grab Your Guns", year: 2021, logo_url: "#", course: "Musket Ridge GC"},
-    { id: 5, name: "Ryder Cup", year: 2021, logo_url: "#", course: "South Hills GC"},
-    { id: 6, name: "Banquet Tournament", year: 2021, logo_url: "#", course: "Woodlands GC"}
+    { id: 1, name: "Maryland National", year: 2021, logo_url: "", course: "Maryland National GC"},
+    { id: 2, name: "Lake Presidential", year: 2021, logo_url: "", course: "Lake Presidential GC"},
+    { id: 3, name: "Down in the Valley", year: 2021, logo_url: "", course: "Turf Valley GC"},
+    { id: 4, name: "Grab Your Guns", year: 2021, logo_url: "", course: "Musket Ridge GC"},
+    { id: 5, name: "Ryder Cup", year: 2021, logo_url: "", course: "South Hills GC"},
+    { id: 6, name: "Banquet Tournament", year: 2021, logo_url: "", course: "Woodlands GC"}
   ];
 
   // TODO: Replace placeholder officer info with database query
