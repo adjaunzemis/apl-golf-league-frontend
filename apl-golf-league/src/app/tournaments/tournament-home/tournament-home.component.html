@@ -8,6 +8,19 @@
       <span class="bold">Tournament Secretary</span>
       <span>{{ tournament.secretary }}</span>
     </a>
+
+    <div class="card card-small">
+      <span class="bold">Course</span>
+      <span>{{ tournament.course_name }}</span>
+    </div>
+  </div>
+  
+  <div class="card-container division-list">
+    <div class="card division-card" *ngFor="let division of tournament.divisions">
+      <span class="bold">{{ division.name }}</span>
+      <span>Front: {{ division.primary_tee_rating }} / {{ division.primary_tee_slope }}</span>
+      <span>Back: {{ division.secondary_tee_rating }} / {{ division.secondary_tee_slope }}</span>
+    </div>
   </div>
 
   <h2>Standings</h2>
