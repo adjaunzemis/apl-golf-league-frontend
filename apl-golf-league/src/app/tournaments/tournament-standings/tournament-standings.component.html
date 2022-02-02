@@ -1,0 +1,18 @@
+<div class="card standings-card">
+  <table>
+    <tr>
+      <th>Pos</th>
+      <th>Name</th>
+      <th>Gross</th>
+      <th>Hcp</th>
+      <th>Net</th>
+    </tr>
+    <tr *ngFor="let golferName of orderedGolferNames, let idx = index">
+      <td>{{ idx + 1 }}</td>
+      <td>{{ getGolferName(golferName) }}</td>
+      <td>{{ getGrossScore(golferName) | number : '1.1-1' }}</td>
+      <td>{{ getGolferPlayingHandicap(golferName) | number : '1.0-0' }}</td>
+      <td class="bold">{{ getNetScore(golferName) | number : '1.2-2' }}</td>
+    </tr>
+  </table>
+</div>

@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { TournamentData } from '../../shared/tournament.model';
 import { TournamentsService } from '../tournaments.service';
+import { TournamentData } from '../../shared/tournament.model';
+import { RoundData } from '../../shared/round.model';
 
 @Component({
   selector: 'app-tournament-home',
@@ -16,6 +17,8 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   tournament: TournamentData;
   private tournamentSub: Subscription;
 
+  rounds: RoundData[] = [];
+
   constructor(private tournamentsService: TournamentsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -23,6 +26,7 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
       .subscribe(tournamentData => {
           console.log(`[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.tournament_id}`);
           this.tournament = tournamentData;
+          this.compileRoundData();
           this.isLoading = false;
           console.log(tournamentData);
       });
@@ -39,6 +43,16 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
       this.tournamentSub.unsubscribe();
+  }
+
+  private compileRoundData(): void {
+    for (let team of this.tournament.teams) {
+      if (team.rounds) {
+        for (let round of team.rounds) {
+          this.rounds.push(round);
+        }
+      }
+    }
   }
 
 }

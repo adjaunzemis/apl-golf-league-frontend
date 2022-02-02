@@ -35,7 +35,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       if (params) {
         if (params.id) {
-          console.log("[TeamHomeComponent] Setting query parameter id=" + params.id);
+          console.log(`[TeamHomeComponent] Setting query parameter id=${params.id}`);
           this.teamId = params.id;
         }
       }

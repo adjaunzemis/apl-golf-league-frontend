@@ -4,11 +4,13 @@ import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "../angular-material.module";
 import { TournamentHomeComponent } from './tournament-home/tournament-home.component';
+import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
 
 
 @NgModule({
   declarations: [
-    TournamentHomeComponent
+    TournamentHomeComponent,
+    TournamentStandingsComponent
   ],
   imports: [
     CommonModule,

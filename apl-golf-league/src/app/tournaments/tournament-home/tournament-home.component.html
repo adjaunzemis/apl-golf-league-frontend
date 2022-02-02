@@ -25,9 +25,9 @@
 
   <h2>Standings</h2>
 
-  <div class="card-container">
+  <div class="card-container" *ngIf="rounds">
     <div class="card card-small">
-      <span class="bold">Coming soon...</span>
+      <app-tournament-standings [rounds]=rounds></app-tournament-standings>
     </div>
   </div>
 
