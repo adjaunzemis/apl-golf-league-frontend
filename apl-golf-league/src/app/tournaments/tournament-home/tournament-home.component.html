@@ -25,11 +25,7 @@
 
   <h2>Standings</h2>
 
-  <div class="card-container" *ngIf="rounds">
-    <div class="card card-small">
-      <app-tournament-standings [rounds]=rounds></app-tournament-standings>
-    </div>
-  </div>
+  <app-tournament-standings [rounds]=rounds></app-tournament-standings>
 
   <h2>Teams</h2>
 

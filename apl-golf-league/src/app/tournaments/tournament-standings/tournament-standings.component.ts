@@ -10,6 +10,9 @@ import { RoundData } from '../../shared/round.model';
 export class TournamentStandingsComponent implements OnInit {
   @Input() rounds: RoundData[];
 
+  scoreOptions = ["Individual Gross", "Individual Net", "Team Gross", "Team Net"]
+  selectedScoreOption: string = "";
+
   golferStandingsData: { [golfer_name : string] : TournamentGolferStandingsData } = {};
   orderedGolferNames: string[] = [];
 
@@ -20,9 +23,9 @@ export class TournamentStandingsComponent implements OnInit {
       if (!this.golferStandingsData[round.golfer_name]) {
         this.golferStandingsData[round.golfer_name] = new TournamentGolferStandingsData();
         this.golferStandingsData[round.golfer_name].golfer_name = round.golfer_name;
+        this.golferStandingsData[round.golfer_name].golfer_playing_handicap = round.golfer_playing_handicap;
         this.orderedGolferNames.push(round.golfer_name);
       }
-      this.golferStandingsData[round.golfer_name].golfer_playing_handicap += round.golfer_playing_handicap;
       this.golferStandingsData[round.golfer_name].gross_score += round.gross_score;
       this.golferStandingsData[round.golfer_name].net_score += round.net_score;
     }
@@ -42,6 +45,14 @@ export class TournamentStandingsComponent implements OnInit {
 
   getNetScore(golferName: string): number {
     return this.golferStandingsData[golferName].net_score;
+  }
+
+  toggleScoreOption(option: string): void {
+    if (this.selectedScoreOption === option) {
+      this.selectedScoreOption = "";
+      return;
+    }
+    this.selectedScoreOption = option;
   }
 
 }
