@@ -95,7 +95,7 @@ p {
 a,
 a:visited,
 a:hover {
-  color: #1976d2;
+  color: rgb(37, 37, 37);
   text-decoration: none;
 }
 
