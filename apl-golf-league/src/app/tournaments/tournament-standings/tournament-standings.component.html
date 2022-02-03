@@ -12,12 +12,12 @@
         <th>Hcp</th>
         <th>Net</th>
       </tr>
-      <tr *ngFor="let golferName of orderedGolferNames, let idx = index">
-        <td>{{ idx + 1 }}</td>
-        <td>{{ getGolferName(golferName) }}</td>
-        <td>{{ getGrossScore(golferName) | number : '1.0-0' }}</td>
-        <td>{{ getGolferPlayingHandicap(golferName) | number : '1.0-0' }}</td>
-        <td class="bold">{{ getNetScore(golferName) | number : '1.0-0' }}</td>
+      <tr *ngFor="let data of individualStandingsData">
+        <td>{{ data.position }}</td>
+        <td>{{ data.name }}</td>
+        <td [ngClass]="selectedScoreOption === 'Individual Gross' ? 'bold' : ''">{{ data.grossScore | number : '1.0-0' }}</td>
+        <td>{{ data.playingHandicap | number : '1.0-0' }}</td>
+        <td [ngClass]="selectedScoreOption === 'Individual Net' ? 'bold' : ''">{{ data.netScore | number : '1.0-0' }}</td>
       </tr>
     </table>
   </div>

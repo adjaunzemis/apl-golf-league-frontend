@@ -13,38 +13,31 @@ export class TournamentStandingsComponent implements OnInit {
   scoreOptions = ["Individual Gross", "Individual Net", "Team Gross", "Team Net"]
   selectedScoreOption: string = "";
 
-  golferStandingsData: { [golfer_name : string] : TournamentGolferStandingsData } = {};
-  orderedGolferNames: string[] = [];
+  individualStandingsData: { name: string, playingHandicap: number, grossScore: number, netScore: number, position: string }[]
 
   constructor() { }
 
   ngOnInit(): void {
+    this.individualStandingsData = [];
     for (let round of this.rounds) {
-      if (!this.golferStandingsData[round.golfer_name]) {
-        this.golferStandingsData[round.golfer_name] = new TournamentGolferStandingsData();
-        this.golferStandingsData[round.golfer_name].golfer_name = round.golfer_name;
-        this.golferStandingsData[round.golfer_name].golfer_playing_handicap = round.golfer_playing_handicap;
-        this.orderedGolferNames.push(round.golfer_name);
+      let roundAdded = false;
+      for (let data of this.individualStandingsData) {
+        if (data.name === round.golfer_name) {
+          data.grossScore += round.gross_score;
+          data.netScore += round.net_score;
+          roundAdded = true;
+        }
       }
-      this.golferStandingsData[round.golfer_name].gross_score += round.gross_score;
-      this.golferStandingsData[round.golfer_name].net_score += round.net_score;
+      if (!roundAdded) {
+        this.individualStandingsData.push({
+          name: round.golfer_name,
+          playingHandicap: round.golfer_playing_handicap,
+          grossScore: round.gross_score,
+          netScore: round.net_score,
+          position: ""
+        });
+      }
     }
-  }
-
-  getGolferName(golferName: string): string {
-    return this.golferStandingsData[golferName].golfer_name;
-  }
-
-  getGolferPlayingHandicap(golferName: string): number {
-    return this.golferStandingsData[golferName].golfer_playing_handicap;
-  }
-
-  getGrossScore(golferName: string): number {
-    return this.golferStandingsData[golferName].gross_score;
-  }
-
-  getNetScore(golferName: string): number {
-    return this.golferStandingsData[golferName].net_score;
   }
 
   toggleScoreOption(option: string): void {
@@ -53,13 +46,43 @@ export class TournamentStandingsComponent implements OnInit {
       return;
     }
     this.selectedScoreOption = option;
+
+    // Sort standings data
+    if (option == "Individual Gross") {
+      this.sortIndividualStandingsDataByGrossScore();
+    } else if (option == "Individual Net") {
+      this.sortIndividualStandingsDataByNetScore();
+    }
   }
 
-}
+  private sortIndividualStandingsDataByGrossScore() {
+    this.individualStandingsData.sort(function(a, b) {
+      return a.grossScore - b.grossScore;
+    });
 
-class TournamentGolferStandingsData {
-  golfer_name: string;
-  golfer_playing_handicap: number = 0;
-  gross_score: number = 0;
-  net_score: number = 0;
+    this.individualStandingsData[0].position = "1";
+    for (let idx = 1; idx < this.individualStandingsData.length; idx++) {
+      if (this.individualStandingsData[idx].grossScore != this.individualStandingsData[idx-1].grossScore) {
+        this.individualStandingsData[idx].position = (idx + 1).toString();
+      } else {
+        this.individualStandingsData[idx].position = "";
+      }
+    }
+  }
+
+  private sortIndividualStandingsDataByNetScore() {
+    this.individualStandingsData.sort(function(a, b) {
+      return a.netScore - b.netScore;
+    });
+
+    this.individualStandingsData[0].position = "1";
+    for (let idx = 1; idx < this.individualStandingsData.length; idx++) {
+      if (this.individualStandingsData[idx].netScore != this.individualStandingsData[idx-1].netScore) {
+        this.individualStandingsData[idx].position = (idx + 1).toString();
+      } else {
+        this.individualStandingsData[idx].position = "";
+      }
+    }
+  }
+
 }
