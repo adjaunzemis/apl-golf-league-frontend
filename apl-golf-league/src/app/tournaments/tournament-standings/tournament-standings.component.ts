@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { RoundData } from '../../shared/round.model';
+import { TournamentTeamData } from '../../shared/team.model';
 
 @Component({
   selector: 'app-tournament-standings',
@@ -8,16 +9,20 @@ import { RoundData } from '../../shared/round.model';
   styleUrls: ['./tournament-standings.component.css']
 })
 export class TournamentStandingsComponent implements OnInit {
-  @Input() rounds: RoundData[];
+  @Input() teamData: TournamentTeamData[];
+  private rounds: RoundData[];
 
   scoreOptions = ["Individual Gross", "Individual Net", "Team Gross", "Team Net"]
   selectedScoreOption: string = "";
 
   individualStandingsData: { name: string, playingHandicap: number, grossScore: number, netScore: number, position: string }[]
+  teamStandingsData: { name: string, grossScore: number, netScore: number, position: string }[]
 
   constructor() { }
 
   ngOnInit(): void {
+    this.compileRoundData();
+
     this.individualStandingsData = [];
     for (let round of this.rounds) {
       let roundAdded = false;
@@ -52,6 +57,17 @@ export class TournamentStandingsComponent implements OnInit {
       this.sortIndividualStandingsDataByGrossScore();
     } else if (option == "Individual Net") {
       this.sortIndividualStandingsDataByNetScore();
+    }
+  }
+
+  private compileRoundData(): void {
+    this.rounds = [];
+    for (let team of this.teamData) {
+      if (team.rounds) {
+        for (let round of team.rounds) {
+          this.rounds.push(round);
+        }
+      }
     }
   }
 

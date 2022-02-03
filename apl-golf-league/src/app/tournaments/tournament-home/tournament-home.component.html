@@ -25,9 +25,11 @@
 
   <h2>Standings</h2>
 
-  <app-tournament-standings [rounds]=rounds></app-tournament-standings>
+  <app-tournament-standings [teamData]="tournament.teams"></app-tournament-standings>
 
   <h2>Teams</h2>
+
+  <p class="italic">Select a team to view scorecards</p>
 
   <div class="card-container team-list">
     <a class="card team-card" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of tournament.teams">
