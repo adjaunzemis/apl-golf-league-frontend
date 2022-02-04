@@ -30,3 +30,10 @@
   font-weight: bold;
   margin-right: 16px;
 }
+
+.no-rounds-warning {
+  width: 100%;
+  color: red;
+  text-align: center;
+  font-style: italic;
+}
