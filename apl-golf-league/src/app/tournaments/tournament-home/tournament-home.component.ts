@@ -69,4 +69,8 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  private combineRoundHoleResults(): void {
+
+  }
+
 }
