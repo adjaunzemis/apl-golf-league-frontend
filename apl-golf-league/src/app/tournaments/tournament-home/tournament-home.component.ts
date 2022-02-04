@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { TournamentsService } from '../tournaments.service';
 import { TournamentData } from '../../shared/tournament.model';
 import { RoundData } from '../../shared/round.model';
+import { TournamentTeamData } from '../../shared/team.model';
 
 @Component({
   selector: 'app-tournament-home',
@@ -14,10 +15,14 @@ import { RoundData } from '../../shared/round.model';
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
 
+  showScorecard = false;
+
   tournament: TournamentData;
   private tournamentSub: Subscription;
 
   rounds: RoundData[] = [];
+
+  focusedTeam: TournamentTeamData;
 
   constructor(private tournamentsService: TournamentsService, private route: ActivatedRoute) { }
 
@@ -42,7 +47,16 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      this.tournamentSub.unsubscribe();
+    this.tournamentSub.unsubscribe();
+  }
+
+  focusTeam(team: TournamentTeamData): void {
+    if (this.showScorecard && this.focusedTeam === team) {
+      this.showScorecard = false;
+      return;
+    }
+    this.focusedTeam = team;
+    this.showScorecard = true;
   }
 
   private compileRoundData(): void {

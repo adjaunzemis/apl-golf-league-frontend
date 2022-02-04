@@ -3,7 +3,7 @@
     <tr>
       <td class="info">{{ course_name }} ({{ track_name }}) - {{ date_played | date }}</td>
       <td class="tee-list">
-        <div class="card card-small tee-card" *ngFor="let tee of tees" (click)="selectTee(tee)" [style.background]="setTeeSelectorBackgroundColor(tee)">
+        <div class="card card-small tee-card" *ngFor="let tee of tees" (click)="selectTee(tee)" [ngClass]="selectedTee === tee ? 'selected-card' : ''">
           <span>{{ tee.name }} - {{ tee.gender[0] }}</span>
           <span>{{ tee.rating }} / {{ tee.slope }}</span>
         </div>

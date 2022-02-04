@@ -56,13 +56,6 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
     this.selectedTeeRoundIdxChange.emit(roundIdx);
   }
 
-  setTeeSelectorBackgroundColor(tee: TeeInfo): string {
-    if ((this.selectedTee.name === tee.name) && (this.selectedTee.gender == tee.gender)) {
-      return '#b8cefd8c';
-    }
-    return '#fafafa';
-  }
-
   private setRoundInfo(): void {
     let firstRound: RoundData;
     if (this.rounds instanceof Array) {
@@ -99,6 +92,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
       }
     }
   }
+
 }
 
 interface TeeInfo {

@@ -1,6 +1,6 @@
 <p class="subtitle italic" *ngIf="!selectedScoreOption">Select a scoring type to show results</p>
 <div class="card-container">
-  <div class="card card-small score-option-card" [ngClass]="selectedScoreOption === scoreOption ? 'selected-score-option-card' : ''" *ngFor="let scoreOption of scoreOptions" (click)="toggleScoreOption(scoreOption)">{{ scoreOption }}</div>
+  <div class="card card-small score-option-card" [ngClass]="selectedScoreOption === scoreOption ? 'selected-card' : ''" *ngFor="let scoreOption of scoreOptions" (click)="toggleScoreOption(scoreOption)">{{ scoreOption }}</div>
 </div>
 <div class="card standings-card" *ngIf="selectedScoreOption">
   <div>

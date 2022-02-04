@@ -67,6 +67,10 @@ p {
   margin-right: 16px;
 }
 
+.selected-card {
+  background-color: #b8cefd8c;
+}
+
 .card.card-small {
   height: 16px;
   width: 200px;

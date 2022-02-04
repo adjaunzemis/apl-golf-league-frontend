@@ -29,13 +29,15 @@
 
   <h2>Teams</h2>
 
-  <p class="italic">Select a team to view scorecards</p>
+  <p class="italic" *ngIf="!showScorecard">Select a team to view scorecards</p>
 
-  <div class="card-container team-list">
-    <a class="card team-card" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of tournament.teams">
+  <app-tournament-scorecard *ngIf="showScorecard"></app-tournament-scorecard>
+
+  <div class="card-container">
+    <div class="card team-card" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected-card' : ''">
       <span class="bold">{{ team.name }}</span>
       <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
-    </a>
+    </div>
   </div>
 
   <h2>Statistics</h2>
