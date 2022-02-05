@@ -11,7 +11,8 @@
 
     <div class="card card-small">
       <span class="bold">APL Handicap Index</span>
-      <!-- <span>{{ golfer.handicap_index }}</span> -->
+      <span *ngIf="golfer.handicap_index_data; else noHandicapData">{{ golfer.handicap_index_data.handicap_index }}</span>
+      <ng-template #noHandicapData>--</ng-template>
     </div>
 
     <div class="card card-small">
@@ -25,7 +26,7 @@
   <div class="card-container">
     <a class="card card-small selectable" routerLink="/flight/team" [queryParams]="{id: data.team_id}" *ngFor="let data of golfer.team_golfer_data">
       <span class="bold">{{ data.team_name }} - {{ data.role }}</span>
-      <span>{{ data.flight_name }}: {{ data.division_name }}</span>
+      <span>{{ data.flight_name }} - {{ data.division_name }}</span>
     </a>
   </div>
 

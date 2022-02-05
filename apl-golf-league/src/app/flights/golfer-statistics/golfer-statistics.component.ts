@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { GolferData, TeamGolferData } from '../../shared/golfer.model';
+import { TeamGolferData } from '../../shared/golfer.model';
 
 @Component({
   selector: 'app-golfer-statistics',

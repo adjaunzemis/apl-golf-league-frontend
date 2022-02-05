@@ -28,6 +28,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         console.log(`[GolferHomeComponent] Received golfer data`);
         this.isLoading = false;
         this.golfer = result;
+        console.log(result);
       });
 
     this.route.queryParams.subscribe(params => {

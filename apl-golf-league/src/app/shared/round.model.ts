@@ -33,3 +33,20 @@ export interface RoundData {
   net_score: number;
   holes: HoleResultData[];
 }
+
+export interface RoundSummary {
+  date_played: Date
+  round_type: string
+  golfer_name: string
+  golfer_playing_handicap: number;
+  course_name: string
+  track_name: string
+  tee_name: string
+  tee_gender: string
+  tee_rating: number
+  tee_slope: number
+  gross_score: number
+  adjusted_gross_score: number
+  net_score: number
+  score_differential: number
+}
