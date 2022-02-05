@@ -61,6 +61,12 @@
   padding: 2px 0px;
 }
 
+a:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  color: #125699;
+}
+
 .handicap-strokes {
   margin: auto;
   margin-bottom: 2px;

@@ -1,7 +1,9 @@
 <table class="styled-table">
   <tbody>
     <tr class="score">
-      <td class="label" rowspan="1">{{ round.golfer_name | titlecase }}</td>
+      <td class="label" rowspan="1">
+        <a routerLink="/golfer" [queryParams]="{id: round.golfer_id}">{{ round.golfer_name }}</a>
+      </td>
       <td class="hole" rowspan="2" *ngFor="let holeScore of holeScores; let holeIdx = index">
         <div class="handicap-strokes" [ngClass]="{'red-dot' : round.holes[holeIdx].handicap_strokes < 0, 'black-dot' : round.holes[holeIdx].handicap_strokes > 0}"></div>
         <div class="hole-score">
