@@ -1,6 +1,7 @@
 export interface DivisionData {
-    division_id: number
-    flight_id: number
+    id: number
+    flight_id?: number
+    tournament_id?: number
     name: string
     gender: string
     primary_track_name: string
