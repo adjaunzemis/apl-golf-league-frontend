@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 
 import { HoleResultData } from '../../hole-result.model';
 import { Hole } from '../../hole.model';
@@ -9,10 +9,13 @@ import { Hole } from '../../hole.model';
   styleUrls: ["./scorecard-hole-line.component.css"]
 })
 export class ScorecardHoleLineComponent implements OnInit, OnChanges {
-  @Input() title = "";
-
   @Input() holes: Hole[] = [];
   @Input() holeResultData: HoleResultData[];
+
+  @Input() selectedScoreMode!: string;
+  @Output() selectedScoreModeChange = new EventEmitter<string>();
+
+  @Input() showScoreModeButtons: boolean = true;
 
   ngOnInit(): void {
     if (this.holes.length === 0) {
@@ -33,5 +36,10 @@ export class ScorecardHoleLineComponent implements OnInit, OnChanges {
       this.holes = [];
     }
     this.ngOnInit();
+  }
+
+  selectScoreMode(mode: string): void {
+    this.selectedScoreMode = mode;
+    this.selectedScoreModeChange.emit(mode);
   }
 }

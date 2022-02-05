@@ -1,7 +1,12 @@
 <table class="styled-table">
   <thead>
     <tr class="hole">
-    <td class="label">{{ title }}</td>
+    <td class="label">
+      <div class="score-mode-list" *ngIf="showScoreModeButtons">
+        <div class="card score-mode-card selectable" [ngClass]="selectedScoreMode === 'gross' ? 'selected' : ''" (click)="selectScoreMode('gross')">Gross</div>
+        <div class="card score-mode-card selectable" [ngClass]="selectedScoreMode === 'net' ? 'selected' : ''" (click)="selectScoreMode('net')">Net</div>
+      </div>
+    </td>
     <td class="hole" *ngFor="let hole of holes">{{ hole.number }}</td>
     <td class="total">TOT</td>
     </tr>

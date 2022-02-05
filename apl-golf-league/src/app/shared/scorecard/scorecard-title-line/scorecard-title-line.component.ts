@@ -35,6 +35,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
     this.ngOnInit();
     if (changes['rounds']) {
       this.selectedTee = this.tees[0];
+      this.selectedTeeRoundIdx = 0;
       this.selectedTeeRoundIdxChange.emit(0); // TODO: fix NG0100 error
     }
   }
@@ -53,6 +54,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
         }
       }
     }
+    this.selectedTeeRoundIdx = roundIdx;
     this.selectedTeeRoundIdxChange.emit(roundIdx);
   }
 

@@ -21,15 +21,10 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes.topTeamId) {
       this.topTeamId = changes.topTeamId.currentValue;
     }
     this.setTopAndBottomTeamIds();
-  }
-
-  onScoreModeChanged(scoreMode: string): void {
-    this.scoreMode = scoreMode;
   }
 
   private setTopAndBottomTeamIds(): void {
