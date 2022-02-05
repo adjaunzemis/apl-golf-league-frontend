@@ -7,10 +7,10 @@
   <h2>Roster</h2>
 
   <div class="card-container">
-    <div class="card card-small" *ngFor="let golfer of team.golfers">
+    <a class="card card-small" routerLink="/golfer" [queryParams]="{id: golfer.golfer_id}" *ngFor="let golfer of team.golfers">
       <span class="bold">{{ golfer.golfer_name }}</span>
       <span>{{ golfer.role }} - {{ golfer.division_name }}</span>
-    </div>
+    </a>
   </div>
 
   <h2>Matches</h2>

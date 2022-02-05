@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: "flights", component: FlightsHomeComponent },
   { path: "flight/team", component: TeamHomeComponent },
   { path: "tournament", component: TournamentHomeComponent },
-  { path: "golfers", component: GolferHomeComponent },
+  { path: "golfer", component: GolferHomeComponent },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "golfer-list", component: GolferListComponent },

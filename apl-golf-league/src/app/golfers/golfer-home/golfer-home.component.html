@@ -1,12 +1,56 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div *ngIf="!isLoading" style="width: 90%; margin: 0% 5%;">
-  <h3>Name: {{ golfer.name }}</h3>
-  <p>Affiliation: {{ golfer.affiliation }}</p>
-  <p>Golfer ID: {{ golfer.golfer_id }}</p>
-  <div *ngFor="let team_golfer_data of golfer.team_golfer_data">
-    <p>Team: {{ team_golfer_data.team_name }} (id={{ team_golfer_data.team_id }})</p>
-    <p>Role: {{ team_golfer_data.role }}</p>
-    <p>Division: {{ team_golfer_data.division_name }}</p>
+<div class="content" *ngIf="!isLoading">
+  <h1>{{ golfer.name }} </h1>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Member Since</span>
+      <!-- <span>{{ golfer.year_joined }}</span> -->
+    </div>
+
+    <div class="card card-small">
+      <span class="bold">APL Handicap Index</span>
+      <!-- <span>{{ golfer.handicap_index }}</span> -->
+    </div>
+
+    <div class="card card-small">
+      <span class="bold">Affiliation</span>
+      <span>{{ golfer.affiliation }}</span>
+    </div>
   </div>
+
+  <h2>Active Teams</h2>
+
+  <div class="card-container">
+    <a class="card card-small" routerLink="/flight/team" [queryParams]="{id: data.team_id}" *ngFor="let data of golfer.team_golfer_data">
+      <span class="bold">{{ data.team_name }} - {{ data.role }}</span>
+      <span>{{ data.flight_name }}: {{ data.division_name }}</span>
+    </a>
+  </div>
+
+  <h2>Scoring Record</h2>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Coming soon...</span>
+    </div>
+  </div>
+
+  <h2>Rounds Played</h2>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Coming soon...</span>
+    </div>
+  </div>
+
+  <h2>Statistics</h2>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Coming soon...</span>
+    </div>
+  </div>
+
 </div>
