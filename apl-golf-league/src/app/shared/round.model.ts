@@ -43,6 +43,7 @@ export interface RoundSummary {
   track_name: string
   tee_name: string
   tee_gender: string
+  tee_par: number
   tee_rating: number
   tee_slope: number
   gross_score: number

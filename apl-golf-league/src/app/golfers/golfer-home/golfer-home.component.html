@@ -12,7 +12,9 @@
     <div class="card card-small">
       <span class="bold">APL Handicap Index</span>
       <span *ngIf="golfer.handicap_index_data; else noHandicapData">{{ golfer.handicap_index_data.handicap_index }}</span>
-      <ng-template #noHandicapData>--</ng-template>
+      <ng-template #noHandicapData>
+        <span>--</span>
+      </ng-template>
     </div>
 
     <div class="card card-small">
@@ -32,11 +34,10 @@
 
   <h2>Scoring Record</h2>
 
-  <div class="card-container">
-    <div class="card card-small">
-      <span class="bold">Coming soon...</span>
-    </div>
-  </div>
+  <app-scoring-record class="full-width" [rounds]="golfer.handicap_index_data.scoring_record" *ngIf="golfer.handicap_index_data && golfer.handicap_index_data.scoring_record; else noScoringRecordData"></app-scoring-record>
+  <ng-template #noScoringRecordData>
+    <span>No scoring record data!</span>
+  </ng-template>
 
   <h2>Rounds Played</h2>
 

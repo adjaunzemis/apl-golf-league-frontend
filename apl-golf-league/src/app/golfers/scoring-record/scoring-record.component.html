@@ -1,0 +1,26 @@
+<div class="card scoring-record-card">
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Course</th>
+      <th>Tees</th>
+      <th>Par</th>
+      <th>Rating</th>
+      <th>Slope</th>
+      <th>Gross</th>
+      <th>Adj. Gross</th>
+      <th>Diff.</th>
+    </tr>
+    <tr *ngFor="let round of rounds, let idx = index">
+      <td>{{ round.date_played }}</td>
+      <td>{{ round.course_name }} - {{ round.track_name }}</td>
+      <td>{{ round.tee_name }}</td>
+      <td>{{ round.tee_par | number : '1.0-0' }}</td>
+      <td>{{ round.tee_rating | number : '1.1-1' }}</td>
+      <td>{{ round.tee_slope | number : '1.0-0' }}</td>
+      <td>{{ round.gross_score | number : '1.0-0' }}</td>
+      <td>{{ round.adjusted_gross_score | number : '1.0-0' }}</td>
+      <td class="bold">{{ round.score_differential | number : '1.1-1' }}</td>
+    </tr>
+  </table>
+</div>
