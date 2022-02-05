@@ -18,7 +18,7 @@
   <div class="card-container division-list">
     <div class="card division-card" *ngFor="let division of flight.divisions">
       <span class="bold">{{ division.name }} - {{ division.tee_name }}</span>
-      <span>{{ division.track_name }}: {{ division.tee_rating }} / {{ division.tee_slope }}</span>
+      <span>{{ division.track_name }}: {{ division.tee_par }} ({{ division.tee_rating }}/{{ division.tee_slope }})</span>
     </div>
   </div>
 
