@@ -9,16 +9,17 @@
       <span>{{ flight.secretary }}</span>
     </a>
 
-    <div class="card card-small" *ngIf="flight.home_course_name">
+    <div class="card card-small" *ngIf="flight.course_name">
       <span class="bold">Course</span>
-      <span>{{ flight.home_course_name }}</span>
+      <span>{{ flight.course_name }}</span>
     </div>
   </div>
 
   <div class="card-container division-list">
     <div class="card division-card" *ngFor="let division of flight.divisions">
-      <span class="bold">{{ division.name }} - {{ division.tee_name }}</span>
-      <span>{{ division.track_name }}: {{ division.tee_par }} ({{ division.tee_rating }}/{{ division.tee_slope }})</span>
+      <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
+      <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
+      <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
     </div>
   </div>
 

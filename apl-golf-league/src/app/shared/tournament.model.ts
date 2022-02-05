@@ -1,4 +1,4 @@
-import { TournamentDivisionData } from "./division.model";
+import { DivisionData } from "./division.model";
 import { TournamentTeamData } from "./team.model";
 
 export interface TournamentData {
@@ -7,9 +7,9 @@ export interface TournamentData {
     date: Date
     name: string
     logo_url?: string
-    secretary: string
-    secretary_contact: string
+    secretary?: string
+    secretary_contact?: string
     course_name: string
-    divisions: TournamentDivisionData[]
+    divisions: DivisionData[]
     teams: TournamentTeamData[]
 }

@@ -3,18 +3,6 @@ export interface DivisionData {
     flight_id: number
     name: string
     gender: string
-    track_name: string
-    tee_name: string
-    tee_par: number
-    tee_rating: number
-    tee_slope: number
-}
-
-export interface TournamentDivisionData {
-    division_id: number
-    flight_id: number
-    name: string
-    gender: string
     primary_track_name: string
     primary_tee_name: string
     primary_tee_par: number
