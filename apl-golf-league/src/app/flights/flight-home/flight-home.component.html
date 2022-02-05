@@ -1,6 +1,8 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content" *ngIf="!isLoading">
+  <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="100" *ngIf="flight.logo_url">
+
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
   <div class="card-container">

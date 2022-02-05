@@ -1,6 +1,8 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content" *ngIf="!isLoading">
+  <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="100" *ngIf="tournament.logo_url">
+
   <h1>{{ tournament.name }} ({{ tournament.year }})</h1>
 
   <div class="card-container">
