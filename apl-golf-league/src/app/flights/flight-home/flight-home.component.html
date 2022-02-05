@@ -4,7 +4,7 @@
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
   <div class="card-container">
-    <a class="card card-small" *ngIf="flight.secretary">
+    <a class="card card-small selectable" *ngIf="flight.secretary">
       <span class="bold">Flight Secretary</span>
       <span>{{ flight.secretary }}</span>
     </a>
@@ -37,7 +37,7 @@
   <h2>Teams</h2>
 
   <div class="card-container team-list">
-    <a class="card team-card" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
+    <a class="card team-card selectable" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
       <span class="bold">{{ team.name }}</span>
       <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
     </a>

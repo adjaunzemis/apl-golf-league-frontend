@@ -67,7 +67,7 @@ p {
   margin-right: 16px;
 }
 
-.selected-card {
+.card.selected {
   background-color: #b8cefd8c;
 }
 
@@ -75,15 +75,6 @@ p {
   height: 16px;
   width: 200px;
   flex-direction: column;
-}
-
-.card-container .card:not(.highlight-card) {
-  cursor: pointer;
-}
-
-.card-container .card:not(.highlight-card):hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
 }
 
 .card.highlight-card {
@@ -96,15 +87,20 @@ p {
   position: relative;
 }
 
-a,
-a:visited,
-a:hover {
-  color: rgb(37, 37, 37);
+.card.selectable:hover {
+  cursor: pointer;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+  color: #125699;
+}
+
+a {
+  color: #252525;
   text-decoration: none;
 }
 
-a:hover {
-  color: #125699;
+a.link-text {
+  color: #1976d2;
 }
 
 .circle-link {

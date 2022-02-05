@@ -14,7 +14,7 @@
       <span>{{ tournament.course_name }}</span>
     </div>
 
-    <a class="card card-small" href="mailto:{{ tournament.secretary_contact }}" *ngIf="tournament.secretary">
+    <a class="card card-small selectable" href="mailto:{{ tournament.secretary_contact }}" *ngIf="tournament.secretary">
       <span class="bold">Tournament Secretary</span>
       <span>{{ tournament.secretary }}</span>
     </a>
@@ -46,7 +46,7 @@
 
 
   <div class="card-container">
-    <div class="card team-card" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected-card' : ''">
+    <div class="card team-card selectable" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''">
       <span class="bold">{{ team.name }}</span>
       <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
     </div>

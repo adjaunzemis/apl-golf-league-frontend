@@ -11,10 +11,10 @@
   <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
 
   <div class="card-container" *ngIf="!isLoadingFlights">
-    <a class="card" routerLink="flight" [queryParams]="{id: flight.id}" *ngFor="let flight of flights">
+    <a class="card selectable" routerLink="flight" [queryParams]="{id: flight.id}" *ngFor="let flight of flights">
       <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="50" *ngIf="flight.logo_url">
 
-      <span>{{ flight.name }} ({{ flight.year }})</span>
+      <span class="bold">{{ flight.name }} ({{ flight.year }})</span>
 
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
@@ -27,10 +27,10 @@
   <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
 
   <div class="card-container" *ngIf="!isLoadingTournaments">
-    <a class="card" routerLink="tournament" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
+    <a class="card selectable" routerLink="tournament" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
       <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="50" *ngIf="tournament.logo_url">
 
-      <span>{{ tournament.name }} ({{ tournament.year }})</span>
+      <span class="bold">{{ tournament.name }} ({{ tournament.year }})</span>
 
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
@@ -41,7 +41,7 @@
   <h2>Officers</h2>
 
   <div class="card-container">
-    <div class="card card-small" *ngFor="let officer of officers">
+    <div class="card card-small selectable" *ngFor="let officer of officers">
       <span class="bold">{{ officer.title }}</span>
       <span>{{ officer.name }}</span>
     </div>
@@ -50,8 +50,8 @@
   <h2>Helpful Links</h2>
 
   <div class="card-container">
-    <a class="card card-small" routerLink="#">
-      <span>League Rules</span>
+    <a class="card card-small selectable" routerLink="#">
+      <span class="bold">League Rules</span>
 
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
