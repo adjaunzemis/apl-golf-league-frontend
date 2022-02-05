@@ -33,7 +33,6 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
           this.tournament = tournamentData;
           this.compileRoundData();
           this.isLoading = false;
-          console.log(tournamentData);
       });
 
     this.route.queryParams.subscribe(params => {
@@ -67,10 +66,6 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
         }
       }
     }
-  }
-
-  private combineRoundHoleResults(): void {
-
   }
 
 }

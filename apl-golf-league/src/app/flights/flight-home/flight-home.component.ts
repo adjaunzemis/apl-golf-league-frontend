@@ -24,7 +24,6 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
           console.log(`[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`);
           this.flight = flightData;
           this.isLoading = false;
-          console.log(flightData);
       });
 
     this.route.queryParams.subscribe(params => {
