@@ -29,7 +29,7 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.tournamentSub = this.tournamentsService.getTournamentUpdateListener()
       .subscribe(tournamentData => {
-          console.log(`[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.tournament_id}`);
+          console.log(`[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.id}`);
           this.tournament = tournamentData;
           this.compileRoundData();
           this.isLoading = false;

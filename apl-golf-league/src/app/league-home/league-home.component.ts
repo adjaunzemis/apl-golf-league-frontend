@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { FlightInfo } from '../shared/flight.model';
+import { TournamentInfo } from '../shared/tournament.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentsService } from '../tournaments/tournaments.service';
 
@@ -29,37 +31,20 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   constructor(private flightsService: FlightsService, private tournamentsService: TournamentsService) { }
 
   ngOnInit(): void {
-    // TODO: make FlightInfo-specific route
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
           console.log(`[LeagueHomeComponent] Received flights list`);
-          for (let flight of result.flights) {
-            this.flights.push({
-              id: flight.flight_id,
-              name: flight.name,
-              year: flight.year,
-              logo_url: flight.logo_url
-            });
-          }
+          this.flights = result.flights;
           this.isLoadingFlights = false;
       });
 
-    // TODO: make TournamentInfo-specific route
     this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
       .subscribe(result => {
         console.log(`[LeagueHomeComponent] Received tournaments list`);
-        for (let tournament of result.tournaments) {
-          this.tournaments.push({
-            id: tournament.tournament_id,
-            name: tournament.name,
-            year: tournament.year,
-            course: tournament.course_name,
-            logo_url: tournament.logo_url
-          });
-          this.isLoadingTournaments = false;
-        }
+        this.tournaments = result.tournaments;
+        this.isLoadingTournaments = false;
       });
-      
+
     this.flightsService.getFlightsList(0, 100);
     this.tournamentsService.getTournamentsList(0, 100);
   }
@@ -69,21 +54,6 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
       this.tournamentsSub.unsubscribe
   }
 
-}
-
-interface FlightInfo {
-  id: number
-  name: string
-  year: number
-  logo_url?: string
-}
-
-interface TournamentInfo {
-  id: number
-  name: string
-  year: number
-  course: string
-  logo_url?: string
 }
 
 interface OfficerInfo {

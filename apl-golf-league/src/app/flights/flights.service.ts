@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { FlightData } from "../shared/flight.model";
+import { FlightData, FlightInfo } from "../shared/flight.model";
 import { TeamData, TeamDataWithMatches } from "../shared/team.model";
 import { environment } from './../../environments/environment';
 
@@ -11,8 +11,8 @@ import { environment } from './../../environments/environment';
   providedIn: "root"
 })
 export class FlightsService {
-  private flightsList: FlightData[] = []
-  private flightsListUpdated = new Subject<{ numFlights: number, flights: FlightData[] }>();
+  private flightsList: FlightInfo[] = []
+  private flightsListUpdated = new Subject<{ numFlights: number, flights: FlightInfo[] }>();
 
   private flightData: FlightData;
   private flightDataUpdated = new Subject<FlightData>();
@@ -28,7 +28,7 @@ export class FlightsService {
       queryParams = `?year=${year}&`;
     }
     queryParams += `offset=${offset}&limit=${limit}`
-    this.http.get<{ num_flights: number, flights: FlightData[] }>(environment.apiUrl + "flights/" + queryParams)
+    this.http.get<{ num_flights: number, flights: FlightInfo[] }>(environment.apiUrl + "flights/" + queryParams)
       .subscribe(result => {
         this.flightsList = result.flights;
         this.flightsListUpdated.next({
@@ -38,7 +38,7 @@ export class FlightsService {
       });
   }
 
-  getFlightsListUpdateListener(): Observable<{ flights: FlightData[], numFlights: number }> {
+  getFlightsListUpdateListener(): Observable<{ flights: FlightInfo[], numFlights: number }> {
     return this.flightsListUpdated.asObservable();
   }
 

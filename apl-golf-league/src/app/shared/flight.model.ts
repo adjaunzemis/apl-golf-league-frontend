@@ -3,14 +3,22 @@ import { MatchSummary } from "./match.model"
 import { TeamData } from "./team.model"
 
 export class FlightData {
-    flight_id: number
+    id: number
     year: number
     name: string
+    course: string
     logo_url?: string
     secretary?: string
     secretary_contact?: string
-    course_name: string
     divisions?: DivisionData[]
     teams?: TeamData[]
     matches?: MatchSummary[]
+}
+
+export interface FlightInfo {
+  id: number
+  name: string
+  year: number
+  course: string
+  logo_url?: string
 }

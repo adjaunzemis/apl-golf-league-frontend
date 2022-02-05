@@ -3,15 +3,15 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { TournamentData } from "../shared/tournament.model";
+import { TournamentData, TournamentInfo } from "../shared/tournament.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class TournamentsService {
-  private tournamentsList: TournamentData[] = []
-  private tournamentsListUpdated = new Subject<{ numTournaments: number, tournaments: TournamentData[] }>();
+  private tournamentsList: TournamentInfo[] = []
+  private tournamentsListUpdated = new Subject<{ numTournaments: number, tournaments: TournamentInfo[] }>();
 
   private tournamentData: TournamentData;
   private tournamentDataUpdated = new Subject<TournamentData>();
@@ -24,7 +24,7 @@ export class TournamentsService {
       queryParams = `?year=${year}&`;
     }
     queryParams += `offset=${offset}&limit=${limit}`
-    this.http.get<{ num_tournaments: number, tournaments: TournamentData[] }>(environment.apiUrl + "tournaments/" + queryParams)
+    this.http.get<{ num_tournaments: number, tournaments: TournamentInfo[] }>(environment.apiUrl + "tournaments/" + queryParams)
       .subscribe(result => {
         this.tournamentsList = result.tournaments;
         this.tournamentsListUpdated.next({
@@ -34,7 +34,7 @@ export class TournamentsService {
       });
   }
 
-  getTournamentsListUpdateListener(): Observable<{ tournaments: TournamentData[], numTournaments: number }> {
+  getTournamentsListUpdateListener(): Observable<{ tournaments: TournamentInfo[], numTournaments: number }> {
     return this.tournamentsListUpdated.asObservable();
   }
 
