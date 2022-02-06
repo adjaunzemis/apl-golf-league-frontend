@@ -12,7 +12,7 @@
       <th>Diff.</th>
     </tr>
     <tr *ngFor="let round of rounds, let idx = index">
-      <td>{{ round.date_played }}</td>
+      <td>{{ round.date_played | date }}</td>
       <td>{{ round.course_name }} - {{ round.track_name }}</td>
       <td>{{ round.tee_name }}</td>
       <td>{{ round.tee_par | number : '1.0-0' }}</td>
