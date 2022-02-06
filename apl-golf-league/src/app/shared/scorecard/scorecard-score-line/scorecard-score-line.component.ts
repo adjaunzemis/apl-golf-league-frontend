@@ -12,6 +12,10 @@ export class ScorecardScoreLineComponent implements OnInit, OnChanges {
   @Input() round: RoundData;
   @Input() scoreMode: string = "gross";
 
+  @Input() title: string;
+  @Input() subtitle: string;
+  @Input() linkToGolferHome: boolean = false;
+
   roundScore: number;
   holeScores: number[];
   holeRelativeScores: number[];

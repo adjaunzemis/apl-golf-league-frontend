@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
-import { MatchData } from "src/app/shared/match.model";
+import { MatchData } from "../../shared/match.model";
+import { RoundData } from "../../shared/round.model";
 
 @Component({
   selector: "app-match-scorecard",
@@ -32,6 +33,10 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
       this.topTeamId = this.match.home_team_id;
     }
     this.bottomTeamId = this.topTeamId === this.match.home_team_id ? this.match.away_team_id : this.match.home_team_id;
+  }
+
+  getRoundSubtitle(round: RoundData): string {
+    return round.tee_name + " - PH: " + round.golfer_playing_handicap.toFixed(0);
   }
 
 }

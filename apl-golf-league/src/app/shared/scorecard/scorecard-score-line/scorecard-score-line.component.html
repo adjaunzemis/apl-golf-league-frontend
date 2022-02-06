@@ -2,7 +2,8 @@
   <tbody>
     <tr class="score">
       <td class="label" rowspan="1">
-        <a routerLink="/golfer" [queryParams]="{id: round.golfer_id}">{{ round.golfer_name }}</a>
+        <a routerLink="/golfer" [queryParams]="{id: round.golfer_id}" *ngIf="linkToGolferHome">{{ title }}</a>
+        <span *ngIf="!linkToGolferHome">{{ title }}</span>
       </td>
       <td class="hole" rowspan="2" *ngFor="let holeScore of holeScores; let holeIdx = index">
         <div class="handicap-strokes" [ngClass]="{'red-dot' : round.holes[holeIdx].handicap_strokes < 0, 'black-dot' : round.holes[holeIdx].handicap_strokes > 0}"></div>
@@ -15,7 +16,7 @@
       <td class="total" rowspan="2">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</td>
     </tr>
     <tr>
-      <td class="detail" rowspan="1">{{ round.tee_name | titlecase }} - PH: {{ round.golfer_playing_handicap | number }}</td>
+      <td class="detail" rowspan="1">{{ subtitle }}</td>
     </tr>
   </tbody>
 </table>

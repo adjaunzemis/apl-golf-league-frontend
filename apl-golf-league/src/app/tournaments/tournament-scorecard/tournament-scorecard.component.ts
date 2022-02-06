@@ -38,4 +38,8 @@ export class TournamentScorecardComponent implements OnInit {
     this.scoreMode = scoreMode;
   }
 
+  getRoundSubtitle(round: RoundData): string {
+    return round.tee_name + " - PH: " + round.golfer_playing_handicap.toFixed(0);
+  }
+
 }
