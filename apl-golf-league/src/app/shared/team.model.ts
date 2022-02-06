@@ -6,13 +6,15 @@ export interface TeamData {
     id: number
     flight_id: number
     name: string
+    year: number
     golfers: Golfer[]
     matches: MatchData[]
 }
 
 export interface TeamDataWithMatches {
-    team_id: number
+    id: number
     name: string
+    year: number
     golfers: TeamGolferData[]
     matches: MatchData[]
 }
@@ -20,6 +22,7 @@ export interface TeamDataWithMatches {
 export interface TournamentTeamData {
     id: number
     name: string
+    year: number
     tournament_id: number
     golfers: Golfer[]
     rounds?: RoundData[]

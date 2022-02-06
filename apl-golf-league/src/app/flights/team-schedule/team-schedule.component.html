@@ -1,14 +1,14 @@
 <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
     <mat-expansion-panel [hideToggle]="false" *ngFor="let match of team.matches">
       <mat-expansion-panel-header>
-        <mat-panel-title *ngIf="match.home_team_id === team.team_id">Week {{ match.week }} vs {{ match.away_team_name }}</mat-panel-title>
-        <mat-panel-description *ngIf="match.home_team_id === team.team_id && match.home_score > match.away_score">W: {{ match.home_score }} - {{ match.away_score }}</mat-panel-description>
-        <mat-panel-description *ngIf="match.home_team_id === team.team_id && match.home_score < match.away_score">L: {{ match.home_score }} - {{ match.away_score }}</mat-panel-description>
-        <mat-panel-description *ngIf="match.home_team_id === team.team_id && match.home_score === match.away_score">T: {{ match.home_score }} - {{ match.away_score }}</mat-panel-description>
-        <mat-panel-title *ngIf="match.away_team_id === team.team_id">Week {{ match.week }} vs {{ match.home_team_name }}</mat-panel-title>
-        <mat-panel-description *ngIf="match.away_team_id === team.team_id && match.away_score > match.home_score">W: {{ match.away_score }} - {{ match.home_score }}</mat-panel-description>
-        <mat-panel-description *ngIf="match.away_team_id === team.team_id && match.away_score < match.home_score">L: {{ match.away_score }} - {{ match.home_score }}</mat-panel-description>
-        <mat-panel-description *ngIf="match.away_team_id === team.team_id && match.away_score === match.home_score">T: {{ match.away_score }} - {{ match.home_score }}</mat-panel-description>
+        <mat-panel-title *ngIf="match.home_team_id === team.id">Week {{ match.week }} vs {{ match.away_team_name }}</mat-panel-title>
+        <mat-panel-description *ngIf="match.home_team_id === team.id && match.home_score > match.away_score">W: {{ match.home_score }} - {{ match.away_score }}</mat-panel-description>
+        <mat-panel-description *ngIf="match.home_team_id === team.id && match.home_score < match.away_score">L: {{ match.home_score }} - {{ match.away_score }}</mat-panel-description>
+        <mat-panel-description *ngIf="match.home_team_id === team.id && match.home_score === match.away_score">T: {{ match.home_score }} - {{ match.away_score }}</mat-panel-description>
+        <mat-panel-title *ngIf="match.away_team_id === team.id">Week {{ match.week }} vs {{ match.home_team_name }}</mat-panel-title>
+        <mat-panel-description *ngIf="match.away_team_id === team.id && match.away_score > match.home_score">W: {{ match.away_score }} - {{ match.home_score }}</mat-panel-description>
+        <mat-panel-description *ngIf="match.away_team_id === team.id && match.away_score < match.home_score">L: {{ match.away_score }} - {{ match.home_score }}</mat-panel-description>
+        <mat-panel-description *ngIf="match.away_team_id === team.id && match.away_score === match.home_score">T: {{ match.away_score }} - {{ match.home_score }}</mat-panel-description>
       </mat-expansion-panel-header>
       <div class="full-width">
         <app-match-scorecard [match]=match></app-match-scorecard>

@@ -22,6 +22,7 @@ export interface TeamGolferData {
   division_name: string
   flight_name: string
   team_name: string
+  year: number
   role: string
   statistics?: GolferStatistics
 }
