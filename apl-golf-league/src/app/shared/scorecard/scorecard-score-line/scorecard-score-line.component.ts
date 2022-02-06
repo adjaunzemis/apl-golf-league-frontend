@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
-import { HoleResultData } from "src/app/shared/hole-result.model";
-import { RoundData } from "src/app/shared/round.model";
+import { HoleResultData } from "../../hole-result.model";
+import { RoundData } from "../../round.model";
 
 @Component({
   selector: "app-scorecard-score-line",

@@ -42,7 +42,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         console.log(`[GolferHomeComponent] Received ${result.numRounds} rounds`);
         this.rounds = result.rounds;
         this.isLoadingRoundData = true
-        console.log(result);
         this.organizeRoundsByTee();
       })
 
