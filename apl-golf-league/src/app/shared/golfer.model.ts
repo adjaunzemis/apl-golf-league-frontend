@@ -10,6 +10,7 @@ export interface GolferData {
   golfer_id: number;
   name: string;
   affiliation: string;
+  member_since?: number;
   team_golfer_data?: TeamGolferData[];
   handicap_index_data?: HandicapIndexData;
 }
