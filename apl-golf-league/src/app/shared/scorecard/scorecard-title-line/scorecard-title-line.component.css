@@ -18,10 +18,23 @@
 
 .styled-table .info {
   text-align: left;
-  font-size: 18px;
-  font-weight: bold;
+  padding-top: 4px;
   padding-left: 16px;
   padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: normal;
 }
 
 .styled-table .tee-list {

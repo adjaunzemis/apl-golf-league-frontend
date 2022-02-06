@@ -1,5 +1,5 @@
 <div class="scorecard">
-  <app-scorecard-title-line [rounds]="rounds" [(selectedTeeRoundIdx)]="roundIdx"></app-scorecard-title-line>
+  <app-scorecard-title-line [rounds]="rounds" [title]="getTournamentTitle()" [subtitle]="getTournamentSubtitle()" [(selectedTeeRoundIdx)]="roundIdx"></app-scorecard-title-line>
 
   <app-scorecard-hole-line [holeResultData]="frontRounds[roundIdx].holes" [(selectedScoreMode)]="scoreMode"></app-scorecard-hole-line>
   <app-scorecard-tee-info [holeResultData]="frontRounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>

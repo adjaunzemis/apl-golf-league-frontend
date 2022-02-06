@@ -35,6 +35,14 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
     this.bottomTeamId = this.topTeamId === this.match.home_team_id ? this.match.away_team_id : this.match.home_team_id;
   }
 
+  getMatchTitle(): string {
+    return this.match.rounds[0].course_name + " - " + this.match.rounds[0].track_name;
+  }
+
+  getMatchSubtitle(): string {
+    return this.match.rounds[0].date_played.toString();
+  }
+
   getRoundSubtitle(round: RoundData): string {
     return round.tee_name + " - PH: " + round.golfer_playing_handicap.toFixed(0);
   }

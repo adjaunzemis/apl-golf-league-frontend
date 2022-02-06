@@ -10,6 +10,9 @@ import { RoundData } from '../../round.model';
 export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData | RoundData[];
 
+  @Input() title: string;
+  @Input() subtitle: string;
+
   @Input() selectedTeeRoundIdx!: number;
   @Output() selectedTeeRoundIdxChange = new EventEmitter<number>();
 
