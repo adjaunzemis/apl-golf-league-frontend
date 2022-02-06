@@ -1,0 +1,6 @@
+<div class="scorecard">
+  <app-scorecard-title-line [rounds]="rounds[0]" [selectedTeeRoundIdx]="0"></app-scorecard-title-line>
+  <app-scorecard-hole-line [holeResultData]="rounds[0].holes" [(selectedScoreMode)]="scoreMode"></app-scorecard-hole-line>
+  <app-scorecard-tee-info [holeResultData]="rounds[0].holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" *ngFor="let round of rounds"></app-scorecard-score-line>
+</div>

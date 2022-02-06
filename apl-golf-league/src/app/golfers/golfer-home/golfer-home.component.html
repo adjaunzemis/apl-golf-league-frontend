@@ -47,13 +47,9 @@
 
   <h2>Rounds</h2>
 
-  <p>Current season, organized by course</p>
+  <p>Current season, flight rounds only, organized by course</p>
 
-  <div class="card-container">
-    <div class="card card-small" *ngFor="let data of roundsOrganizedByTee | keyvalue">
-      <span class="bold">Tee Id = {{ data.key }}</span>
-    </div>
-  </div>
+  <app-combined-rounds-scorecard class="full-width" [rounds]="data.value" *ngFor="let data of roundsOrganizedByTee | keyvalue"></app-combined-rounds-scorecard>
 
   <h2>Statistics</h2>
 
