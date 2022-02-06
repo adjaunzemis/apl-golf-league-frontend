@@ -34,7 +34,8 @@
 
 .subtitle {
   font-size: 12px;
-  font-weight: normal;
+  font-weight: bold;
+  padding-top: 2px;
 }
 
 .styled-table .tee-list {
