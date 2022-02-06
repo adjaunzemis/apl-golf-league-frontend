@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { GolferData } from 'src/app/shared/golfer.model';
 
 import { GolfersService } from '../golfers.service';
+import { RoundsService } from '../../rounds/rounds.service';
+import { GolferData } from '../../shared/golfer.model';
+import { RoundData } from '../../shared/round.model';
 
 @Component({
   selector: 'app-golfer-home',
@@ -11,25 +13,38 @@ import { GolfersService } from '../golfers.service';
   styleUrls: ['./golfer-home.component.css']
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
-  isLoading = false;
+  isLoadingGolferData = true;
+  isLoadingRoundData = true;
 
   golferId: number;
+  year: number = 2021;
 
   golfer: GolferData;
   golferSub: Subscription;
 
-  constructor(private golfersService: GolfersService, private route: ActivatedRoute) { }
+  rounds: RoundData[];
+  roundsSub: Subscription;
+
+  roundsOrganizedByTee: { [tee_id: number]: RoundData[] };
+
+  constructor(private golfersService: GolfersService, private roundsService: RoundsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.isLoading = true;
-
     this.golferSub = this.golfersService.getGolferUpdateListener()
       .subscribe((result: GolferData) => {
         console.log(`[GolferHomeComponent] Received golfer data`);
-        this.isLoading = false;
         this.golfer = result;
-        console.log(result);
+        this.isLoadingGolferData = false;
       });
+
+    this.roundsSub = this.roundsService.getRoundUpdateListener()
+      .subscribe((result: { numRounds: number, rounds: RoundData[] }) => {
+        console.log(`[GolferHomeComponent] Received ${result.numRounds} rounds`);
+        this.rounds = result.rounds;
+        this.isLoadingRoundData = true
+        console.log(result);
+        this.organizeRoundsByTee();
+      })
 
     this.route.queryParams.subscribe(params => {
       if (params) {
@@ -50,6 +65,17 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   getGolferData(): void {
     console.log("[GolferHomeComponent] Fetching golfer data");
     this.golfersService.getGolfer(this.golferId);
+    this.roundsService.getRounds(0, 100, this.golferId, this.year);
+  }
+
+  private organizeRoundsByTee(): void {
+    this.roundsOrganizedByTee = {};
+    for (let round of this.rounds) {
+      if (!this.roundsOrganizedByTee[round.tee_id]) {
+        this.roundsOrganizedByTee[round.tee_id] = [];
+      }
+      this.roundsOrganizedByTee[round.tee_id].push(round);
+    }
   }
 
 }

@@ -1,12 +1,12 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-spinner *ngIf="isLoadingGolferData"></mat-spinner>
 
-<div class="content" *ngIf="!isLoading">
+<div class="content" *ngIf="!isLoadingGolferData">
   <h1>{{ golfer.name }} </h1>
 
   <div class="card-container">
     <div class="card card-small">
       <span class="bold">Member Since</span>
-      <span *ngIf="!golfer.member_since; else noMemberSince">{{ golfer.member_since }}</span>
+      <span *ngIf="golfer.member_since; else noMemberSince">{{ golfer.member_since }}</span>
       <ng-template #noMemberSince>
         <span>--</span>
       </ng-template>
@@ -38,16 +38,20 @@
 
   <h2>Scoring Record</h2>
 
+  <p>Most recent rounds valid for handicapping (10 max, < 3 years old)</p>
+
   <app-scoring-record class="full-width" [rounds]="golfer.handicap_index_data.scoring_record" *ngIf="golfer.handicap_index_data && golfer.handicap_index_data.scoring_record; else noScoringRecordData"></app-scoring-record>
   <ng-template #noScoringRecordData>
     <span>No scoring record data!</span>
   </ng-template>
 
-  <h2>Rounds Played</h2>
+  <h2>Rounds</h2>
+
+  <p>Current season, organized by course</p>
 
   <div class="card-container">
-    <div class="card card-small">
-      <span class="bold">Coming soon...</span>
+    <div class="card card-small" *ngFor="let data of roundsOrganizedByTee | keyvalue">
+      <span class="bold">Tee Id = {{ data.key }}</span>
     </div>
   </div>
 
