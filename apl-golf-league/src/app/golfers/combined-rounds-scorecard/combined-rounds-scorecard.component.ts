@@ -21,7 +21,7 @@ export class CombinedRoundsScorecardComponent {
   }
 
   getRoundTitle(round: RoundData): string {
-    return round.date_played.toString();
+    return new Date(round.date_played).toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"});
   }
 
   getRoundSubtitle(round: RoundData): string {

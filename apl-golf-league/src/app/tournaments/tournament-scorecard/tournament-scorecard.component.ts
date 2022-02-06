@@ -43,7 +43,7 @@ export class TournamentScorecardComponent implements OnInit {
   }
 
   getTournamentSubtitle(): string {
-    return this.rounds[0].date_played.toString();
+    return new Date(this.rounds[0].date_played).toLocaleDateString('en-us', { weekday: "long", year:"numeric", month:"long", day:"numeric"});
   }
 
   getRoundSubtitle(round: RoundData): string {

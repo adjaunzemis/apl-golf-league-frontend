@@ -40,7 +40,7 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
   }
 
   getMatchSubtitle(): string {
-    return this.match.rounds[0].date_played.toString();
+    return new Date(this.match.rounds[0].date_played).toLocaleDateString('en-us', { weekday: "long", year:"numeric", month:"long", day:"numeric"});
   }
 
   getRoundSubtitle(round: RoundData): string {
