@@ -21,6 +21,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
 
   isLoadingTournaments = true;
   tournaments: TournamentInfo[] = [];
+  currentTournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
   // TODO: Replace placeholder officer info with database query
@@ -51,6 +52,12 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         console.log(`[LeagueHomeComponent] Received tournaments list`);
         this.tournaments = result.tournaments;
+        this.currentTournaments = [];
+        for (let tournament of this.tournaments) {
+          if (tournament.year === this.currentYear) {
+            this.currentTournaments.push(tournament);
+          }
+        }
         this.isLoadingTournaments = false;
       });
 
