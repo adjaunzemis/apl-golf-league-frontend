@@ -12,8 +12,11 @@ import { TournamentsService } from '../tournaments/tournaments.service';
   styleUrls: ['./league-home.component.css']
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
+  private currentYear: number = 2021;
+
   isLoadingFlights = true;
   flights: FlightInfo[] = [];
+  currentFlights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
   isLoadingTournaments = true;
@@ -35,6 +38,12 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
       .subscribe(result => {
           console.log(`[LeagueHomeComponent] Received flights list`);
           this.flights = result.flights;
+          this.currentFlights = [];
+          for (let flight of this.flights) {
+            if (flight.year === this.currentYear) {
+              this.currentFlights.push(flight);
+            }
+          }
           this.isLoadingFlights = false;
       });
 

@@ -2,7 +2,8 @@
 
   <div class="card announcements-card card-small">
     <span>Site under construction!</span>
-    <span>Like what you see? Questions/comments/suggestions? Feel free to <a class="link-text" href="mailto: adjaunzemis@gmail.com">send me feedback!</a></span>
+    <span>Not all historical data has been added, and some features are still in development.</span>
+    <span>Like what you see? Comments/questions/suggestions? Feel free to <a class="link-text" href="mailto: adjaunzemis@gmail.com">send me feedback!</a></span>
   </div>
 
   <img src="assets/apl_golf_logo.png" alt="APL Golf League" height="150px">
@@ -12,7 +13,7 @@
   <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
 
   <div class="card-container" *ngIf="!isLoadingFlights">
-    <a class="card selectable" routerLink="flight" [queryParams]="{id: flight.id}" *ngFor="let flight of flights">
+    <a class="card selectable" routerLink="/flight" [queryParams]="{id: flight.id}" *ngFor="let flight of currentFlights">
       <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="50" *ngIf="flight.logo_url">
 
       <span class="bold">{{ flight.name }} ({{ flight.year }})</span>
@@ -23,12 +24,18 @@
     </a>
   </div>
 
+  <div class="card-container">
+    <a class="card card-small selectable" routerLink="/flight/history">
+      <span class="bold">Historical Flights</span>
+    </a>
+  </div>
+
   <h2>Tournaments</h2>
 
   <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
 
   <div class="card-container" *ngIf="!isLoadingTournaments">
-    <a class="card selectable" routerLink="tournament" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
+    <a class="card selectable" routerLink="/tournament" [queryParams]="{id: tournament.id}" *ngFor="let tournament of tournaments">
       <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="50" *ngIf="tournament.logo_url">
 
       <span class="bold">{{ tournament.name }} ({{ tournament.year }})</span>

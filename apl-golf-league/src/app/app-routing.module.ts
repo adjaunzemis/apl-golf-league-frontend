@@ -8,11 +8,13 @@ import { TeamHomeComponent } from "./flights/team-home/team-home.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
 import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component";
+import { FlightHistoryComponent } from "./flights/flight-history/flight-history.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
   { path: "flight", component: FlightHomeComponent},
   { path: "flight/team", component: TeamHomeComponent },
+  { path: "flight/history", component: FlightHistoryComponent },
   { path: "tournament", component: TournamentHomeComponent },
   { path: "golfer", component: GolferHomeComponent },
   { path: "courses", component: CourseListComponent },

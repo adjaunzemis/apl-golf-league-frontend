@@ -10,6 +10,7 @@ import { TeamRosterComponent } from './team-roster/team-roster.component';
 import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
 import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
+import { FlightHistoryComponent } from './flight-history/flight-history.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FlightStandingsComponent } from './flight-standings/flight-standings.co
     TeamRosterComponent,
     GolferStatisticsComponent,
     FlightHomeComponent,
-    FlightStandingsComponent
+    FlightStandingsComponent,
+    FlightHistoryComponent
   ],
   imports: [
     CommonModule,
