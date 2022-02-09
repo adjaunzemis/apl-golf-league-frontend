@@ -15,6 +15,7 @@ import { FlightsModule } from './flights/flights.module';
 import { GolfersModule } from './golfers/golfers.module';
 import { MatchesModule } from './matches/matches.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { TournamentsModule } from './tournaments/tournaments.module';
     FlightsModule,
     GolfersModule,
     MatchesModule,
-    TournamentsModule
+    TournamentsModule,
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

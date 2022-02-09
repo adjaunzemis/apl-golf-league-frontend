@@ -10,6 +10,7 @@ import { CourseCreateComponent } from "./courses/course-create/course-create.com
 import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component";
 import { FlightHistoryComponent } from "./flights/flight-history/flight-history.component";
 import { TournamentHistoryComponent } from "./tournaments/tournament-history/tournament-history.component";
+import { LoginComponent } from "./auth/login/login.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: "tournament/history", component: TournamentHistoryComponent },
   { path: "golfer", component: GolferHomeComponent },
   { path: "courses", component: CourseListComponent },
-  { path: "courses/edit", component: CourseCreateComponent }
+  { path: "courses/edit", component: CourseCreateComponent },
+  { path: "auth/login", component: LoginComponent }
 ]
 
 @NgModule({
