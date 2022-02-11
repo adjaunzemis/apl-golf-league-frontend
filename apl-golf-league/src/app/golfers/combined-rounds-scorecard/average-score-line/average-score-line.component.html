@@ -1,7 +1,7 @@
 <table class="styled-table">
   <tbody>
     <tr class="score">
-      <td class="label" rowspan="1">
+      <td class="label" rowspan="2">
         <span>{{ title }}</span>
       </td>
       <td class="hole" rowspan="2" *ngFor="let holeScore of holeScores; let holeIdx = index">
@@ -12,9 +12,6 @@
         <div>{{ roundScore | number : '1.1-1' }}</div>
         <div>({{ getRelativeScoreString(roundScore, rounds[0].tee_par)}})</div>
       </td>
-    </tr>
-    <tr>
-      <td class="detail" rowspan="1">{{ subtitle }}</td>
     </tr>
   </tbody>
 </table>

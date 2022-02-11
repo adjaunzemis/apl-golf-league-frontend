@@ -13,7 +13,6 @@ export class AverageScoreLineComponent implements OnInit, OnChanges {
   @Input() scoreMode: string = "gross";
 
   @Input() title: string;
-  @Input() subtitle: string;
 
   roundScore: number;
   holeScores: number[];

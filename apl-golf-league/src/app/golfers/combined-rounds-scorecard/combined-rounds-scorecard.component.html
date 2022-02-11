@@ -3,5 +3,5 @@
   <app-scorecard-hole-line [holeResultData]="rounds[0].holes" [(selectedScoreMode)]="scoreMode"></app-scorecard-hole-line>
   <app-scorecard-tee-info [holeResultData]="rounds[0].holes" [showDetails]="true"></app-scorecard-tee-info>
   <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" [title]="getRoundTitle(round)" [subtitle]="getRoundSubtitle(round)" *ngFor="let round of rounds"></app-scorecard-score-line>
-  <app-average-score-line [rounds]="rounds" [scoreMode]="scoreMode" title="Average" subtitle="Num Rounds: {{ rounds.length }}"></app-average-score-line>
+  <app-average-score-line [rounds]="rounds" [scoreMode]="scoreMode" title="Average"></app-average-score-line>
 </div>
