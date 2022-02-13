@@ -9,6 +9,8 @@ import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LeagueHomeComponent } from './league-home/league-home.component';
+import { RulesComponent } from './rules/rules.component';
+import { HandicapsComponent } from './handicaps/handicaps.component';
 import { CoursesModule } from './courses/courses.module';
 import { RoundsModule } from './rounds/rounds.module';
 import { FlightsModule } from './flights/flights.module';
@@ -22,7 +24,9 @@ import { AuthModule } from './auth/auth.module';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    LeagueHomeComponent
+    LeagueHomeComponent,
+    RulesComponent,
+    HandicapsComponent
   ],
   imports: [
     BrowserModule,

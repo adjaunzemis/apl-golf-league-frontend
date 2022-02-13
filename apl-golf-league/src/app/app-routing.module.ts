@@ -11,6 +11,8 @@ import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component
 import { FlightHistoryComponent } from "./flights/flight-history/flight-history.component";
 import { TournamentHistoryComponent } from "./tournaments/tournament-history/tournament-history.component";
 import { LoginComponent } from "./auth/login/login.component";
+import { RulesComponent } from "./rules/rules.component";
+import { HandicapsComponent } from "./handicaps/handicaps.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -22,7 +24,9 @@ const routes: Routes = [
   { path: "golfer", component: GolferHomeComponent },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
-  { path: "auth/login", component: LoginComponent }
+  { path: "auth/login", component: LoginComponent },
+  { path: "rules", component: RulesComponent },
+  { path: "handicaps", component: HandicapsComponent }
 ]
 
 @NgModule({
