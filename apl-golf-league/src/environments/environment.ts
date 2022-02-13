@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://jaunzenet.com/'
+  apiUrl: 'https://aplgolfapi.jaunzenet.com/'
 };
 
 /*
