@@ -7,18 +7,13 @@
   <h2>Rules Committee</h2>
 
   <div class="card-container">
-    <a class="card card-small selectable" href="mailto:">
-      <span class="bold">George P. Burdell</span>
-      <span>Committee Chair</span>
+    <a class="card card-small selectable" href="mailto:{{ member.email }}" *ngFor="let member of rulesCommittee">
+      <span class="bold">{{ member.name }}</span>
+      <span>{{ member.role | titlecase }}</span>
     </a>
-
-    <div class="card card-small selectable">
-      <span class="bold">Bobson Dugnut</span>
-      <span>Member</span>
-    </div>
   </div>
 
-  <a class="card card-small selectable" href="mailto:">
+  <a class="card card-small selectable" href="mailto:{{ getCommitteeEmailList() }}">
     <span class="bold">Email Rules Committee</span>
   </a>
 
