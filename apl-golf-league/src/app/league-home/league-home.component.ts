@@ -26,7 +26,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   private tournamentsSub: Subscription;
 
   // TODO: Replace placeholder officer info with database query
-  officers: Officer[] = MOCK_OFFICERS.filter((officer) => {
+  leagueOfficers: Officer[] = MOCK_OFFICERS.filter((officer) => {
     return officer.committee === Committee.LEAGUE;
   });
 
@@ -66,6 +66,14 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
       this.flightsSub.unsubscribe();
       this.tournamentsSub.unsubscribe
+  }
+
+  getLeagueOfficersEmailList(): string {
+    let emailList = "";
+    for (const officer of this.leagueOfficers) {
+      emailList += officer.email + ";"
+    }
+    return emailList.substring(0, emailList.length - 1);
   }
 
 }
