@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Committee, MOCK_OFFICERS } from './../shared/officer.model';
+
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -7,15 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RulesComponent implements OnInit {
 
-  rulesCommittee: RulesCommitteeMemberInfo[];
+  // TODO: Replace placeholder officer info with database query
+  rulesCommittee = MOCK_OFFICERS.filter((officer) => {
+    return officer.committee === Committee.RULES;
+  });
 
-  ngOnInit(): void {
-    this.rulesCommittee = [
-      { name: "Eric Crossley", role: "Committee Chair", email: "Eric.Crossley@jhuapl.edu" },
-      { name: "Gary Gafke", role: "Member", email: "ggafke@gmail.com" },
-      { name: "Mark Mathews", role: "Member", email: "Mark.Mathews@jhuapl.edu" }
-    ]
-  }
+  ngOnInit(): void { }
 
   getCommitteeEmailList(): string {
     let emailList = "";
@@ -25,10 +24,4 @@ export class RulesComponent implements OnInit {
     return emailList.substring(0, emailList.length - 1);
   }
 
-}
-
-interface RulesCommitteeMemberInfo {
-  name: string
-  role: string
-  email: string
 }

@@ -55,10 +55,10 @@
   <h2>Officers</h2>
 
   <div class="card-container">
-    <div class="card card-small selectable" *ngFor="let officer of officers">
-      <span class="bold">{{ officer.title }}</span>
+    <a class="card card-small selectable" href="mailto:{{ officer.email }}" *ngFor="let officer of officers">
+      <span class="bold">{{ officer.role }}</span>
       <span>{{ officer.name }}</span>
-    </div>
+    </a>
   </div>
 
   <h2>Helpful Links</h2>

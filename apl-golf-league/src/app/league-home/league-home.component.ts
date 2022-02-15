@@ -5,6 +5,7 @@ import { FlightInfo } from '../shared/flight.model';
 import { TournamentInfo } from '../shared/tournament.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentsService } from '../tournaments/tournaments.service';
+import { Committee, MOCK_OFFICERS, Officer } from './../shared/officer.model';
 
 @Component({
   selector: 'app-league-home',
@@ -25,12 +26,9 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   private tournamentsSub: Subscription;
 
   // TODO: Replace placeholder officer info with database query
-  officers: OfficerInfo[] = [
-    { name: "John Landshof", title: "President", email: "#" },
-    { name: "Richie Steinwand", title: "Vice-President", email: "#" },
-    { name: "Bob Erlandson", title: "Treasurer", email: "#" },
-    { name: "Andris Jaunzemis", title: "Handicapper", email: "#" }
-  ]
+  officers: Officer[] = MOCK_OFFICERS.filter((officer) => {
+    return officer.committee === Committee.LEAGUE;
+  });
 
   constructor(private flightsService: FlightsService, private tournamentsService: TournamentsService) { }
 
@@ -70,10 +68,4 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
       this.tournamentsSub.unsubscribe
   }
 
-}
-
-interface OfficerInfo {
-  name: string
-  title: string
-  email: string
 }
