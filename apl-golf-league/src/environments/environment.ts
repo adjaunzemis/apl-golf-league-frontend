@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://aplgolfapi.jaunzenet.com/'
+  apiUrl: 'http://localhost:8000/'
 };
 
 /*

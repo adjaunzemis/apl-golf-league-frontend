@@ -4,7 +4,8 @@ export enum Committee {
   RULES,
   TOURNAMENT,
   BANQUET_AND_AWARDS,
-  PUBLICITY
+  PUBLICITY,
+  PLANNING
 }
 
 export interface Officer {

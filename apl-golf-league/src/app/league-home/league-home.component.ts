@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { FlightInfo } from '../shared/flight.model';
-import { TournamentInfo } from '../shared/tournament.model';
 import { FlightsService } from '../flights/flights.service';
+import { TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
-import { Committee, MOCK_OFFICERS, Officer } from './../shared/officer.model';
+import { Committee, Officer } from './../shared/officer.model';
+import { OfficersService } from '../officers/officers.service';
 
 @Component({
   selector: 'app-league-home',
@@ -13,7 +14,7 @@ import { Committee, MOCK_OFFICERS, Officer } from './../shared/officer.model';
   styleUrls: ['./league-home.component.css']
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
-  private currentYear: number = 2021;
+  private currentYear: number = 2021; // TODO: Define in parameter database?
 
   isLoadingFlights = true;
   flights: FlightInfo[] = [];
@@ -25,12 +26,12 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   currentTournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
-  // TODO: Replace placeholder officer info with database query
-  leagueOfficers: Officer[] = MOCK_OFFICERS.filter((officer) => {
-    return officer.committee === Committee.LEAGUE;
-  });
+  isLoadingOfficers = true;
+  officers: Officer[] = [];
+  leagueOfficers: Officer[] = [];
+  private officersSub: Subscription;
 
-  constructor(private flightsService: FlightsService, private tournamentsService: TournamentsService) { }
+  constructor(private flightsService: FlightsService, private tournamentsService: TournamentsService, private officersService: OfficersService) { }
 
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
@@ -59,13 +60,25 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
         this.isLoadingTournaments = false;
       });
 
-    this.flightsService.getFlightsList(0, 100);
-    this.tournamentsService.getTournamentsList(0, 100);
+    this.officersSub = this.officersService.getOfficersListUpdateListener()
+      .subscribe(result => {
+        console.log(`[LeagueHomeComponent] Received officers list`);
+        this.officers = result;
+        this.leagueOfficers = result.filter((officer) => {
+          return officer.committee.toString() === "LEAGUE";
+        });
+        this.isLoadingOfficers = false;
+      })
+
+    this.flightsService.getFlightsList(0, 100); // TODO: Implement year query filter
+    this.tournamentsService.getTournamentsList(0, 100); // TODO: Implement year query filter
+    this.officersService.getOfficersList(0, 100, this.currentYear); // TODO: Unhardcode query params
   }
 
   ngOnDestroy(): void {
       this.flightsSub.unsubscribe();
-      this.tournamentsSub.unsubscribe
+      this.tournamentsSub.unsubscribe();
+      this.officersSub.unsubscribe();
   }
 
   getLeagueOfficersEmailList(): string {

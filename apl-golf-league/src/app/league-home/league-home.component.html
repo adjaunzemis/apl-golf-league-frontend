@@ -54,7 +54,9 @@
 
   <h2>Officers</h2>
 
-  <div class="card-container">
+  <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
+
+  <div class="card-container" *ngIf="!isLoadingOfficers">
     <a class="card card-small selectable" href="mailto:{{ officer.email }}" *ngFor="let officer of leagueOfficers">
       <span class="bold">{{ officer.role }}</span>
       <span>{{ officer.name }}</span>
