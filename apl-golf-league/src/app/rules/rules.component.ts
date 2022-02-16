@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { Committee, MOCK_OFFICERS } from './../shared/officer.model';
+import { Officer } from './../shared/officer.model';
+import { OfficersService } from '../officers/officers.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-rules',
@@ -8,13 +10,27 @@ import { Committee, MOCK_OFFICERS } from './../shared/officer.model';
   styleUrls: ['./rules.component.css']
 })
 export class RulesComponent implements OnInit {
+  isLoading = true;
 
-  // TODO: Replace placeholder officer info with database query
-  rulesCommittee = MOCK_OFFICERS.filter((officer) => {
-    return officer.committee === Committee.RULES;
-  });
+  private currentYear = 2021; // TODO: Un-hardcode year
 
-  ngOnInit(): void { }
+  rulesCommittee: Officer[] = [];
+  private officersSub: Subscription;
+
+  constructor(private officersService: OfficersService) { }
+
+  ngOnInit(): void {
+    this.officersSub = this.officersService.getOfficersListUpdateListener()
+      .subscribe(result => {
+        console.log(`[RulesComponent] Received officers list`);
+        this.rulesCommittee = result.filter((officer) => {
+          return officer.committee.toString() === "RULES";
+        });
+        this.isLoading = false;
+      })
+
+    this.officersService.getOfficersList(0, 100, this.currentYear); // TODO: Un-hardcode query params
+  }
 
   getCommitteeEmailList(): string {
     let emailList = "";
