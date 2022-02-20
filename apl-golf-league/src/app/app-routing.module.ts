@@ -5,6 +5,7 @@ import { LeagueHomeComponent } from "./league-home/league-home.component";
 import { FlightHomeComponent } from "./flights/flight-home/flight-home.component";
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from "./flights/team-home/team-home.component";
+import { FlightSignupComponent as FlightSignupComponent } from "./flights/flight-signup/flight-signup.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
 import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component";
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
   { path: "flight", component: FlightHomeComponent},
   { path: "flight/team", component: TeamHomeComponent },
+  { path: "flight/signup", component: FlightSignupComponent},
   { path: "flight/history", component: FlightHistoryComponent },
   { path: "tournament", component: TournamentHomeComponent },
   { path: "tournament/history", component: TournamentHistoryComponent },

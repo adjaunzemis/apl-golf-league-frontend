@@ -11,6 +11,7 @@ import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics
 import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
+import { FlightSignupComponent } from './flight-signup/flight-signup.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FlightHistoryComponent } from './flight-history/flight-history.componen
     GolferStatisticsComponent,
     FlightHomeComponent,
     FlightStandingsComponent,
-    FlightHistoryComponent
+    FlightHistoryComponent,
+    FlightSignupComponent
   ],
   imports: [
     CommonModule,
