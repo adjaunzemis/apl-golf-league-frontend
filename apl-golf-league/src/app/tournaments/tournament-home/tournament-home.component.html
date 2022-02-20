@@ -5,10 +5,15 @@
 
   <h1>{{ tournament.name }} ({{ tournament.year }})</h1>
 
+  <div class="card announcements-card card-small">
+    <span class="bold">Sign-Ups</span>
+    <span>{{ tournament.signup_start_date | date:'longDate' }} - {{ tournament.signup_stop_date | date:'longDate' }}</span>
+  </div>
+
   <div class="card-container">
     <div class="card card-small">
       <span class="bold">Date</span>
-      <span>{{ tournament.date | date:'longDate'}}</span>
+      <span>{{ tournament.date | date:'longDate'}} {{ tournament.start_time }}</span>
     </div>
 
     <div class="card card-small">

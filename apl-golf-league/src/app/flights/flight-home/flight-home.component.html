@@ -5,8 +5,13 @@
 
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
+  <div class="card announcements-card card-small">
+    <span class="bold">Sign-Ups</span>
+    <span>{{ flight.signup_start_date | date:'longDate' }} - {{ flight.signup_stop_date | date:'longDate' }}</span>
+  </div>
+
   <div class="card-container">
-    <a class="card card-small selectable" *ngIf="flight.secretary">
+    <a class="card card-small selectable" href="mailto:{{ flight.secretary_email }}" *ngIf="flight.secretary">
       <span class="bold">Flight Secretary</span>
       <span>{{ flight.secretary }}</span>
     </a>
