@@ -2,7 +2,7 @@
     <mat-label>Select Golfer</mat-label>
     <input type="text" matInput required [formControl]="golferControl" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredGolferOptions | async" [value]="option">{{ option.name }}</mat-option>
+    <mat-option *ngFor="let option of filteredGolferOptions | async" [value]="option.name">{{ option.name }}</mat-option>
     </mat-autocomplete>
 </mat-form-field>
 
