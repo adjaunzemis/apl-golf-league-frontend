@@ -3,20 +3,35 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { GolferData } from "../shared/golfer.model";
+import { Golfer, GolferData } from "../shared/golfer.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class GolfersService {
-  private golfersData: GolferData[] = []
+  private allGolfers: Golfer[] = [];
+  private allGolfersUpdated = new Subject<Golfer[]>();
+
+  private golfersData: GolferData[] = [];
   private golfersDataUpdated = new Subject<{ numGolfers: number, golfers: GolferData[] }>();
 
   private golferData: GolferData
   private golferDataUpdated = new Subject<GolferData>();
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getAllGolfers(): void {
+    this.http.get<Golfer[]>(environment.apiUrl + "golfers/info")
+      .subscribe(result => {
+        this.allGolfers = result;
+        this.allGolfersUpdated.next([...this.allGolfers]);
+      });
+  }
+
+  getAllGolfersUpdateListener(): Observable<Golfer[]> {
+    return this.allGolfersUpdated.asObservable();
+  }
 
   getGolfers(offset: number, limit: number, year?: number): void {
     let queryParams: string = `?`;

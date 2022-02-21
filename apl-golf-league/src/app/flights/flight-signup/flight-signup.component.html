@@ -1,4 +1,6 @@
-<div class="content">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div class="content" *ngIf="!isLoading">
 
     <h1>Flight Sign-Up</h1>
 
@@ -12,6 +14,8 @@
     </mat-form-field>
 
     <div class="content" *ngIf="!flightControl.hasError('required')">
+
+        <p>TODO: Show flight data (course, divisions, sign-up dates)...</p>
 
         <h2>{{ flightControl.value.name | titlecase }} Teams</h2>
 
