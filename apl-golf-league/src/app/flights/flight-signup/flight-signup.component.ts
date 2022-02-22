@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { FlightInfo } from '../../shared/flight.model';
+import { FlightData, FlightInfo } from '../../shared/flight.model';
+import { FlightsService } from '../flights.service';
 import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 
@@ -12,11 +13,15 @@ import { GolfersService } from '../../golfers/golfers.service';
   styleUrls: ['./flight-signup.component.css']
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
-  isLoading = true;
+  isLoadingFlights = true;
+  isLoadingSelectedFlight = false;
+  isLoadingGolfers = true;
 
   teamNameControl = new FormControl();
 
   flightControl = new FormControl('', Validators.required);
+
+  private flightsSub: Subscription;
   flights: FlightInfo[] = [ // TODO: Query flight info from database
     { id: 1, name: "Diamond Ridge", year: 2022, course: "Diamond Ridge Golf Course" },
     { id: 2, name: "Fairway Hills A", year: 2022, course: "Fairway Hills Golf Course" },
@@ -24,12 +29,27 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     { id: 4, name: "Rattlewood", year: 2022, course: "Rattlewood Golf Course" }
   ];
 
+  selectedFlight: FlightData;
+  private selectedFlightSub: Subscription;
+
   private golfersSub: Subscription;
   golfers: Golfer[] = [];
 
-  constructor(private golfersService: GolfersService) { }
+  constructor(private flightsService: FlightsService, private golfersService: GolfersService) { }
 
   ngOnInit(): void {
+    this.flightsSub = this.flightsService.getFlightsListUpdateListener()
+      .subscribe(result => {
+        this.flights = result.flights; // TODO: Filter to unlocked flights only
+        this.isLoadingFlights = false;
+      });
+
+    this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
+      .subscribe(result => {
+        this.selectedFlight = result;
+        this.isLoadingSelectedFlight = false;
+      });
+
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
       .subscribe(result => {
         this.golfers = result.sort((a: Golfer, b: Golfer) => {
@@ -41,14 +61,22 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
           }
           return 0;
         });
-        this.isLoading = false;
+        this.isLoadingGolfers = false;
       });
 
+    this.flightsService.getFlightsList(0, 100); // TODO: Remove unneeded filters
     this.golfersService.getAllGolfers();
   }
 
+  getSelectedFlightData(id: number): void {
+    this.isLoadingSelectedFlight = true;
+    this.flightsService.getFlight(id);
+  }
+
   ngOnDestroy(): void {
-      this.golfersSub.unsubscribe();
+    this.flightsSub.unsubscribe();
+    this.selectedFlightSub.unsubscribe();
+    this.golfersSub.unsubscribe();
   }
 
 }

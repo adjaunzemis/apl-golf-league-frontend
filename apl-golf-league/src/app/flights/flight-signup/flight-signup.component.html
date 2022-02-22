@@ -1,6 +1,6 @@
-<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-spinner *ngIf="isLoadingFlights || isLoadingGolfers"></mat-spinner>
 
-<div class="content" *ngIf="!isLoading">
+<div class="content" *ngIf="!isLoadingFlights && !isLoadingGolfers">
 
     <h1>Flight Sign-Up</h1>
 
@@ -8,25 +8,50 @@
         <mat-label>Select Flight</mat-label>
         <mat-select [formControl]="flightControl" required>
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let flight of flights" [value]="flight">{{ flight.name }}</mat-option>
+            <mat-option *ngFor="let flight of flights" [value]="flight" (click)="getSelectedFlightData(flight.id)">{{ flight.name }} ({{ flight.year }})</mat-option>
         </mat-select>
         <mat-error *ngIf="flightControl.hasError('required')">Please choose a flight</mat-error>
     </mat-form-field>
 
-    <div class="content" *ngIf="!flightControl.hasError('required')">
+    <mat-spinner *ngIf="isLoadingSelectedFlight"></mat-spinner>
 
-        <p>TODO: Show flight data (course, divisions, sign-up dates)...</p>
+    <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
 
-        <h2>{{ flightControl.value.name | titlecase }} Teams</h2>
+        <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
 
-        <p>TODO: Populate with existing teams...</p>
+        <div class="card-container">
+          <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
+            <span class="bold">Secretary</span>
+            <span>{{ selectedFlight.secretary }}</span>
+          </a>
 
-        <!-- <div class="card-container team-list">
-            <div class="card team-card" *ngFor="let team of flightControl.value.teams">
-                <span class="bold">{{ team.name }}</span>
-                <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
-            </div>
-        </div> -->
+          <div class="card card-small">
+            <span class="bold">Course</span>
+            <span>{{ selectedFlight.course }}</span>
+          </div>
+
+          <div class="card card-small">
+            <span class="bold">Sign-Up Dates</span>
+            <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
+          </div>
+        </div>
+
+        <div class="card-container division-list">
+          <div class="card division-card" *ngFor="let division of selectedFlight.divisions">
+            <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
+            <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
+            <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
+          </div>
+        </div>
+
+        <h3>Teams</h3>
+
+        <div class="card-container team-list">
+          <a class="card team-card" *ngFor="let team of selectedFlight.teams">
+            <span class="bold">{{ team.name }}</span>
+            <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
+          </a>
+        </div>
 
         <h2>Add Team</h2>
 
