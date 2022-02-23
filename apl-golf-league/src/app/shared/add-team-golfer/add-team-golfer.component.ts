@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { Golfer } from '../golfer.model';
+import { DivisionData } from '../division.model';
 
 @Component({
   selector: 'app-add-team-golfer',
@@ -19,7 +20,7 @@ export class AddTeamGolferComponent implements OnInit {
   roleOptions: string[] = ['Captain', 'Player'];
 
   divisionControl = new FormControl();
-  @Input() divisionOptions: string[] = ['Middle', 'Senior', 'Super-Senior', 'Forward'];
+  @Input() divisionOptions: DivisionData[] = [];
 
   constructor() { }
 

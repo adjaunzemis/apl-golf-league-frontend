@@ -61,7 +61,7 @@
             <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
         </mat-form-field>
 
-        <app-add-team-golfer [golferOptions]="golfers"></app-add-team-golfer>
+        <app-add-team-golfer [golferOptions]="golfers" [divisionOptions]="selectedFlight.divisions"></app-add-team-golfer>
 
     </div>
 

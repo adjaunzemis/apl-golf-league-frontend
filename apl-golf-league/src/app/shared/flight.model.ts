@@ -15,7 +15,7 @@ export class FlightData {
     signup_stop_date?: Date
     start_date?: Date
     weeks?: number
-    divisions?: DivisionData[]
+    divisions: DivisionData[]
     teams?: TeamData[]
     matches?: MatchSummary[]
 }
