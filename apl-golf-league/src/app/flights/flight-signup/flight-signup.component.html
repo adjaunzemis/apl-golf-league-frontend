@@ -55,13 +55,19 @@
 
         <h2>Add Team</h2>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Team Name</mat-label>
-            <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" value="">
-            <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
-        </mat-form-field>
+        <div>
+          <mat-form-field class="team-name-input" appearance="fill">
+              <mat-label>Team Name</mat-label>
+              <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
+              <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+          </mat-form-field>
 
-        <app-add-team-golfer [golferOptions]="golfers" [divisionOptions]="selectedFlight.divisions"></app-add-team-golfer>
+          <button mat-raised-button color="primary">Submit</button>
+        </div>
+
+        <p *ngFor="let golferSignupInfo of teamSignupInfo">{{ golferSignupInfo.golfer.name }} - {{ golferSignupInfo.role }} - {{ golferSignupInfo.division.name }}</p>
+
+        <app-add-team-golfer [golferOptions]="golfers" [divisionOptions]="selectedFlight.divisions" (addTeamGolferEvent)="addTeamGolferDataToTeam($event)"></app-add-team-golfer>
 
     </div>
 

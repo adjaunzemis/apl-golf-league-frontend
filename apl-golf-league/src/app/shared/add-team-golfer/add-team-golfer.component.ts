@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { Golfer } from '../golfer.model';
+import { AddTeamGolferData, Golfer } from '../golfer.model';
 import { DivisionData } from '../division.model';
 
 @Component({
@@ -22,7 +22,7 @@ export class AddTeamGolferComponent implements OnInit {
   divisionControl = new FormControl();
   @Input() divisionOptions: DivisionData[] = [];
 
-  constructor() { }
+  @Output() addTeamGolferEvent = new EventEmitter<AddTeamGolferData>()
 
   ngOnInit() {
     this.filteredGolferOptions = this.golferControl.valueChanges.pipe(
@@ -46,11 +46,14 @@ export class AddTeamGolferComponent implements OnInit {
     return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
-}
+  addGolferToTeam(): void {
+    const teamGolfer: AddTeamGolferData = {
+      golfer: this.golferControl.value,
+      role: this.roleControl.value,
+      division: this.divisionControl.value
+    };
+    console.log(teamGolfer);
+    this.addTeamGolferEvent.emit(teamGolfer);
+  }
 
-interface AddTeamGolferData {
-  id: number
-  name: string
-  role: string
-  division: string
 }

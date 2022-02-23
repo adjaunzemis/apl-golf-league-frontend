@@ -1,3 +1,4 @@
+import { DivisionData } from "./division.model";
 import { RoundSummary } from "./round.model";
 
 export interface Golfer {
@@ -46,4 +47,10 @@ export interface HandicapIndexData {
   handicap_index: number
   date: Date
   scoring_record?: RoundSummary[]
+}
+
+export interface AddTeamGolferData {
+  golfer: Golfer
+  role: string
+  division: DivisionData
 }

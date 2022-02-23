@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
-import { Golfer } from '../../shared/golfer.model';
+import { AddTeamGolferData, Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 
 @Component({
@@ -34,6 +34,8 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   private golfersSub: Subscription;
   golfers: Golfer[] = [];
+
+  teamSignupInfo: AddTeamGolferData[] = [];
 
   constructor(private flightsService: FlightsService, private golfersService: GolfersService) { }
 
@@ -77,6 +79,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.flightsSub.unsubscribe();
     this.selectedFlightSub.unsubscribe();
     this.golfersSub.unsubscribe();
+  }
+
+  addTeamGolferDataToTeam(newTeamGolferData: AddTeamGolferData): void {
+    this.teamSignupInfo.push(newTeamGolferData);
   }
 
 }
