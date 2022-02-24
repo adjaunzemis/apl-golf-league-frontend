@@ -2,73 +2,105 @@
 
 <div class="content" *ngIf="!isLoadingFlights && !isLoadingGolfers">
 
-    <h1>Flight Sign-Up</h1>
+  <h1>Flight Sign-Up</h1>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Select Flight</mat-label>
-        <mat-select [formControl]="flightControl" required>
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let flight of flights" [value]="flight" (click)="getSelectedFlightData(flight.id)">{{ flight.name }} ({{ flight.year }})</mat-option>
-        </mat-select>
-        <mat-error *ngIf="flightControl.hasError('required')">Please choose a flight</mat-error>
-    </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Flight</mat-label>
+    <mat-select [formControl]="flightControl" required>
+      <mat-option>--</mat-option>
+      <mat-option *ngFor="let flight of flights" [value]="flight" (click)="getSelectedFlightData(flight.id)">{{ flight.name }} ({{ flight.year }})</mat-option>
+    </mat-select>
+    <mat-error *ngIf="flightControl.hasError('required')">Please choose a flight</mat-error>
+  </mat-form-field>
 
-    <mat-spinner *ngIf="isLoadingSelectedFlight"></mat-spinner>
+  <mat-spinner *ngIf="isLoadingSelectedFlight"></mat-spinner>
 
-    <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
+  <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
 
-        <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
+    <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
 
-        <div class="card-container">
-          <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
-            <span class="bold">Secretary</span>
-            <span>{{ selectedFlight.secretary }}</span>
-          </a>
+    <div class="card-container">
+      <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
+        <span class="bold">Secretary</span>
+        <span>{{ selectedFlight.secretary }}</span>
+      </a>
 
-          <div class="card card-small">
-            <span class="bold">Course</span>
-            <span>{{ selectedFlight.course }}</span>
-          </div>
+      <div class="card card-small">
+        <span class="bold">Course</span>
+        <span>{{ selectedFlight.course }}</span>
+      </div>
 
-          <div class="card card-small">
-            <span class="bold">Sign-Up Dates</span>
-            <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
-          </div>
-        </div>
+      <div class="card card-small">
+        <span class="bold">Sign-Up Dates</span>
+        <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
+      </div>
+    </div>
 
-        <div class="card-container division-list">
-          <div class="card division-card" *ngFor="let division of selectedFlight.divisions">
-            <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
-            <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
-            <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
-          </div>
-        </div>
+    <div class="card-container division-list">
+      <div class="card division-card" *ngFor="let division of selectedFlight.divisions">
+        <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
+        <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
+        <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
+      </div>
+    </div>
 
-        <h3>Teams</h3>
+    <h3>Teams</h3>
 
-        <div class="card-container team-list">
-          <a class="card team-card" *ngFor="let team of selectedFlight.teams">
-            <span class="bold">{{ team.name }}</span>
-            <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
-          </a>
-        </div>
+    <div class="card-container team-list">
+      <a class="card team-card" *ngFor="let team of selectedFlight.teams">
+        <span class="bold">{{ team.name }}</span>
+        <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
+      </a>
+    </div>
 
-        <h2>Add Team</h2>
+    <h2>Add Team</h2>
 
-        <div>
-          <mat-form-field class="team-name-input" appearance="fill">
-              <mat-label>Team Name</mat-label>
-              <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
-              <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+    <div>
+      <mat-form-field class="team-name-input" appearance="fill">
+          <mat-label>Team Name</mat-label>
+          <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
+          <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent">Submit</button>
+    </div>
+
+    <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()">
+      <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
+        <div formGroupName="{{ idx }}">
+
+          <mat-form-field appearance="fill" class="input-field">
+            <mat-label>Golfer Name</mat-label>
+            <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g">{{ g.name }}</mat-option>
+            </mat-autocomplete>
           </mat-form-field>
 
-          <button mat-raised-button color="primary">Submit</button>
+          <mat-form-field appearance="fill" class="input-field">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="input-field">
+            <mat-label>Division</mat-label>
+            <mat-select formControlName="division" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let d of selectedFlight.divisions" [value]="d">{{ d.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
+
+          <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
+
         </div>
+      </div>
+    </form>
 
-        <p *ngFor="let golferSignupInfo of teamSignupInfo">{{ golferSignupInfo.golfer.name }} - {{ golferSignupInfo.role }} - {{ golferSignupInfo.division.name }}</p>
-
-        <app-add-team-golfer [golferOptions]="golfers" [divisionOptions]="selectedFlight.divisions" (addTeamGolferEvent)="addTeamGolferDataToTeam($event)"></app-add-team-golfer>
-
-    </div>
+  </div>
 
 </div>

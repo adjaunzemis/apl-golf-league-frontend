@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { Observable, Subscription } from 'rxjs';
 
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
 import { AddTeamGolferData, Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-flight-signup',
@@ -33,11 +34,13 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   private selectedFlightSub: Subscription;
 
   private golfersSub: Subscription;
-  golfers: Golfer[] = [];
+  golferOptions: Golfer[] = [];
+  filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
+  roleOptions = ['Captain', 'Player'];
 
-  teamSignupInfo: AddTeamGolferData[] = [];
+  newTeam: FormGroup;
 
-  constructor(private flightsService: FlightsService, private golfersService: GolfersService) { }
+  constructor(private flightsService: FlightsService, private golfersService: GolfersService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
@@ -54,7 +57,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
       .subscribe(result => {
-        this.golfers = result.sort((a: Golfer, b: Golfer) => {
+        this.golferOptions = result.sort((a: Golfer, b: Golfer) => {
           if (a.name < b.name) {
             return -1;
           }
@@ -68,11 +71,11 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     this.flightsService.getFlightsList(0, 100); // TODO: Remove unneeded filters
     this.golfersService.getAllGolfers();
-  }
 
-  getSelectedFlightData(id: number): void {
-    this.isLoadingSelectedFlight = true;
-    this.flightsService.getFlight(id);
+    this.newTeam = this.formBuilder.group({
+      teamGolfers: this.formBuilder.array([])
+    });
+    this.addNewTeamGolferForm();
   }
 
   ngOnDestroy(): void {
@@ -81,8 +84,52 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
   }
 
-  addTeamGolferDataToTeam(newTeamGolferData: AddTeamGolferData): void {
-    this.teamSignupInfo.push(newTeamGolferData);
+  getSelectedFlightData(id: number): void {
+    this.isLoadingSelectedFlight = true;
+    this.flightsService.getFlight(id);
+  }
+
+  onSubmitTeam(): void {
+    console.log("Submitting team not yet implemented...");
+  }
+
+  getTeamGolfersArray(): FormArray {
+    return this.newTeam.get('teamGolfers') as FormArray;
+  }
+
+  addNewTeamGolferForm(): void {
+    const newTeamGolferForm = this.formBuilder.group({
+      golfer: new FormControl("", Validators.required),
+      role: new FormControl("", Validators.required),
+      division: new FormControl("", Validators.required)
+    });
+
+    this.filteredGolferOptionsArray.push(newTeamGolferForm.controls['golfer'].valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        if (this.isGolfer(value)) {
+          return this._filter(value.name);
+        } else {
+          return this._filter(value);
+        }
+      }),
+    ));
+
+    this.getTeamGolfersArray().push(newTeamGolferForm);
+  }
+
+  removeNewTeamGolferForm(idx: number): void {
+    this.getTeamGolfersArray().removeAt(idx);
+    this.filteredGolferOptionsArray.splice(idx, 1);
+  }
+
+  private isGolfer(object: any): object is Golfer {
+    return (<Golfer> object).name !== undefined;
+  }
+
+  private _filter(value: string): Golfer[] {
+    const filterValue = value.toLowerCase();
+    return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
 }
