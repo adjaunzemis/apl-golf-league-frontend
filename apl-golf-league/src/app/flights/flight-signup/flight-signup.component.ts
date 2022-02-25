@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
 import { AddTeamGolferData, Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
-import { map, startWith } from 'rxjs/operators';
+import { DivisionData } from '../../shared/division.model';
 
 @Component({
   selector: 'app-flight-signup',
@@ -23,13 +24,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   flightControl = new FormControl('', Validators.required);
 
   private flightsSub: Subscription;
-  flights: FlightInfo[] = [ // TODO: Query flight info from database
-    { id: 1, name: "Diamond Ridge", year: 2022, course: "Diamond Ridge Golf Course" },
-    { id: 2, name: "Fairway Hills A", year: 2022, course: "Fairway Hills Golf Course" },
-    { id: 3, name: "Fairway Hills B", year: 2022, course: "Fairway Hills Golf Course" },
-    { id: 4, name: "Rattlewood", year: 2022, course: "Rattlewood Golf Course" }
-  ];
-
+  flights: FlightInfo[] = [];
   selectedFlight: FlightData;
   private selectedFlightSub: Subscription;
 
@@ -90,7 +85,64 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmitTeam(): void {
-    console.log("Submitting team not yet implemented...");
+    let isValidTeam = true;
+
+    // Check for unique team name
+    const newTeamName = this.teamNameControl.value as string;
+    if (this.selectedFlight.teams) {
+      for (const team of this.selectedFlight.teams) {
+        if (team.name.toLowerCase() === newTeamName.toLowerCase()) {
+          console.error(`Team name ${newTeamName} is already taken!`);
+          isValidTeam = false;
+        }
+      }
+    }
+
+    // Extract new team signup info from form
+    let newTeamGolfers: { golfer: Golfer, role: string, division: DivisionData }[] = [];
+    for (let idx = 0; idx < this.getTeamGolfersArray().length; idx++) {
+      const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
+      newTeamGolfers.push({
+        golfer: newTeamGolferForm.value.golfer as Golfer,
+        role: newTeamGolferForm.value.role as string,
+        division: newTeamGolferForm.value.division as DivisionData
+      });
+    }
+
+    // Check for golfers already on existing teams
+    for (const newTeamGolfer of newTeamGolfers) {
+      if (this.selectedFlight.teams) {
+        for (const team of this.selectedFlight.teams) {
+          for (const teamGolfer of team.golfers) {
+            if (teamGolfer.id === newTeamGolfer.golfer.id) {
+              console.error(`Golfer ${newTeamGolfer.golfer.name} is already on team ${team.name}!`);
+              isValidTeam = false;
+            }
+          }
+        }
+      }
+    }
+
+    // Submit new team signup
+    if (!isValidTeam) {
+      console.error('Cannot submit team due to validation errors!');
+      return;
+    }
+
+    this.flightsService.createTeam(newTeamName)
+      .subscribe(team => {
+        console.log(team);
+        this.flightsService.createFlightTeamLink(this.selectedFlight.id, team.id)
+          .subscribe(flightTeamLink => {
+            console.log(flightTeamLink);
+            for (const newTeamGolfer of newTeamGolfers) {
+              this.flightsService.createTeamGolferLink(team.id, newTeamGolfer.golfer.id, newTeamGolfer.role, newTeamGolfer.division.id)
+                .subscribe(teamGolferLink => {
+                  console.log(teamGolferLink);
+                });
+            }
+          });
+      });
   }
 
   getTeamGolfersArray(): FormArray {

@@ -17,42 +17,6 @@
 
   <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
 
-    <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
-
-    <div class="card-container">
-      <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
-        <span class="bold">Secretary</span>
-        <span>{{ selectedFlight.secretary }}</span>
-      </a>
-
-      <div class="card card-small">
-        <span class="bold">Course</span>
-        <span>{{ selectedFlight.course }}</span>
-      </div>
-
-      <div class="card card-small">
-        <span class="bold">Sign-Up Dates</span>
-        <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
-      </div>
-    </div>
-
-    <div class="card-container division-list">
-      <div class="card division-card" *ngFor="let division of selectedFlight.divisions">
-        <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
-        <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
-        <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
-      </div>
-    </div>
-
-    <h3>Teams</h3>
-
-    <div class="card-container team-list">
-      <a class="card team-card" *ngFor="let team of selectedFlight.teams">
-        <span class="bold">{{ team.name }}</span>
-        <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
-      </a>
-    </div>
-
     <h2>Add Team</h2>
 
     <div>
@@ -62,7 +26,7 @@
           <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="accent">Submit</button>
+      <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeam.valid" (click)="onSubmitTeam()">Submit</button>
     </div>
 
     <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()">
@@ -100,6 +64,42 @@
         </div>
       </div>
     </form>
+
+    <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
+
+    <div class="card-container">
+      <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
+        <span class="bold">Secretary</span>
+        <span>{{ selectedFlight.secretary }}</span>
+      </a>
+
+      <div class="card card-small">
+        <span class="bold">Course</span>
+        <span>{{ selectedFlight.course }}</span>
+      </div>
+
+      <div class="card card-small">
+        <span class="bold">Sign-Up Dates</span>
+        <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
+      </div>
+    </div>
+
+    <div class="card-container division-list">
+      <div class="card division-card" *ngFor="let division of selectedFlight.divisions">
+        <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
+        <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
+        <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
+      </div>
+    </div>
+
+    <h3>Teams</h3>
+
+    <div class="card-container team-list">
+      <a class="card team-card" *ngFor="let team of selectedFlight.teams">
+        <span class="bold">{{ team.name }}</span>
+        <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
+      </a>
+    </div>
 
   </div>
 

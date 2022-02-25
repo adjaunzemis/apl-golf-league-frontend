@@ -67,5 +67,17 @@ export class FlightsService {
     return this.teamDataUpdated.asObservable();
   }
 
+  createTeam(name: string): Observable<{ id: number, name: string }> {
+    return this.http.post<{ id: number, name: string }>(environment.apiUrl + `teams/`, { name: name });
+  }
+
+  createFlightTeamLink(flightId: number, teamId: number): Observable<{ flight_id: number, team_id: number }> {
+    return this.http.post<{ flight_id: number, team_id: number }>(environment.apiUrl + `flights/${flightId}/team-links/${teamId}`, null);
+  }
+
+  createTeamGolferLink(teamId: number, golferId: number, role: string, divisionId: number): Observable<{ team_id: number, golfer_id: number, division_id: number, role: string }> {
+    return this.http.post<{ team_id: number, golfer_id: number, division_id: number, role: string }>(environment.apiUrl + `teams/${teamId}/golfer-links/${golferId}?division_id=${divisionId}&role=${role}`, null);
+  }
+
 }
 
