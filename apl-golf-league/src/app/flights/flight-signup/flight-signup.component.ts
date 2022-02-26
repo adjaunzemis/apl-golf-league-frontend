@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, Subscription, of, forkJoin } from 'rxjs';
+import { concatMap, map, startWith } from 'rxjs/operators';
 
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
@@ -131,16 +131,17 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     this.flightsService.createTeam(newTeamName)
       .subscribe(team => {
-        console.log(team);
+        console.log(`Created team '${team.name}' (id=${team.id})`);
+
         this.flightsService.createFlightTeamLink(this.selectedFlight.id, team.id)
           .subscribe(flightTeamLink => {
-            console.log(flightTeamLink);
-            for (const newTeamGolfer of newTeamGolfers) {
-              this.flightsService.createTeamGolferLink(team.id, newTeamGolfer.golfer.id, newTeamGolfer.role, newTeamGolfer.division.id)
-                .subscribe(teamGolferLink => {
-                  console.log(teamGolferLink);
-                });
+            console.log(`Linked team '${team.name}' (id=${flightTeamLink.team_id}) with flight '${this.selectedFlight.name}' (id=${flightTeamLink.flight_id})`);
+
+            const teamGolferLinkSubs: Observable<{ team_id: number, golfer_id: number, division_id: number, role: string }>[] = [];
+            for (let newTeamGolfer of newTeamGolfers) {
+              teamGolferLinkSubs.push(this.flightsService.createTeamGolferLink(team.id, newTeamGolfer.golfer.id, newTeamGolfer.role, newTeamGolfer.division.id));
             }
+            forkJoin(teamGolferLinkSubs).subscribe(results => results.forEach(result => console.log(`Linked golfer (id=${result.golfer_id}) with team (id=${result.team_id}): role=${result.role}, division_id=${result.division_id}`)));
           });
       });
   }
