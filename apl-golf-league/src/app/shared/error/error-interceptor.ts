@@ -4,7 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 
-import { ErrorComponent } from './error.component';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -18,8 +18,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.error.message) {
           errorMessage = error.error.message;
         }
-        this.dialog.open(ErrorComponent, {
-          data: { message: errorMessage }
+        this.dialog.open(ErrorDialogComponent, {
+          data: { title: "Uh oh... :(", message: errorMessage, isUnknownError: true }
         });
         return throwError(error);
       })

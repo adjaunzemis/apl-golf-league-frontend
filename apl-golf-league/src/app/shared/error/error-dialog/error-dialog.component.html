@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+
+<div mat-dialog-content>
+  <p class="mat-body-1">{{ data.message }}</p>
+
+  <div *ngIf="data.isUnknownError">
+    <p class="mat-body-1">Please try again later.</p>
+    <span class="mat-body-1">If this issue persists, </span>
+    <a class="mat-body-1 link-text" href="mailto:adjaunzemis@gmail.com">contact the webmaster.</a>
+  </div>
+
+</div>
+

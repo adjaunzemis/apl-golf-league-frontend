@@ -12,6 +12,7 @@ import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
 import { FlightSignupComponent } from './flight-signup/flight-signup.component';
+import { ErrorModule } from "../shared/error/error.module";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { FlightSignupComponent } from './flight-signup/flight-signup.component';
     CommonModule,
     RouterModule,
     AngularMaterialModule,
-    MatchesModule
+    MatchesModule,
+    ErrorModule
   ]
 })
 export class FlightsModule {}

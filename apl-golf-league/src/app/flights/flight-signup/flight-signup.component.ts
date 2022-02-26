@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subscription, forkJoin } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -8,6 +9,7 @@ import { FlightsService } from '../flights.service';
 import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { DivisionData } from '../../shared/division.model';
+import { ErrorDialogComponent } from '../../shared/error/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-flight-signup',
@@ -35,7 +37,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   newTeam: FormGroup;
 
-  constructor(private flightsService: FlightsService, private golfersService: GolfersService, private formBuilder: FormBuilder) { }
+  constructor(private flightsService: FlightsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
@@ -86,15 +88,15 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmitTeam(): void {
-    let isValidTeam = true;
-
     // Check for unique team name
     const newTeamName = this.teamNameControl.value as string;
     if (this.selectedFlight.teams) {
       for (const team of this.selectedFlight.teams) {
         if (team.name.toLowerCase() === newTeamName.toLowerCase()) {
-          console.error(`Team name '${newTeamName}' is already taken!`);
-          isValidTeam = false;
+          this.dialog.open(ErrorDialogComponent, {
+            data: { title: "Team Sign-Up Error", message: `Team name '${newTeamName}' is already taken!` }
+          });
+          return;
         }
       }
     }
@@ -117,14 +119,18 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         if (!hasCaptain) {
           hasCaptain = true;
         } else {
-          console.error(`Team name '${newTeamName}' has too many captains!`);
-          isValidTeam = false;
+          this.dialog.open(ErrorDialogComponent, {
+            data: { title: "Team Sign-Up Error", message: `Team must have only one captain!` }
+          });
+          return;
         }
       }
     }
     if (!hasCaptain) {
-      console.error(`Team name '${newTeamName}' does not have a captain!`);
-      isValidTeam = false;
+      this.dialog.open(ErrorDialogComponent, {
+        data: { title: "Team Sign-Up Error", message: `Team must have a captain!` }
+      });
+      return;
     }
 
     // Check for golfers already on existing teams
@@ -133,8 +139,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         for (const team of this.selectedFlight.teams) {
           for (const teamGolfer of team.golfers) {
             if (teamGolfer.id === newTeamGolfer.golfer.id) {
-              console.error(`Golfer '${newTeamGolfer.golfer.name}' is already on team '${team.name}'!`);
-              isValidTeam = false;
+              this.dialog.open(ErrorDialogComponent, {
+                data: { title: "Team Sign-Up Error", message: `Golfer '${newTeamGolfer.golfer.name}' is already on team '${team.name}'!` }
+              });
+              return;
             }
           }
         }
@@ -142,11 +150,6 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     }
 
     // Submit new team signup
-    if (!isValidTeam) {
-      console.error('Cannot submit team due to validation errors!');
-      return;
-    }
-
     this.flightsService.createTeam(newTeamName)
       .subscribe(team => {
         console.log(`Created team '${team.name}' (id=${team.id})`);
