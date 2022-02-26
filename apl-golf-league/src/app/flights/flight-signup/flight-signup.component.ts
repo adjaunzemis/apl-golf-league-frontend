@@ -160,7 +160,14 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
             }
             forkJoin(teamGolferLinkSubs).subscribe(results => {
               results.forEach(result => console.log(`Linked golfer (id=${result.golfer_id}) with team (id=${result.team_id}): role=${result.role}, division_id=${result.division_id}`));
-            }, error => console.error(`Unable to link golfers to team ${team.name}: ${error}`));
+            }, error => {
+              console.error(`Unable to link golfers to team ${team.name}: ${error}`);
+            }, () => {
+              console.log(`Successfully submitted new team '${team.name}'!`);
+
+              this.isLoadingSelectedFlight = true;
+              this.getSelectedFlightData(this.selectedFlight.id);
+            });
           }, error => console.error(`Unable to link team ${team.name} to flight ${this.selectedFlight.name}: ${error}`));
       }, error => console.error(`Unable to create team ${newTeamName}: ${error}`));
   }
