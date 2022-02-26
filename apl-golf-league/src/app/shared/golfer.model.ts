@@ -48,9 +48,3 @@ export interface HandicapIndexData {
   date: Date
   scoring_record?: RoundSummary[]
 }
-
-export interface AddTeamGolferData {
-  golfer: Golfer
-  role: string
-  division: DivisionData
-}

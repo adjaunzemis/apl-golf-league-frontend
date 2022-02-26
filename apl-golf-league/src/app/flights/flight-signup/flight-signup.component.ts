@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Observable, Subscription, of, forkJoin } from 'rxjs';
-import { concatMap, map, startWith } from 'rxjs/operators';
+import { Observable, Subscription, forkJoin } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
-import { AddTeamGolferData, Golfer } from '../../shared/golfer.model';
+import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { DivisionData } from '../../shared/division.model';
 
