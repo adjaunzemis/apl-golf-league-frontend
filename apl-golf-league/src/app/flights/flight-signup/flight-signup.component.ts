@@ -42,12 +42,8 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         this.flights = result.flights; // TODO: Filter to unlocked flights only
         this.isLoadingFlights = false;
-      });
 
-    this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
-      .subscribe(result => {
-        this.selectedFlight = result;
-        this.isLoadingSelectedFlight = false;
+        this.golfersService.getAllGolfers();
       });
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
@@ -64,8 +60,13 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         this.isLoadingGolfers = false;
       });
 
+    this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
+    .subscribe(result => {
+      this.selectedFlight = result;
+      this.isLoadingSelectedFlight = false;
+    });
+
     this.flightsService.getFlightsList(0, 100); // TODO: Remove unneeded filters
-    this.golfersService.getAllGolfers();
 
     this.newTeam = this.formBuilder.group({
       teamGolfers: this.formBuilder.array([])
