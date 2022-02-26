@@ -92,7 +92,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     if (this.selectedFlight.teams) {
       for (const team of this.selectedFlight.teams) {
         if (team.name.toLowerCase() === newTeamName.toLowerCase()) {
-          console.error(`Team name ${newTeamName} is already taken!`);
+          console.error(`Team name '${newTeamName}' is already taken!`);
           isValidTeam = false;
         }
       }
@@ -109,13 +109,30 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       });
     }
 
+    // Check for exactly one captain
+    let hasCaptain = false;
+    for (const newTeamGolfer of newTeamGolfers) {
+      if (newTeamGolfer.role.toLowerCase() == 'captain') {
+        if (!hasCaptain) {
+          hasCaptain = true;
+        } else {
+          console.error(`Team name '${newTeamName}' has too many captains!`);
+          isValidTeam = false;
+        }
+      }
+    }
+    if (!hasCaptain) {
+      console.error(`Team name '${newTeamName}' does not have a captain!`);
+      isValidTeam = false;
+    }
+
     // Check for golfers already on existing teams
     for (const newTeamGolfer of newTeamGolfers) {
       if (this.selectedFlight.teams) {
         for (const team of this.selectedFlight.teams) {
           for (const teamGolfer of team.golfers) {
             if (teamGolfer.id === newTeamGolfer.golfer.id) {
-              console.error(`Golfer ${newTeamGolfer.golfer.name} is already on team ${team.name}!`);
+              console.error(`Golfer '${newTeamGolfer.golfer.name}' is already on team '${team.name}'!`);
               isValidTeam = false;
             }
           }
@@ -141,9 +158,11 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
             for (let newTeamGolfer of newTeamGolfers) {
               teamGolferLinkSubs.push(this.flightsService.createTeamGolferLink(team.id, newTeamGolfer.golfer.id, newTeamGolfer.role, newTeamGolfer.division.id));
             }
-            forkJoin(teamGolferLinkSubs).subscribe(results => results.forEach(result => console.log(`Linked golfer (id=${result.golfer_id}) with team (id=${result.team_id}): role=${result.role}, division_id=${result.division_id}`)));
-          });
-      });
+            forkJoin(teamGolferLinkSubs).subscribe(results => {
+              results.forEach(result => console.log(`Linked golfer (id=${result.golfer_id}) with team (id=${result.team_id}): role=${result.role}, division_id=${result.division_id}`));
+            }, error => console.error(`Unable to link golfers to team ${team.name}: ${error}`));
+          }, error => console.error(`Unable to link team ${team.name} to flight ${this.selectedFlight.name}: ${error}`));
+      }, error => console.error(`Unable to create team ${newTeamName}: ${error}`));
   }
 
   getTeamGolfersArray(): FormArray {
