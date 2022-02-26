@@ -18,8 +18,9 @@ import { ErrorDialogComponent } from '../../shared/error/error-dialog/error-dial
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
   isLoadingFlights = true;
-  isLoadingSelectedFlight = false;
   isLoadingGolfers = true;
+  isLoadingSelectedFlight = false;
+  isSelectedFlightSignupWindowOpen = false;
 
   teamNameControl = new FormControl();
 
@@ -42,7 +43,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
-        this.flights = result.flights; // TODO: Filter to unlocked flights only
+        this.flights = result.flights;
         this.isLoadingFlights = false;
 
         this.golfersService.getAllGolfers();
@@ -66,6 +67,9 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     .subscribe(result => {
       this.selectedFlight = result;
       this.isLoadingSelectedFlight = false;
+
+      const currentDate = new Date();
+      this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= currentDate && this.selectedFlight.signup_stop_date >= currentDate;
     });
 
     this.flightsService.getFlightsList(0, 100); // TODO: Remove unneeded filters

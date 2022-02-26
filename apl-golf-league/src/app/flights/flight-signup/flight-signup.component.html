@@ -2,8 +2,6 @@
   <h1>Flight Sign-Up</h1>
 </div>
 
-<mat-spinner *ngIf="isLoadingFlights || isLoadingGolfers"></mat-spinner>
-
 <div class="content" *ngIf="!isLoadingFlights && !isLoadingGolfers">
 
   <mat-form-field appearance="fill">
@@ -15,57 +13,66 @@
     <mat-error *ngIf="flightControl.hasError('required')">Please choose a flight</mat-error>
   </mat-form-field>
 
-  <mat-spinner *ngIf="isLoadingSelectedFlight"></mat-spinner>
-
   <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
 
-    <h2>Add Team</h2>
+    <div class="content" *ngIf="isSelectedFlightSignupWindowOpen; else flightSignupWindowClosed">
 
-    <div>
-      <mat-form-field class="team-name-input" appearance="fill">
-          <mat-label>Team Name</mat-label>
-          <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
-          <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
-      </mat-form-field>
+      <h2>Add Team</h2>
 
-      <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeam.valid" (click)="onSubmitTeam()">Submit</button>
+      <div>
+        <mat-form-field class="team-name-input" appearance="fill">
+            <mat-label>Team Name</mat-label>
+            <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
+            <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeam.valid" (click)="onSubmitTeam()">Submit</button>
+      </div>
+
+      <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()">
+        <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
+          <div formGroupName="{{ idx }}">
+
+            <mat-form-field appearance="fill" class="input-field">
+              <mat-label>Golfer Name</mat-label>
+              <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g">{{ g.name }}</mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="input-field">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="input-field">
+              <mat-label>Division</mat-label>
+              <mat-select formControlName="division" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let d of selectedFlight.divisions" [value]="d">{{ d.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
+
+            <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
+
+          </div>
+        </div>
+      </form>
+
     </div>
 
-    <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()">
-      <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
-        <div formGroupName="{{ idx }}">
-
-          <mat-form-field appearance="fill" class="input-field">
-            <mat-label>Golfer Name</mat-label>
-            <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g">{{ g.name }}</mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="input-field">
-            <mat-label>Role</mat-label>
-            <mat-select formControlName="role" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="input-field">
-            <mat-label>Division</mat-label>
-            <mat-select formControlName="division" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let d of selectedFlight.divisions" [value]="d">{{ d.name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
-
-          <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
-
-        </div>
+    <ng-template #flightSignupWindowClosed>
+      <div class="content">
+        <h3 class="italic">Flight sign-up window closed!</h3>
       </div>
-    </form>
+    </ng-template>
+
 
     <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
 
@@ -106,3 +113,5 @@
   </div>
 
 </div>
+
+<mat-spinner *ngIf="isLoadingFlights || isLoadingGolfers || isLoadingSelectedFlight"></mat-spinner>
