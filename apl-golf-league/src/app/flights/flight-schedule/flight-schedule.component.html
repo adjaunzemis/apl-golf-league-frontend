@@ -1,8 +1,8 @@
-<mat-form-field appearance="fill" class="week-selector">
+<mat-form-field appearance="fill" class="input-field">
   <mat-label>Week</mat-label>
-  <mat-select [(value)]="currentWeek">
+  <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
     <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
   </mat-select>
 </mat-form-field>
 
-<p>Showing flight schedule for week {{ currentWeek }}</p>
+<p>Showing flight schedule for week {{ selectedWeek }}</p>
