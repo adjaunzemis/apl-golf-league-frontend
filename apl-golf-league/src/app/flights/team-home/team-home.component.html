@@ -23,15 +23,13 @@
     <div class="card card-small selectable" *ngFor="let match of team.matches" (click)="focusMatch(match)" [ngClass]="showScorecard && focusedMatch === match ? 'selected' : ''">
       <ng-container *ngIf="match.home_team_id === team.id">
         <span class="bold">Week {{ match.week }} vs. {{ match.away_team_name }}</span>
-        <span *ngIf="match.home_score > match.away_score">Win: {{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
-        <span *ngIf="match.home_score < match.away_score">Loss: {{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
-        <span *ngIf="match.home_score === match.away_score">Tie: {{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
+        <span *ngIf="match.home_score && match.away_score">{{ getMatchResult(match.home_score, match.away_score) }}: {{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
+        <span class="italic" *ngIf="!match.home_score || !match.away_score">TBD</span>
       </ng-container>
       <ng-container *ngIf="match.away_team_id === team.id">
         <span class="bold">Week {{ match.week }} vs. {{ match.home_team_name }}</span>
-        <span *ngIf="match.away_score > match.home_score">Win: {{ match.away_score | number : '1.1-1' }} - {{ match.home_score | number : '1.1-1' }}</span>
-        <span *ngIf="match.away_score < match.home_score">Loss: {{ match.away_score | number : '1.1-1' }} - {{ match.home_score | number : '1.1-1' }}</span>
-        <span *ngIf="match.away_score === match.home_score">Tie: {{ match.away_score | number : '1.1-1' }} - {{ match.home_score | number : '1.1-1' }}</span>
+        <span *ngIf="match.home_score && match.away_score">{{ getMatchResult(match.away_score, match.home_score) }}: {{ match.away_score | number : '1.1-1' }} - {{ match.home_score | number : '1.1-1' }}</span>
+        <span class="italic" *ngIf="!match.home_score || !match.away_score">TBD</span>
       </ng-container>
     </div>
   </div>
