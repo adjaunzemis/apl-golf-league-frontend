@@ -1,0 +1,8 @@
+<mat-form-field appearance="fill" class="week-selector">
+  <mat-label>Week</mat-label>
+  <mat-select [(value)]="currentWeek">
+    <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<p>Showing flight schedule for week {{ currentWeek }}</p>

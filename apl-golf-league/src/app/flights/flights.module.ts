@@ -13,6 +13,7 @@ import { FlightStandingsComponent } from './flight-standings/flight-standings.co
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
 import { FlightSignupComponent } from './flight-signup/flight-signup.component';
 import { ErrorModule } from "../shared/error/error.module";
+import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ErrorModule } from "../shared/error/error.module";
     FlightHomeComponent,
     FlightStandingsComponent,
     FlightHistoryComponent,
-    FlightSignupComponent
+    FlightSignupComponent,
+    FlightScheduleComponent
   ],
   imports: [
     CommonModule,
