@@ -1,8 +1,22 @@
-<mat-form-field appearance="fill" class="input-field">
-  <mat-label>Week</mat-label>
-  <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
-    <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="content">
 
-<p>Showing flight schedule for week {{ selectedWeek }}</p>
+  <mat-form-field appearance="fill" class="input-field">
+    <mat-label>Week</mat-label>
+    <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
+      <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="card-container" *ngIf="selectedWeekMatches.length > 0; else noMatches">
+    <div class="card card-small match-summary-card" [ngClass]="match.home_score ? 'selectable' : ''" *ngFor="let match of selectedWeekMatches">
+      <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
+      <span *ngIf="match.home_score && match.away_score">{{ match.home_score }} vs. {{ match.away_score }}</span>
+      <span class="italic" *ngIf="!match.home_score || !match.away_score">TBD</span>
+    </div>
+  </div>
+
+  <ng-template #noMatches>
+    <p class="italic">No match data to show</p>
+  </ng-template>
+
+</div>

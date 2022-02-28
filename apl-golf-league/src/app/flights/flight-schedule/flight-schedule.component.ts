@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { MatchData } from 'src/app/shared/match.model';
 
 import { FlightData } from '../../shared/flight.model';
+import { MatchData, MatchSummary } from '../../shared/match.model';
 
 @Component({
   selector: 'app-flight-schedule',
@@ -16,15 +16,17 @@ export class FlightScheduleComponent implements OnInit {
   selectedWeek: number = 1;
   weekOptions: string[] = [];
 
-  selectedWeekMatches: MatchData[] = [];
+  selectedWeekMatches: MatchSummary[] = [];
 
   ngOnInit(): void {
     this.setWeekOptions();
     this.selectedWeek = this.determineCurrentWeek();
+    this.setSelectedWeekMatches();
   }
 
   onSelectedWeekChanged(selectedWeekChange: MatSelectChange) {
     this.selectedWeek = parseInt((selectedWeekChange.value as string).split(' ')[0]);
+    this.setSelectedWeekMatches();
   }
 
   private determineCurrentWeek(): number {
@@ -46,9 +48,22 @@ export class FlightScheduleComponent implements OnInit {
     for (let week = 1; week <= this.flight.weeks; week++) {
       let weekStartDate = new Date(this.flight.start_date);
       weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
+
       let nextWeekStartDate = new Date(weekStartDate);
       nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
+
       this.weekOptions.push(week + ": " + weekStartDate.toLocaleString('default', { month: 'short' }) + " " + weekStartDate.getDate() + " - " + nextWeekStartDate.toLocaleString('default', { month: 'short' }) + " " + nextWeekStartDate.getDate());
+    }
+  }
+
+  private setSelectedWeekMatches(): void {
+    this.selectedWeekMatches = [];
+    if (this.flight.matches) {
+      for (let match of this.flight.matches) {
+        if (match.week === this.selectedWeek) {
+          this.selectedWeekMatches.push(match);
+        }
+      }
     }
   }
 
