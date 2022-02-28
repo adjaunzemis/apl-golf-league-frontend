@@ -10,7 +10,7 @@
   <div class="card-container" *ngIf="selectedWeekMatches.length > 0; else noMatches">
     <div class="card card-small match-summary-card" [ngClass]="match.home_score ? 'selectable' : ''" *ngFor="let match of selectedWeekMatches">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
-      <span *ngIf="match.home_score && match.away_score">{{ match.home_score }} vs. {{ match.away_score }}</span>
+      <span *ngIf="match.home_score && match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
       <span class="italic" *ngIf="!match.home_score || !match.away_score">TBD</span>
     </div>
   </div>
