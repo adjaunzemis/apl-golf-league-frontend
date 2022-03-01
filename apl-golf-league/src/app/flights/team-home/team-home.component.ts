@@ -53,12 +53,14 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   }
 
   focusMatch(match: MatchData): void {
-    if (this.showScorecard && this.focusedMatch === match) {
-      this.showScorecard = false;
-      return;
+    if (match.home_score && match.away_score) {
+      if (this.showScorecard && this.focusedMatch === match) {
+        this.showScorecard = false;
+        return;
+      }
+      this.focusedMatch = match;
+      this.showScorecard = true;
     }
-    this.focusedMatch = match;
-    this.showScorecard = true;
   }
 
   getMatchResult(score: number, opponentScore: number): string {

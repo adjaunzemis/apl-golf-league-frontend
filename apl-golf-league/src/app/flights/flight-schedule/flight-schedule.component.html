@@ -8,7 +8,7 @@
   </mat-form-field>
 
   <div class="card-container" *ngIf="selectedWeekMatches.length > 0; else noMatches">
-    <div class="card card-small match-summary-card" [ngClass]="[match.home_score ? 'selectable' : '', showScorecard && selectedMatchData && (selectedMatchData.match_id === match.match_id) ? 'selected' : '']" *ngFor="let match of selectedWeekMatches" (click)="onSelectMatch(match)">
+    <div class="card card-small match-summary-card" [ngClass]="[match.home_score && match.away_score ? 'selectable' : '', showScorecard && selectedMatchData && (selectedMatchData.match_id === match.match_id) ? 'selected' : '']" *ngFor="let match of selectedWeekMatches" (click)="onSelectMatch(match)">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
       <span *ngIf="match.home_score && match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
       <span class="italic" *ngIf="!match.home_score || !match.away_score">TBD</span>
@@ -21,6 +21,6 @@
 
   <mat-spinner *ngIf="isLoadingSelectedMatchData"></mat-spinner>
 
-  <app-match-scorecard class="full-width" [match]="selectedMatchData" [topTeamId]="selectedMatchData.home_team_id" *ngIf="!isLoadingSelectedMatchData && showScorecard && selectedMatchData"></app-match-scorecard>
+  <app-match-scorecard class="full-width" [match]="selectedMatchData" [topTeamId]="selectedMatchData.home_team_id" *ngIf="!isLoadingSelectedMatchData && showScorecard && selectedMatchData && (selectedMatchData.rounds.length > 0)"></app-match-scorecard>
 
 </div>

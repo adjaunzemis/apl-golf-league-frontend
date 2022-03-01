@@ -50,12 +50,14 @@ export class FlightScheduleComponent implements OnInit, OnDestroy{
   }
 
   onSelectMatch(matchSummary: MatchSummary): void {
-    if ((this.selectedMatchData) && (this.selectedMatchData.match_id === matchSummary.match_id)) {
-      this.showScorecard = !this.showScorecard;
-    } else {
-      this.showScorecard = true;
-      this.isLoadingSelectedMatchData = true;
-      this.matchesService.getMatch(matchSummary.match_id);
+    if (matchSummary.home_score && matchSummary.away_score) {
+      if ((this.selectedMatchData) && (this.selectedMatchData.match_id === matchSummary.match_id)) {
+        this.showScorecard = !this.showScorecard;
+      } else {
+        this.showScorecard = true;
+        this.isLoadingSelectedMatchData = true;
+        this.matchesService.getMatch(matchSummary.match_id);
+      }
     }
   }
 
