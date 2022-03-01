@@ -29,15 +29,20 @@ export class FlightStandingsComponent implements OnInit {
         this.standingsData[match.home_team_id] = new TeamStandingsData();
         this.standingsData[match.home_team_id].teamName = match.home_team_name;
       }
-      this.standingsData[match.home_team_id].matchesPlayed += 1;
-      this.standingsData[match.home_team_id].pointsWon += match.home_score;
 
       if (!this.standingsData[match.away_team_id]) {
         this.standingsData[match.away_team_id] = new TeamStandingsData();
         this.standingsData[match.away_team_id].teamName = match.away_team_name;
       }
-      this.standingsData[match.away_team_id].matchesPlayed += 1;
-      this.standingsData[match.away_team_id].pointsWon += match.away_score;
+
+      if (match.home_score || match.away_score) {
+        console.log(match.home_score + " - " + match.away_score);
+        this.standingsData[match.home_team_id].matchesPlayed += 1;
+        this.standingsData[match.home_team_id].pointsWon += match.home_score;
+
+        this.standingsData[match.away_team_id].matchesPlayed += 1;
+        this.standingsData[match.away_team_id].pointsWon += match.away_score;
+      }
     }
 
     for (var teamId in this.standingsData) {
@@ -112,6 +117,9 @@ export class FlightStandingsComponent implements OnInit {
   getAveragePointsWon(id: number): number {
     if (!this.standingsData[id]) {
       return -1;
+    }
+    if (this.standingsData[id].matchesPlayed === 0) {
+      return 0;
     }
     return this.standingsData[id].pointsWon / this.standingsData[id].matchesPlayed;
   }
