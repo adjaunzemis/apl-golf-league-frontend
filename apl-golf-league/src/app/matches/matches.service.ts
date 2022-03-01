@@ -13,6 +13,9 @@ export class MatchesService {
   private matchesData: MatchData[] = []
   private matchesDataUpdated = new Subject<{ numMatches: number, matches: MatchData[] }>();
 
+  private matchData: MatchData;
+  private matchDataUpdated = new Subject<MatchData>();
+
   constructor(private http: HttpClient, private router: Router) {}
 
   getMatches(offset: number, limit: number, teamId?: number): void {
@@ -31,8 +34,20 @@ export class MatchesService {
       });
   }
 
-  getMatchUpdateListener(): Observable<{ matches: MatchData[], numMatches: number }> {
+  getMatchesUpdateListener(): Observable<{ matches: MatchData[], numMatches: number }> {
     return this.matchesDataUpdated.asObservable();
+  }
+
+  getMatch(id: number): void {
+    this.http.get<MatchData>(environment.apiUrl + `matches/${id}`)
+      .subscribe(result => {
+        this.matchData = result;
+        this.matchDataUpdated.next(this.matchData);
+      })
+  }
+
+  getMatchUpdateListener(): Observable<MatchData> {
+    return this.matchDataUpdated.asObservable();
   }
 
 }

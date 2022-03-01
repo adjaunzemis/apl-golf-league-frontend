@@ -1,15 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+import { Subscription } from 'rxjs';
 
 import { FlightData } from '../../shared/flight.model';
 import { MatchData, MatchSummary } from '../../shared/match.model';
+import { MatchesService } from '../../matches/matches.service';
 
 @Component({
   selector: 'app-flight-schedule',
   templateUrl: './flight-schedule.component.html',
   styleUrls: ['./flight-schedule.component.css']
 })
-export class FlightScheduleComponent implements OnInit {
+export class FlightScheduleComponent implements OnInit, OnDestroy{
   @Input() flight: FlightData;
 
   private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
@@ -18,15 +20,43 @@ export class FlightScheduleComponent implements OnInit {
 
   selectedWeekMatches: MatchSummary[] = [];
 
+  showScorecard: boolean = false;
+  isLoadingSelectedMatchData: boolean = false;
+  private matchDataSub: Subscription;
+  selectedMatchData: MatchData | null;
+
+  constructor(private matchesService: MatchesService) { }
+
   ngOnInit(): void {
+    this.matchDataSub = this.matchesService.getMatchUpdateListener()
+      .subscribe(result => {
+        console.log(`[FlightScheduleComponent] Received data for match, id=${result.match_id}`)
+        this.selectedMatchData = result;
+        this.isLoadingSelectedMatchData = false;
+      });
+
     this.setWeekOptions();
     this.selectedWeek = this.determineCurrentWeek();
     this.setSelectedWeekMatches();
   }
 
-  onSelectedWeekChanged(selectedWeekChange: MatSelectChange) {
+  ngOnDestroy(): void {
+    this.matchDataSub.unsubscribe();
+  }
+
+  onSelectedWeekChanged(selectedWeekChange: MatSelectChange): void {
     this.selectedWeek = parseInt((selectedWeekChange.value as string).split(' ')[0]);
     this.setSelectedWeekMatches();
+  }
+
+  onSelectMatch(matchSummary: MatchSummary): void {
+    if ((this.selectedMatchData) && (this.selectedMatchData.match_id === matchSummary.match_id)) {
+      this.showScorecard = !this.showScorecard;
+    } else {
+      this.showScorecard = true;
+      this.isLoadingSelectedMatchData = true;
+      this.matchesService.getMatch(matchSummary.match_id);
+    }
   }
 
   private determineCurrentWeek(): number {
@@ -57,6 +87,9 @@ export class FlightScheduleComponent implements OnInit {
   }
 
   private setSelectedWeekMatches(): void {
+    this.showScorecard = false;
+    this.selectedMatchData = null;
+
     this.selectedWeekMatches = [];
     if (this.flight.matches) {
       for (let match of this.flight.matches) {
