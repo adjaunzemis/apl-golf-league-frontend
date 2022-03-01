@@ -16,6 +16,8 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   flight: FlightData;
   private flightSub: Subscription;
 
+  currentDate = new Date();
+
   constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {

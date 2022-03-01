@@ -24,6 +24,8 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
 
   focusedTeam: TournamentTeamData;
 
+  currentDate = new Date();
+
   constructor(private tournamentsService: TournamentsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@
 
   <h1>{{ tournament.name }} ({{ tournament.year }})</h1>
 
-  <div class="card announcements-card card-small">
+  <div class="card announcements-card card-small" *ngIf="tournament.signup_stop_date >= currentDate">
     <span class="bold">Sign-Ups</span>
     <span>{{ tournament.signup_start_date | date:'longDate' }} - {{ tournament.signup_stop_date | date:'longDate' }}</span>
   </div>

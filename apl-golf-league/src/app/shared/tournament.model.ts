@@ -11,8 +11,8 @@ export interface TournamentData {
     logo_url?: string
     secretary?: string
     secretary_contact?: string
-    signup_start_date?: Date
-    signup_stop_date?: Date
+    signup_start_date: Date
+    signup_stop_date: Date
     divisions: DivisionData[]
     teams: TournamentTeamData[]
 }
