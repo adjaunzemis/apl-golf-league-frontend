@@ -30,7 +30,7 @@ export class FlightScheduleComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.matchDataSub = this.matchesService.getMatchUpdateListener()
       .subscribe(result => {
-        console.log(`[FlightScheduleComponent] Received data for match, id=${result.match_id}`)
+        console.log(`[FlightScheduleComponent] Received data for match: id=${result.match_id}`)
         this.selectedMatchData = result;
         this.isLoadingSelectedMatchData = false;
       });

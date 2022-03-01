@@ -36,7 +36,6 @@ export class FlightStandingsComponent implements OnInit {
       }
 
       if (match.home_score || match.away_score) {
-        console.log(match.home_score + " - " + match.away_score);
         this.standingsData[match.home_team_id].matchesPlayed += 1;
         this.standingsData[match.home_team_id].pointsWon += match.home_score;
 
