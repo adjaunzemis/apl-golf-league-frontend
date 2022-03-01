@@ -59,6 +59,15 @@ export class FlightStandingsComponent implements OnInit {
       }
       return this.getTiebreaker(teamId1, teamId2);
     });
+
+    this.standingsData[this.orderedTeamIds[0]].position = "1";
+    for (let idx = 1; idx < this.orderedTeamIds.length; idx++) {
+      if (this.getAveragePointsWon(this.orderedTeamIds[idx]) < this.getAveragePointsWon(this.orderedTeamIds[idx - 1])) {
+        this.standingsData[this.orderedTeamIds[idx]].position = (idx + 1).toString();
+      } else {
+        this.standingsData[this.orderedTeamIds[idx]].position = "";
+      }
+    }
   }
 
   private getTiebreaker(teamId1: number, teamId2: number): number {
@@ -91,6 +100,13 @@ export class FlightStandingsComponent implements OnInit {
     return 0;
 
     // TODO: Implement further tie-breakers if needed.
+  }
+
+  getTeamPosition(id: number): string {
+    if (!this.standingsData[id]) {
+      return "n/a";
+    }
+    return this.standingsData[id].position;
   }
 
   getTeamName(id: number): string {
@@ -130,4 +146,5 @@ class TeamStandingsData {
   teamName: string;
   matchesPlayed: number = 0;
   pointsWon: number = 0;
+  position: string = "";
 }

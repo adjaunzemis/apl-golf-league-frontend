@@ -1,14 +1,14 @@
 <div class="card standings-card">
   <table>
     <tr>
-      <th>Position</th>
+      <th>Pos</th>
       <th>Team</th>
       <th>Points</th>
       <th>Matches</th>
       <th>Avg. Points</th>
     </tr>
     <tr *ngFor="let teamId of orderedTeamIds, let idx = index">
-      <td>{{ idx + 1 }}</td>
+      <td>{{ getTeamPosition(teamId) }}</td>
       <td>{{ getTeamName(teamId) }}</td>
       <td>{{ getPointsWon(teamId) | number : '1.1-1' }}</td>
       <td>{{ getMatchesPlayed(teamId) }}</td>
