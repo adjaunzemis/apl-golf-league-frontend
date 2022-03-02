@@ -24,6 +24,8 @@
             <mat-label>Team Name</mat-label>
             <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
             <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+            <mat-error *ngIf="teamNameControl.hasError('minlength')">Team name is too short</mat-error>
+            <mat-error *ngIf="teamNameControl.hasError('maxlength')">Team name is too long</mat-error>
         </mat-form-field>
 
         <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeam.valid" (click)="onSubmitTeam()">Submit</button>

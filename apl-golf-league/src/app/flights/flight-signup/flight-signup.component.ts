@@ -22,7 +22,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   isLoadingSelectedFlight = false;
   isSelectedFlightSignupWindowOpen = false;
 
-  teamNameControl = new FormControl();
+  teamNameControl = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
 
   flightControl = new FormControl('', Validators.required);
 
