@@ -6,7 +6,7 @@
         <span *ngIf="!linkToGolferHome">{{ title }}</span>
       </td>
       <td class="hole" rowspan="2" *ngFor="let holeScore of holeScores; let holeIdx = index">
-        <div class="handicap-strokes">
+        <div class="handicap-strokes" *ngIf="scoreMode === 'gross'">
           <div [ngClass]="round.holes[holeIdx].handicap_strokes > 0 ? 'black-dot' : 'red-dot'" *ngFor="let hs of [].constructor(abs(round.holes[holeIdx].handicap_strokes))"></div>
         </div>
         <div class="hole-score">
