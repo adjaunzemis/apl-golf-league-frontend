@@ -73,4 +73,8 @@ export class ScorecardScoreLineComponent implements OnInit, OnChanges {
     }
   }
 
+  abs(num: number): number {
+    return Math.abs(num);
+  }
+
 }
