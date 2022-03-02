@@ -31,7 +31,7 @@
         <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeam.valid" (click)="onSubmitTeam()">Submit</button>
       </div>
 
-      <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()">
+      <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()" (keydown.enter)="$event.preventDefault()">
         <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
           <div formGroupName="{{ idx }}">
 
