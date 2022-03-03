@@ -14,6 +14,7 @@ import { FlightHistoryComponent } from './flight-history/flight-history.componen
 import { FlightSignupComponent } from './flight-signup/flight-signup.component';
 import { ErrorModule } from "../shared/error/error.module";
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
+import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FlightScheduleComponent } from './flight-schedule/flight-schedule.compo
     FlightStandingsComponent,
     FlightHistoryComponent,
     FlightSignupComponent,
-    FlightScheduleComponent
+    FlightScheduleComponent,
+    FlightMatchCreateComponent
   ],
   imports: [
     CommonModule,
