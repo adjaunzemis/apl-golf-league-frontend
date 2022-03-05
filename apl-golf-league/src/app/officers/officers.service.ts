@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { Officer } from './../shared/officer.model';
@@ -13,14 +12,13 @@ export class OfficersService {
   private officersList: Officer[] = []
   private officersListUpdated = new Subject<Officer[]>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  getOfficersList(offset: number, limit: number, year?: number): void {
-    let queryParams: string = `?`;
+  getOfficersList(year?: number): void {
+    let queryParams: string = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
-    queryParams += `offset=${offset}&limit=${limit}`
     this.http.get<Officer[]>(environment.apiUrl + "officers/" + queryParams)
       .subscribe(result => {
         this.officersList = result;

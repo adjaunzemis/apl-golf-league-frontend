@@ -32,7 +32,7 @@ export class RulesComponent implements OnInit {
         this.isLoading = false;
       })
 
-    this.officersService.getOfficersList(0, 100, this.currentYear); // TODO: Un-hardcode query params
+    this.officersService.getOfficersList(this.currentYear);
   }
 
   getCommitteeEmailList(): string {

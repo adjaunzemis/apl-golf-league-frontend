@@ -61,7 +61,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
 
     this.flightsService.getFlightsList(this.currentYear);
     this.tournamentsService.getTournamentsList(this.currentYear);
-    this.officersService.getOfficersList(0, 100, this.currentYear); // TODO: Unhardcode query params
+    this.officersService.getOfficersList(this.currentYear);
   }
 
   ngOnDestroy(): void {
