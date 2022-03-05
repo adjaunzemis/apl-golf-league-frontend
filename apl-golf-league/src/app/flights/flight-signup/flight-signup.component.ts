@@ -10,6 +10,7 @@ import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { DivisionData } from '../../shared/division.model';
 import { ErrorDialogComponent } from '../../shared/error/error-dialog/error-dialog.component';
+import { AppConfigService } from 'src/app/app-config.service';
 
 @Component({
   selector: 'app-flight-signup',
@@ -17,6 +18,8 @@ import { ErrorDialogComponent } from '../../shared/error/error-dialog/error-dial
   styleUrls: ['./flight-signup.component.css']
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
+  private currentYear: number;
+
   isLoadingFlights = true;
   isLoadingGolfers = true;
   isLoadingSelectedFlight = false;
@@ -39,12 +42,14 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   newTeam: FormGroup;
 
-  constructor(private flightsService: FlightsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog) { }
+  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.currentYear = this.appConfigService.currentYear;
+
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
-        this.flights = result.flights;
+        this.flights = result.flights.filter(flight => flight.year === this.currentYear);
         this.isLoadingFlights = false;
 
         this.golfersService.getAllGolfers();
@@ -74,7 +79,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= currentDate && this.selectedFlight.signup_stop_date >= currentDate;
       });
 
-    this.flightsService.getFlightsList(0, 100); // TODO: Remove unneeded filters
+    this.flightsService.getFlightsList(0, 100, this.currentYear); // TODO: Remove unneeded filters
 
     this.newTeam = this.formBuilder.group({
       teamGolfers: this.formBuilder.array([])

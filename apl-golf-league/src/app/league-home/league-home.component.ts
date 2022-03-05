@@ -18,12 +18,10 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   private currentYear: number;
 
   isLoadingFlights = true;
-  flights: FlightInfo[] = [];
   currentFlights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
   isLoadingTournaments = true;
-  tournaments: TournamentInfo[] = [];
   currentTournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
@@ -39,26 +37,14 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
           console.log(`[LeagueHomeComponent] Received flights list`);
-          this.flights = result.flights;
-          this.currentFlights = [];
-          for (let flight of this.flights) {
-            if (flight.year === this.currentYear) {
-              this.currentFlights.push(flight);
-            }
-          }
+          this.currentFlights = result.flights.filter(flight => flight.year === this.currentYear);
           this.isLoadingFlights = false;
       });
 
     this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
       .subscribe(result => {
         console.log(`[LeagueHomeComponent] Received tournaments list`);
-        this.tournaments = result.tournaments;
-        this.currentTournaments = [];
-        for (let tournament of this.tournaments) {
-          if (tournament.year === this.currentYear) {
-            this.currentTournaments.push(tournament);
-          }
-        }
+        this.currentTournaments = result.tournaments.filter(tournament => tournament.year === this.currentYear);
         this.isLoadingTournaments = false;
       });
 
