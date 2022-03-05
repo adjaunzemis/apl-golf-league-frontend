@@ -24,6 +24,6 @@ export interface TournamentTeamData {
     name: string
     year: number
     tournament_id: number
-    golfers: Golfer[]
+    golfers: TeamGolferData[]
     rounds?: RoundData[]
 }

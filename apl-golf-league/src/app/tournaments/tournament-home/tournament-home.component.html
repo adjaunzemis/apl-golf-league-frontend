@@ -55,16 +55,16 @@
   <div class="card-container">
     <div class="card team-card selectable" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''">
       <span class="bold">{{ team.name }}</span>
-      <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
+      <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
     </div>
   </div>
 
-  <h2>Statistics</h2>
+  <!-- <h2>Statistics</h2>
 
   <div class="card-container">
     <div class="card card-small">
       <span class="bold">Coming soon...</span>
     </div>
-  </div>
+  </div> -->
 
 </div>
