@@ -33,6 +33,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
+  golferNameOptions: string[] = []
   filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
   roleOptions = ['Captain', 'Player'];
 
@@ -60,6 +61,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
           }
           return 0;
         });
+        this.golferNameOptions = result.map(golfer => golfer.name);
         this.isLoadingGolfers = false;
       });
 
@@ -198,7 +200,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   addNewTeamGolferForm(): void {
     const newTeamGolferForm = this.formBuilder.group({
-      golfer: new FormControl("", Validators.required),
+      golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
       role: new FormControl("", Validators.required),
       division: new FormControl("", Validators.required)
     });
@@ -231,4 +233,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
+  private checkGolferName(control: FormControl): { [s: string]: boolean } | null {
+    if (this.golferNameOptions.indexOf(control.value) === -1) {
+      return { 'golferNameInvalid': true };
+    }
+    return null;
+  }
 }

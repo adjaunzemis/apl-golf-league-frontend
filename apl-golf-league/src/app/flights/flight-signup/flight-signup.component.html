@@ -41,6 +41,8 @@
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g.name">{{ g.name }}</mat-option>
               </mat-autocomplete>
+              <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('required')">Select a golfer</mat-error>
+              <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="input-field">
@@ -49,6 +51,7 @@
                 <mat-option>--</mat-option>
                 <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
               </mat-select>
+              <mat-error *ngIf="teamGolfer.get('role')?.hasError('required')">Select a role</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="input-field">
@@ -57,6 +60,7 @@
                 <mat-option>--</mat-option>
                 <mat-option *ngFor="let d of selectedFlight.divisions" [value]="d">{{ d.name }}</mat-option>
               </mat-select>
+              <mat-error *ngIf="teamGolfer.get('division')?.hasError('required')">Select a division</mat-error>
             </mat-form-field>
 
             <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
