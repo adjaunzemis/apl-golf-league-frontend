@@ -59,8 +59,8 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
         this.isLoadingOfficers = false;
       })
 
-    this.flightsService.getFlightsList(this.currentYear); // TODO: Implement year query filter
-    this.tournamentsService.getTournamentsList(0, 100); // TODO: Implement year query filter
+    this.flightsService.getFlightsList(this.currentYear);
+    this.tournamentsService.getTournamentsList(this.currentYear);
     this.officersService.getOfficersList(0, 100, this.currentYear); // TODO: Unhardcode query params
   }
 

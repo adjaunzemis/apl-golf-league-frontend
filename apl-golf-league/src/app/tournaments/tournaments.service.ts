@@ -18,12 +18,11 @@ export class TournamentsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getTournamentsList(offset: number, limit: number, year?: number): void {
-    let queryParams: string = `?`;
+  getTournamentsList(year?: number): void {
+    let queryParams: string = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
-    queryParams += `offset=${offset}&limit=${limit}`
     this.http.get<{ num_tournaments: number, tournaments: TournamentInfo[] }>(environment.apiUrl + "tournaments/" + queryParams)
       .subscribe(result => {
         this.tournamentsList = result.tournaments;

@@ -28,7 +28,7 @@ export class TournamentHistoryComponent implements OnInit, OnDestroy {
           this.isLoading = false;
       });
 
-    this.tournamentsService.getTournamentsList(0, 100);
+    this.tournamentsService.getTournamentsList();
   }
 
   ngOnDestroy(): void {
