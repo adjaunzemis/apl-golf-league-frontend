@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
+import { AppConfigService } from '../app-config.service';
 import { Officer } from './../shared/officer.model';
 import { OfficersService } from '../officers/officers.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-rules',
@@ -10,16 +11,18 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./rules.component.css']
 })
 export class RulesComponent implements OnInit {
-  isLoading = true;
+  private currentYear: number
 
-  private currentYear = 2021; // TODO: Un-hardcode year
+  isLoading = true;
 
   rulesCommittee: Officer[] = [];
   private officersSub: Subscription;
 
-  constructor(private officersService: OfficersService) { }
+  constructor(private appConfigService: AppConfigService, private officersService: OfficersService) { }
 
   ngOnInit(): void {
+    this.currentYear = this.appConfigService.currentYear;
+
     this.officersSub = this.officersService.getOfficersListUpdateListener()
       .subscribe(result => {
         console.log(`[RulesComponent] Received officers list`);

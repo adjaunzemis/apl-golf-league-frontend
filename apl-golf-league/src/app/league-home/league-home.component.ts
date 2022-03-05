@@ -15,7 +15,7 @@ import { OfficersService } from '../officers/officers.service';
   styleUrls: ['./league-home.component.css']
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
-  private currentYear: number; // TODO: Define in parameter database?
+  private currentYear: number;
 
   isLoadingFlights = true;
   flights: FlightInfo[] = [];
