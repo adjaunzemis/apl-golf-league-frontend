@@ -36,10 +36,10 @@
           <div formGroupName="{{ idx }}">
 
             <mat-form-field appearance="fill" class="input-field">
-              <mat-label>Golfer Name</mat-label>
+              <mat-label>Golfer</mat-label>
               <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
               <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g">{{ g.name }}</mat-option>
+                <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g.name">{{ g.name }}</mat-option>
               </mat-autocomplete>
             </mat-form-field>
 

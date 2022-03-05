@@ -109,8 +109,20 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     let newTeamGolfers: { golfer: Golfer, role: string, division: DivisionData }[] = [];
     for (let idx = 0; idx < this.getTeamGolfersArray().length; idx++) {
       const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
+
+      const golferName = newTeamGolferForm.value.golfer as string;
+
+      const golferMatches = this.golferOptions.filter((g) => g.name === golferName);
+      if (golferMatches.length !== 1) {
+        this.dialog.open(ErrorDialogComponent, {
+          data: { title: "Team Sign-Up Error", message: `Invalid golfer name: ${golferName}` }
+        });
+        return;
+      }
+      const golfer = golferMatches[0];
+
       newTeamGolfers.push({
-        golfer: newTeamGolferForm.value.golfer as Golfer,
+        golfer: golfer,
         role: newTeamGolferForm.value.role as string,
         division: newTeamGolferForm.value.division as DivisionData
       });
