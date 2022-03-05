@@ -43,7 +43,7 @@
   <div class="card-container team-list">
     <a class="card team-card selectable" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
       <span class="bold">{{ team.name }}</span>
-      <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
+      <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }}</span>
     </a>
   </div>
 

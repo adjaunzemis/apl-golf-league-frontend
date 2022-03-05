@@ -7,7 +7,7 @@ export interface TeamData {
     flight_id: number
     name: string
     year: number
-    golfers: Golfer[]
+    golfers: TeamGolferData[]
     matches: MatchData[]
 }
 

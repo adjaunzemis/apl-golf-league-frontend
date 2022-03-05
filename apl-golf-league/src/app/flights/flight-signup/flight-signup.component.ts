@@ -66,13 +66,13 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       });
 
     this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
-    .subscribe(result => {
-      this.selectedFlight = result;
-      this.isLoadingSelectedFlight = false;
+      .subscribe(result => {
+        this.selectedFlight = result;
+        this.isLoadingSelectedFlight = false;
 
-      const currentDate = new Date();
-      this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= currentDate && this.selectedFlight.signup_stop_date >= currentDate;
-    });
+        const currentDate = new Date();
+        this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= currentDate && this.selectedFlight.signup_stop_date >= currentDate;
+      });
 
     this.flightsService.getFlightsList(0, 100); // TODO: Remove unneeded filters
 
@@ -156,7 +156,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       if (this.selectedFlight.teams) {
         for (const team of this.selectedFlight.teams) {
           for (const teamGolfer of team.golfers) {
-            if (teamGolfer.id === newTeamGolfer.golfer.id) {
+            if (teamGolfer.golfer_id === newTeamGolfer.golfer.id) {
               this.dialog.open(ErrorDialogComponent, {
                 data: { title: "Team Sign-Up Error", message: `Golfer '${newTeamGolfer.golfer.name}' is already on team '${team.name}'!` }
               });

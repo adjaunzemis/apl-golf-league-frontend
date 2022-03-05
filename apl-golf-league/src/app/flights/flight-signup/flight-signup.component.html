@@ -112,7 +112,7 @@
     <div class="card-container team-list">
       <a class="card team-card" *ngFor="let team of selectedFlight.teams">
         <span class="bold">{{ team.name }}</span>
-        <span *ngFor="let golfer of team.golfers">{{ golfer.name }}</span>
+        <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
       </a>
     </div>
 
