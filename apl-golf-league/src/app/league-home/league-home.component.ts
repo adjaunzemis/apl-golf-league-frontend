@@ -34,10 +34,11 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
+
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
           console.log(`[LeagueHomeComponent] Received flights list`);
-          this.currentFlights = result.flights.filter(flight => flight.year === this.currentYear);
+          this.currentFlights = result.flights;
           this.isLoadingFlights = false;
       });
 
@@ -58,7 +59,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
         this.isLoadingOfficers = false;
       })
 
-    this.flightsService.getFlightsList(0, 100); // TODO: Implement year query filter
+    this.flightsService.getFlightsList(this.currentYear); // TODO: Implement year query filter
     this.tournamentsService.getTournamentsList(0, 100); // TODO: Implement year query filter
     this.officersService.getOfficersList(0, 100, this.currentYear); // TODO: Unhardcode query params
   }

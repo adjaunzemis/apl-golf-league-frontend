@@ -28,10 +28,10 @@
             <mat-error *ngIf="teamNameControl.hasError('maxlength')">Team name is too long</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeam.valid" (click)="onSubmitTeam()">Submit</button>
+        <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeamForm.valid" (click)="onSubmitTeam()">Submit</button>
       </div>
 
-      <form [formGroup]="newTeam" (ngSubmit)="onSubmitTeam()" (keydown.enter)="$event.preventDefault()">
+      <form [formGroup]="newTeamForm" (ngSubmit)="onSubmitTeam()" (keydown.enter)="$event.preventDefault()">
         <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
           <div formGroupName="{{ idx }}">
 

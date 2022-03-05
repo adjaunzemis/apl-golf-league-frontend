@@ -22,12 +22,11 @@ export class FlightsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getFlightsList(offset: number, limit: number, year?: number): void {
-    let queryParams: string = `?`;
+  getFlightsList(year?: number): void {
+    let queryParams: string = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
-    queryParams += `offset=${offset}&limit=${limit}`
     this.http.get<{ num_flights: number, flights: FlightInfo[] }>(environment.apiUrl + "flights/" + queryParams)
       .subscribe(result => {
         this.flightsList = result.flights;

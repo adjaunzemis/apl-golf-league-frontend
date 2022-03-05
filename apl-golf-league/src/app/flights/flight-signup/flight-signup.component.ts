@@ -40,7 +40,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
   roleOptions = ['Captain', 'Player'];
 
-  newTeam: FormGroup;
+  newTeamForm: FormGroup;
 
   constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog) { }
 
@@ -49,7 +49,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
-        this.flights = result.flights.filter(flight => flight.year === this.currentYear);
+        this.flights = result.flights;
         this.isLoadingFlights = false;
 
         this.golfersService.getAllGolfers();
@@ -79,9 +79,9 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= currentDate && this.selectedFlight.signup_stop_date >= currentDate;
       });
 
-    this.flightsService.getFlightsList(0, 100, this.currentYear); // TODO: Remove unneeded filters
+    this.flightsService.getFlightsList(this.currentYear);
 
-    this.newTeam = this.formBuilder.group({
+    this.newTeamForm = this.formBuilder.group({
       teamGolfers: this.formBuilder.array([])
     });
     this.addNewTeamGolferForm();
@@ -200,7 +200,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   getTeamGolfersArray(): FormArray {
-    return this.newTeam.get('teamGolfers') as FormArray;
+    return this.newTeamForm.get('teamGolfers') as FormArray;
   }
 
   addNewTeamGolferForm(): void {

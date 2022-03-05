@@ -28,7 +28,7 @@ export class FlightHistoryComponent implements OnInit, OnDestroy {
           this.isLoading = false;
       });
 
-    this.flightsService.getFlightsList(0, 100);
+    this.flightsService.getFlightsList();
   }
 
   ngOnDestroy(): void {
