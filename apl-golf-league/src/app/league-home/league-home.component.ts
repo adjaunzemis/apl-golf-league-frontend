@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { AppConfigService } from '../app-config.service';
 import { FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentInfo } from '../shared/tournament.model';
@@ -14,7 +15,7 @@ import { OfficersService } from '../officers/officers.service';
   styleUrls: ['./league-home.component.css']
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
-  private currentYear: number = 2021; // TODO: Define in parameter database?
+  private currentYear: number; // TODO: Define in parameter database?
 
   isLoadingFlights = true;
   flights: FlightInfo[] = [];
@@ -31,9 +32,10 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   leagueOfficers: Officer[] = [];
   private officersSub: Subscription;
 
-  constructor(private flightsService: FlightsService, private tournamentsService: TournamentsService, private officersService: OfficersService) { }
+  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private officersService: OfficersService) { }
 
   ngOnInit(): void {
+    this.currentYear = this.appConfigService.currentYear;
     this.flightsSub = this.flightsService.getFlightsListUpdateListener()
       .subscribe(result => {
           console.log(`[LeagueHomeComponent] Received flights list`);
