@@ -1,5 +1,18 @@
 <div class="content">
-  <div class="card announcements-card">
-    <span class="bold">Login not-yet implemented... Come back soon!</span>
-  </div>
+
+  <h1>Login</h1>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Username</mat-label>
+    <input type="text" matInput required [formControl]="usernameControl">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input type="password" matInput required [formControl]="passwordControl">
+    <mat-error *ngIf="passwordControl.hasError('minlength')">Password is too short</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" [disabled]="!usernameControl.valid || !passwordControl.valid" (click)="onLogin()">Login</button>
+
 </div>

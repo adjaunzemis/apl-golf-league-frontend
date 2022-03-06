@@ -9,8 +9,11 @@
     <li>
       <a mat-raised-button color="accent" routerLink="/flight/signup">Flight Signup</a>
     </li>
-    <li>
+    <li *ngIf="!isAuthenticated">
       <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
+    </li>
+    <li *ngIf="isAuthenticated">
+      <a mat-button>Logout</a>
     </li>
   </ul>
 </mat-toolbar>
