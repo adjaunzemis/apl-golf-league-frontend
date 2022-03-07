@@ -22,3 +22,11 @@ export class User {
     return this._token;
   }
 }
+
+export interface UserInfo {
+  id: number
+  username: string
+  email?: string
+  name?: string
+  disabled: boolean
+}

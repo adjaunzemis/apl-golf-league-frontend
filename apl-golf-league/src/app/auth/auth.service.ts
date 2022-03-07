@@ -1,16 +1,16 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { Subject } from "rxjs";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { BehaviorSubject, Subject } from "rxjs";
+import { tap, take, exhaustMap } from "rxjs/operators";
 
 import { environment } from './../../environments/environment';
-import { User } from "../shared/user.model";
-import { tap } from "rxjs/operators";
+import { User, UserInfo } from "../shared/user.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user = new Subject<User>();
+  user = new BehaviorSubject<User|null>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +25,12 @@ export class AuthService {
         const user = new User(resData.id, resData.username, resData.email, resData.name, resData.access_token, expirationDate);
         this.user.next(user);
       }));
+  }
+
+  getUserInfo() {
+    return this.user.pipe(take(1), exhaustMap(user => {
+      return this.http.get<UserInfo>(environment.apiUrl + `users/me`, { headers: new HttpHeaders({'Authorization': `Bearer ${user?.token}`}) });
+    }));
   }
 
 }

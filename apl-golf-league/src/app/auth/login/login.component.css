@@ -1,0 +1,11 @@
+.user-info-button {
+  margin-top: 16px;
+}
+
+.user-info-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 240px;
+  margin-top: 16px;
+}
