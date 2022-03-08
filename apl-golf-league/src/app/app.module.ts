@@ -20,6 +20,7 @@ import { TournamentsModule } from './tournaments/tournaments.module';
 import { AuthModule } from './auth/auth.module';
 import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AppConfigService } from './app-config.service';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -57,8 +58,13 @@ import { AppConfigService } from './app-config.service';
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
+      useClass: AuthInterceptorService
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      multi: true,
+      useClass: ErrorInterceptor
     }
   ],
   bootstrap: [AppComponent]

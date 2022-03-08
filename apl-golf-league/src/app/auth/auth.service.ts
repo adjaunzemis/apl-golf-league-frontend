@@ -29,7 +29,7 @@ export class AuthService {
 
   getUserInfo() {
     return this.user.pipe(take(1), exhaustMap(user => {
-      return this.http.get<UserInfo>(environment.apiUrl + `users/me`, { headers: new HttpHeaders({'Authorization': `Bearer ${user?.token}`}) });
+      return this.http.get<UserInfo>(environment.apiUrl + `users/me`);
     }));
   }
 
