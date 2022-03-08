@@ -23,7 +23,7 @@ export class AuthService {
     return this.http.post<AuthResponseData>(environment.apiUrl + `users/token`, body)
       .pipe(tap(resData => {
         const expirationDate = new Date(new Date().getTime() + resData.access_token_expires_in * 1000);
-        const user = new User(resData.id, resData.username, resData.email, resData.name, resData.access_token, expirationDate);
+        const user = new User(resData.id, resData.username, resData.email, resData.name, resData.disabled, resData.access_token, expirationDate);
         this.user.next(user);
       }));
   }
@@ -46,6 +46,7 @@ export interface AuthResponseData {
   username: string
   email: string
   name: string
+  disabled: boolean
   access_token: string
   access_token_expires_in: number
   token_type: string
