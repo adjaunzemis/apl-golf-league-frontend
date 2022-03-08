@@ -2,27 +2,39 @@
 
   <h1>Login</h1>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Username</mat-label>
-    <input type="text" matInput required [formControl]="usernameControl">
-  </mat-form-field>
+  <p class="italic">Note: Currently only enabled for flight and tournament secretaries for entering scores</p>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
-    <input type="password" matInput required [formControl]="passwordControl">
-    <mat-error *ngIf="passwordControl.hasError('minlength')">Password is too short</mat-error>
-  </mat-form-field>
+  <div class="content" *ngIf="!isLoggedIn()">
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input type="text" matInput required [formControl]="usernameControl">
+    </mat-form-field>
 
-  <button mat-raised-button color="accent" [disabled]="!usernameControl.valid || !passwordControl.valid" (click)="onLogin()">Login</button>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput required [formControl]="passwordControl">
+      <mat-error *ngIf="passwordControl.hasError('minlength')">Password is too short</mat-error>
+    </mat-form-field>
 
-  <button class="user-info-button" mat-raised-button color="accent" [disabled]="" (click)="onGetUserInfo()">User Info</button>
+    <button mat-raised-button color="accent" [disabled]="!usernameControl.valid || !passwordControl.valid" (click)="onLogin()">Login</button>
 
-  <div class="card user-info-card" *ngIf="userInfo">
-    <span>Username: {{ userInfo.username }}</span>
-    <span>Name: {{ userInfo.name }}</span>
-    <span>Email: {{ userInfo.email }}</span>
-    <span>Disabled: {{ userInfo.disabled }}</span>
-    <span>Id: {{ userInfo.id }}</span>
+    <button class="user-info-button" mat-raised-button color="accent" [disabled]="" (click)="onGetUserInfo()">User Info</button>
+
+    <div class="card user-info-card" *ngIf="userInfo">
+      <span>Username: {{ userInfo.username }}</span>
+      <span>Name: {{ userInfo.name }}</span>
+      <span>Email: {{ userInfo.email }}</span>
+      <span>Disabled: {{ userInfo.disabled }}</span>
+      <span>Id: {{ userInfo.id }}</span>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="isLoggedIn()">
+    <div class="content">
+      <p>Currently logged in as '{{ getLoggedInUsername() }}'</p>
+    </div>
+
+    <button mat-raised-button color="accent" [disabled]="!isLoggedIn()" (click)="onLogout()">Logout</button>
   </div>
 
 </div>
