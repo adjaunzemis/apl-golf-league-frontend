@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { BehaviorSubject, Subject } from "rxjs";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
 import { tap, take, exhaustMap } from "rxjs/operators";
 
 import { environment } from './../../environments/environment';
@@ -12,7 +13,7 @@ import { User, UserInfo } from "../shared/user.model";
 export class AuthService {
   user = new BehaviorSubject<User|null>(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(username: string, password: string) {
     const body = new HttpParams()
@@ -25,6 +26,11 @@ export class AuthService {
         const user = new User(resData.id, resData.username, resData.email, resData.name, resData.access_token, expirationDate);
         this.user.next(user);
       }));
+  }
+
+  logout(): void {
+    this.user.next(null);
+    this.router.navigate([`/auth/login`]);
   }
 
   getUserInfo() {
