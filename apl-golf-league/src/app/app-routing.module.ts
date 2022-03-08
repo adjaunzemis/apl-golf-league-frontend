@@ -15,6 +15,7 @@ import { TournamentHistoryComponent } from "./tournaments/tournament-history/tou
 import { LoginComponent } from "./auth/login/login.component";
 import { RulesComponent } from "./rules/rules.component";
 import { HandicapsComponent } from "./handicaps/handicaps.component";
+import { AuthGuard } from "./auth/auth.guard";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -22,7 +23,11 @@ const routes: Routes = [
   { path: "flight/team", component: TeamHomeComponent },
   { path: "flight/signup", component: FlightSignupComponent},
   { path: "flight/history", component: FlightHistoryComponent },
-  { path: "flight/match/edit", component: FlightMatchCreateComponent },
+  {
+    path: "flight/match/edit",
+    component: FlightMatchCreateComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "tournament", component: TournamentHomeComponent },
   { path: "tournament/history", component: TournamentHistoryComponent },
   { path: "golfer", component: GolferHomeComponent },
