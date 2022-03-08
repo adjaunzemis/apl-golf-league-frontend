@@ -12,6 +12,7 @@ import { User, UserInfo } from "../shared/user.model";
 })
 export class AuthService {
   private static LOCAL_STORAGE_USER = 'aplGolfUserData';
+  private tokenExpirationTimer: any;
 
   user = new BehaviorSubject<User|null>(null);
 
@@ -27,6 +28,7 @@ export class AuthService {
         const expirationDate = new Date(new Date().getTime() + resData.access_token_expires_in * 1000);
         const user = new User(resData.id, resData.username, resData.email, resData.name, resData.disabled, resData.access_token, expirationDate);
         this.user.next(user);
+        this.autoLogout(resData.access_token_expires_in * 1000);
         localStorage.setItem(AuthService.LOCAL_STORAGE_USER, JSON.stringify(user));
       }));
   }
@@ -50,6 +52,8 @@ export class AuthService {
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
+      const expirationDuration = (new Date(userData._tokenExpirationDate)).getTime() - (new Date()).getTime();
+      this.autoLogout(expirationDuration);
     }
   }
 
@@ -57,6 +61,16 @@ export class AuthService {
     this.user.next(null);
     this.router.navigate([`/auth/login`]);
     localStorage.removeItem(AuthService.LOCAL_STORAGE_USER);
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+  }
+
+  autoLogout(expirationDuration: number): void {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
   }
 
   getUserInfo() {
