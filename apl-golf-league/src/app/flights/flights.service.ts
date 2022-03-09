@@ -30,15 +30,6 @@ export class FlightsService {
     this.http.get<{ num_flights: number, flights: FlightInfo[] }>(environment.apiUrl + "flights/" + queryParams)
       .subscribe(result => {
         this.flightsList = result.flights;
-
-        // Cast date strings to Date objects
-        // TODO: Do this in backend instead!
-        for (let flight of this.flightsList) {
-          flight.signup_start_date = new Date(flight.signup_start_date + "T00:00:00.000-04:00");
-          flight.signup_stop_date = new Date(flight.signup_stop_date + "T00:00:00.000-04:00");
-          flight.start_date = new Date(flight.start_date + "T00:00:00.000-04:00");
-        }
-
         this.flightsListUpdated.next({
           numFlights: result.num_flights,
           flights: [...this.flightsList]
@@ -54,13 +45,6 @@ export class FlightsService {
     this.http.get<FlightData>(environment.apiUrl + `flights/${id}`)
       .subscribe(result => {
         this.flightData = result;
-
-        // Cast date strings to Date objects
-        // TODO: Do this in backend instead!
-        this.flightData.signup_start_date = new Date(result.signup_start_date + "T00:00:00.000-04:00");
-        this.flightData.signup_stop_date = new Date(result.signup_stop_date + "T00:00:00.000-04:00");
-        this.flightData.start_date = new Date(result.start_date + "T00:00:00.000-04:00");
-
         this.flightDataUpdated.next(result);
       });
   }
