@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 
+import { delayedRetry } from "./error-handling/delayed-retry";
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @Injectable()
@@ -13,6 +14,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
+      delayedRetry(1000),
       catchError((error: HttpErrorResponse) => {
         let errorMessage = "An unknown error occurred!";
         if (error.error.message) {
