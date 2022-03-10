@@ -135,13 +135,14 @@ a.link-text {
     width: 100%;
   }
 
-  .card:not(.highlight-card) {
+  .card:not(.announcements-card) {
     height: 16px;
     margin: 8px 0;
   }
 
-  .card.highlight-card span {
-    margin-left: 72px;
+  .card.announcements-card {
+    height: 100%;
+    text-align: center;
   }
 }
 

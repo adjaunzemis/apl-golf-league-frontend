@@ -4,11 +4,11 @@
 
   <p class="italic">Note: Currently only enabled for flight and tournament secretaries for entering scores</p>
 
-  <div class="card announcement-card fail-card" *ngIf="loginAttempted && !loginSuccessful">
+  <div class="card announcements-card fail-card" *ngIf="loginAttempted && !loginSuccessful">
     <span>Login unsuccessful, try again...</span>
   </div>
 
-  <div class="card announcement-card success-card" *ngIf="loginAttempted && loginSuccessful">
+  <div class="card announcements-card success-card" *ngIf="loginAttempted && loginSuccessful">
     <span>Login successful!</span>
   </div>
 
