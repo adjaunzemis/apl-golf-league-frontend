@@ -13,7 +13,7 @@
   <div class="card-container">
     <div class="card card-small">
       <span class="bold">Date</span>
-      <span>{{ tournament.date | date:'longDate'}} {{ tournament.start_time }}</span>
+      <span>{{ tournament.date | date:'mediumDate'}} {{ tournament.date | date:'shortTime'}}</span>
     </div>
 
     <div class="card card-small">
@@ -37,27 +37,39 @@
 
   <h2>Standings</h2>
 
-  <app-tournament-standings [teamData]="tournament.teams"></app-tournament-standings>
+  <div *ngIf="tournament.date > currentDate; else notPlayedYet">
+    <app-tournament-standings [teamData]="tournament.teams"></app-tournament-standings>
+  </div>
+
+  <ng-template #notPlayedYet>
+    <p class="italic">Available after the tournament has been played</p>
+  </ng-template>
 
   <h2>Teams</h2>
 
-  <p class="italic" *ngIf="!showScorecard">Select a team to view scorecards</p>
+  <div *ngIf="tournament.teams.length > 0; else noTeams">
+    <p class="italic" *ngIf="!showScorecard">Select a team to view scorecards</p>
 
-  <div class="full-width" *ngIf="showScorecard">
-    <app-tournament-scorecard [rounds]="focusedTeam.rounds" *ngIf="focusedTeam.rounds && focusedTeam.rounds.length > 0; else noRounds"></app-tournament-scorecard>
+    <div class="full-width" *ngIf="showScorecard">
+      <app-tournament-scorecard [rounds]="focusedTeam.rounds" *ngIf="focusedTeam.rounds && focusedTeam.rounds.length > 0; else noRounds"></app-tournament-scorecard>
 
-    <ng-template #noRounds>
-      <p class="no-rounds-warning">No round data for team {{ focusedTeam.name }}</p>
-    </ng-template>
-  </div>
+      <ng-template #noRounds>
+        <p class="no-rounds-warning">No round data for team {{ focusedTeam.name }}</p>
+      </ng-template>
+    </div>
 
-
-  <div class="card-container">
-    <div class="card team-card selectable" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''">
-      <span class="bold">{{ team.name }}</span>
-      <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
+    <div class="card-container">
+      <div class="card team-card selectable" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''">
+        <span class="bold">{{ team.name }}</span>
+        <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
+      </div>
     </div>
   </div>
+
+  <ng-template #noTeams>
+    <p class="italic">No teams have signed-up yet...</p>
+  </ng-template>
+
 
   <!-- <h2>Statistics</h2>
 

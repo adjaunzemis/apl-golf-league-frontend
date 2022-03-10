@@ -6,7 +6,6 @@ export interface TournamentData {
     year: number
     name: string
     date: Date
-    start_time: string // TODO: Use time class?
     course: string
     logo_url?: string
     secretary?: string
@@ -22,7 +21,8 @@ export interface TournamentInfo {
   year: number
   name: string
   date: Date
-  start_time: string // TODO: Use time class?
+  signup_start_date: Date
+  signup_stop_date: Date
   course: string
   logo_url?: string
 }
