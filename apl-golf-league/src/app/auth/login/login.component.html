@@ -4,7 +4,16 @@
 
   <p class="italic">Note: Currently only enabled for flight and tournament secretaries for entering scores</p>
 
+  <div class="card announcement-card fail-card" *ngIf="loginAttempted && !loginSuccessful">
+    <span>Login unsuccessful, try again...</span>
+  </div>
+
+  <div class="card announcement-card success-card" *ngIf="loginAttempted && loginSuccessful">
+    <span>Login successful!</span>
+  </div>
+
   <div class="content" *ngIf="!isLoggedIn(); else loggedIn">
+
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
       <input type="text" matInput required [formControl]="usernameControl">

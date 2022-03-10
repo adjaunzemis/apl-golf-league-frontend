@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 import { UserInfo } from '../../shared/user.model';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,9 @@ import { UserInfo } from '../../shared/user.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  loginAttempted = false;
+  loginSuccessful = false;
+
   usernameControl = new FormControl("", Validators.required);
   passwordControl = new FormControl("", [Validators.required, Validators.minLength(6)]);
 
@@ -28,15 +32,19 @@ export class LoginComponent {
   }
 
   onLogin(): void {
+    this.loginAttempted = false;
+    this.loginSuccessful = false;
     this.authService.login(this.usernameControl.value, this.passwordControl.value).subscribe(
       result => {
-        console.log("Login successful!");
+        this.loginAttempted = true;
+        this.loginSuccessful = true;
+
         this.usernameControl.reset();
         this.passwordControl.reset();
       },
       errorMessage => {
-        console.error("Login failed!");
-        console.log(errorMessage); // TODO: handle error
+        this.loginAttempted = true;
+        this.loginSuccessful = false;
       });
   }
 
