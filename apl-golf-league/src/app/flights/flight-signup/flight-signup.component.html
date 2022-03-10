@@ -75,7 +75,8 @@
 
     <ng-template #flightSignupWindowClosed>
       <div class="content">
-        <h3 class="italic">Sign-up window is closed, check sign-up dates below!</h3>
+        <h3 class="italic" *ngIf="this.selectedFlight.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
+        <h3 class="italic" *ngIf="this.selectedFlight.signup_stop_date < this.currentDate">Sign-up window has closed</h3>
       </div>
     </ng-template>
 
@@ -97,13 +98,20 @@
         <span class="bold">Sign-Up Dates</span>
         <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
       </div>
+
+      <div class="card card-small">
+        <span class="bold">Start Date</span>
+        <span>{{ selectedFlight.start_date | date:'longDate' }}</span>
+      </div>
     </div>
+
+    <h3>Divisions</h3>
 
     <div class="card-container division-list">
       <div class="card division-card" *ngFor="let division of selectedFlight.divisions">
         <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
-        <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
-        <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
+        <span>{{ division.primary_track_name }}: Par {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
+        <span>{{ division.secondary_track_name }}: Par {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
       </div>
     </div>
 

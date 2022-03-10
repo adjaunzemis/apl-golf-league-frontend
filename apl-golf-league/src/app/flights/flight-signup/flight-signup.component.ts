@@ -19,6 +19,7 @@ import { AppConfigService } from 'src/app/app-config.service';
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
   private currentYear: number;
+  currentDate = new Date();
 
   isLoadingFlights = true;
   isLoadingGolfers = true;
@@ -75,8 +76,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         this.selectedFlight = result;
         this.isLoadingSelectedFlight = false;
 
-        const currentDate = new Date();
-        this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= currentDate && this.selectedFlight.signup_stop_date >= currentDate;
+        this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= this.currentDate && this.selectedFlight.signup_stop_date >= this.currentDate;
       });
 
     this.flightsService.getFlightsList(this.currentYear);
@@ -96,6 +96,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   getSelectedFlightData(id: number): void {
     this.isLoadingSelectedFlight = true;
     this.flightsService.getFlight(id);
+  }
+
+  getDaysUntilSignup(): number {
+    return Math.floor((Date.UTC(this.selectedFlight.signup_start_date.getFullYear(), this.selectedFlight.signup_start_date.getMonth(), this.selectedFlight.signup_start_date.getDate()) - Date.UTC(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate())) / (1000 * 60 * 60 * 24));
   }
 
   onSubmitTeam(): void {
