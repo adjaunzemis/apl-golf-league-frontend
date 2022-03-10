@@ -4,14 +4,15 @@
   <h1>{{ golfer.name }} </h1>
 
   <div class="card-container">
-    <div class="card card-small">
+
+    <!-- Re-enable when all historical data has been added -->
+    <!-- <div class="card card-small">
       <span class="bold">Member Since</span>
       <span *ngIf="golfer.member_since; else noMemberSince">{{ golfer.member_since }}</span>
       <ng-template #noMemberSince>
         <span>--</span>
       </ng-template>
-
-    </div>
+    </div> -->
 
     <div class="card card-small">
       <span class="bold">APL Handicap Index</span>
