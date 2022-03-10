@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 import { UserInfo } from '../../shared/user.model';
@@ -10,8 +11,6 @@ import { UserInfo } from '../../shared/user.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  userInfo: UserInfo;
-
   usernameControl = new FormControl("", Validators.required);
   passwordControl = new FormControl("", [Validators.required, Validators.minLength(6)]);
 
@@ -43,10 +42,6 @@ export class LoginComponent {
 
   onLogout(): void {
     this.authService.logout();
-  }
-
-  onGetUserInfo(): void {
-    this.authService.getUserInfo().subscribe(info => this.userInfo = info);
   }
 
 }
