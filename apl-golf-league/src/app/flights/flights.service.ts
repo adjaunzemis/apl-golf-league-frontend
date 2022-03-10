@@ -30,6 +30,17 @@ export class FlightsService {
     this.http.get<{ num_flights: number, flights: FlightInfo[] }>(environment.apiUrl + "flights/" + queryParams)
       .subscribe(result => {
         this.flightsList = result.flights;
+        this.flightsList.map(flight => {
+          if (flight.signup_start_date) {
+            flight.signup_start_date = new Date(flight.signup_start_date);
+          }
+          if (flight.signup_stop_date) {
+            flight.signup_stop_date = new Date(flight.signup_stop_date);
+          }
+          if (flight.start_date) {
+            flight.start_date = new Date(flight.start_date);
+          }
+        });
         this.flightsListUpdated.next({
           numFlights: result.num_flights,
           flights: [...this.flightsList]
@@ -45,7 +56,16 @@ export class FlightsService {
     this.http.get<FlightData>(environment.apiUrl + `flights/${id}`)
       .subscribe(result => {
         this.flightData = result;
-        this.flightDataUpdated.next(result);
+        if (this.flightData.signup_start_date) {
+          this.flightData.signup_start_date = new Date(this.flightData.signup_start_date);
+        }
+        if (this.flightData.signup_stop_date) {
+          this.flightData.signup_stop_date = new Date(this.flightData.signup_stop_date);
+        }
+        if (this.flightData.start_date) {
+          this.flightData.start_date = new Date(this.flightData.start_date);
+        }
+        this.flightDataUpdated.next(this.flightData);
       });
   }
 

@@ -75,7 +75,7 @@
 
     <ng-template #flightSignupWindowClosed>
       <div class="content">
-        <h3 class="italic">Flight sign-up window closed!</h3>
+        <h3 class="italic">Sign-up window is closed, check sign-up dates below!</h3>
       </div>
     </ng-template>
 
@@ -108,6 +108,8 @@
     </div>
 
     <h3>Teams</h3>
+
+    <p class="italic" *ngIf="selectedFlight.teams?.length === 0">No teams have signed-up yet...</p>
 
     <div class="card-container team-list">
       <a class="card team-card" *ngFor="let team of selectedFlight.teams">
