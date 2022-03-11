@@ -9,12 +9,10 @@
   </div>
 
   <div class="scorecard full-width" *ngIf="selectedDivision && !isLoading">
-    <app-scorecard-title-line></app-scorecard-title-line>
-
-    <app-scorecard-hole-line [holes]="selectedPrimaryTee.holes"></app-scorecard-hole-line>
+    <app-scorecard-hole-line [holes]="selectedPrimaryTee.holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
     <app-scorecard-tee-info [holes]="selectedPrimaryTee.holes" [showDetails]="true"></app-scorecard-tee-info>
 
-    <app-scorecard-hole-line [holes]="selectedSecondaryTee.holes"></app-scorecard-hole-line>
+    <app-scorecard-hole-line [holes]="selectedSecondaryTee.holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
     <app-scorecard-tee-info [holes]="selectedSecondaryTee.holes" [showDetails]="true"></app-scorecard-tee-info>
   </div>
 

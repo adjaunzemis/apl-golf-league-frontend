@@ -26,7 +26,7 @@ export class DivisionListComponent implements OnInit, OnDestroy {
   constructor(private coursesService: CoursesService) { }
 
   ngOnInit(): void {
-    this.coursesService.getSelectedTeeUpdated().subscribe(tee => {
+    this.divisionSub = this.coursesService.getSelectedTeeUpdated().subscribe(tee => {
       for (let division of this.divisions) {
         if (division.primary_tee_id === tee.id) {
           this.selectedPrimaryTee = tee;
@@ -43,7 +43,7 @@ export class DivisionListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      this.divisionSub.unsubscribe();
+    this.divisionSub.unsubscribe();
   }
 
   onSelectDivision(division: DivisionData): void {
