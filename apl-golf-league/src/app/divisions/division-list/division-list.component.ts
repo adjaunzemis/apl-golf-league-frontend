@@ -11,6 +11,10 @@ import { DivisionData } from "../../shared/division.model";
   styleUrls: ['./division-list.component.css']
 })
 export class DivisionListComponent implements OnInit, OnDestroy {
+  isLoading = false;
+  private loadedPrimaryTee = false;
+  private loadedSecondaryTee = false;
+
   @Input() divisions: DivisionData[];
 
   private divisionSub: Subscription;
@@ -26,9 +30,14 @@ export class DivisionListComponent implements OnInit, OnDestroy {
       for (let division of this.divisions) {
         if (division.primary_tee_id === tee.id) {
           this.selectedPrimaryTee = tee;
+          this.loadedPrimaryTee = true;
         } else if (division.secondary_tee_id === tee.id) {
           this.selectedSecondaryTee = tee;
+          this.loadedSecondaryTee = true;
         }
+      }
+      if (this.loadedPrimaryTee && this.loadedSecondaryTee) {
+        this.isLoading = false;
       }
     });
   }
@@ -39,6 +48,10 @@ export class DivisionListComponent implements OnInit, OnDestroy {
 
   onSelectDivision(division: DivisionData): void {
     this.selectedDivision = division;
+
+    this.isLoading = true;
+    this.loadedPrimaryTee = false;
+    this.loadedSecondaryTee = false;
     this.coursesService.getTee(division.primary_tee_id);
     this.coursesService.getTee(division.secondary_tee_id);
   }
