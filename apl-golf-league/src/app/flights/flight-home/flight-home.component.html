@@ -6,7 +6,7 @@
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
   <div class="card-container">
-    <a class="card card-small selectable" href="mailto:{{ flight.secretary_email }}" *ngIf="flight.secretary">
+    <a class="card card-small" href="mailto:{{ flight.secretary_email }}" [ngClass]="flight.secretary_email ? 'selectable' : ''" *ngIf="flight.secretary">
       <span class="bold">Flight Secretary</span>
       <span>{{ flight.secretary }}</span>
     </a>
@@ -22,13 +22,7 @@
     </div>
   </div>
 
-  <div class="card-container division-list">
-    <div class="card division-card" *ngFor="let division of flight.divisions">
-      <span class="bold">{{ division.name }} - {{ division.primary_tee_name }}</span>
-      <span>{{ division.primary_track_name }}: {{ division.primary_tee_par }} ({{ division.primary_tee_rating }}/{{ division.primary_tee_slope }})</span>
-      <span>{{ division.secondary_track_name }}: {{ division.secondary_tee_par }} ({{ division.secondary_tee_rating }}/{{ division.secondary_tee_slope }})</span>
-    </div>
-  </div>
+  <app-division-list [divisions]="flight.divisions"></app-division-list>
 
   <h2>Standings</h2>
 

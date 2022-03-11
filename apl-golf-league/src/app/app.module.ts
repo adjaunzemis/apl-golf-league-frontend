@@ -17,6 +17,7 @@ import { FlightsModule } from './flights/flights.module';
 import { GolfersModule } from './golfers/golfers.module';
 import { MatchesModule } from './matches/matches.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
+import { DivisionsModule } from './divisions/divisions.module';
 import { AuthModule } from './auth/auth.module';
 import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AppConfigService } from './app-config.service';
@@ -43,6 +44,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     GolfersModule,
     MatchesModule,
     TournamentsModule,
+    DivisionsModule,
     AuthModule
   ],
   providers: [

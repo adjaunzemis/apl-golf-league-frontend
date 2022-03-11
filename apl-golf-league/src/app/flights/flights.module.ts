@@ -15,6 +15,7 @@ import { FlightSignupComponent } from './flight-signup/flight-signup.component';
 import { ErrorModule } from "../shared/error/error.module";
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
+import { DivisionsModule } from "../divisions/divisions.module";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FlightMatchCreateComponent } from './flight-match-create/flight-match-c
     RouterModule,
     AngularMaterialModule,
     MatchesModule,
-    ErrorModule
+    ErrorModule,
+    DivisionsModule
   ]
 })
 export class FlightsModule {}

@@ -8,6 +8,7 @@ import { TournamentStandingsComponent } from './tournament-standings/tournament-
 import { TournamentScorecardComponent } from './tournament-scorecard/tournament-scorecard.component';
 import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 import { TournamentHistoryComponent } from './tournament-history/tournament-history.component';
+import { DivisionsModule } from "../divisions/divisions.module";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { TournamentHistoryComponent } from './tournament-history/tournament-hist
     CommonModule,
     RouterModule,
     AngularMaterialModule,
-    ScorecardModule
+    ScorecardModule,
+    DivisionsModule
   ]
 })
 export class TournamentsModule {}
