@@ -29,6 +29,9 @@
         </mat-form-field>
 
         <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeamForm.valid" (click)="onSubmitTeam()">Submit</button>
+
+        <button mat-raised-button color="primary" (click)="onAddNewGolfer()">New Golfer</button>
+
       </div>
 
       <form [formGroup]="newTeamForm" (ngSubmit)="onSubmitTeam()" (keydown.enter)="$event.preventDefault()">

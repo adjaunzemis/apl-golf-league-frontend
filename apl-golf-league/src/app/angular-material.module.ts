@@ -17,6 +17,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   exports: [
@@ -37,7 +38,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatOptionModule,
     MatAutocompleteModule,
     MatGridListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDividerModule
   ]
 })
 export class AngularMaterialModule {}

@@ -11,6 +11,7 @@ import { GolfersService } from '../../golfers/golfers.service';
 import { DivisionData } from '../../shared/division.model';
 import { ErrorDialogComponent } from '../../shared/error/error-dialog/error-dialog.component';
 import { AppConfigService } from 'src/app/app-config.service';
+import { GolferCreateComponent } from 'src/app/golfers/golfer-create/golfer-create.component';
 
 @Component({
   selector: 'app-flight-signup',
@@ -248,4 +249,21 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     }
     return null;
   }
+
+  onAddNewGolfer(): void {
+    const dialogRef = this.dialog.open(GolferCreateComponent, {
+      width: '300px',
+      data: {
+        name: '',
+        affiliation: 'APL_EMPLOYEE',
+        email: '',
+        phone: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+  }
+
 }
