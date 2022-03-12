@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { Golfer, GolferData } from "../shared/golfer.model";
+import { Golfer, GolferAffiliation, GolferData } from "../shared/golfer.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -64,5 +64,10 @@ export class GolfersService {
   getGolferUpdateListener(): Observable<GolferData> {
     return this.golferDataUpdated.asObservable();
   }
+
+  createGolfer(name: string, affiliation: GolferAffiliation, email?: string, phone?: string): Observable<Golfer> {
+    return this.http.post<Golfer>(environment.apiUrl + `golfers/`, { name: name, affiliation: affiliation, email: email, phone: phone });
+  }
+
 }
 

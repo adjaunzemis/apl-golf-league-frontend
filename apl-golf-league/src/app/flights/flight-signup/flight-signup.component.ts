@@ -261,8 +261,12 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+    dialogRef.afterClosed().subscribe(golferData => {
+      console.log(golferData);
+      this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email, golferData.phone).subscribe(result => {
+        console.log("Successfully added golfer!");
+        console.log(result);
+      });
     });
   }
 
