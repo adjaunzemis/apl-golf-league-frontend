@@ -11,12 +11,16 @@ export interface Golfer {
   id: number;
   name: string;
   affiliation: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface GolferData {
   golfer_id: number;
   name: string;
   affiliation: string;
+  email?: string;
+  phone?: string;
   member_since?: number;
   team_golfer_data?: TeamGolferData[];
   handicap_index_data?: HandicapIndexData;
