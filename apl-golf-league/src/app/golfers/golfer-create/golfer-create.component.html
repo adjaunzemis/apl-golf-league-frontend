@@ -5,7 +5,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
     <input matInput [formControl]="nameControl">
-    <mat-error *ngIf="nameControl.hasError('required')">Enter a name</mat-error>
+    <mat-error *ngIf="nameControl.hasError('required') || nameControl.hasError('pattern')">Enter a valid name</mat-error>
     <mat-error *ngIf="nameControl.hasError('minlength')">Name is too short</mat-error>
     <mat-error *ngIf="nameControl.hasError('maxlength')">Name is too long</mat-error>
   </mat-form-field>
