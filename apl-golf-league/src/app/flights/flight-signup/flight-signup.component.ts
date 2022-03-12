@@ -263,6 +263,14 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(golferData => {
       if (golferData !== null && golferData !== undefined) {
+        const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
+        if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
+          this.dialog.open(ErrorDialogComponent, {
+            data: { title: "New Golfer Error", message: `Golfer with name '${golferData.name}' already exists!` }
+          });
+          return;
+        }
+
         this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email !== '' ? golferData.email : null, golferData.phone !== '' ? golferData.phone : null).subscribe(result => {
           console.log(`Successfully added golfer: ${result.name}`);
           this.golfersService.getAllGolfers(); // refresh golfer name options
