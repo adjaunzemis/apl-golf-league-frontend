@@ -9,7 +9,7 @@ import { Golfer, GolferAffiliation } from "../../shared/golfer.model";
 })
 export class GolferCreateComponent {
 
-  nameControl: FormControl = new FormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern('^[a-zA-Z ]*$')]);
+  nameControl: FormControl = new FormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
   affiliationControl: FormControl = new FormControl(this.data.affiliation, [Validators.required]);
   emailControl: FormControl = new FormControl(this.data.email, [Validators.required, Validators.email]);
   phoneControl: FormControl = new FormControl(this.data.phone, []);
@@ -31,8 +31,8 @@ export class GolferCreateComponent {
       id: -1, // TODO: relax required 'id' value
       name: golferName,
       affiliation: (this.affiliationControl.value as GolferAffiliation),
-      email: this.emailControl.value,
-      phone: this.phoneControl.value
+      email: this.emailControl.value.trim(),
+      phone: this.phoneControl.value.trim()
     };
 
     this.dialogRef.close(golferData);
