@@ -1,5 +1,11 @@
-import { DivisionData } from "./division.model";
 import { RoundSummary } from "./round.model";
+
+export enum GolferAffiliation {
+  APL_EMPLOYEE = "APL Employee",
+  APL_RETIREE = "APL Retiree",
+  APL_FAMILY = "APL Family",
+  NON_APL_EMPLOYEE = "Non-APL Employee"
+}
 
 export interface Golfer {
   id: number;

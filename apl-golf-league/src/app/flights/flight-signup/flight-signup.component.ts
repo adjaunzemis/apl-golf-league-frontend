@@ -6,7 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
-import { Golfer } from '../../shared/golfer.model';
+import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { DivisionData } from '../../shared/division.model';
 import { ErrorDialogComponent } from '../../shared/error/error-dialog/error-dialog.component';
@@ -255,7 +255,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       width: '300px',
       data: {
         name: '',
-        affiliation: 'APL_EMPLOYEE',
+        affiliation: GolferAffiliation.APL_EMPLOYEE,
         email: '',
         phone: ''
       }
