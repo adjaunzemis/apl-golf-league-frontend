@@ -141,16 +141,16 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       });
     }
 
+    this.isLoadingSelectedFlight = true
     this.flightsService.createTeam(newTeamName, this.selectedFlight.id, golferData).subscribe(
       team => {
         console.log(`Created team '${team.name}' (id=${team.id})`);
-        // TODO: Refresh team data
+        // TODO: Refresh team data and clear form info
+        this.getSelectedFlightData(this.selectedFlight.id); // refresh flight info to get updated team
       },
       error => {
         console.error(`Unable to create team ${newTeamName}`);
-        this.dialog.open(ErrorDialogComponent, {
-          data: { title: "Team Sign-Up Error", message: error.error.detail }
-        });
+        this.isLoadingSelectedFlight = false
       }
     );
   }

@@ -17,11 +17,13 @@ export class ErrorInterceptor implements HttpInterceptor {
       delayedRetry(1000, 3),
       catchError((error: HttpErrorResponse) => {
         let errorMessage = "Uh oh... An unknown error occurred! :(";
+        let isUnknownError = true;
         if (error.error.detail) {
           errorMessage = error.error.detail;
+          isUnknownError = false;
         }
         this.dialog.open(ErrorDialogComponent, {
-          data: { title: "Error", message: errorMessage, isUnknownError: true }
+          data: { title: "Error", message: errorMessage, isUnknownError: isUnknownError }
         });
         return throwError(error);
       })
