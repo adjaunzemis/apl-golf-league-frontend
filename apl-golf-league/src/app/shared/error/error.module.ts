@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
+import { AngularMaterialModule } from "src/app/angular-material.module";
 import { ErrorDialogComponent } from "./error-dialog/error-dialog.component";
 
 @NgModule({
@@ -10,7 +11,8 @@ import { ErrorDialogComponent } from "./error-dialog/error-dialog.component";
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    AngularMaterialModule
   ],
   exports: [
     ErrorDialogComponent
