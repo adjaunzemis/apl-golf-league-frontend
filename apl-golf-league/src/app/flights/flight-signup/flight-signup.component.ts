@@ -142,10 +142,15 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     }
 
     this.flightsService.createTeam(newTeamName, this.selectedFlight.id, golferData).subscribe(
-      team => console.log(`Created team '${team.name}' (id=${team.id})`),
+      team => {
+        console.log(`Created team '${team.name}' (id=${team.id})`);
+        // TODO: Refresh team data
+      },
       error => {
         console.error(`Unable to create team ${newTeamName}`);
-        console.log(error); // TODO: Display error dialog with message
+        this.dialog.open(ErrorDialogComponent, {
+          data: { title: "Team Sign-Up Error", message: error.error.detail }
+        });
       }
     );
   }
