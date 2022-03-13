@@ -178,30 +178,20 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     }
 
     // Submit new team signup
-    this.flightsService.createTeam(newTeamName)
-      .subscribe(team => {
-        console.log(`Created team '${team.name}' (id=${team.id})`);
+    let golferData : { golfer_id: number, division_id: number, role: string }[] = [];
 
-        this.flightsService.createFlightTeamLink(this.selectedFlight.id, team.id)
-          .subscribe(flightTeamLink => {
-            console.log(`Linked team '${team.name}' (id=${flightTeamLink.team_id}) with flight '${this.selectedFlight.name}' (id=${flightTeamLink.flight_id})`);
+    for (const newTeamGolfer of newTeamGolfers) {
+      golferData.push({
+        golfer_id: newTeamGolfer.golfer.id,
+        division_id: newTeamGolfer.division.id,
+        role: newTeamGolfer.role
+      });
+    }
 
-            const teamGolferLinkSubs: Observable<{ team_id: number, golfer_id: number, division_id: number, role: string }>[] = [];
-            for (let newTeamGolfer of newTeamGolfers) {
-              teamGolferLinkSubs.push(this.flightsService.createTeamGolferLink(team.id, newTeamGolfer.golfer.id, newTeamGolfer.role, newTeamGolfer.division.id));
-            }
-            forkJoin(teamGolferLinkSubs).subscribe(results => {
-              results.forEach(result => console.log(`Linked golfer (id=${result.golfer_id}) with team (id=${result.team_id}): role=${result.role}, division_id=${result.division_id}`));
-            }, error => {
-              console.error(`Unable to link golfers to team ${team.name}: ${error}`);
-            }, () => {
-              console.log(`Successfully submitted new team '${team.name}'!`);
-
-              this.isLoadingSelectedFlight = true;
-              this.getSelectedFlightData(this.selectedFlight.id);
-            });
-          }, error => console.error(`Unable to link team ${team.name} to flight ${this.selectedFlight.name}: ${error}`));
-      }, error => console.error(`Unable to create team ${newTeamName}: ${error}`));
+    this.flightsService.createTeam(newTeamName, this.selectedFlight.id, golferData).subscribe(
+      team => console.log(`Created team '${team.name}' (id=${team.id})`),
+      error => console.error(`Unable to create team ${newTeamName}: ${error}`)
+    );
   }
 
   getTeamGolfersArray(): FormArray {
