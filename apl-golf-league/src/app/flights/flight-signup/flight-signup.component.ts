@@ -104,20 +104,9 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmitTeam(): void {
-    // Check for unique team name
-    const newTeamName = this.teamNameControl.value as string;
-    if (this.selectedFlight.teams) {
-      for (const team of this.selectedFlight.teams) {
-        if (team.name.toLowerCase() === newTeamName.toLowerCase()) {
-          this.dialog.open(ErrorDialogComponent, {
-            data: { title: "Team Sign-Up Error", message: `Team name '${newTeamName}' is already taken!` }
-          });
-          return;
-        }
-      }
-    }
-
     // Extract new team signup info from form
+    const newTeamName = this.teamNameControl.value as string;
+
     let newTeamGolfers: { golfer: Golfer, role: string, division: DivisionData }[] = [];
     for (let idx = 0; idx < this.getTeamGolfersArray().length; idx++) {
       const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
@@ -140,49 +129,13 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Check for exactly one captain
-    let hasCaptain = false;
-    for (const newTeamGolfer of newTeamGolfers) {
-      if (newTeamGolfer.role.toLowerCase() == 'captain') {
-        if (!hasCaptain) {
-          hasCaptain = true;
-        } else {
-          this.dialog.open(ErrorDialogComponent, {
-            data: { title: "Team Sign-Up Error", message: `Team must have only one captain!` }
-          });
-          return;
-        }
-      }
-    }
-    if (!hasCaptain) {
-      this.dialog.open(ErrorDialogComponent, {
-        data: { title: "Team Sign-Up Error", message: `Team must have a captain!` }
-      });
-      return;
-    }
-
-    // Check for golfers already on existing teams
-    for (const newTeamGolfer of newTeamGolfers) {
-      if (this.selectedFlight.teams) {
-        for (const team of this.selectedFlight.teams) {
-          for (const teamGolfer of team.golfers) {
-            if (teamGolfer.golfer_id === newTeamGolfer.golfer.id) {
-              this.dialog.open(ErrorDialogComponent, {
-                data: { title: "Team Sign-Up Error", message: `Golfer '${newTeamGolfer.golfer.name}' is already on team '${team.name}'!` }
-              });
-              return;
-            }
-          }
-        }
-      }
-    }
-
     // Submit new team signup
-    let golferData : { golfer_id: number, division_id: number, role: string }[] = [];
+    let golferData : { golfer_id: number, golfer_name: string, division_id: number, role: string }[] = [];
 
     for (const newTeamGolfer of newTeamGolfers) {
       golferData.push({
         golfer_id: newTeamGolfer.golfer.id,
+        golfer_name: newTeamGolfer.golfer.name,
         division_id: newTeamGolfer.division.id,
         role: newTeamGolfer.role
       });
@@ -190,7 +143,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     this.flightsService.createTeam(newTeamName, this.selectedFlight.id, golferData).subscribe(
       team => console.log(`Created team '${team.name}' (id=${team.id})`),
-      error => console.error(`Unable to create team ${newTeamName}: ${error}`)
+      error => {
+        console.error(`Unable to create team ${newTeamName}`);
+        console.log(error); // TODO: Display error dialog with message
+      }
     );
   }
 

@@ -86,7 +86,7 @@ export class FlightsService {
     return this.teamDataUpdated.asObservable();
   }
 
-  createTeam(name: string, flight_id: number, golfer_data: { golfer_id: number, division_id: number, role: string }[]): Observable<{ id: number, name: string }> {
+  createTeam(name: string, flight_id: number, golfer_data: { golfer_id: number, golfer_name: string, division_id: number, role: string }[]): Observable<{ id: number, name: string }> {
     return this.http.post<{ id: number, name: string }>(environment.apiUrl + `teams/flight-signup`, { name: name, flight_id: flight_id, golfer_data: golfer_data });
   }
 
