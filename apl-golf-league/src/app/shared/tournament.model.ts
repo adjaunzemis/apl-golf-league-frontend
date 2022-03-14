@@ -12,6 +12,8 @@ export interface TournamentData {
     secretary_contact?: string
     signup_start_date: Date
     signup_stop_date: Date
+    members_entry_fee: number
+    non_members_entry_fee: number
     divisions: DivisionData[]
     teams: TournamentTeamData[]
 }
@@ -23,6 +25,8 @@ export interface TournamentInfo {
   date: Date
   signup_start_date: Date
   signup_stop_date: Date
+  members_entry_fee: number
+  non_members_entry_fee: number
   course: string
   logo_url?: string
 }
