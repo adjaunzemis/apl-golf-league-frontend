@@ -9,7 +9,13 @@
   <div class="card-container">
     <a class="card card-small selectable" routerLink="/golfer" [queryParams]="{id: golfer.golfer_id}" *ngFor="let golfer of team.golfers">
       <span class="bold">{{ golfer.golfer_name }}</span>
-      <span>{{ golfer.role }} - {{ golfer.division_name }}</span>
+      <div>
+        <span>{{ golfer.role }} - {{ golfer.division_name }} - Hcp: </span>
+        <span *ngIf="golfer.handicap_index; else noHandicapIndex">{{ golfer.handicap_index | number:'1.1' }}</span>
+        <ng-template #noHandicapIndex>
+          <span>--</span>
+        </ng-template>
+      </div>
     </a>
   </div>
 
