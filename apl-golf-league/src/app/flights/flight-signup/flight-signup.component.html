@@ -119,7 +119,14 @@
     <div class="card-container team-list">
       <a class="card team-card" *ngFor="let team of selectedFlight.teams">
         <span class="bold">{{ team.name }}</span>
-        <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
+        <div *ngFor="let golfer of team.golfers">
+          <span>{{ golfer.golfer_name }} - {{ golfer.division_name }} - Hcp: </span>
+          <span *ngIf="golfer.handicap_index; else noHandicapIndex">{{ golfer.handicap_index | number:'1.1' }}</span>
+          <ng-template #noHandicapIndex>
+            <span>--</span>
+          </ng-template>
+
+        </div>
       </a>
     </div>
 

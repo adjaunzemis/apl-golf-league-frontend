@@ -13,6 +13,8 @@ export interface Golfer {
   affiliation: string;
   email?: string;
   phone?: string;
+  handicap_index?: number;
+  handicap_index_updated?: number;
 }
 
 export interface GolferData {
@@ -24,6 +26,8 @@ export interface GolferData {
   member_since?: number;
   team_golfer_data?: TeamGolferData[];
   handicap_index_data?: HandicapIndexData;
+  handicap_index?: number;
+  handicap_index_updated?: number;
 }
 
 export interface TeamGolferData {
@@ -37,6 +41,8 @@ export interface TeamGolferData {
   year: number
   role: string
   statistics?: GolferStatistics
+  handicap_index?: number;
+  handicap_index_updated?: number;
 }
 
 export interface GolferStatistics {
