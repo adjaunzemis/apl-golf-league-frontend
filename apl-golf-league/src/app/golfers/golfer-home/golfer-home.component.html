@@ -17,7 +17,8 @@
     <div class="card card-small selectable" [ngClass]="showHandicapData ? 'selected' : ''" (click)="toggleShowHandicapData()">
       <span class="bold">APL Handicap Index</span>
       <div *ngIf="golfer.handicap_index_data; else noHandicapData">
-        <span>{{ golfer.handicap_index_data.active_handicap_index | number:'1.1-1' }}</span>
+        <span *ngIf="golfer.handicap_index_data.active_handicap_index; else noActiveHandicapIndex">{{ golfer.handicap_index_data.active_handicap_index | number:'1.1-1' }}</span>
+        <ng-template #noActiveHandicapIndex>--</ng-template>
         <span *ngIf="golfer.handicap_index_data.pending_handicap_index">
           <span> (</span>
           <span class="italic" >Pending: {{ golfer.handicap_index_data.pending_handicap_index | number:'1.1-1' }}</span>

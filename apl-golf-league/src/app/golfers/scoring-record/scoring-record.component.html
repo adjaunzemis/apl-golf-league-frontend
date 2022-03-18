@@ -1,6 +1,6 @@
 <div class="content">
 
-  <p class="italic" *ngIf="!pendingRounds || pendingRounds.length === 0; else hasScoringRecordData">No scoring record data!</p>
+  <p class="italic" *ngIf="(!activeRounds || activeRounds.length === 0) && (!pendingRounds || pendingRounds.length === 0); else hasScoringRecordData">No scoring record data!</p>
 
   <ng-template #hasScoringRecordData>
 
