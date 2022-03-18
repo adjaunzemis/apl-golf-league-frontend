@@ -14,7 +14,7 @@
       </ng-template>
     </div> -->
 
-    <div class="card card-small">
+    <div class="card card-small selectable" [ngClass]="showHandicapData ? 'selected' : ''" (click)="toggleShowHandicapData()">
       <span class="bold">APL Handicap Index</span>
       <div *ngIf="golfer.handicap_index_data; else noHandicapData">
         <span>{{ golfer.handicap_index_data.active_handicap_index | number:'1.1-1' }}</span>
@@ -35,6 +35,8 @@
     </div>
   </div>
 
+  <app-scoring-record class="full-width" [activeRounds]="golfer.handicap_index_data?.active_rounds" [pendingRounds]="golfer.handicap_index_data?.pending_rounds" *ngIf="showHandicapData"></app-scoring-record>
+
   <h2>Flight Teams</h2>
 
   <div class="card-container">
@@ -43,13 +45,6 @@
       <span>{{ data.flight_name }} - {{ data.division_name }}</span>
     </a>
   </div>
-
-  <h2>Scoring Record</h2>
-
-  <app-scoring-record class="full-width" [activeRounds]="golfer.handicap_index_data.active_rounds" [pendingRounds]="golfer.handicap_index_data.pending_rounds" *ngIf="golfer.handicap_index_data; else noScoringRecordData"></app-scoring-record>
-  <ng-template #noScoringRecordData>
-    <span>No scoring record data!</span>
-  </ng-template>
 
   <h2>Rounds</h2>
 

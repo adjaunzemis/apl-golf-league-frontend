@@ -27,6 +27,8 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   roundsOrganizedByTee: { [tee_id: number]: RoundData[] };
 
+  showHandicapData: boolean = false;
+
   constructor(private golfersService: GolfersService, private roundsService: RoundsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -65,6 +67,10 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     console.log("[GolferHomeComponent] Fetching golfer data");
     this.golfersService.getGolfer(this.golferId);
     this.roundsService.getRounds(0, 100, this.golferId, this.year);
+  }
+
+  toggleShowHandicapData(): void {
+    this.showHandicapData = !this.showHandicapData;
   }
 
   private organizeRoundsByTee(): void {
