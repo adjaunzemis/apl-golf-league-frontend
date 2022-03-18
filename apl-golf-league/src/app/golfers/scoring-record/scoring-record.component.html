@@ -1,37 +1,55 @@
-<div class="card scoring-record-card">
-  <table>
-    <tr>
-      <th>Date</th>
-      <th>Course</th>
-      <th>Tees</th>
-      <th>Par</th>
-      <th>Rating</th>
-      <th>Slope</th>
-      <th>Gross</th>
-      <th>Adj. Gross</th>
-      <th>Diff.</th>
-    </tr>
-    <tr class="pending-rounds" *ngFor="let round of pendingRounds, let idx = index">
-      <td>*{{ round.date_played | date }}</td>
-      <td>{{ round.course_name }} - {{ round.track_name }}</td>
-      <td>{{ round.tee_name }}</td>
-      <td>{{ round.tee_par | number : '1.0-0' }}</td>
-      <td>{{ round.tee_rating | number : '1.2-2' }}</td>
-      <td>{{ round.tee_slope | number : '1.0-0' }}</td>
-      <td>{{ round.gross_score | number : '1.0-0' }}</td>
-      <td>{{ round.adjusted_gross_score | number : '1.0-0' }}</td>
-      <td class="bold">{{ round.score_differential | number : '1.1-1' }}</td>
-    </tr>
-    <tr *ngFor="let round of activeRounds, let idx = index">
-      <td>{{ round.date_played | date }}</td>
-      <td>{{ round.course_name }} - {{ round.track_name }}</td>
-      <td>{{ round.tee_name }}</td>
-      <td>{{ round.tee_par | number : '1.0-0' }}</td>
-      <td>{{ round.tee_rating | number : '1.2-2' }}</td>
-      <td>{{ round.tee_slope | number : '1.0-0' }}</td>
-      <td>{{ round.gross_score | number : '1.0-0' }}</td>
-      <td>{{ round.adjusted_gross_score | number : '1.0-0' }}</td>
-      <td class="bold">{{ round.score_differential | number : '1.1-1' }}</td>
-    </tr>
-  </table>
+<div class="content">
+
+  <p class="italic" *ngIf="!pendingRounds || pendingRounds.length === 0; else hasScoringRecordData">No scoring record data!</p>
+
+  <ng-template #hasScoringRecordData>
+
+    <p class="italic" *ngIf="pendingRounds && pendingRounds.length > 0">*Pending rounds do not contribute to active handicap index</p>
+
+    <div class="card scoring-record-card">
+
+      <table>
+
+        <tr>
+          <th>Date</th>
+          <th>Course</th>
+          <th>Tees</th>
+          <th>Par</th>
+          <th>Rating</th>
+          <th>Slope</th>
+          <th>Gross</th>
+          <th>Adj. Gross</th>
+          <th>Diff.</th>
+        </tr>
+
+        <tr class="pending-rounds" *ngFor="let round of pendingRounds, let idx = index">
+          <td>*{{ round.date_played | date }}</td>
+          <td>{{ round.course_name }} - {{ round.track_name }}</td>
+          <td>{{ round.tee_name }}</td>
+          <td>{{ round.tee_par | number : '1.0-0' }}</td>
+          <td>{{ round.tee_rating | number : '1.2-2' }}</td>
+          <td>{{ round.tee_slope | number : '1.0-0' }}</td>
+          <td>{{ round.gross_score | number : '1.0-0' }}</td>
+          <td>{{ round.adjusted_gross_score | number : '1.0-0' }}</td>
+          <td class="bold">{{ round.score_differential | number : '1.1-1' }}*</td>
+        </tr>
+
+        <tr *ngFor="let round of activeRounds, let idx = index">
+          <td>{{ round.date_played | date }}</td>
+          <td>{{ round.course_name }} - {{ round.track_name }}</td>
+          <td>{{ round.tee_name }}</td>
+          <td>{{ round.tee_par | number : '1.0-0' }}</td>
+          <td>{{ round.tee_rating | number : '1.2-2' }}</td>
+          <td>{{ round.tee_slope | number : '1.0-0' }}</td>
+          <td>{{ round.gross_score | number : '1.0-0' }}</td>
+          <td>{{ round.adjusted_gross_score | number : '1.0-0' }}</td>
+          <td class="bold">{{ round.score_differential | number : '1.1-1' }}</td>
+        </tr>
+
+      </table>
+
+    </div>
+
+  </ng-template>
+
 </div>
