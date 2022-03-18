@@ -61,7 +61,9 @@ export interface GolferStatistics {
 }
 
 export interface HandicapIndexData {
-  handicap_index: number
-  date: Date
-  scoring_record?: RoundSummary[]
+  active_date: Date
+  active_handicap_index?: number
+  active_rounds?: RoundSummary[]
+  pending_handicap_index?: number
+  pending_rounds?: RoundSummary[]
 }

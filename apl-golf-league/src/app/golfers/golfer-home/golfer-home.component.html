@@ -16,7 +16,14 @@
 
     <div class="card card-small">
       <span class="bold">APL Handicap Index</span>
-      <span *ngIf="golfer.handicap_index_data; else noHandicapData">{{ golfer.handicap_index_data.handicap_index | number : '1.1-1' }}</span>
+      <div *ngIf="golfer.handicap_index_data; else noHandicapData">
+        <span>{{ golfer.handicap_index_data.active_handicap_index | number:'1.1-1' }}</span>
+        <span *ngIf="golfer.handicap_index_data.pending_handicap_index">
+          <span> (</span>
+          <span class="italic" >Pending: {{ golfer.handicap_index_data.pending_handicap_index | number:'1.1-1' }}</span>
+          <span>)</span>
+        </span>
+      </div>
       <ng-template #noHandicapData>
         <span>--</span>
       </ng-template>
@@ -41,7 +48,7 @@
 
   <p>Most recent rounds valid for handicapping (10 max, < 3 years old)</p>
 
-  <app-scoring-record class="full-width" [rounds]="golfer.handicap_index_data.scoring_record" *ngIf="golfer.handicap_index_data && golfer.handicap_index_data.scoring_record; else noScoringRecordData"></app-scoring-record>
+  <app-scoring-record class="full-width" [rounds]="golfer.handicap_index_data.active_rounds" *ngIf="golfer.handicap_index_data && golfer.handicap_index_data.active_rounds; else noScoringRecordData"></app-scoring-record>
   <ng-template #noScoringRecordData>
     <span>No scoring record data!</span>
   </ng-template>
