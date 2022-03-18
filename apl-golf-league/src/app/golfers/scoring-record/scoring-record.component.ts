@@ -8,7 +8,8 @@ import { RoundSummary } from '../../shared/round.model';
   styleUrls: ['./scoring-record.component.css']
 })
 export class ScoringRecordComponent implements OnInit {
-  @Input() rounds: RoundSummary[];
+  @Input() activeRounds: RoundSummary[] | undefined;
+  @Input() pendingRounds: RoundSummary[] | undefined;
 
   ngOnInit(): void {
   }

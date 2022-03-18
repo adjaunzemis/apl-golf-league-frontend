@@ -48,7 +48,7 @@
 
   <p>Most recent rounds valid for handicapping (10 max, < 3 years old)</p>
 
-  <app-scoring-record class="full-width" [rounds]="golfer.handicap_index_data.active_rounds" *ngIf="golfer.handicap_index_data && golfer.handicap_index_data.active_rounds; else noScoringRecordData"></app-scoring-record>
+  <app-scoring-record class="full-width" [activeRounds]="golfer.handicap_index_data.active_rounds" [pendingRounds]="golfer.handicap_index_data.pending_rounds" *ngIf="golfer.handicap_index_data; else noScoringRecordData"></app-scoring-record>
   <ng-template #noScoringRecordData>
     <span>No scoring record data!</span>
   </ng-template>

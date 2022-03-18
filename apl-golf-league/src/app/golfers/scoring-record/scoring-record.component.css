@@ -8,3 +8,7 @@ table {
   text-align: center;
   width: 100%;
 }
+
+.pending-rounds {
+  font-style: italic;
+}
