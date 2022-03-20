@@ -19,7 +19,7 @@ export interface RoundData {
   round_type: string
   golfer_id: number
   golfer_name: string
-  golfer_playing_handicap: number
+  golfer_playing_handicap?: number
   team_name?: string
   course_id: number
   course_name: string

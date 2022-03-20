@@ -47,7 +47,7 @@ export class TournamentScorecardComponent implements OnInit {
   }
 
   getRoundSubtitle(round: RoundData): string {
-    return round.tee_name + " - PH: " + round.golfer_playing_handicap.toFixed(0);
+    return round.tee_name + " - PH: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
   }
 
 }

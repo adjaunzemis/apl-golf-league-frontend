@@ -13,7 +13,7 @@ export class TournamentStandingsComponent implements OnInit {
   scoreOptions = ["Individual Gross", "Individual Net", "Team Gross", "Team Net"]
   selectedScoreOption: string = "";
 
-  individualStandingsData: { name: string, playingHandicap: number, grossScore: number, netScore: number, position: string }[]
+  individualStandingsData: { name: string, playingHandicap?: number, grossScore: number, netScore: number, position: string }[]
   teamStandingsData: { name: string, grossScore: number, netScore: number, position: string }[]
   numTeamRoundsRequired = 4; // TODO: replace with team size
 

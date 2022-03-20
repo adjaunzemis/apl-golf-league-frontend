@@ -30,7 +30,8 @@
           <td>{{ round.tee_par | number : '1.0-0' }}</td>
           <td>{{ round.tee_rating | number : '1.2-2' }}</td>
           <td>{{ round.tee_slope | number : '1.0-0' }}</td>
-          <td>{{ round.golfer_playing_handicap | number : '1.0-0' }}</td>
+          <td *ngIf="round.golfer_playing_handicap || round.golfer_playing_handicap === 0">{{ round.golfer_playing_handicap | number : '1.0-0' }}</td>
+          <td *ngIf="!round.golfer_playing_handicap && round.golfer_playing_handicap !== 0">--</td>
           <td>{{ round.gross_score | number : '1.0-0' }}</td>
           <td>{{ round.adjusted_gross_score | number : '1.0-0' }}</td>
           <td class="bold">{{ round.score_differential | number : '1.1-1' }}*</td>

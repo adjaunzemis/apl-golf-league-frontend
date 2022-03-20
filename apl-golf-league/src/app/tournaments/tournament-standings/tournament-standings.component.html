@@ -17,7 +17,8 @@
           <td>{{ data.position }}</td>
           <td>{{ data.name }}</td>
           <td [ngClass]="selectedScoreOption === 'Individual Gross' ? 'bold' : ''">{{ data.grossScore | number : '1.0-0' }}</td>
-          <td>{{ data.playingHandicap | number : '1.0-0' }}</td>
+          <td *ngIf="data.playingHandicap || data.playingHandicap === 0">{{ data.playingHandicap | number : '1.0-0' }}</td>
+          <td *ngIf="!data.playingHandicap && data.playingHandicap !== 0">--</td>
           <td [ngClass]="selectedScoreOption === 'Individual Net' ? 'bold' : ''">{{ data.netScore | number : '1.0-0' }}</td>
         </tr>
       </tbody>
