@@ -32,7 +32,10 @@
 
     <div class="card card-small">
       <span class="bold">Affiliation</span>
-      <span>{{ golfer.affiliation }}</span>
+      <span *ngIf="golfer.affiliation; else noAffiliation">{{ golfer.affiliation }}</span>
+      <ng-template #noAffiliation>
+        <span>--</span>
+      </ng-template>
     </div>
   </div>
 
