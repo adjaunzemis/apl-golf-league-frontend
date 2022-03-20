@@ -34,6 +34,8 @@
 
   <h2>Teams</h2>
 
+  <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0">No team data to show</span>
+
   <div class="card-container team-list">
     <a class="card team-card selectable" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
       <span class="bold">{{ team.name }}</span>

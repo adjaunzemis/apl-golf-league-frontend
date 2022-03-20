@@ -23,6 +23,8 @@ export class DivisionListComponent implements OnInit, OnDestroy {
   selectedPrimaryTee: Tee;
   selectedSecondaryTee: Tee;
 
+  showScorecard = false;
+
   constructor(private coursesService: CoursesService) { }
 
   ngOnInit(): void {
@@ -47,6 +49,12 @@ export class DivisionListComponent implements OnInit, OnDestroy {
   }
 
   onSelectDivision(division: DivisionData): void {
+    if (this.showScorecard && division === this.selectedDivision) {
+      this.showScorecard = false;
+      return;
+    }
+
+    this.showScorecard = true;
     this.selectedDivision = division;
 
     this.isLoading = true;
