@@ -41,7 +41,7 @@
 
   <h2>Teams</h2>
 
-  <div *ngIf="tournament.teams.length > 0; else noTeams">
+  <div class="content" style="margin-top: 0px" *ngIf="tournament.teams.length > 0; else noTeams">
     <p class="italic" *ngIf="!showScorecard">Select a team to view scorecards</p>
 
     <div class="full-width" *ngIf="showScorecard">
