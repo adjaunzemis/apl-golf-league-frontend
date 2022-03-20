@@ -1,6 +1,6 @@
 <mat-spinner *ngIf="isLoadingGolferData"></mat-spinner>
 
-<div class="content" *ngIf="!isLoadingGolferData">
+<div class="content full-width" *ngIf="!isLoadingGolferData">
   <h1>{{ golfer.name }} </h1>
 
   <div class="card-container">
@@ -41,7 +41,14 @@
 
   <app-scoring-record class="full-width" [activeRounds]="golfer.handicap_index_data?.active_rounds" [pendingRounds]="golfer.handicap_index_data?.pending_rounds" *ngIf="showHandicapData"></app-scoring-record>
 
-  <h2>Flight Teams</h2>
+  <mat-form-field appearance="fill">
+    <mat-label>Select Season</mat-label>
+    <mat-select [formControl]="yearControl" required>
+      <mat-option *ngFor="let selectedYear of yearOptions" [value]="selectedYear" (click)="onSeasonSelected(selectedYear)">{{ selectedYear }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <h2>Teams</h2>
 
   <div class="card-container">
     <a class="card card-small selectable" routerLink="/flight/team" [queryParams]="{id: data.team_id}" *ngFor="let data of golfer.team_golfer_data">
@@ -52,8 +59,11 @@
 
   <h2>Rounds</h2>
 
-  <p>Current season, flight rounds only, organized by course</p>
+  <mat-spinner *ngIf="isLoadingRoundData"></mat-spinner>
 
-  <app-combined-rounds-scorecard class="full-width" [rounds]="data.value" *ngFor="let data of roundsOrganizedByTee | keyvalue"></app-combined-rounds-scorecard>
+  <div class="content full-width" style="margin-top: 0px" *ngIf="!isLoadingRoundData">
+    <p class="italic" *ngIf="rounds.length === 0">No round data for selected season</p>
+    <app-combined-rounds-scorecard class="full-width" [rounds]="data.value" *ngFor="let data of roundsOrganizedByTee | keyvalue"></app-combined-rounds-scorecard>
+  </div>
 
 </div>
