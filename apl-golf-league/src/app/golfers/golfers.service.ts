@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { Golfer, GolferAffiliation, GolferData } from "../shared/golfer.model";
+import { Golfer, GolferAffiliation, GolferData, TeamGolferData } from "../shared/golfer.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -18,6 +18,9 @@ export class GolfersService {
 
   private golferData: GolferData
   private golferDataUpdated = new Subject<GolferData>();
+
+  private golferTeamData: TeamGolferData[] = [];
+  private golferTeamDataUpdated = new Subject<TeamGolferData[]>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -67,6 +70,17 @@ export class GolfersService {
 
   createGolfer(name: string, affiliation: GolferAffiliation, email?: string, phone?: string): Observable<Golfer> {
     return this.http.post<Golfer>(environment.apiUrl + `golfers/`, { name: name, affiliation: affiliation, email: email, phone: phone });
+  }
+
+  getGolferTeamData(id: number, year: number): void {
+    this.http.get<TeamGolferData[]>(environment.apiUrl + `golfers/${id}/teams?year=${year}`).subscribe(result => {
+      this.golferTeamData = result;
+      this.golferTeamDataUpdated.next([...this.golferTeamData]);
+    });
+  }
+
+  getGolferTeamDataUpdateListener(): Observable<TeamGolferData[]> {
+    return this.golferTeamDataUpdated.asObservable();
   }
 
 }

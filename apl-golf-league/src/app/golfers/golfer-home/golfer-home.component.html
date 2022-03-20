@@ -50,10 +50,14 @@
 
   <h2>Teams</h2>
 
-  <div class="card-container">
-    <a class="card card-small selectable" routerLink="/flight/team" [queryParams]="{id: data.team_id}" *ngFor="let data of golfer.team_golfer_data">
-      <span class="bold">{{ data.team_name }} - {{ data.year }}</span>
-      <span>{{ data.flight_name }} - {{ data.division_name }}</span>
+  <mat-spinner *ngIf="isLoadingTeamData"></mat-spinner>
+
+  <p class="italic" *ngIf="!isLoadingTeamData && teams.length === 0">No team data for selected season</p>
+
+  <div class="card-container" *ngIf="!isLoadingTeamData">
+    <a class="card card-small selectable" routerLink="/flight/team" [queryParams]="{id: team.team_id}" *ngFor="let team of teams">
+      <span class="bold">{{ team.team_name }} - {{ team.year }}</span>
+      <span>{{ team.flight_name }} - {{ team.division_name }}</span>
     </a>
   </div>
 
@@ -61,8 +65,9 @@
 
   <mat-spinner *ngIf="isLoadingRoundData"></mat-spinner>
 
+  <p class="italic" *ngIf="!isLoadingRoundData && rounds.length === 0">No round data for selected season</p>
+
   <div class="content full-width" style="margin-top: 0px" *ngIf="!isLoadingRoundData">
-    <p class="italic" *ngIf="rounds.length === 0">No round data for selected season</p>
     <app-combined-rounds-scorecard class="full-width" [rounds]="data.value" *ngFor="let data of roundsOrganizedByTee | keyvalue"></app-combined-rounds-scorecard>
   </div>
 

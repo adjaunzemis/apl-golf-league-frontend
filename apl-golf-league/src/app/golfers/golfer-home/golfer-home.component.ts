@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../../app-config.service';
 import { GolfersService } from '../golfers.service';
 import { RoundsService } from '../../rounds/rounds.service';
-import { GolferData } from '../../shared/golfer.model';
+import { GolferData, TeamGolferData } from '../../shared/golfer.model';
 import { RoundData } from '../../shared/round.model';
 
 @Component({
@@ -16,7 +16,8 @@ import { RoundData } from '../../shared/round.model';
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoadingGolferData = true;
-  isLoadingRoundData = true;
+  isLoadingTeamData = false;
+  isLoadingRoundData = false;
 
   yearControl = new FormControl('', Validators.required);
 
@@ -26,6 +27,9 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   golfer: GolferData;
   golferSub: Subscription;
+
+  teams: TeamGolferData[] = [];
+  teamsSub: Subscription;
 
   rounds: RoundData[] = [];
   roundsSub: Subscription;
@@ -67,7 +71,13 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         }
         this.organizeRoundsByTee();
         this.isLoadingRoundData = false;
-      })
+      });
+
+    this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
+      console.log(`[GolferHomeComponent] Received ${result.length} teams`);
+      this.teams = result;
+      this.isLoadingTeamData = false;
+    });
 
     this.route.queryParams.subscribe(params => {
       if (params) {
@@ -82,6 +92,8 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.golferSub.unsubscribe();
+    this.teamsSub.unsubscribe();
+    this.roundsSub.unsubscribe();
   }
 
   onSeasonSelected(year: number): void {
@@ -91,6 +103,10 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   private getSelectedSeasonData(): void {
     console.log(`[GolferHomeComponent] Fetching golfer round data for year=${this.year}`);
+
+    this.isLoadingTeamData = true;
+    this.golfersService.getGolferTeamData(this.golferId, this.year);
+
     this.isLoadingRoundData = true;
     this.roundsService.getRounds(0, 100, this.golferId, this.year); // TODO: remove unneeded limit/offset
   }
