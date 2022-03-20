@@ -63,10 +63,10 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       });
 
     this.roundsSub = this.roundsService.getRoundUpdateListener()
-      .subscribe((result: { numRounds: number, rounds: RoundData[] }) => {
-        console.log(`[GolferHomeComponent] Received ${result.numRounds} rounds`);
-        if (result.numRounds > 0) {
-          this.rounds = result.rounds;
+      .subscribe(result => {
+        console.log(`[GolferHomeComponent] Received ${result.length} rounds`);
+        if (result.length > 0) {
+          this.rounds = result;
         } else {
           this.rounds = [];
         }
@@ -110,7 +110,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.golfersService.getGolferTeamData(this.golferId, this.year);
 
     this.isLoadingRoundData = true;
-    this.roundsService.getRounds(0, 100, this.golferId, this.year); // TODO: remove unneeded limit/offset
+    this.roundsService.getRounds(this.golferId, this.year);
   }
 
   private getTeamData(): void {

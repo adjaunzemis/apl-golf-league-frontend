@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { Round, RoundData } from "../shared/round.model";
-import { HoleResult } from "../shared/hole-result.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -12,14 +11,14 @@ import { environment } from './../../environments/environment';
 })
 export class RoundsService {
   private roundsData: RoundData[] = []
-  private roundsDataUpdated = new Subject<{ numRounds: number, rounds: RoundData[] }>();
+  private roundsDataUpdated = new Subject<RoundData[]>();
 
   private selectedRound: Round;
   private selectedRoundUpdated = new Subject<Round>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getRounds(offset: number, limit: number, golferId?: number, year?: number): void {
+  getRounds(golferId?: number, year?: number): void {
     let queryParams: string = `?`;
     if (golferId) {
       queryParams += `golfer_id=${golferId}&`;
@@ -27,18 +26,14 @@ export class RoundsService {
     if (year) {
       queryParams += `year=${year}&`;
     }
-    queryParams += `offset=${offset}&limit=${limit}`
-    this.http.get<{ num_rounds: number, rounds: RoundData[] }>(environment.apiUrl + "rounds/" + queryParams)
+    this.http.get<RoundData[]>(environment.apiUrl + "rounds/" + queryParams)
       .subscribe(result => {
-        this.roundsData = result.rounds;
-        this.roundsDataUpdated.next({
-          numRounds: result.num_rounds,
-          rounds: [...this.roundsData]
-        });
+        this.roundsData = result;
+        this.roundsDataUpdated.next(result);
       });
   }
 
-  getRoundUpdateListener(): Observable<{ rounds: RoundData[], numRounds: number }> {
+  getRoundUpdateListener(): Observable<RoundData[]> {
     return this.roundsDataUpdated.asObservable();
   }
 
