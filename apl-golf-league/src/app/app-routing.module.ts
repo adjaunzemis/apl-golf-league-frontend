@@ -17,6 +17,7 @@ import { LoginComponent } from "./auth/login/login.component";
 import { UserHomeComponent } from "./auth/user-home/user-home.component";
 import { RulesComponent } from "./rules/rules.component";
 import { HandicapsComponent } from "./handicaps/handicaps.component";
+import { GolferSearchComponent } from "./golfers/golfer-search/golfer-search.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: "tournament", component: TournamentHomeComponent },
   { path: "tournament/history", component: TournamentHistoryComponent },
   { path: "golfer", component: GolferHomeComponent },
+  { path: "golfer/search", component: GolferSearchComponent },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "auth/login", component: LoginComponent },

@@ -11,6 +11,7 @@ import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 import { AverageScoreLineComponent } from './combined-rounds-scorecard/average-score-line/average-score-line.component';
 import { GolferCreateComponent } from "./golfer-create/golfer-create.component";
 import { AppConfigService } from "../app-config.service";
+import { GolferSearchComponent } from "./golfer-search/golfer-search.component";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { AppConfigService } from "../app-config.service";
     ScoringRecordComponent,
     CombinedRoundsScorecardComponent,
     AverageScoreLineComponent,
-    GolferCreateComponent
+    GolferCreateComponent,
+    GolferSearchComponent
   ],
   imports: [
     CommonModule,

@@ -7,7 +7,10 @@
 
   <ul>
     <li>
-      <a mat-raised-button color="accent" routerLink="/flight/signup">Flight Signup</a>
+      <a mat-button routerLink="/flight/signup" routerLinkActive="mat-accent">Flight Sign-Ups</a>
+    </li>
+    <li>
+      <a mat-button routerLink="/golfer/search" routerLinkActive="mat-accent">Golfer Search</a>
     </li>
     <li *ngIf="!isAuthenticated">
       <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
