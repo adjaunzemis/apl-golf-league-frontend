@@ -52,12 +52,16 @@
 
   <mat-spinner *ngIf="isLoadingTeamData"></mat-spinner>
 
-  <p class="italic" *ngIf="!isLoadingTeamData && teams.length === 0">No team data for selected season</p>
+  <p class="italic" *ngIf="!isLoadingTeamData && flightTeams.length === 0 && tournamentTeams.length === 0">No team data for selected season</p>
 
   <div class="card-container" *ngIf="!isLoadingTeamData">
-    <a class="card card-small selectable" routerLink="/flight/team" [queryParams]="{id: team.team_id}" *ngFor="let team of teams">
+    <a class="card card-small selectable" routerLink="/flight/team" [queryParams]="{id: team.team_id}" *ngFor="let team of flightTeams">
       <span class="bold">{{ team.team_name }} - {{ team.year }}</span>
       <span>{{ team.flight_name }} - {{ team.division_name }}</span>
+    </a>
+    <a class="card card-small selectable" routerLink="/tournament" [queryParams]="{id: team.tournament_id}" *ngFor="let team of tournamentTeams">
+      <span class="bold">{{ team.team_name }} - {{ team.year }}</span>
+      <span>{{ team.tournament_name }} - {{ team.division_name }}</span>
     </a>
   </div>
 

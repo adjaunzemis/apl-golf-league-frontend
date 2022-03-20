@@ -28,7 +28,8 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   golfer: GolferData;
   golferSub: Subscription;
 
-  teams: TeamGolferData[] = [];
+  flightTeams: TeamGolferData[] = [];
+  tournamentTeams: TeamGolferData[] = [];
   teamsSub: Subscription;
 
   rounds: RoundData[] = [];
@@ -75,7 +76,8 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} teams`);
-      this.teams = result;
+      this.flightTeams = result.filter(team => team.flight_name);
+      this.tournamentTeams = result.filter(team => team.tournament_name);
       this.isLoadingTeamData = false;
     });
 
