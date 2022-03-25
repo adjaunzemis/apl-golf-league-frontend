@@ -8,7 +8,6 @@ import { TournamentHomeComponent } from './tournaments/tournament-home/tournamen
 import { TeamHomeComponent } from "./flights/team-home/team-home.component";
 import { FlightSignupComponent } from "./flights/flight-signup/flight-signup.component";
 import { FlightMatchCreateComponent } from "./flights/flight-match-create/flight-match-create.component";
-import { FlightPaymentsComponent } from "./flights/flight-payments/flight-payments.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
 import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component";
@@ -19,6 +18,7 @@ import { UserHomeComponent } from "./auth/user-home/user-home.component";
 import { RulesComponent } from "./rules/rules.component";
 import { HandicapsComponent } from "./handicaps/handicaps.component";
 import { GolferSearchComponent } from "./golfers/golfer-search/golfer-search.component";
+import { PaymentsListComponent } from "./payments/payments-list/payments-list.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -32,8 +32,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "flight/payments",
-    component: FlightPaymentsComponent,
+    path: "payments",
+    component: PaymentsListComponent,
     canActivate: [AuthGuard]
   },
   { path: "tournament", component: TournamentHomeComponent },
