@@ -22,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
 import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AppConfigService } from './app-config.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { PaymentsModule } from './payments/payments.module';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     MatchesModule,
     TournamentsModule,
     DivisionsModule,
-    AuthModule
+    AuthModule,
+    PaymentsModule
   ],
   providers: [
     {

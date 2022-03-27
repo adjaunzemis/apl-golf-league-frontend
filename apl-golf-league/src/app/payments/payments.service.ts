@@ -23,9 +23,7 @@ export class PaymentsService {
     this.http.get<LeagueDuesPayment[]>(environment.apiUrl + "payments/" + queryParams)
       .subscribe(result => {
         this.leagueDuesPaymentsList = result;
-        this.leagueDuesPaymentsList.map(payment => {
-          this.leagueDuesPaymentsListUpdated.next(result);
-        });
+        this.leagueDuesPaymentsListUpdated.next(result);
       });
   }
 

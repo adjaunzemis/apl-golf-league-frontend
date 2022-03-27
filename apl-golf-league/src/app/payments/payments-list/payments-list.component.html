@@ -1,14 +1,13 @@
-<div class="content">
+<div class="content" *ngIf="!isLoading">
 
-  <h1>Flight Payments</h1>
+  <h1>Payments</h1>
 
-  <div class="card full-width">
+  <div class="card full-width" style="height: 100%">
     <table class="full-width">
       <thead>
         <tr class="bold">
           <td>Id</td>
           <td>Name</td>
-          <td>Flight</td>
           <td>Year</td>
           <td>Type</td>
           <td>Amount Due</td>
@@ -20,11 +19,22 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <tr *ngFor="">
-
-        </tr> -->
+        <tr *ngFor="let payment of leagueDuesPayments">
+          <td>--</td>
+          <td>{{ payment.golfer_id }}</td>
+          <td>{{ payment.year }}</td>
+          <td>{{ payment.type }}</td>
+          <td>${{ payment.amount_due | number : '1.2' }}</td>
+          <td>${{ payment.amount_paid | number : '1.2' }}</td>
+          <td>{{ payment.is_paid ? "PAID" : "UNPAID" }}</td>
+          <td>{{ payment.linked_payment_id }}</td>
+          <td>{{ payment.method }}</td>
+          <td>{{ payment.confirmation }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
 
 </div>
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
