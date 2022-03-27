@@ -20,8 +20,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let payment of leagueDuesPayments">
-          <td>--</td>
-          <td>{{ payment.golfer_id }}</td>
+          <td>{{ payment.id }}</td>
+          <td>{{ payment.golfer_name }}</td>
           <td>{{ payment.year }}</td>
           <td>{{ payment.type }}</td>
           <td>${{ payment.amount_due | number : '1.2' }}</td>

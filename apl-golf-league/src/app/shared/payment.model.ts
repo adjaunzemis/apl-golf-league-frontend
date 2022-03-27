@@ -1,5 +1,9 @@
+import { Golfer } from "./golfer.model"
+
 export interface LeagueDuesPayment {
+  id: number
   golfer_id: number
+  golfer_name: string
   year: number
   type: string
   amount_due: number
