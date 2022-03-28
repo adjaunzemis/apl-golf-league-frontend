@@ -1,40 +1,81 @@
-<div class="content" *ngIf="!isLoading">
+<div class="content">
+  <h1>League Dues Payments</h1>
+</div>
 
-  <h1>Payments</h1>
+<div class="content full-width" *ngIf="!isLoading">
+  <table class="full-width" mat-table [dataSource]="leagueDuesPayments">
+    <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns">
+      <th mat-header-cell *matHeaderCellDef>
+        <span *ngIf="col !== 'edit'">
+          {{ columnNames[col] }}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <div [ngSwitch]="col" *ngIf="!element.edit">
+          <div *ngSwitchCase="'edit'">
+            <button mat-raised-button color="primary" (click)="element.edit = !element.edit">Edit</button>
+          </div>
+          <span *ngSwitchDefault>
+            <span *ngIf="col === 'amount_due' || col === 'amount_paid'; else notNumeric">
+              ${{ element[col] | number : '1.2' }}
+            </span>
+            <ng-template #notNumeric>
+              <span>
+                {{ element[col] }}
+              </span>
+            </ng-template>
+          </span>
+        </div>
+        <div [ngSwitch]="col" *ngIf="element.edit">
+          <div *ngSwitchCase="'edit'">
+            <button mat-raised-button color="accent" (click)="element.edit = !element.edit">Done</button>
+          </div>
+          <div *ngSwitchCase="'method'">
+            <mat-form-field class="mat-column-method">
+              <mat-label>{{ columnNames[col] }}</mat-label>
+              <mat-select [(value)]="element[col]">
+                <mat-option value="">--</mat-option>
+                <mat-option value="Cash or Check">Cash or Check</mat-option>
+                <mat-option value="PayPal">PayPal</mat-option>
+                <mat-option value="Exempt">Exempt</mat-option>
+                <mat-option value="Linked">Linked</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div *ngSwitchCase="'amount_due'">
+            <mat-form-field class="mat-column-amount_due">
+              <mat-label>{{ columnNames[col] }}</mat-label>
+              <input type="numeric" matInput [(ngModel)]="element[col]">
+            </mat-form-field>
+          </div>
+          <div *ngSwitchCase="'amount_paid'">
+            <mat-form-field class="mat-column-amount_due">
+              <mat-label>{{ columnNames[col] }}</mat-label>
+              <input type="numeric" matInput [(ngModel)]="element[col]">
+            </mat-form-field>
+          </div>
+          <div *ngSwitchCase="'linked_payment_id'">
+            <mat-form-field class="mat-column-linked_payment_id">
+              <mat-label>Id</mat-label>
+              <input type="numeric" matInput [(ngModel)]="element[col]">
+            </mat-form-field>
+          </div>
+          <div *ngSwitchCase="'confirmation'">
+            <mat-form-field class="mat-column-confirmation">
+              <mat-label>{{ columnNames[col] }}</mat-label>
+              <input type="text" matInput [(ngModel)]="element[col]">
+            </mat-form-field>
+          </div>
+          <div *ngSwitchDefault>
+            {{ element[col] }}
+          </div>
+        </div>
+      </td>
+    </ng-container>
 
-  <div class="card full-width" style="height: 100%">
-    <table class="full-width">
-      <thead>
-        <tr class="bold">
-          <td>Id</td>
-          <td>Name</td>
-          <td>Year</td>
-          <td>Type</td>
-          <td>Amount Due</td>
-          <td>Amount Paid</td>
-          <td>Status</td>
-          <td>Linked Payment Id</td>
-          <td>Method</td>
-          <td>Confirmation</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let payment of leagueDuesPayments">
-          <td>{{ payment.id }}</td>
-          <td>{{ payment.golfer_name }}</td>
-          <td>{{ payment.year }}</td>
-          <td>{{ payment.type }}</td>
-          <td>${{ payment.amount_due | number : '1.2' }}</td>
-          <td>${{ payment.amount_paid | number : '1.2' }}</td>
-          <td>{{ payment.is_paid ? "PAID" : "UNPAID" }}</td>
-          <td>{{ payment.linked_payment_id }}</td>
-          <td>{{ payment.method }}</td>
-          <td>{{ payment.confirmation }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 </div>
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>

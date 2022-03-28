@@ -18,6 +18,21 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   leagueDuesPayments: LeagueDuesPayment[];
 
+  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'confirmation', 'edit'];
+  editableColumns: string[] = ['amount_due', 'amount_paid', 'method', 'linked_payment_id', 'confirmation'];
+  columnNames: { [key: string]: string } = {
+    "id": "Payment Id",
+    "golfer_name": "Golfer",
+    "year": "Year",
+    "type": "Type",
+    "amount_due": "Due",
+    "amount_paid": "Paid",
+    "method": "Method",
+    "linked_payment_id": "Linked Payment Id",
+    "confirmation": "Confirmation",
+    "edit": "Edit"
+  };
+
   constructor(private paymentsService: PaymentsService) { }
 
   ngOnInit(): void {
@@ -31,6 +46,10 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.leagueDuesSub.unsubscribe();
+  }
+
+  isEditable(columnName: string): boolean {
+    return this.editableColumns.includes(columnName);
   }
 
 }
