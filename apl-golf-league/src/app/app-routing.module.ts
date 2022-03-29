@@ -19,6 +19,7 @@ import { RulesComponent } from "./rules/rules.component";
 import { HandicapsComponent } from "./handicaps/handicaps.component";
 import { GolferSearchComponent } from "./golfers/golfer-search/golfer-search.component";
 import { PaymentsListComponent } from "./payments/payments-list/payments-list.component";
+import { BylawsComponent } from "./bylaws/bylaws.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -49,7 +50,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: "rules", component: RulesComponent },
-  { path: "handicaps", component: HandicapsComponent }
+  { path: "handicaps", component: HandicapsComponent },
+  { path: "bylaws", component: BylawsComponent }
 ]
 
 @NgModule({
