@@ -52,4 +52,8 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     return this.editableColumns.includes(columnName);
   }
 
+  updatePaymentInfo(payment: LeagueDuesPayment): void {
+    this.paymentsService.updateLeagueDuesPayment(payment);
+  }
+
 }

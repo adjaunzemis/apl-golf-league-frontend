@@ -2,8 +2,8 @@
   <h1>League Dues Payments</h1>
 </div>
 
-<div class="content full-width" *ngIf="!isLoading">
-  <table class="full-width" mat-table [dataSource]="leagueDuesPayments">
+<div style="width: 60%; margin: 0% 20%; " *ngIf="!isLoading">
+  <table mat-table [dataSource]="leagueDuesPayments">
     <ng-container [matColumnDef]="col" *ngFor="let col of displayedColumns">
       <th mat-header-cell *matHeaderCellDef>
         <span *ngIf="col !== 'edit'">
@@ -28,7 +28,7 @@
         </div>
         <div [ngSwitch]="col" *ngIf="element.edit">
           <div *ngSwitchCase="'edit'">
-            <button mat-raised-button color="accent" (click)="element.edit = !element.edit">Done</button>
+            <button mat-raised-button color="accent" (click)="updatePaymentInfo(element)">Done</button>
           </div>
           <div *ngSwitchCase="'method'">
             <mat-form-field class="mat-column-method">
