@@ -26,7 +26,7 @@ export class AuthService {
     return this.http.post<AuthResponseData>(environment.apiUrl + `users/token`, body)
       .pipe(tap(resData => {
         const expirationDate = new Date(new Date().getTime() + resData.access_token_expires_in * 1000);
-        const user = new User(resData.id, resData.username, resData.email, resData.name, resData.disabled, resData.access_token, expirationDate);
+        const user = new User(resData.id, resData.username, resData.email, resData.name, resData.disabled, resData.edit_flights, resData.edit_tournaments, resData.edit_payments, resData.access_token, expirationDate);
         this.user.next(user);
         this.autoLogout(resData.access_token_expires_in * 1000);
         localStorage.setItem(AuthService.LOCAL_STORAGE_USER, JSON.stringify(user));
@@ -39,13 +39,16 @@ export class AuthService {
       return;
     }
 
-    const userData: {id: string, username: string, email: string, name: string, disabled: string, _token: string,  _tokenExpirationDate: Date} = JSON.parse(userDataStr);
+    const userData: {id: string, username: string, email: string, name: string, disabled: string, edit_flights: string, edit_tournaments: string, edit_payments: string, _token: string,  _tokenExpirationDate: Date} = JSON.parse(userDataStr);
     const loadedUser: User = new User(
       +userData.id,
       userData.username,
       userData.email,
       userData.name,
       userData.disabled === 'true',
+      userData.edit_flights === 'true',
+      userData.edit_tournaments === 'true',
+      userData.edit_payments === 'true',
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
@@ -87,6 +90,9 @@ export interface AuthResponseData {
   email: string
   name: string
   disabled: boolean
+  edit_flights: boolean
+  edit_tournaments: boolean
+  edit_payments: boolean
   access_token: string
   access_token_expires_in: number
   token_type: string
