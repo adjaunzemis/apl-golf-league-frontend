@@ -1,5 +1,3 @@
-import { Golfer } from "./golfer.model"
-
 export interface LeagueDuesPayment {
   id: number
   golfer_id: number
@@ -11,5 +9,5 @@ export interface LeagueDuesPayment {
   is_paid: number
   linked_payment_id: number
   method: string
-  confirmation: string
+  comment: string
 }
