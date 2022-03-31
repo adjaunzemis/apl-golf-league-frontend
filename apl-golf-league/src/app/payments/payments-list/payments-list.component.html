@@ -11,9 +11,9 @@
         </span>
       </th>
       <td mat-cell *matCellDef="let element">
-        <div [ngSwitch]="col" *ngIf="!element.edit">
+        <div [ngSwitch]="col" *ngIf="selectedPaymentId !== element.id">
           <div *ngSwitchCase="'edit'">
-            <button mat-raised-button color="primary" (click)="element.edit = !element.edit">Edit</button>
+            <button mat-raised-button color="primary" (click)="selectedPaymentId = element.id">Edit</button>
           </div>
           <span *ngSwitchDefault>
             <span *ngIf="col === 'amount_due' || col === 'amount_paid'; else notNumeric">
@@ -26,7 +26,7 @@
             </ng-template>
           </span>
         </div>
-        <div [ngSwitch]="col" *ngIf="element.edit">
+        <div [ngSwitch]="col" *ngIf="element.id === selectedPaymentId">
           <div *ngSwitchCase="'edit'">
             <button mat-raised-button color="accent" (click)="updatePaymentInfo(element)">Done</button>
           </div>

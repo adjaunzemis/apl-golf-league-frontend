@@ -31,10 +31,8 @@ export class PaymentsService {
     return this.leagueDuesPaymentsListUpdated.asObservable();
   }
 
-  updateLeagueDuesPayment(payment: LeagueDuesPayment): void {
-    this.http.patch<LeagueDuesPayment>(environment.apiUrl + `payments/${payment.id}`, payment).subscribe(result => {
-      console.log(`Updated payment id=${payment.id}`);
-    });
+  updateLeagueDuesPayment(payment: LeagueDuesPayment): Observable<LeagueDuesPayment> {
+    return this.http.patch<LeagueDuesPayment>(environment.apiUrl + `payments/${payment.id}`, payment);
   }
 
 }

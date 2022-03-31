@@ -18,8 +18,10 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   leagueDuesPayments: LeagueDuesPayment[];
 
-  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'confirmation', 'edit'];
-  editableColumns: string[] = ['amount_due', 'amount_paid', 'method', 'linked_payment_id', 'confirmation'];
+  selectedPaymentId: number = -1;
+
+  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit'];
+  editableColumns: string[] = ['amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment'];
   columnNames: { [key: string]: string } = {
     "id": "Payment Id",
     "golfer_name": "Golfer",
@@ -29,7 +31,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     "amount_paid": "Paid",
     "method": "Method",
     "linked_payment_id": "Linked Payment Id",
-    "confirmation": "Confirmation",
+    "comment": "Comment",
     "edit": "Edit"
   };
 
@@ -53,7 +55,10 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   }
 
   updatePaymentInfo(payment: LeagueDuesPayment): void {
-    this.paymentsService.updateLeagueDuesPayment(payment);
+    this.paymentsService.updateLeagueDuesPayment(payment).subscribe(result => {
+      console.log(`Updated payment id=${result.id}`);
+      this.selectedPaymentId = -1;
+    });
   }
 
 }
