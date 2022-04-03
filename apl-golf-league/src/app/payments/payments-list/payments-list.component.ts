@@ -22,8 +22,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   selectedPaymentId: number = -1;
 
-  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit'];
-  editableColumns: string[] = ['amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment'];
+  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
   constructor(private paymentsService: PaymentsService) { }
 
@@ -39,10 +38,6 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.leagueDuesSub.unsubscribe();
-  }
-
-  isEditable(columnName: string): boolean {
-    return this.editableColumns.includes(columnName);
   }
 
   updatePaymentInfo(payment: LeagueDuesPayment): void {

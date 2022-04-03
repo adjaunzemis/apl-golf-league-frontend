@@ -119,8 +119,15 @@
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row">
-        <button mat-raised-button color="primary" (click)="selectedPaymentId = row.id" *ngIf="row.id !== selectedPaymentId">Edit</button>
+        <button mat-raised-button color="primary" (click)="selectedPaymentId = row.id" [disabled]="selectedPaymentId !== -1" *ngIf="row.id !== selectedPaymentId">Edit</button>
         <button mat-raised-button color="accent" (click)="updatePaymentInfo(row)" *ngIf="row.id === selectedPaymentId">Done</button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cancel">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-raised-button color="primary" (click)="selectedPaymentId = -1" *ngIf="row.id === selectedPaymentId">Cancel</button>
       </td>
     </ng-container>
 

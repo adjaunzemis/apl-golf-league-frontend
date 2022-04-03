@@ -32,7 +32,8 @@ mat-form-field.mat-column-comment {
   width: 250px;
 }
 
-.mat-column-edit {
+.mat-column-edit,
+.mat-column-cancel {
   width: 75px;
   align-items: center;
   justify-content: center;
