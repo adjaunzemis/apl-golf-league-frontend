@@ -74,6 +74,18 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     });
   }
 
+  getUnpaidEmailAddresses(): string {
+    let mailToList = "mailto:";
+    for (const payment of this.leagueDuesPayments) {
+      if (payment.amount_due > payment.amount_paid && payment.method !== "Exempt") {
+        if (payment.golfer_email !== undefined) {
+          mailToList += payment.golfer_email + ";"
+        }
+      }
+    }
+    return mailToList;
+  }
+
 }
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {
