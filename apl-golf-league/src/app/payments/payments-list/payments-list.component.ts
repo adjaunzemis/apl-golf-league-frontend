@@ -22,7 +22,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   selectedPaymentId: number = -1;
 
-  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
+  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
   constructor(private paymentsService: PaymentsService) { }
 

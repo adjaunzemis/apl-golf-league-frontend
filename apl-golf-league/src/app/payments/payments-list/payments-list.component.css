@@ -17,6 +17,7 @@ tr.mat-row {
 
 .mat-column-id,
 .mat-column-year,
+.mat-column-status,
 mat-form-field.mat-column-amount_due,
 mat-form-field.mat-column-amount_paid,
 mat-form-field.mat-column-linked_payment_id {
