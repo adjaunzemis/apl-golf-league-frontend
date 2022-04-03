@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { MatSort, Sort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 
 import { PaymentsService } from "../payments.service";
@@ -17,29 +18,19 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   leagueDuesSub: Subscription;
 
   leagueDuesPayments: LeagueDuesPayment[];
+  sortedData: LeagueDuesPayment[];
 
   selectedPaymentId: number = -1;
 
   displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit'];
   editableColumns: string[] = ['amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment'];
-  columnNames: { [key: string]: string } = {
-    "id": "Payment Id",
-    "golfer_name": "Golfer",
-    "year": "Year",
-    "type": "Type",
-    "amount_due": "Due",
-    "amount_paid": "Paid",
-    "method": "Method",
-    "linked_payment_id": "Linked Payment Id",
-    "comment": "Comment",
-    "edit": "Edit"
-  };
 
   constructor(private paymentsService: PaymentsService) { }
 
   ngOnInit(): void {
     this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentsListUpdateListener().subscribe(result => {
       this.leagueDuesPayments = result;
+      this.sortedData = this.leagueDuesPayments;
       this.isLoading = false;
     });
 
@@ -61,4 +52,44 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     });
   }
 
+  sortData(sort: Sort) {
+    const data = this.leagueDuesPayments.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'golfer_name':
+          return compareLastNames(a.golfer_name, b.golfer_name, isAsc);
+        case 'id':
+        case 'year':
+        case 'type':
+        case 'amount_due':
+        case 'amount_paid':
+        case 'method':
+        case 'linked_payment_id':
+        case 'comment':
+          return compare(a[sort.active], b[sort.active], isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+function compareLastNames(a: string, b: string, isAsc: boolean) {
+  const aLastName = a.split(' ').pop();
+  const bLastName = b.split(' ').pop();
+  if (aLastName === undefined || bLastName === undefined) {
+    return 0;
+  }
+  return (aLastName < bLastName ? -1 : 1) * (isAsc ? 1 : -1);
 }

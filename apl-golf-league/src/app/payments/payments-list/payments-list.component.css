@@ -2,30 +2,45 @@ table {
   width: 100%;
 }
 
-th.mat-header-cell {
-  padding-left: 10px;
+tr,
+tr.mat-row {
+  height: 60px;
+}
+
+.mat-column-golfer_name {
+  width: 200px;
+}
+
+.mat-column-type {
+  width: 120px;
 }
 
 .mat-column-id,
 .mat-column-year,
-.mat-column-linked_payment_id,
-.mat-column-amount_due,
-.mat-column-amount_paid {
-  width: 60px;
+mat-form-field.mat-column-amount_due,
+mat-form-field.mat-column-amount_paid,
+mat-form-field.mat-column-linked_payment_id {
+  width: 65px;
 }
 
-.mat-column-golfer_name {
-  width: 180px;
-}
-
-.mat-column-type {
-  width: 85px;
-}
-
-.mat-column-method {
+mat-form-field.mat-column-method {
   width: 110px;
 }
 
-.mat-column-comment {
+.mat-column-comment,
+mat-form-field.mat-column-comment {
   width: 250px;
+}
+
+.mat-column-edit {
+  width: 75px;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+}
+
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type {
+  padding-right: 0px;
 }
