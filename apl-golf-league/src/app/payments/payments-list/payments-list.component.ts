@@ -20,7 +20,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   leagueDuesPayments: LeagueDuesPayment[];
   sortedData: LeagueDuesPayment[];
 
-  selectedPaymentId: number = -1;
+  updatedPayment: LeagueDuesPayment | null = null;
 
   displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
@@ -40,11 +40,61 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     this.leagueDuesSub.unsubscribe();
   }
 
-  updatePaymentInfo(payment: LeagueDuesPayment): void {
-    this.paymentsService.updateLeagueDuesPayment(payment).subscribe(result => {
-      console.log(`Updated payment id=${result.id}`);
-      this.selectedPaymentId = -1;
-    });
+  editPaymentInfo(payment: LeagueDuesPayment): void {
+    this.updatedPayment = {
+      id: payment.id,
+      golfer_id: payment.golfer_id,
+      golfer_name: payment.golfer_name,
+      golfer_email: payment.golfer_email,
+      year: payment.year,
+      type: payment.type,
+      amount_due: payment.amount_due,
+      amount_paid: payment.amount_paid,
+      is_paid: payment.is_paid,
+      method: payment.method,
+      linked_payment_id: payment.linked_payment_id,
+      comment: payment.comment
+    };
+  }
+
+  updatePaymentInfo(): void {
+    if (this.updatedPayment) {
+      this.paymentsService.updateLeagueDuesPayment(this.updatedPayment).subscribe(result => {
+        console.log(`Updated payment id=${result.id}`);
+
+        // Update item in list
+        let payment = this.leagueDuesPayments.find(entry => entry.id === result.id);
+        if (payment) {
+          const newPayment = {
+            id: payment.id,
+            golfer_id: payment.golfer_id,
+            golfer_name: payment.golfer_name,
+            golfer_email: payment.golfer_email,
+            year: payment.year,
+            type: payment.type,
+            amount_due: result.amount_due,
+            amount_paid: result.amount_paid,
+            is_paid: result.is_paid,
+            method: result.method,
+            linked_payment_id: result.linked_payment_id,
+            comment: result.comment
+          };
+
+          const paymentIdx = this.leagueDuesPayments.findIndex(entry => entry.id === result.id);
+          this.leagueDuesPayments[paymentIdx] = newPayment;
+          
+          const sortedPaymentIdx = this.sortedData.findIndex(entry => entry.id === result.id);
+          this.sortedData[sortedPaymentIdx] = newPayment;
+        }
+
+        // Clear updated payment object
+        this.updatedPayment = null;
+      });
+    }
+  }
+
+  cancelPaymentInfoUpdate(): void {
+    this.updatedPayment = null;
   }
 
   sortData(sort: Sort) {
