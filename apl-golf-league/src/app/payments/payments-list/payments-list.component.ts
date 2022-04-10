@@ -82,7 +82,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
           const paymentIdx = this.leagueDuesPayments.findIndex(entry => entry.id === result.id);
           this.leagueDuesPayments[paymentIdx] = newPayment;
-          
+
           const sortedPaymentIdx = this.sortedData.findIndex(entry => entry.id === result.id);
           this.sortedData[sortedPaymentIdx] = newPayment;
         }
@@ -127,7 +127,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   getUnpaidEmailAddresses(): string {
     let mailToList = "mailto:";
     for (const payment of this.leagueDuesPayments) {
-      if (payment.amount_due > payment.amount_paid && payment.method !== "Exempt") {
+      if (payment.amount_due > payment.amount_paid && !(payment.method === "Exempt" || payment.method === "Linked")) {
         if (payment.golfer_email !== undefined) {
           mailToList += payment.golfer_email + ";"
         }
