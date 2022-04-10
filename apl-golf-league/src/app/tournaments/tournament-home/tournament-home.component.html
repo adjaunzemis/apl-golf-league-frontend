@@ -21,9 +21,13 @@
       <span>{{ tournament.course }}</span>
     </div>
 
-    <a class="card card-small selectable" href="mailto:{{ tournament.secretary_contact }}" *ngIf="tournament.secretary">
-      <span class="bold">Tournament Secretary</span>
+    <a class="card card-small selectable" href="mailto:{{ tournament.secretary_email }}" *ngIf="tournament.secretary">
+      <span class="bold">Tournament Organizer</span>
       <span>{{ tournament.secretary }}</span>
+    </a>
+
+    <a href="mailto:{{ getTournamentEmailList() }}" class="card card-small selectable">
+      <span class="bold">Contact All Members</span>
     </a>
   </div>
 

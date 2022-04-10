@@ -9,7 +9,7 @@ export interface TournamentData {
     course: string
     logo_url?: string
     secretary?: string
-    secretary_contact?: string
+    secretary_email?: string
     signup_start_date: Date
     signup_stop_date: Date
     members_entry_fee: number

@@ -20,6 +20,10 @@
       <span class="bold">Start Date</span>
       <span>{{ flight.start_date | date:'longDate' }}</span>
     </div>
+
+    <a href="mailto:{{ getFlightEmailList() }}" class="card card-small selectable">
+      <span class="bold">Contact All Members</span>
+    </a>
   </div>
 
   <app-division-list [divisions]="flight.divisions"></app-division-list>

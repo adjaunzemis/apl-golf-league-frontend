@@ -42,4 +42,21 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
       this.flightSub.unsubscribe();
   }
 
+  getFlightEmailList(): string {
+    let emailList = "";
+    if (this.flight.secretary_email) {
+      emailList += this.flight.secretary_email + ";"
+    }
+    if (this.flight.teams) {
+      for (const team of this.flight.teams) {
+        for (const golfer of team.golfers) {
+          if (golfer.golfer_email) {
+            emailList += golfer.golfer_email + ";"
+          }
+        }
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
 }

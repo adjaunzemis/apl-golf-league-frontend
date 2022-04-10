@@ -51,6 +51,23 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     this.tournamentSub.unsubscribe();
   }
 
+  getTournamentEmailList(): string {
+    let emailList = "";
+    if (this.tournament.secretary_email) {
+      emailList += this.tournament.secretary_email + ";"
+    }
+    if (this.tournament.teams) {
+      for (const team of this.tournament.teams) {
+        for (const golfer of team.golfers) {
+          if (golfer.golfer_email) {
+            emailList += golfer.golfer_email + ";"
+          }
+        }
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
   focusTeam(team: TournamentTeamData): void {
     if (this.showScorecard && this.focusedTeam === team) {
       this.showScorecard = false;
