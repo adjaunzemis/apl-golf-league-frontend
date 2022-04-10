@@ -4,7 +4,6 @@
   <h1>{{ golfer.name }} </h1>
 
   <div class="card-container">
-
     <!-- Re-enable when all historical data has been added -->
     <!-- <div class="card card-small">
       <span class="bold">Member Since</span>
@@ -21,7 +20,7 @@
         <ng-template #noActiveHandicapIndex>--</ng-template>
         <span *ngIf="golfer.handicap_index_data.pending_handicap_index">
           <span> (</span>
-          <span class="italic" >Pending: {{ golfer.handicap_index_data.pending_handicap_index | number:'1.1-1' }}</span>
+          <span class="italic">Pending: {{ golfer.handicap_index_data.pending_handicap_index | number:'1.1-1' }}</span>
           <span>)</span>
         </span>
       </div>
@@ -37,6 +36,10 @@
         <span>--</span>
       </ng-template>
     </div>
+
+    <a href="mailto:{{ golfer.email }}" class="card card-small selectable">
+      <span class="bold">Contact Golfer</span>
+    </a>
   </div>
 
   <app-scoring-record class="full-width" [activeRounds]="golfer.handicap_index_data?.active_rounds" [pendingRounds]="golfer.handicap_index_data?.pending_rounds" *ngIf="showHandicapData"></app-scoring-record>
