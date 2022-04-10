@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { MatSort, Sort } from "@angular/material/sort";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Sort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 
 import { PaymentsService } from "../payments.service";
@@ -19,6 +19,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   leagueDuesPayments: LeagueDuesPayment[];
   sortedData: LeagueDuesPayment[];
+  private currentSort: Sort | null = null;
 
   updatedPayment: LeagueDuesPayment | null = null;
 
@@ -82,13 +83,13 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
           const paymentIdx = this.leagueDuesPayments.findIndex(entry => entry.id === result.id);
           this.leagueDuesPayments[paymentIdx] = newPayment;
-
-          const sortedPaymentIdx = this.sortedData.findIndex(entry => entry.id === result.id);
-          this.sortedData[sortedPaymentIdx] = newPayment;
         }
 
         // Clear updated payment object
         this.updatedPayment = null;
+
+        // Update table using current sort selection
+        this.sortData(this.currentSort);
       });
     }
   }
@@ -97,9 +98,11 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     this.updatedPayment = null;
   }
 
-  sortData(sort: Sort) {
+  sortData(sort: Sort | null) {
+    this.currentSort = sort;
+
     const data = this.leagueDuesPayments.slice();
-    if (!sort.active || sort.direction === '') {
+    if (!sort || !sort.active || sort.direction === '') {
       this.sortedData = data;
       return;
     }
