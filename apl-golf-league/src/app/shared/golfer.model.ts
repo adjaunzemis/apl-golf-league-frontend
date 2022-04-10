@@ -34,6 +34,7 @@ export interface TeamGolferData {
   team_id: number
   golfer_id: number
   golfer_name: string
+  golfer_email?: string
   division_name: string
   flight_id?: number
   flight_name?: string

@@ -67,4 +67,14 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
     return score > opponentScore ? 'Win' : (score < opponentScore ? 'Loss' : 'Tie');
   }
 
+  getGolferEmailList(): string {
+    let emailList = "";
+    for (const golfer of this.team.golfers) {
+      if (golfer.golfer_email) {
+        emailList += golfer.golfer_email + ";"
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
 }
