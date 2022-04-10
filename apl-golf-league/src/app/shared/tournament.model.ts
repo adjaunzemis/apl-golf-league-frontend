@@ -23,6 +23,8 @@ export interface TournamentInfo {
   year: number
   name: string
   date: Date
+  secretary?: string
+  secretary_email?: string
   signup_start_date: Date
   signup_stop_date: Date
   members_entry_fee: number

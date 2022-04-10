@@ -78,4 +78,24 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     return emailList.substring(0, emailList.length - 1);
   }
 
+  getCurrentFlightSecretariesEmailList(): string {
+    let emailList = "";
+    for (const flight of this.currentFlights) {
+      if (flight.secretary_email) {
+        emailList += flight.secretary_email + ";"
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
+  getCurrentTournamentOrganizersEmailList(): string {
+    let emailList = "";
+    for (const tournament of this.currentTournaments) {
+      if (tournament.secretary_email) {
+        emailList += tournament.secretary_email + ";"
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
 }

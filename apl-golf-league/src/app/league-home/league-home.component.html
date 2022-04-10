@@ -53,10 +53,6 @@
 
   <h2>Flights</h2>
 
-  <div class="card announcements-card card-small">
-    <span>Flight sign-ups: Monday, March 21st - Friday, April 8th</span>
-  </div>
-
   <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
 
   <div class="card-container" *ngIf="!isLoadingFlights">
@@ -74,6 +70,10 @@
   <div class="card-container">
     <a class="card card-small selectable" routerLink="/flight/history">
       <span class="bold">Historical Flights</span>
+    </a>
+
+    <a class="card card-small selectable" href="mailto:{{ getCurrentFlightSecretariesEmailList() }}">
+      <span class="bold">Email Flight Secretaries</span>
     </a>
   </div>
 
@@ -96,6 +96,10 @@
   <div class="card-container">
     <a class="card card-small selectable" routerLink="/tournament/history">
       <span class="bold">Historical Tournaments</span>
+    </a>
+
+    <a class="card card-small selectable" href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}">
+      <span class="bold">Email Tournament Organizers</span>
     </a>
   </div>
 
