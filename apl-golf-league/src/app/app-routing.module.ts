@@ -20,6 +20,7 @@ import { HandicapsComponent } from "./handicaps/handicaps.component";
 import { GolferSearchComponent } from "./golfers/golfer-search/golfer-search.component";
 import { PaymentsListComponent } from "./payments/payments-list/payments-list.component";
 import { BylawsComponent } from "./bylaws/bylaws.component";
+import { AddQualifyingScoreComponent } from "./golfers/add-qualifying-score/add-qualifying-score.component";
 
 const routes: Routes = [
   { path: "", component: LeagueHomeComponent },
@@ -41,6 +42,11 @@ const routes: Routes = [
   { path: "tournament/history", component: TournamentHistoryComponent },
   { path: "golfer", component: GolferHomeComponent },
   { path: "golfer/search", component: GolferSearchComponent },
+  {
+    path: "golfer/qualifying",
+    component: AddQualifyingScoreComponent,
+    // canActivate: [AuthGuard]
+  },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "auth/login", component: LoginComponent },

@@ -10,8 +10,8 @@ import { CombinedRoundsScorecardComponent } from './combined-rounds-scorecard/co
 import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 import { AverageScoreLineComponent } from './combined-rounds-scorecard/average-score-line/average-score-line.component';
 import { GolferCreateComponent } from "./golfer-create/golfer-create.component";
-import { AppConfigService } from "../app-config.service";
 import { GolferSearchComponent } from "./golfer-search/golfer-search.component";
+import { AddQualifyingScoreComponent } from "./add-qualifying-score/add-qualifying-score.component";
 
 
 @NgModule({
@@ -21,7 +21,8 @@ import { GolferSearchComponent } from "./golfer-search/golfer-search.component";
     CombinedRoundsScorecardComponent,
     AverageScoreLineComponent,
     GolferCreateComponent,
-    GolferSearchComponent
+    GolferSearchComponent,
+    AddQualifyingScoreComponent
   ],
   imports: [
     CommonModule,
