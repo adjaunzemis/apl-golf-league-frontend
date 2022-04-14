@@ -85,7 +85,8 @@ export class GolfersService {
   }
 
   postQualifyingScore(qualifyingScore: QualifyingScore): Observable<QualifyingScore> {
-    return this.http.post<QualifyingScore>(environment.apiUrl + `handicaps/qualifying-score/`, qualifyingScore);
+    const queryParams = `use_legacy_handicapping=True`; // TODO: change to non-legacy handicapping system when ready
+    return this.http.post<QualifyingScore>(environment.apiUrl + `handicaps/qualifying-score/?${queryParams}`, qualifyingScore);
   }
 
 }
