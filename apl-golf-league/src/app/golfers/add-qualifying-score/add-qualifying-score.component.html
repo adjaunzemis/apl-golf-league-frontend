@@ -55,7 +55,10 @@
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Gender</mat-label>
-            <input type="text" matInput required formControlName="teeGender" title="Enter tee gender." value="">
+            <mat-select required formControlName="teeGender" title="Enter tee gender." value="">
+              <mat-option value="Men's">Men's</mat-option>
+              <mat-option value="Ladies'">Ladies'</mat-option>
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field class="numeric-input" appearance="fill">

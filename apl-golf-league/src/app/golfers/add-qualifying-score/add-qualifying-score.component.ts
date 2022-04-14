@@ -198,11 +198,39 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   }
 
   private submitQualifyingScores(): void {
-    if (!this.round1Group.valid) {
+    if (!this.selectedGolfer || !this.round1Group.valid) {
       console.error("Invalid input for 'Qualifying Round' type, cannot submit form!")
       return;
     }
-    console.error("Not implemented yet!");
+
+    const qualifyingScoreRound1: QualifyingScore = {
+      golfer_id: this.selectedGolfer.id,
+      year: (new Date()).getFullYear(),
+      date_updated: (new Date()),
+      date_played: this.round1Group.get('datePlayed')?.value,
+      type: "Qualifying Round",
+      course_name: this.round1Group.get('courseName')?.value,
+      track_name: this.round1Group.get('trackName')?.value,
+      tee_name: this.round1Group.get('teeName')?.value,
+      tee_gender: this.round1Group.get('teeGender')?.value,
+      tee_rating: this.round1Group.get('teeRating')?.value,
+      tee_slope: this.round1Group.get('teeSlope')?.value,
+      tee_par: this.computeRound1TotalPar(),
+      gross_score: this.computeRound1TotalGrossScore(),
+      adjusted_gross_score: this.computeRound1TotalAdjustedGrossScore(),
+      score_differential: this.computeRound1ScoreDifferential(),
+      comment: this.round1Group.get('comment')?.value
+    };
+
+    // Submit qualifying score data twice (need two score differentials for handicap index)
+    this.golfersService.postQualifyingScore(qualifyingScoreRound1).subscribe(result => {
+      // this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe(result => {
+        console.log(`Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
+        this.clearForm();
+        this.isLoading = true;
+        this.golfersService.getAllGolfers();
+      // });
+    });
   }
 
   private isGolfer(object: any): object is Golfer {
