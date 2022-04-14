@@ -22,6 +22,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
 
   typeControl = new FormControl('', Validators.required);
 
+  handicapIndexDateControl = new FormControl('', Validators.required);
   handicapIndexControl = new FormControl('', Validators.required);
   commentControl = new FormControl('');
 
@@ -78,6 +79,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     this.selectedGolfer = null;
     this.golferControl.setValue("");
     this.typeControl.setValue("");
+    this.handicapIndexDateControl.setValue("");
     this.handicapIndexControl.setValue("");
     this.commentControl.setValue("");
   }
@@ -96,7 +98,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   }
 
   private submitOfficialHandicapIndex(): void {
-    if (!this.selectedGolfer || !this.handicapIndexControl.valid || !this.commentControl.valid) {
+    if (!this.selectedGolfer || !this.handicapIndexDateControl.valid || !this.handicapIndexControl.valid || !this.commentControl.valid) {
       console.error("Invalid input for 'Official Handicap Index' type, cannot submit form!");
       return;
     }
@@ -105,8 +107,9 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
       golfer_id: this.selectedGolfer.id,
       year: (new Date()).getFullYear(),
       date_updated: (new Date()),
+      date_played: this.handicapIndexDateControl.value,
       type: "Official Handicap Index",
-      score_differential: this.handicapIndexControl.value / 2,
+      score_differential: this.handicapIndexControl.value / 2.0,
       comment: this.commentControl.value
     };
 

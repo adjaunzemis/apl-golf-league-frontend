@@ -30,6 +30,13 @@
 
       <div *ngIf="typeControl.value === 'Official Handicap Index'">
         <div>
+          <mat-form-field class="date-input" appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [formControl]="handicapIndexDateControl" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
           <mat-form-field class="handicap-index-input" appearance="fill">
             <mat-label>Index</mat-label>
             <input type="number" matInput required [formControl]="handicapIndexControl" placeholder="Ex. 4.6" title="Enter official handicap index." value="">

@@ -18,6 +18,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   exports: [
@@ -39,7 +41,12 @@ import { MatDividerModule } from '@angular/material/divider';
     MatAutocompleteModule,
     MatGridListModule,
     MatDialogModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ],
+  providers: [
+    MatNativeDateModule
   ]
 })
 export class AngularMaterialModule {}
