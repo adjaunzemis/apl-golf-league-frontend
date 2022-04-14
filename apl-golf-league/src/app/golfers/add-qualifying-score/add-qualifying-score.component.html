@@ -25,24 +25,159 @@
       </mat-form-field>
 
       <div *ngIf="typeControl.value === 'Qualifying Round'">
-        <p>TODO: Qualifying Round</p>
+
+        <ng-container [formGroup]="round1Group">
+          <div>
+            <h2>Round 1</h2>
+          </div>
+
+          <mat-form-field class="date-input" appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput required formControlName="datePlayed" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="medium-input" appearance="fill">
+            <mat-label>Course</mat-label>
+            <input type="text" matInput required formControlName="courseName" title="Enter course name." value="">
+          </mat-form-field>
+
+          <mat-form-field class="short-input" appearance="fill">
+            <mat-label>Track</mat-label>
+            <input type="text" matInput required formControlName="trackName" title="Enter track name." value="">
+          </mat-form-field>
+
+          <mat-form-field class="short-input" appearance="fill">
+            <mat-label>Tee</mat-label>
+            <input type="text" matInput required formControlName="teeName" title="Enter tee name." value="">
+          </mat-form-field>
+
+          <mat-form-field class="short-input" appearance="fill">
+            <mat-label>Gender</mat-label>
+            <input type="text" matInput required formControlName="teeGender" title="Enter tee gender." value="">
+          </mat-form-field>
+
+          <mat-form-field class="numeric-input" appearance="fill">
+            <mat-label>Rating</mat-label>
+            <input type="number" matInput required formControlName="teeRating" title="Enter tee rating." value="">
+          </mat-form-field>
+
+          <mat-form-field class="numeric-input" appearance="fill">
+            <mat-label>Slope</mat-label>
+            <input type="number" matInput required formControlName="teeSlope" title="Enter tee slope." value="">
+          </mat-form-field>
+
+          <mat-form-field class="long-input" appearance="fill">
+            <mat-label>Comment</mat-label>
+            <input type="text" matInput formControlName="comment" title="Enter comment." value="">
+          </mat-form-field>
+
+          <div>
+            <h3>Par</h3>
+          </div>
+
+          <div formGroupName="pars">
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole1" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole2" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole3" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole4" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole5" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole6" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole7" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole8" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole9" value="">
+            </mat-form-field>
+          </div>
+
+          <div>
+            <h3>Score</h3>
+          </div>
+
+          <div formGroupName="scores">
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole1" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole2" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole3" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole4" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole5" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole6" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole7" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole8" value="">
+            </mat-form-field>
+
+            <mat-form-field class="numeric-input" appearance="fill">
+              <input type="number" matInput required formControlName="hole9" value="">
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <div class="content">
+          <span class="bold">Par: {{ computeRound1TotalPar() }} | Gross: {{ computeRound1TotalGrossScore() }} | A.G.: {{ computeRound1TotalAdjustedGrossScore() }} | Diff: {{ computeRound1ScoreDifferential() | number:'1.1-1'}}</span>
+        </div>
       </div>
 
       <div *ngIf="typeControl.value === 'Official Handicap Index'">
         <div>
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput [formControl]="handicapIndexDateControl" [matDatepicker]="picker">
+            <input matInput required [formControl]="handicapIndexDateControl" [matDatepicker]="picker">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field class="handicap-index-input" appearance="fill">
+          <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Index</mat-label>
             <input type="number" matInput required [formControl]="handicapIndexControl" placeholder="Ex. 4.6" title="Enter official handicap index." value="">
           </mat-form-field>
 
-          <mat-form-field class="comment-input" appearance="fill">
+          <mat-form-field class="long-input" appearance="fill">
             <mat-label>Comment</mat-label>
             <input type="text" matInput [formControl]="commentControl" placeholder="Ex. GHIN 1234567890" title="Enter comment." value="">
           </mat-form-field>

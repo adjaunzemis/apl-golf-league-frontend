@@ -2,11 +2,19 @@ mat-form-field:not(:first-of-type) {
   margin-left: 16px;
 }
 
-mat-form-field.handicap-index-input {
+mat-form-field.numeric-input {
   width: 80px;
 }
 
-mat-form-field.comment-input {
+mat-form-field.short-input {
+  width: 112px;
+}
+
+mat-form-field.medium-input {
+  width: 220px;
+}
+
+mat-form-field.long-input {
   width: 416px;
 }
 
