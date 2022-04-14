@@ -61,6 +61,39 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     })
   });
 
+  round2Group = this.formBuilder.group({
+    datePlayed: [''],
+    courseName: [''],
+    trackName: [''],
+    teeName: [''],
+    teeGender: [''],
+    teeRating: [''],
+    teeSlope: [''],
+    comment: [''],
+    pars: this.formBuilder.group({
+      hole1: [''],
+      hole2: [''],
+      hole3: [''],
+      hole4: [''],
+      hole5: [''],
+      hole6: [''],
+      hole7: [''],
+      hole8: [''],
+      hole9: [''],
+    }),
+    scores: this.formBuilder.group({
+      hole1: [''],
+      hole2: [''],
+      hole3: [''],
+      hole4: [''],
+      hole5: [''],
+      hole6: [''],
+      hole7: [''],
+      hole8: [''],
+      hole9: [''],
+    })
+  });
+
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
   filteredGolferOptions: Observable<Golfer[]>;
@@ -116,6 +149,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     this.handicapIndexControl.setValue("");
     this.commentControl.setValue("");
     this.round1Group.reset();
+    this.round2Group.reset();
   }
 
   submitForm(): void {
@@ -143,6 +177,18 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
       + this.round1Group.get('pars')?.get('hole9')?.value as number;
   }
 
+  computeRound2TotalPar(): number {
+    return this.round2Group.get('pars')?.get('hole1')?.value as number
+      + this.round2Group.get('pars')?.get('hole2')?.value as number
+      + this.round2Group.get('pars')?.get('hole3')?.value as number
+      + this.round2Group.get('pars')?.get('hole4')?.value as number
+      + this.round2Group.get('pars')?.get('hole5')?.value as number
+      + this.round2Group.get('pars')?.get('hole6')?.value as number
+      + this.round2Group.get('pars')?.get('hole7')?.value as number
+      + this.round2Group.get('pars')?.get('hole8')?.value as number
+      + this.round2Group.get('pars')?.get('hole9')?.value as number;
+  }
+
   computeRound1TotalGrossScore(): number {
     return this.round1Group.get('scores')?.get('hole1')?.value as number
       + this.round1Group.get('scores')?.get('hole2')?.value as number
@@ -155,6 +201,18 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
       + this.round1Group.get('scores')?.get('hole9')?.value as number;
   }
 
+  computeRound2TotalGrossScore(): number {
+    return this.round2Group.get('scores')?.get('hole1')?.value as number
+      + this.round2Group.get('scores')?.get('hole2')?.value as number
+      + this.round2Group.get('scores')?.get('hole3')?.value as number
+      + this.round2Group.get('scores')?.get('hole4')?.value as number
+      + this.round2Group.get('scores')?.get('hole5')?.value as number
+      + this.round2Group.get('scores')?.get('hole6')?.value as number
+      + this.round2Group.get('scores')?.get('hole7')?.value as number
+      + this.round2Group.get('scores')?.get('hole8')?.value as number
+      + this.round2Group.get('scores')?.get('hole9')?.value as number;
+  }
+
   computeRound1TotalAdjustedGrossScore(): number {
     let adjustedGrossScore = 0;
     for (const holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
@@ -163,10 +221,25 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     return adjustedGrossScore;
   }
 
+  computeRound2TotalAdjustedGrossScore(): number {
+    let adjustedGrossScore = 0;
+    for (const holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+      adjustedGrossScore += Math.min(this.round2Group.get('scores')?.get('hole' + holeNum)?.value, this.round2Group.get('pars')?.get('hole' + holeNum)?.value + 5);
+    }
+    return adjustedGrossScore;
+  }
+
   computeRound1ScoreDifferential(): number {
     const rating = (this.round1Group.get('teeRating')?.value as number);
     const slope = (this.round1Group.get('teeSlope')?.value as number);
     const score = this.computeRound1TotalAdjustedGrossScore();
+    return (113.0 / slope) * (score - rating);
+  }
+
+  computeRound2ScoreDifferential(): number {
+    const rating = (this.round2Group.get('teeRating')?.value as number);
+    const slope = (this.round2Group.get('teeSlope')?.value as number);
+    const score = this.computeRound2TotalAdjustedGrossScore();
     return (113.0 / slope) * (score - rating);
   }
 
@@ -198,7 +271,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   }
 
   private submitQualifyingScores(): void {
-    if (!this.selectedGolfer || !this.round1Group.valid) {
+    if (!this.selectedGolfer || !this.round1Group.valid || !this.round2Group.valid) {
       console.error("Invalid input for 'Qualifying Round' type, cannot submit form!")
       return;
     }
@@ -222,14 +295,33 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
       comment: this.round1Group.get('comment')?.value
     };
 
+    const qualifyingScoreRound2: QualifyingScore = {
+      golfer_id: this.selectedGolfer.id,
+      year: (new Date()).getFullYear(),
+      date_updated: (new Date()),
+      date_played: this.round2Group.get('datePlayed')?.value,
+      type: "Qualifying Round",
+      course_name: this.round2Group.get('courseName')?.value,
+      track_name: this.round2Group.get('trackName')?.value,
+      tee_name: this.round2Group.get('teeName')?.value,
+      tee_gender: this.round2Group.get('teeGender')?.value,
+      tee_rating: this.round2Group.get('teeRating')?.value,
+      tee_slope: this.round2Group.get('teeSlope')?.value,
+      tee_par: this.computeRound2TotalPar(),
+      gross_score: this.computeRound2TotalGrossScore(),
+      adjusted_gross_score: this.computeRound2TotalAdjustedGrossScore(),
+      score_differential: this.computeRound2ScoreDifferential(),
+      comment: this.round2Group.get('comment')?.value
+    };
+
     // Submit qualifying score data twice (need two score differentials for handicap index)
     this.golfersService.postQualifyingScore(qualifyingScoreRound1).subscribe(result => {
-      // this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe(result => {
+      this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe(result => {
         console.log(`Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
         this.clearForm();
         this.isLoading = true;
         this.golfersService.getAllGolfers();
-      // });
+      });
     });
   }
 
