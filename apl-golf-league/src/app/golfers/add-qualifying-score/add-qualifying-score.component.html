@@ -10,8 +10,9 @@
   </mat-form-field>
 
   <div class="content" *ngIf="selectedGolfer">
-    <div *ngIf="selectedGolfer.handicap_index !== null; else noHandicapIndex">
-      <p>Handicap Index: {{ selectedGolfer.handicap_index }}</p>
+    <div class="content" *ngIf="selectedGolfer.handicap_index !== null; else noHandicapIndex">
+      <p>Handicap Index: {{ selectedGolfer.handicap_index | number:'1.1-1' }}</p>
+      <p>Last Updated: {{ selectedGolfer.handicap_index_updated | date:'shortDate' }}</p>
     </div>
 
     <ng-template #noHandicapIndex>
@@ -39,6 +40,11 @@
             <input type="text" matInput [formControl]="commentControl" placeholder="Ex. GHIN 1234567890" title="Enter comment." value="">
           </mat-form-field>
         </div>
+      </div>
+
+      <div>
+        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
+        <button mat-raised-button color="accent" (click)="clearForm()">Clear</button>
       </div>
     </ng-template>
   </div>

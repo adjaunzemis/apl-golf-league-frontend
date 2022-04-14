@@ -1,3 +1,4 @@
+import { QualifyingScore } from './../../shared/qualifying-score.model';
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
@@ -71,6 +72,52 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.golfersSub.unsubscribe();
+  }
+
+  clearForm(): void {
+    this.selectedGolfer = null;
+    this.golferControl.setValue("");
+  }
+
+  submitForm(): void {
+    if (this.typeControl.value == "Official Handicap Index") {
+      this.submitOfficialHandicapIndex();
+      return;
+    } else if (this.typeControl.value == "Qualifying Round") {
+      this.submitQualifyingScores();
+      return;
+    } else {
+      console.error("Invalid qualifying score type: " + this.typeControl.value);
+      return;
+    }
+  }
+
+  private submitOfficialHandicapIndex(): void {
+    if (!this.selectedGolfer || !this.handicapIndexControl.valid || !this.commentControl.valid) {
+      console.error("Invalid input for 'Official Handicap Index' type, cannot submit form!");
+      return;
+    }
+
+    const qualifyingScore: QualifyingScore = {
+      golfer_id: this.selectedGolfer.id,
+      year: (new Date()).getFullYear(),
+      date_updated: (new Date()),
+      type: "Official Handicap Index",
+      score_differential: this.handicapIndexControl.value / 2,
+      comment: this.commentControl.value
+    };
+
+    // Submit qualifying score data twice (need two score differentials for handicap index)
+    this.golfersService.postQualifyingScore(qualifyingScore).subscribe(result => {
+      this.golfersService.postQualifyingScore(qualifyingScore).subscribe(result => {
+        console.log(`Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
+        this.clearForm();
+      });
+    });
+  }
+
+  private submitQualifyingScores(): void {
+    console.error("Not implemented yet!");
   }
 
   private isGolfer(object: any): object is Golfer {

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { Golfer, GolferAffiliation, GolferData, TeamGolferData } from "../shared/golfer.model";
+import { QualifyingScore } from "../shared/qualifying-score.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -81,6 +82,10 @@ export class GolfersService {
 
   getGolferTeamDataUpdateListener(): Observable<TeamGolferData[]> {
     return this.golferTeamDataUpdated.asObservable();
+  }
+
+  postQualifyingScore(qualifyingScore: QualifyingScore): Observable<QualifyingScore> {
+    return this.http.post<QualifyingScore>(environment.apiUrl + `handicaps/qualifying-score/`, qualifyingScore);
   }
 
 }

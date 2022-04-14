@@ -27,7 +27,7 @@ export interface GolferData {
   team_golfer_data?: TeamGolferData[];
   handicap_index_data?: HandicapIndexData;
   handicap_index?: number;
-  handicap_index_updated?: number;
+  handicap_index_updated?: string;
 }
 
 export interface TeamGolferData {
