@@ -77,6 +77,9 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   clearForm(): void {
     this.selectedGolfer = null;
     this.golferControl.setValue("");
+    this.typeControl.setValue("");
+    this.handicapIndexControl.setValue("");
+    this.commentControl.setValue("");
   }
 
   submitForm(): void {
@@ -112,6 +115,8 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
       this.golfersService.postQualifyingScore(qualifyingScore).subscribe(result => {
         console.log(`Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
         this.clearForm();
+        this.isLoading = true;
+        this.golfersService.getAllGolfers();
       });
     });
   }
