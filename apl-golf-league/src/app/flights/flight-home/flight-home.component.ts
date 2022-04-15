@@ -18,6 +18,8 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
 
   currentDate = new Date();
 
+  showScheduleMatrix = false;
+
   constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {

@@ -13,6 +13,7 @@ import { FlightHistoryComponent } from './flight-history/flight-history.componen
 import { FlightSignupComponent } from './flight-signup/flight-signup.component';
 import { ErrorModule } from "../shared/error/error.module";
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
+import { FlightScheduleMatrixComponent } from "./flight-schedule-matrix/flight-schedule-matrix.component";
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
 import { DivisionsModule } from "../divisions/divisions.module";
 import { PaymentsModule } from "../payments/payments.module";
@@ -27,6 +28,7 @@ import { PaymentsModule } from "../payments/payments.module";
     FlightHistoryComponent,
     FlightSignupComponent,
     FlightScheduleComponent,
+    FlightScheduleMatrixComponent,
     FlightMatchCreateComponent
   ],
   imports: [
