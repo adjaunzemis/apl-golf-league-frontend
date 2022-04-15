@@ -45,7 +45,7 @@ const routes: Routes = [
   {
     path: "golfer/qualifying",
     component: AddQualifyingScoreComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
