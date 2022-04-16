@@ -40,7 +40,7 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.coursesSub = this.coursesService.getCourseUpdateListener()
+    this.coursesSub = this.coursesService.getCoursesUpdateListener()
       .subscribe((courseData: { courses: Course[], courseCount: number }) => {
         this.isLoading = false;
         this.courses = new MatTableDataSource<Course>(courseData.courses);

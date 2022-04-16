@@ -1,0 +1,3 @@
+.selection-field:not(:last-of-type) {
+  margin-right: 48px;
+}

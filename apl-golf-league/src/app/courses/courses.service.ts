@@ -33,7 +33,7 @@ export class CoursesService {
       });
   }
 
-  getCourseUpdateListener() : Observable<{ courses: Course[], courseCount: number }> {
+  getCoursesUpdateListener() : Observable<{ courses: Course[], courseCount: number }> {
     return this.coursesUpdated.asObservable();
   }
 
