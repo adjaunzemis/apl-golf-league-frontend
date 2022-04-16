@@ -18,7 +18,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="selection-field">
+    <mat-form-field appearance="fill" class="selection-field course-selection-field">
       <mat-label>Course</mat-label>
       <mat-select (selectionChange)="onSelectedCourseChanged($event)">
         <mat-option *ngFor="let courseOption of courseOptions" [value]="courseOption">{{ courseOption.name }}</mat-option>
@@ -55,14 +55,14 @@
         <ng-container>
           <mat-form-field appearance="fill" class="selection-field">
             <mat-label>Golfer 1</mat-label>
-            <mat-select [disabled]="!selectedTeam1">
+            <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 1)">
               <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack">
+            <mat-select [disabled]="!selectedTrack || !selectedTeam1Golfer1">
               <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
             </mat-select>
           </mat-form-field>
@@ -71,14 +71,14 @@
         <ng-container>
           <mat-form-field appearance="fill" class="selection-field">
             <mat-label>Golfer 1</mat-label>
-            <mat-select [disabled]="!selectedTeam2">
+            <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 1)">
               <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack">
+            <mat-select [disabled]="!selectedTrack || !selectedTeam2Golfer1">
               <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
             </mat-select>
           </mat-form-field>
@@ -89,14 +89,14 @@
         <ng-container>
           <mat-form-field appearance="fill" class="selection-field">
             <mat-label>Golfer 2</mat-label>
-            <mat-select [disabled]="!selectedTeam1">
+            <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 2)">
               <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack">
+            <mat-select [disabled]="!selectedTrack || !selectedTeam1Golfer2">
               <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
             </mat-select>
           </mat-form-field>
@@ -105,14 +105,14 @@
         <ng-container>
           <mat-form-field appearance="fill" class="selection-field">
             <mat-label>Golfer 2</mat-label>
-            <mat-select [disabled]="!selectedTeam2">
+            <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 2)">
               <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack">
+            <mat-select [disabled]="!selectedTrack || !selectedTeam2Golfer2">
               <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
             </mat-select>
           </mat-form-field>

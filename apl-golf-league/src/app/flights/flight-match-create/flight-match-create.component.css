@@ -1,3 +1,7 @@
 .selection-field:not(:last-of-type) {
   margin-right: 48px;
 }
+
+.course-selection-field {
+  width: 240px;
+}

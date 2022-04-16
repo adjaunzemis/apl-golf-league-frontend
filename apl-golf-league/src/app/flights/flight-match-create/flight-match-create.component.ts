@@ -11,6 +11,7 @@ import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { TeamData } from '../../shared/team.model';
 import { Course } from '../../shared/course.model';
 import { Track } from '../../shared/track.model';
+import { TeamGolferData } from '../../shared/golfer.model';
 
 @Component({
   selector: 'app-flight-match-create',
@@ -38,7 +39,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   selectedTrack: Track;
 
   selectedTeam1: TeamData;
+  selectedTeam1Golfer1: TeamGolferData;
+  selectedTeam1Golfer2: TeamGolferData;
+
   selectedTeam2: TeamData;
+  selectedTeam2Golfer1: TeamGolferData;
+  selectedTeam2Golfer2: TeamGolferData;
 
   constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private coursesService: CoursesService, private matchesService: MatchesService, private golfersService: GolfersService) { }
 
@@ -48,7 +54,15 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     // Set up subscriptions
     this.courseInfoSub = this.coursesService.getCoursesUpdateListener().subscribe(result => {
       console.log(`[FlightMatchCreateComponent] Received courses list with ${result.courseCount} entries`);
-      this.courseOptions = result.courses;
+      this.courseOptions = result.courses.sort((a: Course, b: Course) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
     });
 
     this.courseDataSub = this.coursesService.getSelectedCourseUpdateListener().subscribe(result => {
@@ -111,11 +125,29 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {
     const selectedTeam = selection.value as TeamData;
-    console.log(`[FlightMatchCreateComponent] Selected team 1: ${selectedTeam.name}`);
+    console.log(`[FlightMatchCreateComponent] Selected team ${teamNum}: ${selectedTeam.name}`);
     if (teamNum === 1) {
       this.selectedTeam1 = selectedTeam;
     } else {
       this.selectedTeam2 = selectedTeam;
+    }
+  }
+
+  onSelectedGolferChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+    const selectedGolfer = selection.value as TeamGolferData;
+    console.log(`[FlightMatchCreateComponent] Selected team ${teamNum} golfer ${golferNum}: ${selectedGolfer.golfer_name}`);
+    if (golferNum === 1) {
+      if (teamNum === 1) {
+        this.selectedTeam1Golfer1 = selectedGolfer;
+      } else {
+        this.selectedTeam2Golfer1 = selectedGolfer;
+      }
+    } else {
+      if (teamNum === 1) {
+        this.selectedTeam1Golfer2 = selectedGolfer;
+      } else {
+        this.selectedTeam2Golfer2 = selectedGolfer;
+      }
     }
   }
 
