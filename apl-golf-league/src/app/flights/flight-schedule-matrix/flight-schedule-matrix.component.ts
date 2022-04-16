@@ -41,12 +41,20 @@ export class FlightScheduleMatrixComponent implements OnInit {
         if (!Object.keys(this.teamOpponents).includes(match.home_team_name)) {
           this.teamOpponents[match.home_team_name] = Array(this.flight.weeks).fill("");
         }
-        this.teamOpponents[match.home_team_name][match.week - 1] = match.away_team_name; // TODO: Handle extra matches
+        if (this.teamOpponents[match.home_team_name][match.week - 1] === "") {
+          this.teamOpponents[match.home_team_name][match.week - 1] = "" + this.teamNumbers[match.away_team_name];
+        } else {
+          this.teamOpponents[match.home_team_name][match.week - 1] += " & " + this.teamNumbers[match.away_team_name];
+        }
 
         if (!Object.keys(this.teamOpponents).includes(match.away_team_name)) {
           this.teamOpponents[match.away_team_name] = Array(this.flight.weeks).fill("");
         }
-        this.teamOpponents[match.away_team_name][match.week - 1] = match.home_team_name; // TODO: Handle extra matches
+        if (this.teamOpponents[match.away_team_name][match.week - 1] === "") {
+          this.teamOpponents[match.away_team_name][match.week - 1] = "" + this.teamNumbers[match.home_team_name];
+        } else {
+          this.teamOpponents[match.away_team_name][match.week - 1] += " & " + this.teamNumbers[match.home_team_name];
+        }
       }
     }
     this.teamNames = Object.keys(this.teamNumbers);
