@@ -17,6 +17,7 @@ import { FlightScheduleMatrixComponent } from "./flight-schedule-matrix/flight-s
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
 import { DivisionsModule } from "../divisions/divisions.module";
 import { PaymentsModule } from "../payments/payments.module";
+import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { PaymentsModule } from "../payments/payments.module";
     RouterModule,
     AngularMaterialModule,
     MatchesModule,
+    ScorecardModule,
     ErrorModule,
     DivisionsModule,
     PaymentsModule
