@@ -21,6 +21,10 @@
       <span>{{ flight.start_date | date:'longDate' }}</span>
     </div>
 
+    <a class="card card-small selectable" routerLink="/flight/match/scorecard">
+      <span class="bold">Match Scorecard</span>
+    </a>
+
     <a href="mailto:{{ getFlightEmailList() }}" class="card card-small selectable">
       <span class="bold">Contact All Members</span>
     </a>

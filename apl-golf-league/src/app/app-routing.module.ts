@@ -28,11 +28,7 @@ const routes: Routes = [
   { path: "flight/team", component: TeamHomeComponent },
   { path: "flight/signup", component: FlightSignupComponent},
   { path: "flight/history", component: FlightHistoryComponent },
-  {
-    path: "flight/match/edit",
-    component: FlightMatchCreateComponent,
-    canActivate: [AuthGuard]
-  },
+  { path: "flight/match/scorecard", component: FlightMatchCreateComponent },
   {
     path: "payments",
     component: PaymentsListComponent,
