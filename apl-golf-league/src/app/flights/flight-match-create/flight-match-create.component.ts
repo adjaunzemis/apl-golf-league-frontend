@@ -53,18 +53,18 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   selectedTeam1: TeamData;
   selectedTeam1Golfer1: TeamGolferData;
   selectedTeam1Golfer1Tee: Tee;
-  team1Golfer1Round: RoundData;
+  team1Golfer1Round: RoundData | null;
   selectedTeam1Golfer2: TeamGolferData;
   selectedTeam1Golfer2Tee: Tee;
-  team1Golfer2Round: RoundData;
+  team1Golfer2Round: RoundData | null;
 
   selectedTeam2: TeamData;
   selectedTeam2Golfer1: TeamGolferData;
   selectedTeam2Golfer1Tee: Tee;
-  team2Golfer1Round: RoundData;
+  team2Golfer1Round: RoundData | null;
   selectedTeam2Golfer2: TeamGolferData;
   selectedTeam2Golfer2Tee: Tee;
-  team2Golfer2Round: RoundData;
+  team2Golfer2Round: RoundData | null;
 
   roundIdx = 0;
 
@@ -173,6 +173,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   onSelectedTrackChanged(selection: MatSelectChange): void {
     this.selectedTrack = selection.value as Track;
+    this.clearMatchRounds();
     console.log(`[FlightMatchCreateComponent] Selected track: ${this.selectedTrack.name} on course ${this.selectedCourse.name}`);
   }
 
@@ -283,6 +284,13 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     this.hideForPrint = false;
   }
 
+  private clearMatchRounds(): void {
+    this.team1Golfer1Round = null;
+    this.team1Golfer2Round = null;
+    this.team2Golfer1Round = null;
+    this.team2Golfer2Round = null;
+  }
+
   createMatchRounds(): void {
     if (this.checkValidSelections()) {
       this.team1Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam1Golfer1Tee, this.selectedTeam1, this.selectedTeam1Golfer1);
@@ -326,11 +334,31 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     let teamGolferRounds: RoundData[] = [];
     let opponentGolferRounds: RoundData[] = [];
     if (teamNum === 1) {
-      teamGolferRounds.push(this.team1Golfer1Round, this.team1Golfer2Round);
-      opponentGolferRounds.push(this.team2Golfer1Round, this.team2Golfer2Round);
+      if (this.team1Golfer1Round) {
+        teamGolferRounds.push(this.team1Golfer1Round);
+      }
+      if (this.team1Golfer2Round) {
+        teamGolferRounds.push(this.team1Golfer2Round);
+      }
+      if (this.team2Golfer1Round) {
+        opponentGolferRounds.push(this.team2Golfer1Round);
+      }
+      if (this.team2Golfer2Round) {
+        opponentGolferRounds.push(this.team2Golfer2Round);
+      }
     } else {
-      teamGolferRounds.push(this.team2Golfer1Round, this.team2Golfer2Round);
-      opponentGolferRounds.push(this.team1Golfer1Round, this.team1Golfer2Round);
+      if (this.team2Golfer1Round) {
+        teamGolferRounds.push(this.team2Golfer1Round);
+      }
+      if (this.team2Golfer2Round) {
+        teamGolferRounds.push(this.team2Golfer2Round);
+      }
+      if (this.team1Golfer1Round) {
+        opponentGolferRounds.push(this.team1Golfer1Round);
+      }
+      if (this.team1Golfer2Round) {
+        opponentGolferRounds.push(this.team1Golfer2Round);
+      }
     }
 
     let teamHandicap = 0;
