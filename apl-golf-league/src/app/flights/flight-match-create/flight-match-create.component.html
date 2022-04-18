@@ -48,14 +48,14 @@
 
     <mat-form-field class="selection-field course-selection-field" appearance="fill">
       <mat-label>Course</mat-label>
-      <mat-select (selectionChange)="onSelectedCourseChanged($event)">
+      <mat-select [value]="selectedCourseInfo" (selectionChange)="onSelectedCourseChanged($event)">
         <mat-option *ngFor="let courseOption of courseOptions" [value]="courseOption">{{ courseOption.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="selection-field track-selection-field" appearance="fill">
       <mat-label>Track</mat-label>
-      <mat-select (selectionChange)="onSelectedTrackChanged($event)" [disabled]="!selectedCourse">
+      <mat-select [value]="selectedTrack" (selectionChange)="onSelectedTrackChanged($event)" [disabled]="!selectedCourse">
         <mat-option *ngFor="let trackOption of selectedCourse?.tracks" [value]="trackOption">{{ trackOption.name }}</mat-option>
       </mat-select>
     </mat-form-field>

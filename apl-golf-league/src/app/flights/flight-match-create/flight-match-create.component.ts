@@ -44,6 +44,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   private courseInfoSub: Subscription;
   courseOptions: Course[] = [];
+  selectedCourseInfo: Course;
 
   private courseDataSub: Subscription;
   selectedCourse: Course;
@@ -99,6 +100,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       console.log(`[FlightMatchCreateComponent] Received data for course: ${result.name} (${result.year})`);
       this.selectedCourse = result;
       this.isLoading = false;
+      for (const track of result.tracks) {
+        if (track.name.toLowerCase() === "front") {
+          this.selectedTrack = track;
+          break;
+        }
+      }
     });
 
     this.flightInfoSub = this.flightsService.getFlightsListUpdateListener().subscribe(result => {
@@ -121,6 +128,13 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       this.selectedFlight = result;
       this.flightSelector.setValue(result.name);
       this.isLoading = false;
+      for (const courseInfo of this.courseOptions) {
+        if (courseInfo.name.toLowerCase() === result.course.toLowerCase()) {
+          this.selectedCourseInfo = courseInfo;
+          this.loadCourseData();
+          break;
+        }
+      }
     });
 
     // Gather initial data
@@ -147,10 +161,14 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedCourseChanged(selection: MatSelectChange): void {
-    const courseInfo = selection.value as Course;
-    console.log(`[FlightMatchCreateComponent] Selected course: ${courseInfo.name} (${courseInfo.year})`);
+    this.selectedCourseInfo = selection.value as Course;
+    this.loadCourseData();
+  }
+
+  private loadCourseData() : void {
+    console.log(`[FlightMatchCreateComponent] Selected course: ${this.selectedCourseInfo.name} (${this.selectedCourseInfo.year})`);
     this.isLoading = true;
-    this.coursesService.getCourse(courseInfo.id);
+    this.coursesService.getCourse(this.selectedCourseInfo.id);
   }
 
   onSelectedTrackChanged(selection: MatSelectChange): void {
@@ -164,8 +182,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedFlightChanged(selection: MatSelectChange): void {
-    const flightInfo = selection.value as FlightInfo;
-    this.selectedFlightInfo = flightInfo;
+    this.selectedFlightInfo = selection.value as FlightInfo;
     this.loadFlightData();
   }
 
