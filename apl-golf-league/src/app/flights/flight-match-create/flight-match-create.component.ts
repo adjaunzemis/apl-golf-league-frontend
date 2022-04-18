@@ -228,6 +228,60 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return rounds;
   }
 
+  getTeamRound(teamNum: number): RoundData {
+    let teamGolferRounds: RoundData[] = [];
+    let opponentGolferRounds: RoundData[] = [];
+    if (teamNum === 1) {
+      teamGolferRounds.push(this.team1Golfer1Round, this.team1Golfer2Round);
+      opponentGolferRounds.push(this.team2Golfer1Round, this.team2Golfer2Round);
+    } else {
+      teamGolferRounds.push(this.team2Golfer1Round, this.team2Golfer2Round);
+      opponentGolferRounds.push(this.team1Golfer1Round, this.team1Golfer2Round);
+    }
+
+    let teamHandicap = 0;
+    for (const round of teamGolferRounds) {
+      if (round.golfer_playing_handicap) {
+        teamHandicap += round.golfer_playing_handicap;
+      }
+    }
+    for (const round of opponentGolferRounds) {
+      if (round.golfer_playing_handicap) {
+        teamHandicap -= round.golfer_playing_handicap;
+      }
+    }
+
+    const teamFirstRound = teamGolferRounds[0];
+    const teamFirstRoundTee = teamNum === 1 ? this.selectedTeam1Golfer1Tee : this.selectedTeam2Golfer1Tee;
+
+    let teamRound: RoundData = {
+      round_id: -1, // TODO: remove placeholder?
+      team_id: teamFirstRound.team_id,
+      date_played: this.selectedDate,
+      round_type: "Flight",
+      golfer_id: -1,
+      golfer_name: teamFirstRound.team_name ? teamFirstRound.team_name : 'n/a',
+      golfer_playing_handicap: teamHandicap > 0 ? teamHandicap : undefined,
+      team_name: teamFirstRound.team_name,
+      course_id: this.selectedCourse.id,
+      course_name: this.selectedCourse.name,
+      track_id: this.selectedTrack.id,
+      track_name: this.selectedTrack.name,
+      tee_id: teamFirstRoundTee.id,
+      tee_name: teamFirstRoundTee.name,
+      tee_gender: teamFirstRoundTee.gender,
+      tee_rating: teamFirstRoundTee.rating,
+      tee_slope: teamFirstRoundTee.slope,
+      tee_par: this.computeTeePar(teamFirstRoundTee),
+      tee_color: teamFirstRoundTee.color,
+      gross_score: 0, // TODO: remove placeholder?
+      adjusted_gross_score: 0, // TODO: remove placeholder?
+      net_score: 0, // TODO: remove placeholder?
+      holes: this.createHoleResultDataForRound(teamFirstRoundTee, Math.max(teamHandicap, 0))
+    }
+    return teamRound;
+  }
+
   private createRound(course: Course, track: Track, tee: Tee, team: TeamData, golfer: TeamGolferData): RoundData {
     const playingHandicap = this.computePlayingHandicap(golfer, tee);
     return {
@@ -261,8 +315,16 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return round.tee_name + " | Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
   }
 
+  getTeamRoundSubtitle(teamNum: number): string {
+    const teamRound = this.getTeamRound(teamNum);
+    if (teamRound.golfer_playing_handicap === undefined || teamRound.golfer_playing_handicap <= 0) {
+      return `Hcp Strokes: --`;
+    }
+    return `Hcp Strokes: ${teamRound.golfer_playing_handicap}`;
+  }
+
   private computePlayingHandicap(golfer: TeamGolferData, tee: Tee): number {
-    return -2; // TODO: query from server?
+    return Math.floor(Math.random() * 15) - 2; // TODO: query from server?
   }
 
   private computeTeePar(tee: Tee): number {
