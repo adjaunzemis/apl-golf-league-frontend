@@ -11,21 +11,28 @@
   </div>
 
   <div>
-    <mat-form-field appearance="fill" class="selection-field">
+    <mat-form-field class="selection-field date-selection-field" appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onSelectedDateChanged($event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="selection-field flight-selection-field" appearance="fill">
       <mat-label>Flight</mat-label>
       <mat-select (selectionChange)="onSelectedFlightChanged($event)">
         <mat-option *ngFor="let flightOption of flightOptions" [value]="flightOption">{{ flightOption.name }} ({{ flightOption.year }})</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="selection-field course-selection-field">
+    <mat-form-field class="selection-field course-selection-field" appearance="fill">
       <mat-label>Course</mat-label>
       <mat-select (selectionChange)="onSelectedCourseChanged($event)">
         <mat-option *ngFor="let courseOption of courseOptions" [value]="courseOption">{{ courseOption.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="selection-field">
+    <mat-form-field class="selection-field track-selection-field" appearance="fill">
       <mat-label>Track</mat-label>
       <mat-select (selectionChange)="onSelectedTrackChanged($event)" [disabled]="!selectedCourse">
         <mat-option *ngFor="let trackOption of selectedCourse?.tracks" [value]="trackOption">{{ trackOption.name }}</mat-option>
@@ -34,14 +41,14 @@
   </div>
 
   <div *ngIf="selectedFlight">
-    <mat-form-field appearance="fill" class="selection-field">
+    <mat-form-field class="selection-field" appearance="fill">
       <mat-label>Team 1</mat-label>
       <mat-select (selectionChange)="onSelectedTeamChanged($event, 1)">
         <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{ teamOption.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="selection-field">
+    <mat-form-field class="selection-field" appearance="fill">
       <mat-label>Team 2</mat-label>
       <mat-select (selectionChange)="onSelectedTeamChanged($event, 2)">
         <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{ teamOption.name }}</mat-option>
@@ -53,7 +60,7 @@
     <ng-container>
       <div>
         <ng-container>
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 1 Golfer 1</mat-label>
             <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 1)">
               <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
@@ -69,7 +76,7 @@
         </ng-container>
 
         <ng-container>
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 2 Golfer 1</mat-label>
             <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 1)">
               <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
@@ -87,7 +94,7 @@
 
       <div>
         <ng-container>
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 1 Golfer 2</mat-label>
             <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 2)">
               <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
@@ -103,7 +110,7 @@
         </ng-container>
 
         <ng-container>
-          <mat-form-field appearance="fill" class="selection-field">
+          <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 2 Golfer 2</mat-label>
             <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 2)">
               <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
@@ -121,8 +128,6 @@
 
     </ng-container>
   </div>
-
-  <!-- <app-match-scorecard [match]="createMatch()" *ngIf="selectedTeam1Golfer1Tee"></app-match-scorecard> -->
 
   <div class="full-width" *ngIf="team1Golfer1Round || team1Golfer2Round || team2Golfer1Round || team2Golfer2Round">
     <app-scorecard-title-line [rounds]="getRounds()" [title]="getMatchTitle()" [subtitle]="getMatchSubtitle()"></app-scorecard-title-line>

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
 import { Subscription } from 'rxjs';
 
@@ -30,7 +31,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   showInstructions: boolean = false;
 
-  selectedDate: Date = new Date(); // TODO: use date-picker
+  selectedDate: Date = new Date();
 
   private flightInfoSub: Subscription;
   flightOptions: FlightInfo[] = [];
@@ -114,6 +115,13 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   private getCourseOptions(): void {
     this.coursesService.getCourses();
+  }
+
+  onSelectedDateChanged(event: MatDatepickerInputEvent<Date>): void {
+    if (event.value !== null) {
+      console.log(`[FlightMatchCreateComponent] Selected date: ${event.value}`);
+      this.selectedDate = event.value;
+    }
   }
 
   onSelectedCourseChanged(selection: MatSelectChange): void {
