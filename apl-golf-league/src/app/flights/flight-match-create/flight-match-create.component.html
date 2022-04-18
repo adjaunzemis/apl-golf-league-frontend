@@ -12,7 +12,7 @@
 
   <div style="margin-bottom: 16px;">
     <button mat-raised-button color="primary" [disabled]="!checkValidSelections()" (click)="createMatchRounds()">Generate Scorecard</button>
-    <button mat-raised-button color="primary" [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)">Print Scorecard</button>
+    <button mat-raised-button color="primary" [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)" (click)="printScorecard()">Print Scorecard</button>
   </div>
 
   <div>

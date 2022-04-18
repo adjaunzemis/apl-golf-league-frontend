@@ -231,6 +231,10 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  printScorecard(): void {
+    window.print();
+  }
+
   createMatchRounds(): void {
     if (this.checkValidSelections()) {
       this.team1Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam1Golfer1Tee, this.selectedTeam1, this.selectedTeam1Golfer1);
