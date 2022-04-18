@@ -173,8 +173,21 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   onSelectedTrackChanged(selection: MatSelectChange): void {
     this.selectedTrack = selection.value as Track;
-    this.clearMatchRounds();
     console.log(`[FlightMatchCreateComponent] Selected track: ${this.selectedTrack.name} on course ${this.selectedCourse.name}`);
+    this.clearMatchRounds();
+
+    if (this.selectedTeam1Golfer1) {
+      this.selectTeesForGolfer(this.selectedTeam1Golfer1, 1, 1);
+    }
+    if (this.selectedTeam1Golfer2) {
+      this.selectTeesForGolfer(this.selectedTeam1Golfer2, 1, 2);
+    }
+    if (this.selectedTeam2Golfer1) {
+      this.selectTeesForGolfer(this.selectedTeam2Golfer1, 2, 1);
+    }
+    if (this.selectedTeam2Golfer2) {
+      this.selectTeesForGolfer(this.selectedTeam2Golfer2, 2, 2);
+    }
   }
 
   private getFlightOptions(): void {
@@ -219,7 +232,11 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
         this.selectedTeam2Golfer2 = selectedGolfer;
       }
     }
-    const golferTee = this.getTeeForDivision(selectedGolfer.division_name);
+    this.selectTeesForGolfer(selectedGolfer, teamNum, golferNum);
+  }
+
+  private selectTeesForGolfer(golfer: TeamGolferData, teamNum: number, golferNum: number): void {
+    const golferTee = this.getTeeForDivision(golfer.division_name);
     if (golferTee !== undefined) {
       console.log(`[FlightMatchCreateComponent] Selected tee for team ${teamNum} golfer ${golferNum}: ${golferTee.name}`);
       if (golferNum === 1) {
