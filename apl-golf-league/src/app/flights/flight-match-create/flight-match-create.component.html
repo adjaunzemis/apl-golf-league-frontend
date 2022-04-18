@@ -6,12 +6,14 @@
     <span class="bold">Instructions</span>
   </div>
 
-  <div class="card" style="height: 100%; width: 800px;" *ngIf="!hideForPrint && showInstructions">
+  <div class="card" style="height: 100%; width: 1000px;" *ngIf="!hideForPrint && showInstructions">
     <ul>
       <li>Select the anticipated date of the match.</li>
-      <li>Select a flight to populate list of relevant teams and divisions.</li>
-      <li>Select the course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
-      <li>On the left side, select a team to populate golfer options.</li>
+      <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
+        <ul>
+          <li>Using "Match Scorecard" from flight homepage auto-populates these values.</li>
+        </ul>
+      <li>On the left side, select a team.</li>
       <li>Select the two golfers who will play for the first team.</li>
         <ul>
           <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
@@ -20,7 +22,11 @@
       <li>On the right side, repeat the above process for the second team.</li>
       <li>Once all required information has been entered, click "Generate Scorecard".</li>
         <ul>
-          <li>If changes need to be made to the selections, regenerate the scorecard by clicking "Generate Scorecard" again.</li>
+          <li>The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the tee rating/slope.</li>
+          <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
+          <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
+          <li>On the team score line, black dots indicate handicap strokes received by the team with the higher combined playing handicap.</li>
+          <li>Any selection changes will clear the generated scorecard.</li>
         </ul>
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
