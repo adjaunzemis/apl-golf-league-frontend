@@ -154,6 +154,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedDateChanged(event: MatDatepickerInputEvent<Date>): void {
+    this.clearMatchRounds();
     if (event.value !== null) {
       console.log(`[FlightMatchCreateComponent] Selected date: ${event.value}`);
       this.selectedDate = event.value;
@@ -161,6 +162,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedCourseChanged(selection: MatSelectChange): void {
+    this.clearMatchRounds();
     this.selectedCourseInfo = selection.value as Course;
     this.loadCourseData();
   }
@@ -172,10 +174,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedTrackChanged(selection: MatSelectChange): void {
+    this.clearMatchRounds();
     this.selectedTrack = selection.value as Track;
     console.log(`[FlightMatchCreateComponent] Selected track: ${this.selectedTrack.name} on course ${this.selectedCourse.name}`);
-    this.clearMatchRounds();
-
     if (this.selectedTeam1Golfer1) {
       this.selectTeesForGolfer(this.selectedTeam1Golfer1, 1, 1);
     }
@@ -196,6 +197,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedFlightChanged(selection: MatSelectChange): void {
+    this.clearMatchRounds();
     this.selectedFlightInfo = selection.value as FlightInfo;
     this.loadFlightData();
   }
@@ -207,6 +209,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {
+    this.clearMatchRounds();
     const selectedTeam = selection.value as TeamData;
     console.log(`[FlightMatchCreateComponent] Selected team ${teamNum}: ${selectedTeam.name}`);
     if (teamNum === 1) {
@@ -217,6 +220,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedGolferChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+    this.clearMatchRounds();
     const selectedGolfer = selection.value as TeamGolferData;
     console.log(`[FlightMatchCreateComponent] Selected team ${teamNum} golfer ${golferNum}: ${selectedGolfer.golfer_name}`);
     if (golferNum === 1) {
@@ -269,6 +273,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedTeeChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+    this.clearMatchRounds();
     const selectedTee = selection.value as Tee;
     console.log(`[FlightMatchCreateComponent] Selected tee for team ${teamNum} golfer ${golferNum}: ${selectedTee.name}`);
     if (golferNum === 1) {
