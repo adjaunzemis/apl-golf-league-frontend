@@ -10,6 +10,11 @@
     <span>Instructions coming soon...</span>
   </div>
 
+  <div style="margin-bottom: 16px;">
+    <button mat-raised-button color="primary" [disabled]="!checkValidSelections()" (click)="createMatchRounds()">Generate Scorecard</button>
+    <button mat-raised-button color="primary" [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)">Print Scorecard</button>
+  </div>
+
   <div>
     <mat-form-field class="selection-field date-selection-field" appearance="fill">
       <mat-label>Date</mat-label>
@@ -129,16 +134,6 @@
     </ng-container>
   </div>
 
-  <div class="card-container">
-    <div class="card card-small" [ngClass]="checkValidSelections() ? 'selectable' : ''" (click)="createMatchRounds()">
-      <span class="bold">Generate Scorecard</span>
-    </div>
-
-    <div class="card card-small" [ngClass]="team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round ? 'selectable' : ''">
-      <span class="bold">Print Scorecard</span>
-    </div>
-  </div>
-
   <div class="full-width" *ngIf="team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
     <app-scorecard-title-line [rounds]="getRounds()" [title]="getMatchTitle()" [subtitle]="getMatchSubtitle()"></app-scorecard-title-line>
 
@@ -149,11 +144,11 @@
       <app-scorecard-score-line [round]="round" scoreMode="gross" [showScores]="false" [title]= "round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
 
-    <app-scorecard-score-line [round]="getTeamRound(1)" scoreMode="gross" [showScores]="false" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(1)" scoreMode="gross" [showScores]="false" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
     <!-- <app-match-scorecard-score-line [match]="match" [topTeamId]="topTeamId" [bottomTeamId]="bottomTeamId"></app-match-scorecard-score-line> -->
 
-    <app-scorecard-score-line [round]="getTeamRound(2)" scoreMode="gross" [showScores]="false" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(2)" scoreMode="gross" [showScores]="false" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
     <ng-container *ngFor="let round of getRoundsForTeam(2)">
       <app-scorecard-score-line [round]="round" scoreMode="gross" [showScores]="false" [title]= "round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
