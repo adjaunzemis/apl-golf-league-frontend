@@ -27,6 +27,8 @@ import { HoleResultData } from '../../shared/hole-result.model';
 export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
 
+  hideForPrint = false;
+
   private currentYear: number;
 
   showInstructions: boolean = false;
@@ -231,8 +233,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  printScorecard(): void {
+  async printScorecard() {
+    this.hideForPrint = true;
+    await new Promise(r => setTimeout(r, 500)); // wait to register changes to UI
     window.print();
+    await new Promise(r => setTimeout(r, 500)); // wait to restore full UI
+    this.hideForPrint = false;
   }
 
   createMatchRounds(): void {

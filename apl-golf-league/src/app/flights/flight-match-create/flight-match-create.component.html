@@ -1,21 +1,21 @@
 <div class="content">
 
-  <h1>Match Scorecard</h1>
+  <h1 *ngIf="!hideForPrint">Match Scorecard</h1>
 
-  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions">
+  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions" *ngIf="!hideForPrint">
     <span class="bold">Instructions</span>
   </div>
 
-  <div class="card" *ngIf="showInstructions">
+  <div class="card" *ngIf="!hideForPrint && showInstructions">
     <span>Instructions coming soon...</span>
   </div>
 
-  <div style="margin-bottom: 16px;">
+  <div style="margin-bottom: 16px;" *ngIf="!hideForPrint">
     <button mat-raised-button color="primary" [disabled]="!checkValidSelections()" (click)="createMatchRounds()">Generate Scorecard</button>
-    <button mat-raised-button color="primary" [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)" (click)="printScorecard()">Print Scorecard</button>
+    <button mat-raised-button color="accent" [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)" (click)="printScorecard()">Print Scorecard</button>
   </div>
 
-  <div>
+  <div *ngIf="!hideForPrint">
     <mat-form-field class="selection-field date-selection-field" appearance="fill">
       <mat-label>Date</mat-label>
       <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onSelectedDateChanged($event)">
@@ -45,7 +45,7 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="selectedFlight">
+  <div *ngIf="!hideForPrint && selectedFlight">
     <mat-form-field class="selection-field" appearance="fill">
       <mat-label>Team 1</mat-label>
       <mat-select (selectionChange)="onSelectedTeamChanged($event, 1)">
@@ -61,7 +61,7 @@
     </mat-form-field>
   </div>
 
-  <div *ngIf="selectedFlight">
+  <div *ngIf="!hideForPrint && selectedFlight">
     <ng-container>
       <div>
         <ng-container>
