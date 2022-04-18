@@ -21,7 +21,7 @@
       <span>{{ flight.start_date | date:'longDate' }}</span>
     </div>
 
-    <a class="card card-small selectable" routerLink="/flight/match/scorecard">
+    <a class="card card-small selectable" routerLink="/flight/match/scorecard" [queryParams]="{flight_id: flight.id}">
       <span class="bold">Match Scorecard</span>
     </a>
 

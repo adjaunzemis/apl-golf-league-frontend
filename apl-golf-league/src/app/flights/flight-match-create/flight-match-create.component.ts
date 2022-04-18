@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
 import { Subscription } from 'rxjs';
@@ -6,18 +7,15 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from '../../app-config.service';
 import { FlightsService } from '../flights.service';
 import { CoursesService } from '../../courses/courses.service';
-import { MatchesService } from '../../matches/matches.service';
-import { GolfersService } from '../../golfers/golfers.service';
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { TeamData } from '../../shared/team.model';
 import { TeamGolferData } from '../../shared/golfer.model';
-import { MatchData } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
 import { Course } from '../../shared/course.model';
 import { Track } from '../../shared/track.model';
 import { Tee } from '../../shared/tee.model';
-import { Hole } from '../../shared/hole.model';
 import { HoleResultData } from '../../shared/hole-result.model';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-flight-match-create',
@@ -35,9 +33,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   selectedDate: Date = new Date();
 
+  private paramsFlightId: number;
   private flightInfoSub: Subscription;
   flightOptions: FlightInfo[] = [];
+  selectedFlightInfo: FlightInfo;
 
+  flightSelector = new FormControl("");
   private flightDataSub: Subscription;
   selectedFlight: FlightData;
 
@@ -66,12 +67,21 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   roundIdx = 0;
 
-  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private coursesService: CoursesService, private matchesService: MatchesService, private golfersService: GolfersService) { }
+  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
 
     // Set up subscriptions
+    this.route.queryParams.subscribe(params => {
+      if (params) {
+        if (params.flight_id) {
+          console.log(`[FlightMatchCreateComponent] Processing query parameter: flight_id=${params.flight_id}`)
+          this.paramsFlightId = params.flight_id;
+        }
+      }
+    });
+
     this.courseInfoSub = this.coursesService.getCoursesUpdateListener().subscribe(result => {
       console.log(`[FlightMatchCreateComponent] Received courses list with ${result.courseCount} entries`);
       this.courseOptions = result.courses.sort((a: Course, b: Course) => {
@@ -95,11 +105,21 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       console.log(`[FlightMatchCreateComponent] Received current flights list`);
       this.flightOptions = result.flights;
       this.isLoading = false;
+      if (this.paramsFlightId) {
+        for (const flightInfo of this.flightOptions) {
+          if (flightInfo.id == this.paramsFlightId) {
+            this.selectedFlightInfo = flightInfo;
+            this.loadFlightData();
+            break;
+          }
+        }
+      }
     });
 
     this.flightDataSub = this.flightsService.getFlightUpdateListener().subscribe(result => {
       console.log(`[FlightMatchCreateComponent] Received data for flight: ${result.name} (${result.year})`);
       this.selectedFlight = result;
+      this.flightSelector.setValue(result.name);
       this.isLoading = false;
     });
 
@@ -145,9 +165,14 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   onSelectedFlightChanged(selection: MatSelectChange): void {
     const flightInfo = selection.value as FlightInfo;
-    console.log(`[FlightMatchCreateComponent] Selected flight: ${flightInfo.name} (${flightInfo.year})`);
+    this.selectedFlightInfo = flightInfo;
+    this.loadFlightData();
+  }
+
+  private loadFlightData(): void {
+    console.log(`[FlightMatchCreateComponent] Selected flight: ${this.selectedFlightInfo.name} (${this.selectedFlightInfo.year})`);
     this.isLoading = true;
-    this.flightsService.getFlight(flightInfo.id);
+    this.flightsService.getFlight(this.selectedFlightInfo.id);
   }
 
   onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {

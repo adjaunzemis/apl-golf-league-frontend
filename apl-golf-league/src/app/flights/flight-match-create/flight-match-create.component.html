@@ -6,8 +6,24 @@
     <span class="bold">Instructions</span>
   </div>
 
-  <div class="card" *ngIf="!hideForPrint && showInstructions">
-    <span>Instructions coming soon...</span>
+  <div class="card" style="height: 100%; width: 800px;" *ngIf="!hideForPrint && showInstructions">
+    <ul>
+      <li>Select the anticipated date of the match.</li>
+      <li>Select a flight to populate list of relevant teams and divisions.</li>
+      <li>Select the course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
+      <li>On the left side, select a team to populate golfer options.</li>
+      <li>Select the two golfers who will play for the first team.</li>
+        <ul>
+          <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
+          <li>Otherwise, select the tees each golfer will play.</li>
+        </ul>
+      <li>On the right side, repeat the above process for the second team.</li>
+      <li>Once all required information has been entered, click "Generate Scorecard".</li>
+        <ul>
+          <li>If changes need to be made to the selections, regenerate the scorecard by clicking "Generate Scorecard" again.</li>
+        </ul>
+      <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
+    </ul>
   </div>
 
   <div style="margin-bottom: 16px;" *ngIf="!hideForPrint">
@@ -25,7 +41,7 @@
 
     <mat-form-field class="selection-field flight-selection-field" appearance="fill">
       <mat-label>Flight</mat-label>
-      <mat-select (selectionChange)="onSelectedFlightChanged($event)">
+      <mat-select [value]="selectedFlightInfo" (selectionChange)="onSelectedFlightChanged($event)">
         <mat-option *ngFor="let flightOption of flightOptions" [value]="flightOption">{{ flightOption.name }} ({{ flightOption.year }})</mat-option>
       </mat-select>
     </mat-form-field>
@@ -147,7 +163,6 @@
     <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(1)" scoreMode="gross" [showScores]="false" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
     <app-match-scorecard-blank-score-line></app-match-scorecard-blank-score-line>
-    <!-- <app-match-scorecard-score-line [match]="match" [topTeamId]="topTeamId" [bottomTeamId]="bottomTeamId"></app-match-scorecard-score-line> -->
 
     <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(2)" scoreMode="gross" [showScores]="false" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
