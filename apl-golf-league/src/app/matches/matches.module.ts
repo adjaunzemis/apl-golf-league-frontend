@@ -6,11 +6,13 @@ import { AngularMaterialModule } from "../angular-material.module";
 import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 import { MatchScorecardScoreLineComponent } from "./match-scorecard/match-scorecard-score-line/match-scorecard-score-line.component";
 import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.component";
+import { MatchScorecardBlankScoreLineComponent } from './match-scorecard/match-scorecard-blank-score-line/match-scorecard-blank-score-line.component';
 
 @NgModule({
   declarations: [
     MatchScorecardComponent,
-    MatchScorecardScoreLineComponent
+    MatchScorecardScoreLineComponent,
+    MatchScorecardBlankScoreLineComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.compo
     ScorecardModule
   ],
   exports: [
-    MatchScorecardComponent
+    MatchScorecardComponent,
+    MatchScorecardBlankScoreLineComponent
   ]
 })
 export class MatchesModule {}

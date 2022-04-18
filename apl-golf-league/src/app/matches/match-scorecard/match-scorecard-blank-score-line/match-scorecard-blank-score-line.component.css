@@ -1,0 +1,118 @@
+.styled-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 400px;
+  min-height: 25px;
+  font-size: 1em;
+  font-family: sans-serif;
+  text-align: center;
+  vertical-align: center;
+}
+
+.styled-table thead tr {
+  background-color: #3f51b5;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 5px 5px;
+}
+
+.styled-table tbody tr {
+  border-bottom: thin solid #dddddd;
+}
+
+.styled-table .label,
+.styled-table .total {
+  width: 12.5%;
+}
+
+.styled-table .hole {
+  width: 8.333%;
+}
+
+.styled-table tbody tr.score {
+  height: 5px;
+  background-color: #ffffff;
+}
+
+.styled-table tr.score td {
+  padding: 5px 0px;
+}
+
+.hole-score {
+  height: 5px;
+  width: 22px;
+  margin: auto;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.border-sides {
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+}
+
+.total-score {
+  height: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.total-score .arrow-up:not(:first-of-type),
+.total-score .arrow-down:not(:first-of-type) {
+  margin-left: 4px;
+}
+
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+}
+
+.arrow-right {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid black;
+}
+
+.arrow-left {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid black;
+}
+
+.dash {
+  width: 0;
+  height: 0;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-left: 5px solid black;
+  border-right: 5px solid black;
+}
+
+.hole .arrow-up,
+.hole .arrow-down,
+.hole .arrow-right,
+.hole .arrow-left,
+td.hole .dash {
+  margin-left: auto;
+  margin-right: auto;
+}
