@@ -103,6 +103,11 @@ a:hover {
   font-weight: bold;
 }
 
+.border-sides {
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+}
+
 .circle {
   border-radius: 50%;
   border: 1px solid rgb(114, 122, 218);

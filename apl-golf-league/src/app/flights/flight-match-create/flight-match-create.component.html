@@ -136,13 +136,13 @@
     <app-scorecard-tee-info [holeResultData]="getRounds()[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
 
     <ng-container *ngFor="let round of getRoundsForTeam(1)">
-      <app-scorecard-score-line [round]="round" scoreMode="gross" [title]= "round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line [round]="round" scoreMode="gross" [showScores]="false" [title]= "round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
 
     <!-- <app-match-scorecard-score-line [match]="match" [topTeamId]="topTeamId" [bottomTeamId]="bottomTeamId"></app-match-scorecard-score-line> -->
 
     <ng-container *ngFor="let round of getRoundsForTeam(2)">
-      <app-scorecard-score-line [round]="round" scoreMode="gross" [title]= "round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line [round]="round" scoreMode="gross" [showScores]="false" [title]= "round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
   </div>
 
