@@ -40,6 +40,7 @@
 .styled-table .total {
   width: 12.5%;
   font-weight: bold;
+  text-overflow: ellipsis;;
 }
 
 .styled-table .hole {
@@ -84,15 +85,17 @@ a:hover {
 .black-dot {
   height: 4px;
   width: 4px;
-  background-color: black;
+  background-color: black !important;
   border-radius: 50%;
+  -webkit-print-color-adjust: exact;
 }
 
 .red-dot {
   height: 4px;
   width: 4px;
-  background-color: red;
+  background-color: red !important;
   border-radius: 50%;
+  -webkit-print-color-adjust: exact;
 }
 
 .hole-score {
