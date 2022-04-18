@@ -365,8 +365,13 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return `Hcp Strokes: ${teamRound.golfer_playing_handicap}`;
   }
 
-  private computePlayingHandicap(golfer: TeamGolferData, tee: Tee): number {
-    return Math.floor(Math.random() * 15) - 2; // TODO: query from server?
+  private computePlayingHandicap(golfer: TeamGolferData, tee: Tee): number | undefined {
+    // Reference: USGA 2020 RoH 6.1
+    // TODO: Query from server instead of computing in browser
+    if (golfer.handicap_index === undefined) {
+      return undefined;
+    }
+    return Math.round(golfer.handicap_index * (tee.slope / 113.0) + (tee.rating - this.computeTeePar(tee)));
   }
 
   private computeTeePar(tee: Tee): number {
@@ -377,7 +382,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return teePar;
   }
 
-  private createHoleResultDataForRound(tee: Tee, playingHandicap: number): HoleResultData[] {
+  private createHoleResultDataForRound(tee: Tee, playingHandicap: number | undefined): HoleResultData[] {
     let holeResultData: HoleResultData[] = [];
     for (const hole of tee.holes) {
       holeResultData.push({
@@ -398,7 +403,10 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return holeResultData;
   }
 
-  private computeHandicapStrokes(strokeIndex: number, playingHandicap: number): number {
+  private computeHandicapStrokes(strokeIndex: number, playingHandicap: number | undefined): number {
+    if (playingHandicap === undefined) {
+      return 0;
+    }
     if (playingHandicap < 0) { // plus-handicap
       return (-playingHandicap * 2) > (18 - strokeIndex) ? -1 : 0;
     }
