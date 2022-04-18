@@ -174,6 +174,36 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
         this.selectedTeam2Golfer2 = selectedGolfer;
       }
     }
+    const golferTee = this.getTeeForDivision(selectedGolfer.division_name);
+    if (golferTee !== undefined) {
+      console.log(`[FlightMatchCreateComponent] Selected tee for team ${teamNum} golfer ${golferNum}: ${golferTee.name}`);
+      if (golferNum === 1) {
+        if (teamNum === 1) {
+          this.selectedTeam1Golfer1Tee = golferTee;
+        } else {
+          this.selectedTeam2Golfer1Tee = golferTee;
+        }
+      } else {
+        if (teamNum === 1) {
+          this.selectedTeam1Golfer2Tee = golferTee;
+        } else {
+          this.selectedTeam2Golfer2Tee = golferTee;
+        }
+      }
+    }
+  }
+
+  private getTeeForDivision(name: string): Tee | undefined {
+    for (const division of this.selectedFlight.divisions) {
+      if (division.name.toLowerCase() === name.toLowerCase()) {
+        for (const tee of this.selectedTrack.tees) {
+          if (tee.id === division.primary_tee_id || tee.id === division.secondary_tee_id) {
+            return tee;
+          }
+        }
+      }
+    }
+    return undefined;
   }
 
   onSelectedTeeChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
@@ -182,19 +212,31 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     if (golferNum === 1) {
       if (teamNum === 1) {
         this.selectedTeam1Golfer1Tee = selectedTee;
-        this.team1Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, selectedTee, this.selectedTeam1, this.selectedTeam1Golfer1);
       } else {
         this.selectedTeam2Golfer1Tee = selectedTee;
-        this.team2Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, selectedTee, this.selectedTeam2, this.selectedTeam2Golfer1);
       }
     } else {
       if (teamNum === 1) {
         this.selectedTeam1Golfer2Tee = selectedTee;
-        this.team1Golfer2Round = this.createRound(this.selectedCourse, this.selectedTrack, selectedTee, this.selectedTeam1, this.selectedTeam1Golfer2);
       } else {
         this.selectedTeam2Golfer2Tee = selectedTee;
-        this.team2Golfer2Round = this.createRound(this.selectedCourse, this.selectedTrack, selectedTee, this.selectedTeam2, this.selectedTeam2Golfer2);
       }
+    }
+  }
+
+  checkValidSelections(): boolean {
+    if (this.selectedCourse && this.selectedTrack && this.selectedTeam1 && this.selectedTeam1Golfer1 && this.selectedTeam1Golfer1Tee && this.selectedTeam1Golfer2 && this.selectedTeam1Golfer2Tee && this.selectedTeam2 && this.selectedTeam2Golfer1 && this.selectedTeam2Golfer1Tee && this.selectedTeam2Golfer2 && this.selectedTeam2Golfer2Tee) {
+      return true;
+    }
+    return false;
+  }
+
+  createMatchRounds(): void {
+    if (this.checkValidSelections()) {
+      this.team1Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam1Golfer1Tee, this.selectedTeam1, this.selectedTeam1Golfer1);
+      this.team2Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam2Golfer1Tee, this.selectedTeam2, this.selectedTeam2Golfer1);
+      this.team1Golfer2Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam1Golfer2Tee, this.selectedTeam1, this.selectedTeam1Golfer2);
+      this.team2Golfer2Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam2Golfer2Tee, this.selectedTeam2, this.selectedTeam2Golfer2);
     }
   }
 
