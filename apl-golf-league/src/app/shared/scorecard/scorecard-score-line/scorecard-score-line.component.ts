@@ -27,7 +27,7 @@ export class ScorecardScoreLineComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['scoreModes'] !== undefined) {
+    if (changes['scoreMode'] !== undefined) {
       this.scoreMode = changes['scoreMode'].currentValue;
       this.updateScores();
     }
