@@ -20,11 +20,14 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
   topTeamHoleNetScores: number[];
   bottomTeamHoleNetScores: number[];
 
+  holeWinningTeamIds: number[];
+
   winningTeamId: number;
 
   ngOnInit(): void {
     this.separateRoundsByTeam();
     this.computeHoleNetScores();
+    this.setHoleWinningTeamIds();
     this.setWinningTeamId();
   }
 
@@ -56,6 +59,68 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
       for (let round of this.bottomTeamRounds) {
         this.bottomTeamHoleNetScores[holeIdx] += round.holes[holeIdx].net_score;
       }
+    }
+  }
+
+  private setHoleWinningTeamIds(): void {
+    this.holeWinningTeamIds = [];
+
+    // Compute team handicap stroke differential
+    let topTeamHandicap = 0;
+    for (const round of this.topTeamRounds) {
+      if (round.golfer_playing_handicap) {
+        topTeamHandicap += round.golfer_playing_handicap;
+      }
+    }
+
+    let bottomTeamHandicap = 0;
+    for (const round of this.bottomTeamRounds) {
+      if (round.golfer_playing_handicap) {
+        bottomTeamHandicap += round.golfer_playing_handicap;
+      }
+    }
+
+    const teamHandicapDiff = topTeamHandicap - bottomTeamHandicap;
+    const teamHandicapRem = Math.abs(teamHandicapDiff) % 9;
+    console.log("Hcp Diff: " + teamHandicapDiff);
+    console.log("Hcp Rem: " + teamHandicapRem);
+
+    const baseHandicapStrokes = Math.sign(teamHandicapDiff) * Math.floor(Math.abs(teamHandicapDiff / 9.0));
+    console.log("Base Strokes: " + baseHandicapStrokes);
+
+    // Determine hole winners
+    // Compare net scores, accounting for handicap stroke adjustment
+    for (let holeIdx = 0; holeIdx < this.match.rounds[0].holes.length; holeIdx++) {
+      let holeStrokeIndex = this.match.rounds[0].holes[holeIdx].stroke_index;
+      if (holeStrokeIndex % 2 === 1) { // odd stroke index holes
+        holeStrokeIndex += 1; // make even, will divide by 2
+      }
+      holeStrokeIndex /= 2; // effective stroke index for 9-hole handicapping
+
+      let holeHandicapStrokes = baseHandicapStrokes;
+      if (holeStrokeIndex <= teamHandicapRem) {
+        holeHandicapStrokes += Math.sign(teamHandicapDiff);
+      }
+
+      let topTeamHoleNetScore = 0;
+      for (const round of this.topTeamRounds) {
+        topTeamHoleNetScore += round.holes[holeIdx].net_score;
+      }
+
+      let bottomTeamHoleNetScore = 0;
+      for (const round of this.bottomTeamRounds) {
+        bottomTeamHoleNetScore += round.holes[holeIdx].net_score;
+      }
+
+      const holeScoreDiff = topTeamHoleNetScore - holeHandicapStrokes - bottomTeamHoleNetScore;
+      this.holeWinningTeamIds[holeIdx] = -1;
+      if (holeScoreDiff < 0) {
+        this.holeWinningTeamIds[holeIdx] = this.topTeamId;
+      } else if (holeScoreDiff > 0) {
+        this.holeWinningTeamIds[holeIdx] = this.bottomTeamId;
+      }
+
+      console.log("Hole: " + (holeIdx + 1) + ", Eff SI: " + holeStrokeIndex + ", Hcp: " + holeHandicapStrokes + ", SD: " + holeScoreDiff + ", Id: " + this.holeWinningTeamIds[holeIdx]);
     }
   }
 
