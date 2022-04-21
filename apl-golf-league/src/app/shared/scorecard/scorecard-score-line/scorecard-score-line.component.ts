@@ -21,6 +21,10 @@ export class ScorecardScoreLineComponent {
   @Input() showScores: boolean = true;
   @Input() enterScores: boolean = false;
 
+  onHoleScoreChanged(): void {
+    this.roundChange.emit(this.round);
+  }
+
   getRoundScore(): number {
     if (this.scoreMode === "adjusted gross") {
       return this.round.holes.map(hole => hole.adjusted_gross_score).reduce((prev, next) => prev + next);

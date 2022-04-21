@@ -14,7 +14,7 @@
             {{ getHoleScore(hole) }}
           </div>
           <div *ngIf="enterScores">
-            <input class="score-entry-field" type="number" [(ngModel)]="round.holes[holeIdx].gross_score">
+            <input class="score-entry-field" type="number" min="0" [(ngModel)]="hole.gross_score" (input)="onHoleScoreChanged()">
           </div>
         </div>
       </td>
