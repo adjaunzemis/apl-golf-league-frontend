@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 import { HoleResultData } from "../../hole-result.model";
 import { RoundData } from "../../round.model";
@@ -8,8 +8,10 @@ import { RoundData } from "../../round.model";
   templateUrl: "./scorecard-score-line.component.html",
   styleUrls: ["./scorecard-score-line.component.css"]
 })
-export class ScorecardScoreLineComponent implements OnInit, OnChanges {
+export class ScorecardScoreLineComponent {
   @Input() round: RoundData;
+  @Output() roundChange = new EventEmitter<RoundData>();
+
   @Input() scoreMode: string = "gross";
 
   @Input() title: string;
@@ -17,46 +19,19 @@ export class ScorecardScoreLineComponent implements OnInit, OnChanges {
   @Input() linkToGolferHome: boolean = false;
 
   @Input() showScores: boolean = true;
+  @Input() enterScores: boolean = false;
 
-  roundScore: number;
-  holeScores: number[];
-  holeRelativeScores: number[];
-
-  ngOnInit(): void {
-    this.updateScores();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['scoreMode'] !== undefined) {
-      this.scoreMode = changes['scoreMode'].currentValue;
-      this.updateScores();
-    }
-  }
-
-  private updateScores(): void {
-    this.roundScore = 0;
-    this.holeScores = [];
-    this.holeRelativeScores = [];
-
-    this.roundScore = this.getRoundScore();
-
-    for (const hole of this.round.holes) {
-        this.holeScores.push(this.getHoleScore(hole));
-        this.holeRelativeScores.push(this.getHoleScore(hole) - hole.par);
-    }
-  }
-
-  private getRoundScore(): number {
+  getRoundScore(): number {
     if (this.scoreMode === "adjusted gross") {
-      return this.round.adjusted_gross_score;
+      return this.round.holes.map(hole => hole.adjusted_gross_score).reduce((prev, next) => prev + next);
     } else if (this.scoreMode === "net") {
-      return this.round.net_score;
+      return this.round.holes.map(hole => hole.net_score).reduce((prev, next) => prev + next);
     } else {
-      return this.round.gross_score;
+      return this.round.holes.map(hole => hole.gross_score).reduce((prev, next) => prev + next);
     }
   }
 
-  private getHoleScore(hole: HoleResultData): number {
+  getHoleScore(hole: HoleResultData): number {
     if (this.scoreMode === "adjusted gross") {
       return hole.adjusted_gross_score;
     } else if (this.scoreMode === "net") {
@@ -66,8 +41,12 @@ export class ScorecardScoreLineComponent implements OnInit, OnChanges {
     }
   }
 
-  getRelativeScoreString(score: number, par: number): string {
-    const relativeScore = score - par;
+  getHoleRelativeScore(hole: HoleResultData): number {
+    return this.getHoleScore(hole) - hole.par;
+  }
+
+  getRelativeScoreString(): string {
+    const relativeScore = this.getRoundScore() - this.round.tee_par;
     if (relativeScore > 0) {
       return "+" + relativeScore;
     } else if (relativeScore < 0) {

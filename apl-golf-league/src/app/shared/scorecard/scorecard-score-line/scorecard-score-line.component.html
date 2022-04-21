@@ -5,18 +5,21 @@
         <a routerLink="/golfer" [queryParams]="{id: round.golfer_id}" *ngIf="linkToGolferHome">{{ title }}</a>
         <span *ngIf="!linkToGolferHome">{{ title }}</span>
       </td>
-      <td class="hole" rowspan="2" [ngClass]="showScores ? '' : 'border-sides'" *ngFor="let holeScore of holeScores; let holeIdx = index">
+      <td class="hole" rowspan="2" [ngClass]="showScores ? '' : 'border-sides'" *ngFor="let hole of round.holes; let holeIdx = index">
         <div class="handicap-strokes" *ngIf="scoreMode === 'gross'">
-          <div [ngClass]="round.holes[holeIdx].handicap_strokes > 0 ? 'black-dot' : 'red-dot'" *ngFor="let hs of [].constructor(abs(round.holes[holeIdx].handicap_strokes))"></div>
+          <div [ngClass]="hole.handicap_strokes > 0 ? 'black-dot' : 'red-dot'" *ngFor="let hs of [].constructor(abs(hole.handicap_strokes))"></div>
         </div>
         <div class="hole-score">
-          <div [ngClass]="{'circle' : holeRelativeScores[holeIdx] < 0, 'square' : holeRelativeScores[holeIdx] > 0, 'crosshatch' : (holeRelativeScores[holeIdx] > 1) || (holeRelativeScores[holeIdx] < -1)}" *ngIf="showScores">
-            {{ holeScore }}
+          <div [ngClass]="{'circle' : getHoleRelativeScore(hole) < 0, 'square' : getHoleRelativeScore(hole) > 0, 'crosshatch' : (getHoleRelativeScore(hole) > 1) || (getHoleRelativeScore(hole) < -1)}" *ngIf="showScores">
+            {{ getHoleScore(hole) }}
+          </div>
+          <div *ngIf="enterScores">
+            <input class="score-entry-field" type="number" [(ngModel)]="round.holes[holeIdx].gross_score">
           </div>
         </div>
       </td>
       <td class="total" rowspan="2">
-        <span *ngIf="showScores">{{ roundScore }} ({{ getRelativeScoreString(roundScore, round.tee_par) }})</span>
+        <span *ngIf="showScores || enterScores">{{ getRoundScore() }} ({{ getRelativeScoreString() }})</span>
       </td>
     </tr>
     <tr>

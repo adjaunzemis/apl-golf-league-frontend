@@ -62,6 +62,15 @@
   padding: 2px 0px;
 }
 
+.score-entry-field {
+  width: 42px;
+  font-size: 12pt;
+  text-align: center;
+  margin-left: -5px;
+  border: 0;
+  outline: 0;
+}
+
 a:hover {
   cursor: pointer;
   transform: translateY(-3px);
