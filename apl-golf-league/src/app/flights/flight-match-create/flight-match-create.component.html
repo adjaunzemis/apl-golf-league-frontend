@@ -195,18 +195,9 @@
     </ng-container>
   </div>
 
-  <div *ngIf="editMode">
-    <div *ngIf="selectedMatch">
-      <span>Match Id: {{ selectedMatch.match_id }}</span>
-    </div>
-    <div *ngFor="let round of getRoundsForTeam(1)">
-      <span *ngFor="let hole of round.holes">{{ hole.gross_score }},</span>
-    </div>
-    <div *ngFor="let round of getRoundsForTeam(2)">
-      <span *ngFor="let hole of round.holes">{{ hole.gross_score }},</span>
-    </div>
-
-    <button mat-raised-button color="accent">Submit</button>
+  <div class="content" *ngIf="editMode">
+    <span class="bold" style="margin-bottom: 12px" *ngIf="!isMatchDataInvalid()">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
+    <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">Post Scores</button>
   </div>
 
   <mat-spinner *ngIf="isLoading"></mat-spinner>

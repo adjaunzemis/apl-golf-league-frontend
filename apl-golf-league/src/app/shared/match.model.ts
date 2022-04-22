@@ -24,3 +24,28 @@ export interface MatchData {
   away_score: number;
   rounds: RoundData[];
 }
+
+export interface MatchInput {
+  match_id: number
+  flight_id: number
+  week: number
+  date_played: Date
+  home_score: number
+  away_score: number
+  rounds: RoundInput[]
+}
+
+export interface RoundInput {
+  team_id: number
+  golfer_id: number
+  golfer_playing_handicap?: number
+  course_id: number
+  track_id: number
+  tee_id: number
+  holes: HoleResultInput[]
+}
+
+export interface HoleResultInput {
+  hole_id: number
+  gross_score: number
+}

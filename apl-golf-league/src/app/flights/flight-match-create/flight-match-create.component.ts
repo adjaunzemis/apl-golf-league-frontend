@@ -11,12 +11,13 @@ import { CoursesService } from '../../courses/courses.service';
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { TeamData } from '../../shared/team.model';
 import { TeamGolferData } from '../../shared/golfer.model';
-import { MatchData, MatchSummary } from '../../shared/match.model';
+import { HoleResultInput, MatchData, MatchInput, MatchSummary, RoundInput } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
 import { Course } from '../../shared/course.model';
 import { Track } from '../../shared/track.model';
 import { Tee } from '../../shared/tee.model';
 import { HoleResultData } from '../../shared/hole-result.model';
+import { MatchesService } from '../../matches/matches.service';
 
 @Component({
   selector: 'app-flight-match-create',
@@ -79,7 +80,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   editMode = true;
 
-  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private coursesService: CoursesService, private route: ActivatedRoute) { }
+  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private coursesService: CoursesService, private matchesService: MatchesService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
@@ -615,4 +616,131 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
   }
 
+  postMatchRounds(): void {
+    if (!this.selectedFlight || !this.selectedMatch || !this.selectedCourse || !this.selectedTrack || !this.selectedWeek || !this.selectedDate
+      || !this.selectedTeam1 || !this.selectedTeam1Golfer1 || !this.selectedTeam1Golfer1Tee || !this.team1Golfer1Round || !this.selectedTeam1Golfer2 || !this.selectedTeam1Golfer2Tee || !this.team1Golfer2Round
+      || !this.selectedTeam2 || !this.selectedTeam2Golfer1 || !this.selectedTeam2Golfer1Tee || !this.team2Golfer1Round || !this.selectedTeam2Golfer2 || !this.selectedTeam2Golfer2Tee || !this.team2Golfer2Round) {
+      // TODO: throw error
+      console.error("Unable to post scores, incomplete data!");
+      return;
+    }
+    let rounds: RoundInput[] = [];
+    for (const round of [this.team1Golfer1Round, this.team1Golfer2Round]) {
+      let holes: HoleResultInput[] = [];
+      for (const hole of round.holes) {
+        const holeResultInput: HoleResultInput = {
+          hole_id: hole.hole_id,
+          gross_score: hole.gross_score
+        }
+        holes.push(holeResultInput);
+      }
+      const roundInput: RoundInput = {
+        team_id: this.selectedTeam1.id,
+        course_id: this.selectedCourse.id,
+        track_id: this.selectedTrack.id,
+        tee_id: round.tee_id,
+        golfer_id: round.golfer_id,
+        golfer_playing_handicap: round.golfer_playing_handicap,
+        holes: holes
+      };
+      rounds.push(roundInput);
+    }
+    for (const round of [this.team2Golfer1Round, this.team2Golfer2Round]) {
+      let holes: HoleResultInput[] = [];
+      for (const hole of round.holes) {
+        const holeResultInput: HoleResultInput = {
+          hole_id: hole.hole_id,
+          gross_score: hole.gross_score
+        }
+        holes.push(holeResultInput);
+      }
+      const roundInput: RoundInput = {
+        team_id: this.selectedTeam2.id,
+        course_id: this.selectedCourse.id,
+        track_id: this.selectedTrack.id,
+        tee_id: round.tee_id,
+        golfer_id: round.golfer_id,
+        golfer_playing_handicap: round.golfer_playing_handicap,
+        holes: holes
+      };
+      rounds.push(roundInput);
+    }
+    const matchInput: MatchInput = {
+      match_id: this.selectedMatch.match_id,
+      flight_id: this.selectedFlight.id,
+      week: this.selectedWeek,
+      date_played: this.selectedDate,
+      home_score: this.computeTeam1Score(), // TODO: Compute in backend
+      away_score: this.computeTeam2Score(), // TODO: Compute in backend
+      rounds: rounds
+    }
+    console.log(matchInput);
+    this.matchesService.postMatchRounds(matchInput).subscribe(result => {
+      console.log(result);
+    });
+    // TODO: reload match data and clear forms
+  }
+
+  computeTeam1Score(): number {
+    let score = 0;
+    const team1Round = this.getTeamRound(1);
+    const team2Round = this.getTeamRound(2);
+
+    for (let holeIdx = 0; holeIdx < 9; holeIdx++) {
+      const team1HoleScore = team1Round.holes[holeIdx].gross_score - team1Round.holes[holeIdx].handicap_strokes;
+      const team2HoleScore = team2Round.holes[holeIdx].gross_score - team2Round.holes[holeIdx].handicap_strokes;
+      if (team1HoleScore < team2HoleScore) {
+        score += 1;
+      } else if (team1HoleScore == team2HoleScore) {
+        score += 0.5;
+      }
+    }
+
+    const netScoreDiff = this.getNetScoreDifference(team1Round, team2Round);
+    if (netScoreDiff < 0) {
+      score += 2;
+    } else if (netScoreDiff == 0) {
+      score += 1;
+    }
+
+    return score;
+  }
+
+  computeTeam2Score(): number {
+    let score = 0;
+    const team1Round = this.getTeamRound(1);
+    const team2Round = this.getTeamRound(2);
+
+    for (let holeIdx = 0; holeIdx < 9; holeIdx++) {
+      const team1HoleScore = team1Round.holes[holeIdx].gross_score - team1Round.holes[holeIdx].handicap_strokes;
+      const team2HoleScore = team2Round.holes[holeIdx].gross_score - team2Round.holes[holeIdx].handicap_strokes;
+      if (team1HoleScore > team2HoleScore) {
+        score += 1;
+      } else if (team1HoleScore == team2HoleScore) {
+        score += 0.5;
+      }
+    }
+
+    const netScoreDiff = this.getNetScoreDifference(team1Round, team2Round);
+    if (netScoreDiff > 0) {
+      score += 2;
+    } else if (netScoreDiff == 0) {
+      score += 1;
+    }
+
+    return score;
+  }
+
+  isMatchDataInvalid(): boolean {
+    // TODO: also check for valid gross score entries
+    return (!this.selectedFlight || !this.selectedMatch || !this.selectedCourse || !this.selectedTrack || !this.selectedWeek || !this.selectedDate
+      || !this.selectedTeam1 || !this.selectedTeam1Golfer1 || !this.selectedTeam1Golfer1Tee || !this.team1Golfer1Round || !this.selectedTeam1Golfer2 || !this.selectedTeam1Golfer2Tee || !this.team1Golfer2Round
+      || !this.selectedTeam2 || !this.selectedTeam2Golfer1 || !this.selectedTeam2Golfer1Tee || !this.team2Golfer1Round || !this.selectedTeam2Golfer2 || !this.selectedTeam2Golfer2Tee || !this.team2Golfer2Round);
+  }
+
+  private getNetScoreDifference(team1Round: RoundData, team2Round: RoundData): number {
+    const team1NetScore = team1Round.holes.map(hole => hole.gross_score - hole.handicap_strokes).reduce((prev, next) => prev + next);
+    const team2NetScore = team2Round.holes.map(hole => hole.gross_score - hole.handicap_strokes).reduce((prev, next) => prev + next);
+    return team1NetScore - team2NetScore;
+  }
 }
