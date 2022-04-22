@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
+import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -10,12 +11,12 @@ import { CoursesService } from '../../courses/courses.service';
 import { FlightData, FlightInfo } from '../../shared/flight.model';
 import { TeamData } from '../../shared/team.model';
 import { TeamGolferData } from '../../shared/golfer.model';
+import { MatchData, MatchSummary } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
 import { Course } from '../../shared/course.model';
 import { Track } from '../../shared/track.model';
 import { Tee } from '../../shared/tee.model';
 import { HoleResultData } from '../../shared/hole-result.model';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-flight-match-create',
@@ -50,6 +51,14 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   selectedCourse: Course;
   selectedTrack: Track;
 
+  private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
+  weekOptions: string[] = [];
+
+  selectedWeek: number = 1;
+  selectedWeekMatches: MatchSummary[];
+
+  selectedMatch: MatchData | MatchSummary | null;
+
   selectedTeam1: TeamData;
   selectedTeam1Golfer1: TeamGolferData;
   selectedTeam1Golfer1Tee: Tee;
@@ -67,6 +76,8 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   team2Golfer2Round: RoundData | null;
 
   roundIdx = 0;
+
+  editMode = true;
 
   constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
@@ -135,6 +146,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
           break;
         }
       }
+      this.setWeekOptions();
+      this.selectedWeek = this.determineCurrentWeek();
+      this.setSelectedWeekMatches();
     });
 
     // Gather initial data
@@ -206,6 +220,65 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     console.log(`[FlightMatchCreateComponent] Selected flight: ${this.selectedFlightInfo.name} (${this.selectedFlightInfo.year})`);
     this.isLoading = true;
     this.flightsService.getFlight(this.selectedFlightInfo.id);
+  }
+
+  onSelectedWeekChanged(selectedWeekChange: MatSelectChange): void {
+    this.selectedWeek = parseInt((selectedWeekChange.value as string).split(' ')[0]);
+    this.setSelectedWeekMatches();
+  }
+
+  private determineCurrentWeek(): number {
+    if (this.currentDate < this.selectedFlight.start_date) {
+      return 1;
+    } else {
+      for (let week = this.selectedFlight.weeks; week > 1; week--) {
+        let weekStartDate = new Date(this.selectedFlight.start_date);
+        weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
+        if (this.currentDate >= weekStartDate) {
+          return week;
+        }
+      }
+    }
+    return 1; // fall-through case, shouldn't be reachable
+  }
+
+  private setWeekOptions(): void {
+    this.weekOptions = [];
+    for (let week = 1; week <= this.selectedFlight.weeks; week++) {
+      let weekStartDate = new Date(this.selectedFlight.start_date);
+      weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
+
+      let nextWeekStartDate = new Date(weekStartDate);
+      nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
+
+      this.weekOptions.push(week + ": " + weekStartDate.toLocaleString('default', { month: 'short' }) + " " + weekStartDate.getDate() + " - " + nextWeekStartDate.toLocaleString('default', { month: 'short' }) + " " + nextWeekStartDate.getDate());
+    }
+  }
+
+  private setSelectedWeekMatches(): void {
+    this.selectedMatch = null;
+
+    this.selectedWeekMatches = [];
+    if (this.selectedFlight.matches) {
+      for (let match of this.selectedFlight.matches) {
+        if (match.week === this.selectedWeek) {
+          this.selectedWeekMatches.push(match);
+        }
+      }
+    }
+  }
+
+  onMatchSelected(match: MatchSummary) {
+    this.selectedMatch = match;
+    if (this.selectedFlight.teams) {
+      for (const team of this.selectedFlight.teams) {
+        if (team.id === match.home_team_id) {
+          this.selectedTeam1 = team;
+        } else if (team.id === match.away_team_id) {
+          this.selectedTeam2 = team;
+        }
+      }
+    }
   }
 
   onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {
@@ -421,7 +494,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
-      holes: this.createHoleResultDataForRound(teamFirstRoundTee, Math.max(teamHandicap, 0))
+      holes: this.createHoleResultDataForTeam(teamGolferRounds, Math.max(teamHandicap, 0))
     }
     return teamRound;
   }
@@ -451,7 +524,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
-      holes: this.createHoleResultDataForRound(tee, playingHandicap)
+      holes: this.createPlaceholderHoleResultDataForRound(tee, playingHandicap)
     };
   }
 
@@ -484,7 +557,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return teePar;
   }
 
-  private createHoleResultDataForRound(tee: Tee, playingHandicap: number | undefined): HoleResultData[] {
+  private createPlaceholderHoleResultDataForRound(tee: Tee, playingHandicap: number | undefined): HoleResultData[] {
     let holeResultData: HoleResultData[] = [];
     for (const hole of tee.holes) {
       holeResultData.push({
@@ -498,6 +571,33 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
         stroke_index: hole.stroke_index,
         handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
         gross_score: 0, // TODO: remove placeholder?
+        adjusted_gross_score: 0, // TODO: remove placeholder?
+        net_score: 0 // TODO: remove placeholder?
+      });
+    }
+    return holeResultData;
+  }
+
+  private createHoleResultDataForTeam(rounds: RoundData[], playingHandicap: number | undefined): HoleResultData[] {
+    let holeResultData: HoleResultData[] = [];
+    for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
+      let grossScore = 0;
+      for (const round of rounds) {
+        grossScore += round.holes[holeIdx].gross_score;
+      }
+
+      const hole = rounds[0].holes[holeIdx];
+      holeResultData.push({
+        hole_result_id: -1, // TODO: remove placeholder?
+        round_id: -1, // TODO: remove placeholder?
+        tee_id: hole.tee_id,
+        hole_id: hole.hole_id,
+        number: hole.number,
+        par: hole.par,
+        yardage: hole.yardage,
+        stroke_index: hole.stroke_index,
+        handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
+        gross_score: grossScore,
         adjusted_gross_score: 0, // TODO: remove placeholder?
         net_score: 0 // TODO: remove placeholder?
       });
