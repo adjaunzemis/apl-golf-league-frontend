@@ -49,6 +49,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.golferSub = this.golfersService.getGolferUpdateListener()
       .subscribe((result: GolferData) => {
         console.log(`[GolferHomeComponent] Received golfer data`);
+        console.log(result);
         this.golfer = result;
         if (result.member_since) {
           const oldestYear = result.member_since;
@@ -118,7 +119,14 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   }
 
   private getGolferData(): void {
-    this.golfersService.getGolfer(this.golferId);
+    const prevSunday = this.getActiveHandicapDeadline(new Date());
+    this.golfersService.getGolfer(this.golferId, prevSunday);
+  }
+
+  private getActiveHandicapDeadline(d: Date): Date {
+    var t = new Date(d);
+    t.setDate(t.getDate() - t.getDay()); // previous Sunday
+    return t;
   }
 
   toggleShowHandicapData(): void {

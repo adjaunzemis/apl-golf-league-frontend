@@ -19,9 +19,8 @@
         <span *ngIf="golfer.handicap_index_data.active_handicap_index; else noActiveHandicapIndex">{{ golfer.handicap_index_data.active_handicap_index | number:'1.1-1' }}</span>
         <ng-template #noActiveHandicapIndex>--</ng-template>
         <span *ngIf="golfer.handicap_index_data.pending_handicap_index">
-          <span> (</span>
+          <span>, </span>
           <span class="italic">Pending: {{ golfer.handicap_index_data.pending_handicap_index | number:'1.1-1' }}</span>
-          <span>)</span>
         </span>
       </div>
       <ng-template #noHandicapData>

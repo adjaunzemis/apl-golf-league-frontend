@@ -57,8 +57,13 @@ export class GolfersService {
     return this.golfersDataUpdated.asObservable();
   }
 
-  getGolfer(id: number): void {
-    this.http.get<GolferData>(environment.apiUrl + `golfers/${id}`)
+  getGolfer(id: number, max_date?: Date): void {
+    let params = `${id}`
+    if (max_date) {
+      params += `?max_date=${max_date.toISOString().split('T')[0]}`
+    }
+    console.log(environment.apiUrl + `golfers/` + params);
+    this.http.get<GolferData>(environment.apiUrl + `golfers/` + params)
       .subscribe(result => {
         this.golferData = result;
         this.golferDataUpdated.next(this.golferData);
