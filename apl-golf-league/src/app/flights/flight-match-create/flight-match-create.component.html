@@ -80,8 +80,8 @@
   <div class="card-container" *ngIf="selectedFlight">
     <div class="card card-small selectable" [ngClass]="selectedMatch === match ? 'selected' : ''" (click)="onMatchSelected(match)" *ngFor="let match of selectedWeekMatches">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
-      <span *ngIf="match.home_score && match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
-      <span class="italic" *ngIf="!match.home_score || !match.away_score">TBD</span>
+      <span *ngIf="match.home_score || match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
+      <span class="italic" *ngIf="!match.home_score && !match.away_score">TBD</span>
     </div>
   </div>
 
