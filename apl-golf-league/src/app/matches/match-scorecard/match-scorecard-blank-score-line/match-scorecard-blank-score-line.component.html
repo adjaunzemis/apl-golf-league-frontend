@@ -8,14 +8,14 @@
       <td class="total">
         <ng-container *ngIf="getNetScoreDifference() !== 0; else tie">
           <div class="total-score">
-            <div [ngClass]="{'arrow-up' : getNetScoreDifference() < 0, 'arrow-down' : getNetScoreDifference() > 0}"></div>
-            <div [ngClass]="{'arrow-up' : getNetScoreDifference() < 0, 'arrow-down' : getNetScoreDifference() > 0}"></div>
+            <div *ngIf="editMode" [ngClass]="{'arrow-up' : getNetScoreDifference() < 0, 'arrow-down' : getNetScoreDifference() > 0}"></div>
+            <div *ngIf="editMode" [ngClass]="{'arrow-up' : getNetScoreDifference() < 0, 'arrow-down' : getNetScoreDifference() > 0}"></div>
           </div>
         </ng-container>
         <ng-template #tie>
           <div class="total-score">
-            <div class="arrow-up"></div>
-            <div class="arrow-down"></div>
+            <div *ngIf="editMode" class="arrow-up"></div>
+            <div *ngIf="editMode" class="arrow-down"></div>
           </div>
         </ng-template>
       </td>

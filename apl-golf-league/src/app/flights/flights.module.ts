@@ -15,6 +15,7 @@ import { ErrorModule } from "../shared/error/error.module";
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightScheduleMatrixComponent } from "./flight-schedule-matrix/flight-schedule-matrix.component";
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
+import { FlightMatchScorecardComponent } from './flight-match-create/flight-match-scorecard.component';
 import { DivisionsModule } from "../divisions/divisions.module";
 import { PaymentsModule } from "../payments/payments.module";
 import { ScorecardModule } from "../shared/scorecard/scorecard.module";
@@ -30,6 +31,7 @@ import { ScorecardModule } from "../shared/scorecard/scorecard.module";
     FlightSignupComponent,
     FlightScheduleComponent,
     FlightScheduleMatrixComponent,
+    FlightMatchScorecardComponent,
     FlightMatchCreateComponent
   ],
   imports: [

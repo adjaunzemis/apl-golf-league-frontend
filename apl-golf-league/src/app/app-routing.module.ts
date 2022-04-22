@@ -7,6 +7,7 @@ import { FlightHomeComponent } from "./flights/flight-home/flight-home.component
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from "./flights/team-home/team-home.component";
 import { FlightSignupComponent } from "./flights/flight-signup/flight-signup.component";
+import { FlightMatchScorecardComponent } from "./flights/flight-match-create/flight-match-scorecard.component";
 import { FlightMatchCreateComponent } from "./flights/flight-match-create/flight-match-create.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
@@ -28,7 +29,12 @@ const routes: Routes = [
   { path: "flight/team", component: TeamHomeComponent },
   { path: "flight/signup", component: FlightSignupComponent},
   { path: "flight/history", component: FlightHistoryComponent },
-  { path: "flight/match/scorecard", component: FlightMatchCreateComponent },
+  { path: "flight/match/scorecard", component: FlightMatchScorecardComponent },
+  {
+    path: "flight/match/edit",
+    component: FlightMatchCreateComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: "payments",
     component: PaymentsListComponent,
