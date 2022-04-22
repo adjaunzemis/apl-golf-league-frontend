@@ -9,6 +9,9 @@
     <li *ngIf="isAuthenticated && currentUser?.is_admin">
       <a mat-button routerLink="/golfer/qualifying" routerLinkActive="mat-accent">Qualifying</a>
     </li>
+    <li *ngIf="isAuthenticated && currentUser?.edit_flights">
+      <a mat-button routerLink="/flight/match/edit" routerLinkActive="mat-accent">Post Scores</a>
+    </li>
     <li *ngIf="isAuthenticated && currentUser?.edit_payments">
       <a mat-button routerLink="/payments" routerLinkActive="mat-accent">Payments</a>
     </li>
