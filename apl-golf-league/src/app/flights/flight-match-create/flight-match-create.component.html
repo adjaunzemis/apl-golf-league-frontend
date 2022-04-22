@@ -174,7 +174,7 @@
     </ng-container>
   </div>
 
-  <div class="full-width" *ngIf="team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
+  <div class="full-width" *ngIf="selectedTeam1 && team1Golfer1Round && team1Golfer2Round && selectedTeam2 && team2Golfer1Round && team2Golfer2Round">
     <app-scorecard-title-line [rounds]="getRounds()" [title]="getMatchTitle()" [subtitle]="getMatchSubtitle()"></app-scorecard-title-line>
 
     <app-scorecard-hole-line [holeResultData]="getRounds()[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>

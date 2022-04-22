@@ -60,20 +60,20 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   selectedMatch: MatchData | MatchSummary | null;
 
-  selectedTeam1: TeamData;
-  selectedTeam1Golfer1: TeamGolferData;
-  selectedTeam1Golfer1Tee: Tee;
+  selectedTeam1: TeamData | null;
+  selectedTeam1Golfer1: TeamGolferData | null;
+  selectedTeam1Golfer1Tee: Tee | null;
   team1Golfer1Round: RoundData | null;
-  selectedTeam1Golfer2: TeamGolferData;
-  selectedTeam1Golfer2Tee: Tee;
+  selectedTeam1Golfer2: TeamGolferData | null;
+  selectedTeam1Golfer2Tee: Tee | null;
   team1Golfer2Round: RoundData | null;
 
-  selectedTeam2: TeamData;
-  selectedTeam2Golfer1: TeamGolferData;
-  selectedTeam2Golfer1Tee: Tee;
+  selectedTeam2: TeamData | null;
+  selectedTeam2Golfer1: TeamGolferData | null;
+  selectedTeam2Golfer1Tee: Tee | null;
   team2Golfer1Round: RoundData | null;
-  selectedTeam2Golfer2: TeamGolferData;
-  selectedTeam2Golfer2Tee: Tee;
+  selectedTeam2Golfer2: TeamGolferData | null;
+  selectedTeam2Golfer2Tee: Tee | null;
   team2Golfer2Round: RoundData | null;
 
   roundIdx = 0;
@@ -150,6 +150,8 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       this.setWeekOptions();
       this.selectedWeek = this.determineCurrentWeek();
       this.setSelectedWeekMatches();
+      this.clearSelectedTeam(1);
+      this.clearSelectedTeam(2);
     });
 
     // Gather initial data
@@ -270,6 +272,8 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onMatchSelected(match: MatchSummary) {
+    this.clearSelectedTeam(1);
+    this.clearSelectedTeam(2);
     this.selectedMatch = match;
     if (this.selectedFlight.teams) {
       for (const team of this.selectedFlight.teams) {
@@ -283,6 +287,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {
+    this.selectedMatch = null;
     this.clearMatchRounds();
     const selectedTeam = selection.value as TeamData;
     console.log(`[FlightMatchCreateComponent] Selected team ${teamNum}: ${selectedTeam.name}`);
@@ -388,7 +393,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   createMatchRounds(): void {
-    if (this.checkValidSelections()) {
+    if (this.selectedCourse && this.selectedTrack && this.selectedTeam1 && this.selectedTeam1Golfer1 && this.selectedTeam1Golfer1Tee && this.selectedTeam1Golfer2 && this.selectedTeam1Golfer2Tee && this.selectedTeam2 && this.selectedTeam2Golfer1 && this.selectedTeam2Golfer1Tee && this.selectedTeam2Golfer2 && this.selectedTeam2Golfer2Tee) {
       this.team1Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam1Golfer1Tee, this.selectedTeam1, this.selectedTeam1Golfer1);
       this.team2Golfer1Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam2Golfer1Tee, this.selectedTeam2, this.selectedTeam2Golfer1);
       this.team1Golfer2Round = this.createRound(this.selectedCourse, this.selectedTrack, this.selectedTeam1Golfer2Tee, this.selectedTeam1, this.selectedTeam1Golfer2);
@@ -485,13 +490,13 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       course_name: this.selectedCourse.name,
       track_id: this.selectedTrack.id,
       track_name: this.selectedTrack.name,
-      tee_id: teamFirstRoundTee.id,
-      tee_name: teamFirstRoundTee.name,
-      tee_gender: teamFirstRoundTee.gender,
-      tee_rating: teamFirstRoundTee.rating,
-      tee_slope: teamFirstRoundTee.slope,
-      tee_par: this.computeTeePar(teamFirstRoundTee),
-      tee_color: teamFirstRoundTee.color,
+      tee_id: teamFirstRoundTee ? teamFirstRoundTee.id : -1,
+      tee_name: teamFirstRoundTee ? teamFirstRoundTee.name : 'n/a',
+      tee_gender: teamFirstRoundTee ? teamFirstRoundTee.gender : 'n/a',
+      tee_rating: teamFirstRoundTee ? teamFirstRoundTee.rating : -1,
+      tee_slope: teamFirstRoundTee ? teamFirstRoundTee.slope : -1,
+      tee_par: teamFirstRoundTee ? this.computeTeePar(teamFirstRoundTee) : -1,
+      tee_color: teamFirstRoundTee ? teamFirstRoundTee.color : 'n/a',
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
@@ -674,11 +679,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       away_score: this.computeTeam2Score(), // TODO: Compute in backend
       rounds: rounds
     }
-    console.log(matchInput);
     this.matchesService.postMatchRounds(matchInput).subscribe(result => {
       console.log(result);
+      // Reload form data after successful submission
+      this.loadFlightData();
+      // TODO: Clear form data
     });
-    // TODO: reload match data and clear forms
   }
 
   computeTeam1Score(): number {
@@ -732,7 +738,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   isMatchDataInvalid(): boolean {
-    // TODO: also check for valid gross score entries
+    // TODO: also check for valid gross score entries (positive-definite, not above 2*par+handicap)
     return (!this.selectedFlight || !this.selectedMatch || !this.selectedCourse || !this.selectedTrack || !this.selectedWeek || !this.selectedDate
       || !this.selectedTeam1 || !this.selectedTeam1Golfer1 || !this.selectedTeam1Golfer1Tee || !this.team1Golfer1Round || !this.selectedTeam1Golfer2 || !this.selectedTeam1Golfer2Tee || !this.team1Golfer2Round
       || !this.selectedTeam2 || !this.selectedTeam2Golfer1 || !this.selectedTeam2Golfer1Tee || !this.team2Golfer1Round || !this.selectedTeam2Golfer2 || !this.selectedTeam2Golfer2Tee || !this.team2Golfer2Round);
@@ -743,4 +749,49 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     const team2NetScore = team2Round.holes.map(hole => hole.gross_score - hole.handicap_strokes).reduce((prev, next) => prev + next);
     return team1NetScore - team2NetScore;
   }
+
+  private clearSelectedTeam(teamNum: number) {
+    this.clearSelectedGolfer(teamNum, 1);
+    this.clearSelectedGolfer(teamNum, 2);
+    if (teamNum === 1) {
+      this.selectedTeam1 = null;
+    } else {
+      this.selectedTeam2 = null;
+    }
+  }
+
+  private clearSelectedGolfer(teamNum: number, golferNum: number) {
+    this.clearSelectedGolferTees(teamNum, golferNum);
+    if (teamNum === 1) {
+      if (golferNum === 1) {
+        this.selectedTeam1Golfer1 = null;
+      } else {
+        this.selectedTeam1Golfer2 = null;
+      }
+    } else {
+      if (golferNum === 1) {
+        this.selectedTeam2Golfer1 = null;
+      } else {
+        this.selectedTeam2Golfer2 = null;
+      }
+    }
+  }
+
+  private clearSelectedGolferTees(teamNum: number, golferNum: number) {
+    this.clearMatchRounds();
+    if (teamNum === 1) {
+      if (golferNum === 1) {
+        this.selectedTeam1Golfer1Tee = null;
+      } else {
+        this.selectedTeam1Golfer2Tee = null;
+      }
+    } else {
+      if (golferNum === 1) {
+        this.selectedTeam2Golfer1Tee = null;
+      } else {
+        this.selectedTeam2Golfer2Tee = null;
+      }
+    }
+  }
+
 }
