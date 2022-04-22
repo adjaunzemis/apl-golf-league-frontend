@@ -186,7 +186,7 @@
 
     <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(1)" scoreMode="gross" [showScores]="editMode" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
-    <app-match-scorecard-blank-score-line></app-match-scorecard-blank-score-line>
+    <app-match-scorecard-blank-score-line [editMode]="editMode" [topTeamRound]="getTeamRound(1)" [bottomTeamRound]="getTeamRound(2)"></app-match-scorecard-blank-score-line>
 
     <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(2)" scoreMode="gross" [showScores]="editMode" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
