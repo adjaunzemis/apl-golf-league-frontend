@@ -10,7 +10,7 @@
           <div [ngClass]="hole.handicap_strokes > 0 ? 'black-dot' : 'red-dot'" *ngFor="let hs of [].constructor(abs(hole.handicap_strokes))"></div>
         </div>
         <div class="hole-score">
-          <div [ngClass]="{'circle' : getHoleRelativeScore(hole) < 0, 'square' : getHoleRelativeScore(hole) > 0, 'crosshatch' : (getHoleRelativeScore(hole) > 1) || (getHoleRelativeScore(hole) < -1)}" *ngIf="showScores">
+          <div [ngClass]="{'circle' : !teamScore && (getHoleRelativeScore(hole) < 0), 'square' : !teamScore && (getHoleRelativeScore(hole) > 0), 'crosshatch' : !teamScore && ((getHoleRelativeScore(hole) > 1) || (getHoleRelativeScore(hole) < -1))}" *ngIf="showScores">
             {{ getHoleScore(hole) }}
           </div>
           <div *ngIf="enterScores">
@@ -19,7 +19,8 @@
         </div>
       </td>
       <td class="total" rowspan="2">
-        <span *ngIf="showScores || enterScores">{{ getRoundScore() }} ({{ getRelativeScoreString() }})</span>
+        <span *ngIf="showScores || enterScores">{{ getRoundScore() }}</span>
+        <span *ngIf="!teamScore && (showScores || enterScores)"> ({{ getRelativeScoreString() }})</span>
       </td>
     </tr>
     <tr>

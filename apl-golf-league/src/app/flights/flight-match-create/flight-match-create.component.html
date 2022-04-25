@@ -190,11 +190,11 @@
       <app-scorecard-score-line [(round)]="getRoundsForTeam(1)[roundIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
 
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(1)" scoreMode="gross" [showScores]="editMode" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(1)" scoreMode="gross" [teamScore]="true" [showScores]="editMode" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
     <app-match-scorecard-blank-score-line [editMode]="editMode" [topTeamRound]="getTeamRound(1)" [bottomTeamRound]="getTeamRound(2)"></app-match-scorecard-blank-score-line>
 
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(2)" scoreMode="gross" [showScores]="editMode" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(2)" scoreMode="gross" [teamScore]="true"  [showScores]="editMode" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
 
     <ng-container *ngFor="let round of getRoundsForTeam(2); let roundIdx = index">
       <app-scorecard-score-line [round]="getRoundsForTeam(2)[roundIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>

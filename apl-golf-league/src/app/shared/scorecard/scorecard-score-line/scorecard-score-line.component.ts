@@ -20,6 +20,7 @@ export class ScorecardScoreLineComponent {
 
   @Input() showScores: boolean = true;
   @Input() enterScores: boolean = false;
+  @Input() teamScore: boolean = false;
 
   onHoleScoreChanged(): void {
     this.roundChange.emit(this.round);
