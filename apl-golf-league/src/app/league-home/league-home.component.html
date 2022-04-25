@@ -60,7 +60,14 @@
     <a class="card selectable" routerLink="/flight" [queryParams]="{id: flight.id}" *ngFor="let flight of currentFlights">
       <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="50" *ngIf="flight.logo_url">
 
-      <span class="bold">{{ flight.name }} ({{ flight.year }})</span>
+      <div style="width: 70%; text-align: center">
+        <div class="bold">
+          <span>{{ flight.name }} ({{ flight.year }})</span>
+        </div>
+        <div>
+          <span>{{ flight.course }}</span>
+        </div>
+      </div>
 
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
@@ -86,7 +93,17 @@
     <a class="card selectable" routerLink="/tournament" [queryParams]="{id: tournament.id}" *ngFor="let tournament of currentTournaments">
       <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="50" *ngIf="tournament.logo_url">
 
-      <span class="bold">{{ tournament.name }} ({{ tournament.year }})</span>
+      <div style="width: 70%; text-align: center">
+        <div class="bold">
+          <span>{{ tournament.name }} ({{ tournament.year }})</span>
+        </div>
+        <div>
+          <span>{{ tournament.date | date:'mediumDate' }} {{ tournament.date | date:'shortTime' }}</span>
+        </div>
+        <div>
+          <span>{{ tournament.course }}</span>
+        </div>
+      </div>
 
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
