@@ -61,7 +61,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   updatePaymentInfo(): void {
     if (this.updatedPayment) {
       this.paymentsService.updateLeagueDuesPayment(this.updatedPayment).subscribe(result => {
-        console.log(`Updated payment id=${result.id}`);
+        console.log(`[PaymentsListComponent] Updated payment id=${result.id}`);
 
         // Update item in list
         let payment = this.leagueDuesPayments.find(entry => entry.id === result.id);

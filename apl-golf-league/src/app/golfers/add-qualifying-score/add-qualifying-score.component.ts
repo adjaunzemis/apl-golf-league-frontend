@@ -262,7 +262,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     // Submit qualifying score data twice (need two score differentials for handicap index)
     this.golfersService.postQualifyingScore(qualifyingScore).subscribe(result => {
       this.golfersService.postQualifyingScore(qualifyingScore).subscribe(result => {
-        console.log(`Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
+        console.log(`[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
         this.clearForm();
         this.isLoading = true;
         this.golfersService.getAllGolfers();
@@ -317,7 +317,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     // Submit qualifying score data twice (need two score differentials for handicap index)
     this.golfersService.postQualifyingScore(qualifyingScoreRound1).subscribe(result => {
       this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe(result => {
-        console.log(`Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
+        console.log(`[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`);
         this.clearForm();
         this.isLoading = true;
         this.golfersService.getAllGolfers();

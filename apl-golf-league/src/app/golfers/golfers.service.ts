@@ -62,7 +62,6 @@ export class GolfersService {
     if (max_date) {
       params += `?max_date=${max_date.toISOString().split('T')[0]}`
     }
-    console.log(environment.apiUrl + `golfers/` + params);
     this.http.get<GolferData>(environment.apiUrl + `golfers/` + params)
       .subscribe(result => {
         this.golferData = result;

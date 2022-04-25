@@ -34,7 +34,7 @@ export class PaypalComponent implements OnInit {
         onApprove: async (data: any, actions: any) => {
           const order = await actions.order.capture();
           this.paidFor = true;
-          console.log(order);
+          // console.log(order);
         },
         onError: (err: any) => {
           console.error(err);

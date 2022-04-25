@@ -49,7 +49,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.golferSub = this.golfersService.getGolferUpdateListener()
       .subscribe((result: GolferData) => {
         console.log(`[GolferHomeComponent] Received golfer data`);
-        console.log(result);
         this.golfer = result;
         if (result.member_since) {
           const oldestYear = result.member_since;

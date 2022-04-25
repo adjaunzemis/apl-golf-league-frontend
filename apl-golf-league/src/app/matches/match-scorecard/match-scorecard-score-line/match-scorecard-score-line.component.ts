@@ -82,11 +82,8 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
 
     const teamHandicapDiff = topTeamHandicap - bottomTeamHandicap;
     const teamHandicapRem = Math.abs(teamHandicapDiff) % 9;
-    console.log("Hcp Diff: " + teamHandicapDiff);
-    console.log("Hcp Rem: " + teamHandicapRem);
 
     const baseHandicapStrokes = Math.sign(teamHandicapDiff) * Math.floor(Math.abs(teamHandicapDiff / 9.0));
-    console.log("Base Strokes: " + baseHandicapStrokes);
 
     // Determine hole winners
     // Compare net scores, accounting for handicap stroke adjustment
@@ -119,8 +116,6 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
       } else if (holeScoreDiff > 0) {
         this.holeWinningTeamIds[holeIdx] = this.bottomTeamId;
       }
-
-      console.log("Hole: " + (holeIdx + 1) + ", Eff SI: " + holeStrokeIndex + ", Hcp: " + holeHandicapStrokes + ", SD: " + holeScoreDiff + ", Id: " + this.holeWinningTeamIds[holeIdx]);
     }
   }
 

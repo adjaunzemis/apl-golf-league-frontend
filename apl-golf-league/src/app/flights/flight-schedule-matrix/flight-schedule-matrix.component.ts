@@ -58,8 +58,6 @@ export class FlightScheduleMatrixComponent implements OnInit {
       }
     }
     this.teamNames = Object.keys(this.teamNumbers);
-    console.log(this.teamNumbers);
-    console.log(this.teamOpponents);
   }
 
   private determineCurrentWeek(): number {
