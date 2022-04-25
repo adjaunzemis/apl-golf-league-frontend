@@ -627,11 +627,11 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   postMatchRounds(): void {
-    if (!this.selectedFlight || !this.selectedMatch || !this.selectedCourse || !this.selectedTrack || !this.selectedWeek || !this.selectedDate
+    if (this.isMatchDataInvalid() || !this.selectedFlight || !this.selectedMatch || !this.selectedCourse || !this.selectedTrack || !this.selectedWeek || !this.selectedDate
       || !this.selectedTeam1 || !this.selectedTeam1Golfer1 || !this.selectedTeam1Golfer1Tee || !this.team1Golfer1Round || !this.selectedTeam1Golfer2 || !this.selectedTeam1Golfer2Tee || !this.team1Golfer2Round
       || !this.selectedTeam2 || !this.selectedTeam2Golfer1 || !this.selectedTeam2Golfer1Tee || !this.team2Golfer1Round || !this.selectedTeam2Golfer2 || !this.selectedTeam2Golfer2Tee || !this.team2Golfer2Round) {
       // TODO: throw error
-      console.error("Unable to post scores, incomplete data!");
+      console.error("Unable to post scores, incomplete or invalid data!");
       return;
     }
     let rounds: RoundInput[] = [];
@@ -743,7 +743,19 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   isMatchDataInvalid(): boolean {
-    // TODO: also check for valid gross score entries (positive-definite, not above 2*par+handicap)
+    // Check for valid gross score entries (positive-definite, not above 2*par+handicap)
+    for (const round of [this.team1Golfer1Round, this.team1Golfer2Round, this.team2Golfer1Round, this.team2Golfer2Round]) {
+      if (!round) {
+        return true;
+      }
+      for (const hole of round.holes) {
+        if (hole.gross_score < 1 || hole.gross_score > (2 * hole.par + hole.handicap_strokes)) {
+          return true;
+        }
+      }
+    }
+
+    // Check other entries for validity
     return (!this.selectedFlight || !this.selectedMatch || !this.selectedCourse || !this.selectedTrack || !this.selectedWeek || !this.selectedDate
       || !this.selectedTeam1 || !this.selectedTeam1Golfer1 || !this.selectedTeam1Golfer1Tee || !this.team1Golfer1Round || !this.selectedTeam1Golfer2 || !this.selectedTeam1Golfer2Tee || !this.team1Golfer2Round
       || !this.selectedTeam2 || !this.selectedTeam2Golfer1 || !this.selectedTeam2Golfer1Tee || !this.team2Golfer1Round || !this.selectedTeam2Golfer2 || !this.selectedTeam2Golfer2Tee || !this.team2Golfer2Round);
