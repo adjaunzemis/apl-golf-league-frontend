@@ -39,17 +39,17 @@ export class AuthService {
       return;
     }
 
-    const userData: {id: string, username: string, email: string, name: string, disabled: string, is_admin: string, edit_flights: string, edit_tournaments: string, edit_payments: string, _token: string,  _tokenExpirationDate: Date} = JSON.parse(userDataStr);
+    const userData: {id: string, username: string, email: string, name: string, disabled: boolean, is_admin: boolean, edit_flights: boolean, edit_tournaments: boolean, edit_payments: boolean, _token: string,  _tokenExpirationDate: Date} = JSON.parse(userDataStr);
     const loadedUser: User = new User(
       +userData.id,
       userData.username,
       userData.email,
       userData.name,
-      userData.disabled === 'true',
-      userData.is_admin === 'true',
-      userData.edit_flights === 'true',
-      userData.edit_tournaments === 'true',
-      userData.edit_payments === 'true',
+      userData.disabled,
+      userData.is_admin,
+      userData.edit_flights,
+      userData.edit_tournaments,
+      userData.edit_payments,
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
