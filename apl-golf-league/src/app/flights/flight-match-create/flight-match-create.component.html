@@ -14,15 +14,21 @@
       <li>Select the anticipated date of the match.</li>
       <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
         <ul>
-          <li>Using "Match Scorecard" from flight homepage auto-populates these values.</li>
+          <li>Navigating here from "Match Scorecard" card on flight homepage auto-populates these values.</li>
         </ul>
       <li>On the left side, select a team.</li>
+        <ul>
+          <li>Tip: Use the weekly match cards to select both teams for a match.</li>
+        </ul>
       <li>Select the two golfers who will play for the first team.</li>
         <ul>
           <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
           <li>Otherwise, select the tees each golfer will play.</li>
         </ul>
       <li>On the right side, repeat the above process for the second team.</li>
+      <ul>
+        <li>Tip: Use the weekly match cards to select both teams for a match.</li>
+      </ul>
       <li>Once all required information has been entered, click "Generate Scorecard".</li>
         <ul>
           <li>The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the tee rating/slope.</li>
@@ -80,8 +86,8 @@
   <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
     <div class="card card-small selectable match-summary-card" [ngClass]="selectedMatch === match ? 'selected' : ''" (click)="onMatchSelected(match)" *ngFor="let match of selectedWeekMatches">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
-      <span *ngIf="match.home_score || match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
-      <span class="italic" *ngIf="!match.home_score && !match.away_score">TBD</span>
+      <span *ngIf="editMode && (match.home_score || match.away_score)">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
+      <span class="italic" *ngIf="editMode && !match.home_score && !match.away_score">TBD</span>
     </div>
   </div>
 
