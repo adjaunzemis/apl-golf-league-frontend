@@ -5,7 +5,7 @@
     <span>Match Scorecard</span>
   </h1>
 
-  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions" *ngIf="!hideForPrint">
+  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions" *ngIf="!editMode && !hideForPrint">
     <span class="bold">Instructions</span>
   </div>
 
@@ -201,7 +201,7 @@
     </ng-container>
   </div>
 
-  <div class="content" *ngIf="editMode && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
+  <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
     <span class="bold" style="margin-bottom: 12px;" *ngIf="!isMatchDataInvalid()">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
     <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="isMatchDataInvalid()">Check hole-by-hole scores, must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
     <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">Post Scores</button>
