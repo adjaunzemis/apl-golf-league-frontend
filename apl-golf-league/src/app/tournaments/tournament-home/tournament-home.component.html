@@ -26,9 +26,25 @@
       <span>{{ tournament.secretary }}</span>
     </a>
 
+    <a class="card card-small" *ngIf="tournament.members_entry_fee || tournament.non_members_entry_fee">
+      <span class="bold">Fee (Member / Non-Member)</span>
+      <span>{{ tournament.members_entry_fee | currency:'USD' }} / {{ tournament.non_members_entry_fee | currency:'USD' }} </span>
+    </a>
+
     <a href="mailto:{{ getTournamentEmailList() }}" class="card card-small selectable">
       <span class="bold">Contact All Members</span>
     </a>
+  </div>
+
+  <h2>Format</h2>
+
+  <div class="card-container">
+    <div class="card card-small bold" *ngIf="tournament.shotgun">Shotgun Start</div>
+    <div class="card card-small bold" *ngIf="tournament.strokeplay">Strokeplay</div>
+    <div class="card card-small bold" *ngIf="tournament.bestball">Team Best-Ball</div>
+    <div class="card card-small bold" *ngIf="tournament.scramble">Scramble</div>
+    <div class="card card-small bold" *ngIf="tournament.ryder_cup">Ryder Cup</div>
+    <div class="card card-small bold" *ngIf="tournament.chachacha">Cha-Cha-Cha</div>
   </div>
 
   <app-division-list [divisions]="tournament.divisions"></app-division-list>

@@ -16,6 +16,13 @@ export interface TournamentData {
     non_members_entry_fee: number
     divisions: DivisionData[]
     teams: TournamentTeamData[]
+    shotgun: boolean
+    strokeplay: boolean
+    bestball: boolean
+    scramble: boolean
+    ryder_cup: boolean
+    individual: boolean
+    chachacha: boolean
 }
 
 export interface TournamentInfo {
@@ -31,4 +38,11 @@ export interface TournamentInfo {
   non_members_entry_fee: number
   course: string
   logo_url?: string
+  shotgun: boolean
+  strokeplay: boolean
+  bestball: boolean
+  scramble: boolean
+  ryder_cup: boolean
+  individual: boolean
+  chachacha: boolean
 }
