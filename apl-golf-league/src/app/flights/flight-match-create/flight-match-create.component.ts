@@ -171,10 +171,14 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   onSelectedDateChanged(event: MatDatepickerInputEvent<Date>): void {
-    this.clearMatchRounds();
     if (event.value !== null) {
       console.log(`[FlightMatchCreateComponent] Selected date: ${event.value}`);
       this.selectedDate = event.value;
+      for (let round of [this.team1Golfer1Round, this.team1Golfer2Round, this.team2Golfer1Round, this.team2Golfer2Round]) {
+        if (round) {
+          round.date_played = this.selectedDate;
+        }
+      }
     }
   }
 
@@ -683,7 +687,6 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       console.log(result);
       // Reload form data after successful submission
       this.loadFlightData();
-      // TODO: Clear form data
     });
   }
 
