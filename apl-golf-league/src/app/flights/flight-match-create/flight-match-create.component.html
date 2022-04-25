@@ -70,14 +70,14 @@
     </mat-form-field>
   </div>
 
-  <mat-form-field appearance="fill" class="input-field">
+  <mat-form-field appearance="fill" class="input-field" *ngIf="!hideForPrint">
     <mat-label>Week</mat-label>
     <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
       <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <div class="card-container" *ngIf="selectedFlight">
+  <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
     <div class="card card-small selectable match-summary-card" [ngClass]="selectedMatch === match ? 'selected' : ''" (click)="onMatchSelected(match)" *ngFor="let match of selectedWeekMatches">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
       <span *ngIf="match.home_score || match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
