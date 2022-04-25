@@ -45,7 +45,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
       .subscribe(result => {
         console.log(`[LeagueHomeComponent] Received tournaments list`);
-        this.currentTournaments = result.tournaments.filter(tournament => tournament.year === this.currentYear);
+        this.currentTournaments = result.tournaments.filter(tournament => tournament.year === this.currentYear).sort((tournA, tournB) => tournA.date.getTime() - tournB.date.getTime());
         this.isLoadingTournaments = false;
       });
 
