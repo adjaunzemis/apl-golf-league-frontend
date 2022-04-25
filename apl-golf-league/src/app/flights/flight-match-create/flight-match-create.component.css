@@ -12,6 +12,10 @@
   width: 240px;
 }
 
+.match-summary-card {
+  width: 300px;
+}
+
 button {
   width: 180px;
 }
