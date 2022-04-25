@@ -26,6 +26,7 @@ import { MatchesService } from '../../matches/matches.service';
 })
 export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
+  isSubmittingRounds = false;
 
   hideForPrint = false;
 
@@ -683,8 +684,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       away_score: this.computeTeam2Score(), // TODO: Compute in backend
       rounds: rounds
     }
+    this.isSubmittingRounds = true;
     this.matchesService.postMatchRounds(matchInput).subscribe(result => {
-      console.log(result);
+      this.isSubmittingRounds = false;
       // Reload form data after successful submission
       this.loadFlightData();
     });

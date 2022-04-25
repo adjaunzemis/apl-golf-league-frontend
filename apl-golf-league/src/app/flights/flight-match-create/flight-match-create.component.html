@@ -174,7 +174,7 @@
     </ng-container>
   </div>
 
-  <div class="full-width" *ngIf="selectedTeam1 && team1Golfer1Round && team1Golfer2Round && selectedTeam2 && team2Golfer1Round && team2Golfer2Round">
+  <div class="full-width" *ngIf="!isSubmittingRounds && selectedTeam1 && team1Golfer1Round && team1Golfer2Round && selectedTeam2 && team2Golfer1Round && team2Golfer2Round">
     <app-scorecard-title-line [rounds]="getRounds()" [title]="getMatchTitle()" [subtitle]="getMatchSubtitle()"></app-scorecard-title-line>
 
     <app-scorecard-hole-line [holeResultData]="getRounds()[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
@@ -195,12 +195,12 @@
     </ng-container>
   </div>
 
-  <div class="content" *ngIf="editMode">
+  <div class="content" *ngIf="editMode && !isSubmittingRounds">
     <span class="bold" style="margin-bottom: 12px" *ngIf="!isMatchDataInvalid()">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
     <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">Post Scores</button>
   </div>
 
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <mat-spinner *ngIf="isLoading || isSubmittingRounds"></mat-spinner>
 
 </div>
 
