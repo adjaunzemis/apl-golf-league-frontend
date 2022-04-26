@@ -145,7 +145,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
     this.tournamentsService.createTeam(newTeamName, this.selectedTournament.id, golferData).subscribe(
       team => {
         console.log(`[TournamentSignupComponent] Created team '${team.name}' (id=${team.id})`);
-        // TODO: Refresh team data and clear form info
+        this.clearSignupForms();
         this.getSelectedTournamentData(this.selectedTournament.id); // refresh tournament info to get updated team
       },
       error => {
@@ -153,6 +153,15 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
         this.isLoadingSelectedTournament = false
       }
     );
+  }
+
+  private clearSignupForms(): void {
+    this.teamNameControl.setValue("");
+    this.teamNameControl.markAsUntouched();
+    this.newTeamForm = this.formBuilder.group({
+      teamGolfers: this.formBuilder.array([])
+    });
+    this.addNewTeamGolferForm();
   }
 
   getTeamGolfersArray(): FormArray {

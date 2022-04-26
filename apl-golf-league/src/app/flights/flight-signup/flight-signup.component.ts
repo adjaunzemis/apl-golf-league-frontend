@@ -145,7 +145,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.flightsService.createTeam(newTeamName, this.selectedFlight.id, golferData).subscribe(
       team => {
         console.log(`[FlightSignupComponent] Created team '${team.name}' (id=${team.id})`);
-        // TODO: Refresh team data and clear form info
+        this.clearSignupForms();
         this.getSelectedFlightData(this.selectedFlight.id); // refresh flight info to get updated team
       },
       error => {
@@ -153,6 +153,15 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
         this.isLoadingSelectedFlight = false
       }
     );
+  }
+
+  private clearSignupForms(): void {
+    this.teamNameControl.setValue("");
+    this.teamNameControl.markAsUntouched();
+    this.newTeamForm = this.formBuilder.group({
+      teamGolfers: this.formBuilder.array([])
+    });
+    this.addNewTeamGolferForm();
   }
 
   getTeamGolfersArray(): FormArray {
