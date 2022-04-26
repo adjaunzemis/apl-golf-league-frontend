@@ -7,6 +7,7 @@ import { FlightHomeComponent } from "./flights/flight-home/flight-home.component
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from "./flights/team-home/team-home.component";
 import { FlightSignupComponent } from "./flights/flight-signup/flight-signup.component";
+import { TournamentSignupComponent } from "./tournaments/tournament-signup/tournament-signup.component";
 import { FlightMatchScorecardComponent } from "./flights/flight-match-create/flight-match-scorecard.component";
 import { FlightMatchCreateComponent } from "./flights/flight-match-create/flight-match-create.component";
 import { CourseListComponent } from "./courses/course-list/course-list.component";
@@ -41,6 +42,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: "tournament", component: TournamentHomeComponent },
+  { path: "tournament/signup", component: TournamentSignupComponent},
   { path: "tournament/history", component: TournamentHistoryComponent },
   { path: "golfer", component: GolferHomeComponent },
   { path: "golfer/search", component: GolferSearchComponent },

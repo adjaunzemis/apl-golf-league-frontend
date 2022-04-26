@@ -61,23 +61,23 @@
     <img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1'>
   </form> -->
 
-  <h1>Flight Sign-Up</h1>
+  <h1>Tournament Sign-Up</h1>
 </div>
 
-<div class="content" *ngIf="!isLoadingFlights && !isLoadingGolfers">
+<div class="content" *ngIf="!isLoadingTournaments && !isLoadingGolfers">
 
   <mat-form-field appearance="fill">
-    <mat-label>Select Flight</mat-label>
-    <mat-select [formControl]="flightControl" required>
+    <mat-label>Select Tournament</mat-label>
+    <mat-select [formControl]="tournamentControl" required>
       <mat-option>--</mat-option>
-      <mat-option *ngFor="let flight of flights" [value]="flight" (click)="getSelectedFlightData(flight.id)">{{ flight.name }} ({{ flight.year }})</mat-option>
+      <mat-option *ngFor="let tournament of tournaments" [value]="tournament" (click)="getSelectedTournamentData(tournament.id)">{{ tournament.name }} ({{ tournament.year }})</mat-option>
     </mat-select>
-    <mat-error *ngIf="flightControl.hasError('required')">Please choose a flight</mat-error>
+    <mat-error *ngIf="tournamentControl.hasError('required')">Please choose a tournament</mat-error>
   </mat-form-field>
 
-  <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
+  <div class="content" *ngIf="!tournamentControl.hasError('required') && selectedTournament && !isLoadingSelectedTournament">
 
-    <div class="content" *ngIf="isSelectedFlightSignupWindowOpen; else flightSignupWindowClosed">
+    <div class="content" *ngIf="isSelectedTournamentSignupWindowOpen; else flightSignupWindowClosed">
 
       <h2>Add Team</h2>
 
@@ -123,7 +123,7 @@
               <mat-label>Division</mat-label>
               <mat-select formControlName="division" required>
                 <mat-option>--</mat-option>
-                <mat-option *ngFor="let d of selectedFlight.divisions" [value]="d">{{ d.name }}</mat-option>
+                <mat-option *ngFor="let d of selectedTournament.divisions" [value]="d">{{ d.name }}</mat-option>
               </mat-select>
               <mat-error *ngIf="teamGolfer.get('division')?.hasError('required')">Select a division</mat-error>
             </mat-form-field>
@@ -140,46 +140,46 @@
 
     <ng-template #flightSignupWindowClosed>
       <div class="content">
-        <h3 class="italic" *ngIf="this.selectedFlight.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
-        <h3 class="italic" *ngIf="this.selectedFlight.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
+        <h3 class="italic" *ngIf="this.selectedTournament.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
+        <h3 class="italic" *ngIf="this.selectedTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
       </div>
     </ng-template>
 
 
-    <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
+    <h2>{{ selectedTournament.name | titlecase }} ({{ selectedTournament.year }}) Flight Info</h2>
 
     <div class="card-container">
-      <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
+      <a class="card card-small selectable" href="mailto:{{ selectedTournament.secretary_email }}">
         <span class="bold">Secretary</span>
-        <span>{{ selectedFlight.secretary }}</span>
+        <span>{{ selectedTournament.secretary }}</span>
       </a>
 
       <div class="card card-small">
         <span class="bold">Course</span>
-        <span>{{ selectedFlight.course }}</span>
+        <span>{{ selectedTournament.course }}</span>
       </div>
 
       <div class="card card-small">
         <span class="bold">Sign-Up Dates</span>
-        <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
+        <span>{{ selectedTournament.signup_start_date | date:'longDate' }} - {{ selectedTournament.signup_stop_date | date:'longDate' }}</span>
       </div>
 
       <div class="card card-small">
-        <span class="bold">Start Date</span>
-        <span>{{ selectedFlight.start_date | date:'longDate' }}</span>
+        <span class="bold">Tournament Date</span>
+        <span>{{ selectedTournament.date | date:'longDate' }}</span>
       </div>
     </div>
 
     <h3>Divisions</h3>
 
-    <app-division-list [divisions]="selectedFlight.divisions"></app-division-list>
+    <app-division-list [divisions]="selectedTournament.divisions"></app-division-list>
 
     <h3>Teams</h3>
 
-    <p class="italic" *ngIf="selectedFlight.teams?.length === 0">No teams have signed-up yet...</p>
+    <p class="italic" *ngIf="selectedTournament.teams?.length === 0">No teams have signed-up yet...</p>
 
     <div class="card-container team-list">
-      <a class="card team-card" *ngFor="let team of selectedFlight.teams">
+      <a class="card team-card" *ngFor="let team of selectedTournament.teams">
         <span class="bold">{{ team.name }}</span>
         <div *ngFor="let golfer of team.golfers">
           <span>{{ golfer.golfer_name }} - {{ golfer.division_name }} - Hcp: </span>
@@ -196,4 +196,4 @@
 
 </div>
 
-<mat-spinner *ngIf="isLoadingFlights || isLoadingGolfers || isLoadingSelectedFlight"></mat-spinner>
+<mat-spinner *ngIf="isLoadingTournaments || isLoadingGolfers || isLoadingSelectedTournament"></mat-spinner>

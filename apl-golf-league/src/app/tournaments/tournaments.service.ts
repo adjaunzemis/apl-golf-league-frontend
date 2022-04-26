@@ -68,4 +68,9 @@ export class TournamentsService {
   getTournamentUpdateListener(): Observable<TournamentData> {
     return this.tournamentDataUpdated.asObservable();
   }
+
+  createTeam(name: string, tournament_id: number, golfer_data: { golfer_id: number, golfer_name: string, division_id: number, role: string }[]): Observable<{ id: number, name: string }> {
+    return this.http.post<{ id: number, name: string }>(environment.apiUrl + `teams/tournament-signup`, { name: name, tournament_id: tournament_id, golfer_data: golfer_data });
+  }
+
 }
