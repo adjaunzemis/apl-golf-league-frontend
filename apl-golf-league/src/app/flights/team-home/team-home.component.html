@@ -26,7 +26,7 @@
   <app-match-scorecard class="full-width" [match]="focusedMatch" [topTeamId]="team.id" *ngIf="showScorecard"></app-match-scorecard>
 
   <div class="card-container">
-    <div class="card card-small" *ngFor="let match of team.matches" (click)="focusMatch(match)" [ngClass]="[match.home_score || match.away_score ? 'selectable' : '', showScorecard && focusedMatch === match ? 'selected' : '']">
+    <div class="card card-small match-card" *ngFor="let match of team.matches" (click)="focusMatch(match)" [ngClass]="[match.home_score || match.away_score ? 'selectable' : '', showScorecard && focusedMatch === match ? 'selected' : '']">
       <ng-container *ngIf="match.home_team_id === team.id">
         <span class="bold">Week {{ match.week }} vs. {{ match.away_team_name }}</span>
         <span *ngIf="match.home_score || match.away_score">{{ getMatchResult(match.home_score, match.away_score) }}: {{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
