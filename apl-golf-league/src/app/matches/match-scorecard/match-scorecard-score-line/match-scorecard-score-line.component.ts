@@ -86,7 +86,7 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
     const baseHandicapStrokes = Math.sign(teamHandicapDiff) * Math.floor(Math.abs(teamHandicapDiff / 9.0));
 
     // Determine hole winners
-    // Compare net scores, accounting for handicap stroke adjustment
+    // Compare team gross scores, accounting for team handicap stroke adjustment
     for (let holeIdx = 0; holeIdx < this.match.rounds[0].holes.length; holeIdx++) {
       let holeStrokeIndex = this.match.rounds[0].holes[holeIdx].stroke_index;
       if (holeStrokeIndex % 2 === 1) { // odd stroke index holes
@@ -101,15 +101,15 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
 
       let topTeamHoleNetScore = 0;
       for (const round of this.topTeamRounds) {
-        topTeamHoleNetScore += round.holes[holeIdx].net_score;
+        topTeamHoleNetScore += round.holes[holeIdx].gross_score;
       }
 
-      let bottomTeamHoleNetScore = 0;
+      let bottomTeamHoleScore = 0;
       for (const round of this.bottomTeamRounds) {
-        bottomTeamHoleNetScore += round.holes[holeIdx].net_score;
+        bottomTeamHoleScore += round.holes[holeIdx].gross_score;
       }
 
-      const holeScoreDiff = topTeamHoleNetScore - holeHandicapStrokes - bottomTeamHoleNetScore;
+      const holeScoreDiff = topTeamHoleNetScore - holeHandicapStrokes - bottomTeamHoleScore;
       this.holeWinningTeamIds[holeIdx] = -1;
       if (holeScoreDiff < 0) {
         this.holeWinningTeamIds[holeIdx] = this.topTeamId;
