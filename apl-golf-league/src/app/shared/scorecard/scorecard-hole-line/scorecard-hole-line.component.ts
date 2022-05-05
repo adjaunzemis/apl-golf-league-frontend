@@ -38,8 +38,8 @@ export class ScorecardHoleLineComponent implements OnInit, OnChanges {
     this.ngOnInit();
   }
 
-  selectScoreMode(mode: string): void {
-    this.selectedScoreMode = mode;
-    this.selectedScoreModeChange.emit(mode);
+  onChangeScoreMode(): void {
+    this.selectedScoreModeChange.emit(this.selectedScoreMode);
   }
+
 }

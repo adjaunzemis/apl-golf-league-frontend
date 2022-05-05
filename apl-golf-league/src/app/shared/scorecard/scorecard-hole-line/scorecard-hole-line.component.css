@@ -43,25 +43,7 @@
   width: 8.333%;
 }
 
-.styled-table .score-mode-list {
-  display: flex;
-  align-items: center;
-}
-
-.score-mode-card {
-  height: 16px;
-  width: 42px;
-  margin: auto;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 1px;
-  cursor: pointer;
-}
-
-.selected {
-  background-color: #e5ecfa8c;
-}
-
-.score-mode-card:hover {
-  transform: translateY(-1px);
+.score-mode-selector {
+  background-color: #b8cefd8c;
+  border-radius: 5px;
 }
