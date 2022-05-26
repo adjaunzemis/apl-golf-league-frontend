@@ -203,7 +203,8 @@
 
   <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
     <span class="bold" style="margin-bottom: 12px;" *ngIf="!isMatchDataInvalid()">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
-    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="isMatchDataInvalid()">Check hole-by-hole scores, must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
+    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="!selectedMatch">Match card must be selected before generating scorecard!</span>
+    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="isMatchDataInvalid()">Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
     <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">Post Scores</button>
   </div>
 
