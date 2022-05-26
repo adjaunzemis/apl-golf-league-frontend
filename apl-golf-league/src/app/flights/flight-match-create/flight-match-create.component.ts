@@ -377,7 +377,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   checkValidSelections(): boolean {
     if (this.selectedCourse && this.selectedTrack && this.selectedTeam1 && this.selectedTeam1Golfer1 && this.selectedTeam1Golfer1Tee && this.selectedTeam1Golfer2 && this.selectedTeam1Golfer2Tee && this.selectedTeam2 && this.selectedTeam2Golfer1 && this.selectedTeam2Golfer1Tee && this.selectedTeam2Golfer2 && this.selectedTeam2Golfer2Tee) {
-      return true;
+      if (!this.editMode || this.selectedMatch) {
+        return true;
+      }
     }
     return false;
   }
