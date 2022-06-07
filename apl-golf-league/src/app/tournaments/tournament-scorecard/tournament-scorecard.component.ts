@@ -39,7 +39,7 @@ export class TournamentScorecardComponent implements OnInit {
   }
 
   getTournamentTitle(): string {
-    return this.rounds[0].course_name + " - " + this.rounds[0].track_name;
+    return this.rounds[0].course_name;
   }
 
   getTournamentSubtitle(): string {
@@ -47,7 +47,7 @@ export class TournamentScorecardComponent implements OnInit {
   }
 
   getRoundSubtitle(round: RoundData): string {
-    return round.tee_name + " - PH: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+    return round.tee_name + " - Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
   }
 
 }
