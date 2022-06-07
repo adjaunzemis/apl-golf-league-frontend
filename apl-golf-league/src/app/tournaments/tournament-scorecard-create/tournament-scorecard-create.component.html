@@ -1,0 +1,89 @@
+<div class="content">
+
+  <h1 *ngIf="!hideForPrint">
+    <span *ngIf="editMode">Submit </span>
+    <span>Tournament Scorecard</span>
+  </h1>
+
+  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions" *ngIf="!editMode && !hideForPrint">
+    <span class="bold">Instructions</span>
+  </div>
+
+  <div class="card" style="height: 100%; width: 1000px;" *ngIf="!hideForPrint && showInstructions">
+    <ul>
+      <li>Select the anticipated date of the match.</li>
+      <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
+        <ul>
+          <li>Navigating here from "Match Scorecard" card on flight homepage auto-populates these values.</li>
+        </ul>
+      <li>On the left side, select a team.</li>
+        <ul>
+          <li>Tip: Use the weekly match cards to select both teams for a match.</li>
+        </ul>
+      <li>Select the two golfers who will play for the first team.</li>
+        <ul>
+          <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
+          <li>Otherwise, select the tees each golfer will play.</li>
+        </ul>
+      <li>On the right side, repeat the above process for the second team.</li>
+      <ul>
+        <li>Tip: Use the weekly match cards to select both teams for a match.</li>
+      </ul>
+      <li>Once all required information has been entered, click "Generate Scorecard".</li>
+        <ul>
+          <li>The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the tee rating/slope.</li>
+          <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
+          <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
+          <li>On the team score line, black dots indicate handicap strokes received by the team with the higher combined playing handicap.</li>
+          <li>Any selection changes will clear the generated scorecard.</li>
+        </ul>
+      <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
+    </ul>
+  </div>
+
+  <div style="margin-bottom: 16px;" *ngIf="!hideForPrint">
+    <button mat-raised-button color="accent" [disabled]="!selectedTeamGolferRounds || selectedTeamGolferRounds.length === 0" (click)="printScorecard()">Print Scorecard</button>
+  </div>
+
+  <div *ngIf="!hideForPrint">
+    <mat-form-field class="selection-field flight-selection-field" appearance="fill">
+      <mat-label>Tournament</mat-label>
+      <mat-select [value]="selectedTournamentInfo" (selectionChange)="onSelectedTournamentChanged($event)">
+        <mat-option *ngFor="let tournamentOption of tournamentOptions" [value]="tournamentOption">{{ tournamentOption.name }} ({{ tournamentOption.year }})</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="content full-width" *ngIf="!hideForPrint && selectedTournament">
+    <h2>Teams</h2>
+    <div class="card-container">
+      <div class="card card-small selectable match-summary-card" [ngClass]="selectedTeam === team ? 'selected' : ''" (click)="onSelectedTeamChanged(team)" *ngFor="let team of selectedTournament.teams">
+        <span class="bold">{{ team.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-width" *ngIf="!isSubmittingRounds && selectedTeam">
+    <app-scorecard-title-line [rounds]="selectedTeamGolferRounds" [title]="getScorecardTitle()" [subtitle]="getScorecardSubtitle()"></app-scorecard-title-line>
+
+    <app-scorecard-hole-line [holeResultData]="selectedTeamGolferRounds[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
+    <app-scorecard-tee-info [holeResultData]="selectedTeamGolferRounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+
+    <ng-container *ngFor="let round of selectedTeamGolferRounds; let roundIdx = index">
+      <app-scorecard-score-line [(round)]="selectedTeamGolferRounds[roundIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    </ng-container>
+
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" [title]="selectedTeam.name" [subtitle]="getTeamRoundSubtitle()" [linkToGolferHome]="false"></app-scorecard-score-line>
+  </div>
+
+  <!-- <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
+    <span class="bold" style="margin-bottom: 12px;" *ngIf="!isMatchDataInvalid()">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
+    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="!selectedMatch">Match card must be selected before generating scorecard!</span>
+    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="isMatchDataInvalid()">Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
+    <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">Post Scores</button>
+  </div> -->
+
+  <mat-spinner *ngIf="isLoading || isSubmittingRounds"></mat-spinner>
+
+</div>
+

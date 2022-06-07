@@ -1,3 +1,4 @@
+import { TournamentScorecardCreateComponent } from './tournaments/tournament-scorecard-create/tournament-scorecard-create.component';
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
@@ -44,6 +45,11 @@ const routes: Routes = [
   { path: "tournament", component: TournamentHomeComponent },
   { path: "tournament/signup", component: TournamentSignupComponent},
   { path: "tournament/history", component: TournamentHistoryComponent },
+  {
+    path: "tournament/scores",
+    component: TournamentScorecardCreateComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "golfer", component: GolferHomeComponent },
   { path: "golfer/search", component: GolferSearchComponent },
   {

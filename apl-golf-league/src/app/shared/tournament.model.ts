@@ -6,6 +6,7 @@ export interface TournamentData {
     year: number
     name: string
     date: Date
+    course_id: number
     course: string
     logo_url?: string
     secretary?: string

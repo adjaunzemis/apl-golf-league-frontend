@@ -10,6 +10,7 @@ import { ScorecardModule } from "../shared/scorecard/scorecard.module";
 import { TournamentHistoryComponent } from './tournament-history/tournament-history.component';
 import { DivisionsModule } from "../divisions/divisions.module";
 import { TournamentSignupComponent } from "./tournament-signup/tournament-signup.component";
+import { TournamentScorecardCreateComponent } from "./tournament-scorecard-create/tournament-scorecard-create.component";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { TournamentSignupComponent } from "./tournament-signup/tournament-signup
     TournamentStandingsComponent,
     TournamentScorecardComponent,
     TournamentHistoryComponent,
-    TournamentSignupComponent
+    TournamentSignupComponent,
+    TournamentScorecardCreateComponent
   ],
   imports: [
     CommonModule,
