@@ -21,8 +21,16 @@ export class ScorecardScoreLineComponent {
   @Input() showScores: boolean = true;
   @Input() enterScores: boolean = false;
   @Input() teamScore: boolean = false;
+  @Input() editHandicap: boolean = false;
 
   onHoleScoreChanged(): void {
+    this.roundChange.emit(this.round);
+  }
+
+  onGolferHandicapChanged(): void {
+    for (let hole of this.round.holes) {
+      hole.handicap_strokes = this.computeHandicapStrokes(hole.stroke_index, this.round.golfer_playing_handicap);
+    }
     this.roundChange.emit(this.round);
   }
 
@@ -63,6 +71,16 @@ export class ScorecardScoreLineComponent {
 
   abs(num: number): number {
     return Math.abs(num);
+  }
+
+  private computeHandicapStrokes(strokeIndex: number, playingHandicap: number | undefined): number {
+    if (playingHandicap === undefined) {
+      return 0;
+    }
+    if (playingHandicap < 0) { // plus-handicap
+      return (-playingHandicap * 2) > (18 - strokeIndex) ? -1 : 0;
+    }
+    return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
   }
 
 }

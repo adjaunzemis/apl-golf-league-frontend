@@ -311,11 +311,17 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   }
 
   getRoundSubtitle(round: RoundData): string {
+    let subtitle = "";
     if (this.selectedTournament.scramble) {
-      return "Gross | Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+      subtitle += "Gross";
     } else {
-      return round.tee_name + " | Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+      subtitle += round.tee_name;
     }
+    subtitle += " | Hcp:"
+    if (!this.editMode) {
+      subtitle += " " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
+    }
+    return subtitle;
   }
 
   getTeamRoundTitle(): string {

@@ -71,6 +71,16 @@
   outline: 0;
 }
 
+.handicap-entry-field {
+  width: 12px;
+  font-size: 1.0em;
+  font-weight: bold;
+  text-align: center;
+  margin-left: -3px;
+  border: 0;
+  outline: 0;
+}
+
 a:hover {
   cursor: pointer;
   transform: translateY(-3px);

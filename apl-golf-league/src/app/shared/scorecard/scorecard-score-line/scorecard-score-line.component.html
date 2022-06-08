@@ -24,7 +24,12 @@
       </td>
     </tr>
     <tr>
-      <td class="detail" rowspan="1">{{ subtitle }}</td>
+      <td class="detail" rowspan="1">
+        <span>
+          {{ subtitle }}
+          <input class="handicap-entry-field" type="text" [(ngModel)]="round.golfer_playing_handicap" (input)="onGolferHandicapChanged()" *ngIf="editHandicap">
+        </span>
+      </td>
     </tr>
   </tbody>
 </table>
