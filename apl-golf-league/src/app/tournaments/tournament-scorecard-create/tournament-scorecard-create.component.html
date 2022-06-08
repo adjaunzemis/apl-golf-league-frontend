@@ -80,16 +80,16 @@
     <ng-container *ngFor="let round of roundsFront; let rIdx = index">
       <app-scorecard-score-line [(round)]="roundsFront[rIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Gross" [linkToGolferHome]="false"></app-scorecard-score-line>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="net" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Gross" [linkToGolferHome]="false" *ngIf="!selectedTournament.scramble"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="net" [teamScore]="true" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
 
     <app-scorecard-hole-line [holeResultData]="roundsBack[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
     <app-scorecard-tee-info [holeResultData]="roundsBack[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
     <ng-container *ngFor="let round of roundsBack; let rIdx = index">
-      <app-scorecard-score-line [(round)]="roundsFront[rIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line [(round)]="roundsBack[rIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Gross" [linkToGolferHome]="false"></app-scorecard-score-line>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="net" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Gross" [linkToGolferHome]="false" *ngIf="!selectedTournament.scramble"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="net" [teamScore]="true" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
   </div>
 
   <!-- <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">

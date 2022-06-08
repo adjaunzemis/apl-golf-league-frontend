@@ -148,18 +148,31 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     console.log(`[TournamentScorecardCreateComponent] Selected team: ${team.name}`);
     this.selectedTeam = team;
 
-    for (const golfer of team.golfers) {
-      const division = this.selectedTournament.divisions.filter(d => d.id == golfer.division_id)[0]; // TODO: handle no-match case?
+    // TODO: Implement round setup for other tournament types as-needed
+    if (this.selectedTournament.scramble) {
+      // Initialize team round for front track
+      const trackFront = this.tournamentCourse.tracks[0]; // TODO: account for other ordering of tracks
+      const teesFront = trackFront.tees[0]; // TODO: handle no-match case?
+      this.roundsFront.push(this.createTeamScrambleRound(this.tournamentCourse, trackFront, teesFront, this.selectedTeam));
 
-      // Initialize round played by golfer on front track
-      const trackFront = this.tournamentCourse.tracks[0]; // TODO: account for back or other ordering of tracks
-      const teesFront = trackFront.tees.filter(t => t.id == division.primary_tee_id)[0]; // TODO: handle no-match case?
-      this.roundsFront.push(this.createRound(this.tournamentCourse, trackFront, teesFront, this.selectedTeam, golfer));
+      // Initialize team round for back track
+      const trackBack = this.tournamentCourse.tracks[1]; // TODO: account for other ordering of tracks
+      const teesback = trackBack.tees[0]; // TODO: handle no-match case?
+      this.roundsBack.push(this.createTeamScrambleRound(this.tournamentCourse, trackBack, teesback, this.selectedTeam));
+    } else {
+      for (const golfer of team.golfers) {
+        const division = this.selectedTournament.divisions.filter(d => d.id == golfer.division_id)[0]; // TODO: handle no-match case?
 
-      // Initialize round played by golfer on back track
-      const trackBack = this.tournamentCourse.tracks[1]; // TODO: account for back or other ordering of tracks
-      const teesBack = trackBack.tees.filter(t => t.id == division.secondary_tee_id)[0]; // TODO: handle no-match case?
-      this.roundsBack.push(this.createRound(this.tournamentCourse, trackBack, teesBack, this.selectedTeam, golfer));
+        // Initialize round played by golfer on front track
+        const trackFront = this.tournamentCourse.tracks[0]; // TODO: account for other ordering of tracks
+        const teesFront = trackFront.tees.filter(t => t.id == division.primary_tee_id)[0]; // TODO: handle no-match case?
+        this.roundsFront.push(this.createGolferRound(this.tournamentCourse, trackFront, teesFront, this.selectedTeam, golfer));
+
+        // Initialize round played by golfer on back track
+        const trackBack = this.tournamentCourse.tracks[1]; // TODO: account for other ordering of tracks
+        const teesBack = trackBack.tees.filter(t => t.id == division.secondary_tee_id)[0]; // TODO: handle no-match case?
+        this.roundsBack.push(this.createGolferRound(this.tournamentCourse, trackBack, teesBack, this.selectedTeam, golfer));
+      }
     }
   }
 
@@ -239,7 +252,36 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     return teamRound;
   }
 
-  private createRound(course: Course, track: Track, tee: Tee, team: TournamentTeamData, golfer: TeamGolferData): RoundData {
+  private createTeamScrambleRound(course: Course, track: Track, tee: Tee, team: TournamentTeamData): RoundData {
+    const teamHandicap = undefined; // TODO: set default team handicap
+    return {
+      round_id: -1, // TODO: remove placeholder?
+      team_id: team.id,
+      date_played: this.selectedTournament.date,
+      round_type: "Tournament",
+      golfer_id: -1, // TODO: remove placeholder?
+      golfer_name: "Scramble",
+      golfer_playing_handicap: teamHandicap,
+      team_name: team.name,
+      course_id: course.id,
+      course_name: course.name,
+      track_id: track.id,
+      track_name: track.name,
+      tee_id: tee.id,
+      tee_name: tee.name,
+      tee_gender: tee.gender,
+      tee_rating: tee.rating,
+      tee_slope: tee.slope,
+      tee_par: this.computeTeePar(tee),
+      tee_color: tee.color,
+      gross_score: 0, // TODO: remove placeholder?
+      adjusted_gross_score: 0, // TODO: remove placeholder?
+      net_score: 0, // TODO: remove placeholder?
+      holes: this.createPlaceholderHoleResultDataForRound(tee, teamHandicap)
+    };
+  }
+
+  private createGolferRound(course: Course, track: Track, tee: Tee, team: TournamentTeamData, golfer: TeamGolferData): RoundData {
     const playingHandicap = this.computePlayingHandicap(golfer, tee);
     return {
       round_id: -1, // TODO: remove placeholder?
@@ -269,7 +311,20 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   }
 
   getRoundSubtitle(round: RoundData): string {
-    return round.tee_name + " | Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+    if (this.selectedTournament.scramble) {
+      return "Gross | Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+    } else {
+      return round.tee_name + " | Hcp: " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+    }
+  }
+
+  getTeamRoundTitle(): string {
+    // TODO: Implement for other modes
+    if (this.selectedTournament.scramble) {
+      return "Scramble";
+    } else {
+      return "Best Ball";
+    }
   }
 
   private computePlayingHandicap(golfer: TeamGolferData, tee: Tee): number | undefined {
