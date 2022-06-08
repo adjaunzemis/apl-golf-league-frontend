@@ -83,6 +83,8 @@
     </mat-select>
   </mat-form-field>
 
+  <span class="italic" *ngIf="editMode && !hideForPrint && selectedFlight && !selectedMatch">Select a match card...</span>
+
   <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
     <div class="card card-small selectable match-summary-card" [ngClass]="selectedMatch === match ? 'selected' : ''" (click)="onMatchSelected(match)" *ngFor="let match of selectedWeekMatches">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
