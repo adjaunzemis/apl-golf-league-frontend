@@ -42,7 +42,7 @@
   </div>
 
   <div style="margin-bottom: 16px;" *ngIf="!hideForPrint">
-    <button mat-raised-button color="accent" [disabled]="!selectedTeamGolferRounds || selectedTeamGolferRounds.length === 0" (click)="printScorecard()">Print Scorecard</button>
+    <button mat-raised-button color="accent" [disabled]="!roundsFront || roundsFront.length === 0" (click)="printScorecard()">Print Scorecard</button>
   </div>
 
   <div *ngIf="!hideForPrint">
@@ -54,26 +54,42 @@
     </mat-form-field>
   </div>
 
-  <div class="content full-width" *ngIf="!hideForPrint && selectedTournament">
-    <h2>Teams</h2>
-    <div class="card-container">
-      <div class="card card-small selectable match-summary-card" [ngClass]="selectedTeam === team ? 'selected' : ''" (click)="onSelectedTeamChanged(team)" *ngFor="let team of selectedTournament.teams">
-        <span class="bold">{{ team.name }}</span>
-      </div>
+  <h2 *ngIf="!hideForPrint && selectedTournament">Format</h2>
+
+  <div class="card-container" *ngIf="!hideForPrint && selectedTournament">
+    <div class="card card-small bold" *ngIf="selectedTournament.shotgun">Shotgun Start</div>
+    <div class="card card-small bold" *ngIf="selectedTournament.strokeplay">Strokeplay</div>
+    <div class="card card-small bold" *ngIf="selectedTournament.bestball">Team Best-Ball</div>
+    <div class="card card-small bold" *ngIf="selectedTournament.scramble">Scramble</div>
+    <div class="card card-small bold" *ngIf="selectedTournament.ryder_cup">Ryder Cup</div>
+    <div class="card card-small bold" *ngIf="selectedTournament.chachacha">Cha-Cha-Cha</div>
+  </div>
+
+  <h2 *ngIf="!hideForPrint && selectedTournament">Teams</h2>
+  <div class="card-container" *ngIf="!hideForPrint && selectedTournament">
+    <div class="card card-small selectable match-summary-card" [ngClass]="selectedTeam === team ? 'selected' : ''" (click)="onSelectedTeamChanged(team)" *ngFor="let team of selectedTournament.teams">
+      <span class="bold">{{ team.name }}</span>
     </div>
   </div>
 
   <div class="full-width" *ngIf="!isSubmittingRounds && selectedTeam">
-    <app-scorecard-title-line [rounds]="selectedTeamGolferRounds" [title]="getScorecardTitle()" [subtitle]="getScorecardSubtitle()"></app-scorecard-title-line>
+    <app-scorecard-title-line [rounds]="roundsFront" [title]="getScorecardTitle()" [subtitle]="getScorecardSubtitle()"></app-scorecard-title-line>
 
-    <app-scorecard-hole-line [holeResultData]="selectedTeamGolferRounds[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
-    <app-scorecard-tee-info [holeResultData]="selectedTeamGolferRounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
-
-    <ng-container *ngFor="let round of selectedTeamGolferRounds; let roundIdx = index">
-      <app-scorecard-score-line [(round)]="selectedTeamGolferRounds[roundIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-hole-line [holeResultData]="roundsFront[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
+    <app-scorecard-tee-info [holeResultData]="roundsFront[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+    <ng-container *ngFor="let round of roundsFront; let rIdx = index">
+      <app-scorecard-score-line [(round)]="roundsFront[rIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
     </ng-container>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Gross" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="net" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
 
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" [title]="selectedTeam.name" [subtitle]="getTeamRoundSubtitle()" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-hole-line [holeResultData]="roundsBack[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
+    <app-scorecard-tee-info [holeResultData]="roundsBack[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+    <ng-container *ngFor="let round of roundsBack; let rIdx = index">
+      <app-scorecard-score-line [(round)]="roundsFront[rIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    </ng-container>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="gross" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Gross" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="net" [teamScore]="true" [showScores]="editMode" title="Best Ball" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
   </div>
 
   <!-- <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
