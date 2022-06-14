@@ -55,7 +55,7 @@
   <h2>Standings</h2>
 
   <div *ngIf="tournament.date < currentDate; else notPlayedYet">
-    <app-tournament-standings [teamData]="tournament.teams"></app-tournament-standings>
+    <app-tournament-standings [tournamentInfo]="tournament" [teamData]="tournament.teams"></app-tournament-standings>
   </div>
 
   <ng-template #notPlayedYet>

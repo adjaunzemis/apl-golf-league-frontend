@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { TournamentInfo } from '../../shared/tournament.model';
 import { TournamentTeamData } from '../../shared/team.model';
 
 @Component({
@@ -8,9 +9,10 @@ import { TournamentTeamData } from '../../shared/team.model';
   styleUrls: ['./tournament-standings.component.css']
 })
 export class TournamentStandingsComponent implements OnInit {
+  @Input() tournamentInfo: TournamentInfo;
   @Input() teamData: TournamentTeamData[];
 
-  scoreOptions = ["Individual Gross", "Individual Net", "Team Gross", "Team Net"]
+  scoreOptions: string[] = [];
   selectedScoreOption: string = "";
 
   individualStandingsData: { name: string, playingHandicap?: number, grossScore: number, netScore: number, position: string }[]
@@ -20,6 +22,13 @@ export class TournamentStandingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.scoreOptions = [];
+    if (this.tournamentInfo.individual) {
+      this.scoreOptions.push("Individual Gross", "Individual Net");
+    }
+    if (this.tournamentInfo.scramble || this.tournamentInfo.bestball) {
+      this.scoreOptions.push("Team Gross", "Team Net");
+    }
     this.individualStandingsData = [];
     this.teamStandingsData = [];
     for (let team of this.teamData) {
