@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 import { TournamentInfo } from '../../shared/tournament.model';
 import { RoundData } from '../../shared/round.model';
@@ -8,7 +8,7 @@ import { RoundData } from '../../shared/round.model';
   templateUrl: './tournament-scorecard.component.html',
   styleUrls: ['./tournament-scorecard.component.css']
 })
-export class TournamentScorecardComponent implements OnInit {
+export class TournamentScorecardComponent implements OnInit, OnChanges {
   @Input() tournament: TournamentInfo;
   @Input() rounds: RoundData[];
   scoreMode: string = "gross";
@@ -20,12 +20,27 @@ export class TournamentScorecardComponent implements OnInit {
   backRounds: RoundData[] = [];
 
   ngOnInit(): void {
+    this.getTrackNames();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.rounds) {
+      this.getTrackNames();
+      this.sortRoundsByTrack();
+    }
+  }
+
+  private getTrackNames(): void {
     for (let round of this.rounds) {
       if (this.trackNames.indexOf(round.track_name) == -1) {
         this.trackNames.push(round.track_name);
       }
     }
+  }
 
+  private sortRoundsByTrack(): void {
+    this.frontRounds = [];
+    this.backRounds = [];
     for (let round of this.rounds) {
       const idx = this.trackNames.indexOf(round.track_name);
       if (idx === 0) {
