@@ -9,7 +9,7 @@ import { TournamentTeamData } from '../../shared/team.model';
   styleUrls: ['./tournament-standings.component.css']
 })
 export class TournamentStandingsComponent implements OnInit {
-  @Input() tournamentInfo: TournamentInfo;
+  @Input() tournament: TournamentInfo;
   @Input() teamData: TournamentTeamData[];
 
   scoreOptions: string[] = [];
@@ -23,10 +23,10 @@ export class TournamentStandingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.scoreOptions = [];
-    if (this.tournamentInfo.individual) {
+    if (this.tournament.individual) {
       this.scoreOptions.push("Individual Gross", "Individual Net");
     }
-    if (this.tournamentInfo.scramble || this.tournamentInfo.bestball) {
+    if (this.tournament.scramble || this.tournament.bestball) {
       this.scoreOptions.push("Team Gross", "Team Net");
     }
     this.individualStandingsData = [];

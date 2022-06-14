@@ -55,7 +55,7 @@
   <h2>Standings</h2>
 
   <div *ngIf="tournament.date < currentDate; else notPlayedYet">
-    <app-tournament-standings [tournamentInfo]="tournament" [teamData]="tournament.teams"></app-tournament-standings>
+    <app-tournament-standings [tournament]="tournament" [teamData]="tournament.teams"></app-tournament-standings>
   </div>
 
   <ng-template #notPlayedYet>
@@ -68,7 +68,7 @@
     <p class="italic" *ngIf="!showScorecard">Select a team to view scorecards</p>
 
     <div class="full-width" *ngIf="showScorecard">
-      <app-tournament-scorecard [rounds]="focusedTeam.rounds" *ngIf="focusedTeam.rounds && focusedTeam.rounds.length > 0; else noRounds"></app-tournament-scorecard>
+      <app-tournament-scorecard [tournament]="tournament" [rounds]="focusedTeam.rounds" *ngIf="focusedTeam.rounds && focusedTeam.rounds.length > 0; else noRounds"></app-tournament-scorecard>
 
       <ng-template #noRounds>
         <p class="no-rounds-warning">No round data for team {{ focusedTeam.name }}</p>

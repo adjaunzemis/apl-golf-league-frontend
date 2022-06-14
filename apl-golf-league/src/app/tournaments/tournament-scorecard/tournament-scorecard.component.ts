@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { TournamentInfo } from '../../shared/tournament.model';
 import { RoundData } from '../../shared/round.model';
 
 @Component({
@@ -8,6 +9,7 @@ import { RoundData } from '../../shared/round.model';
   styleUrls: ['./tournament-scorecard.component.css']
 })
 export class TournamentScorecardComponent implements OnInit {
+  @Input() tournament: TournamentInfo;
   @Input() rounds: RoundData[];
   scoreMode: string = "gross";
 
