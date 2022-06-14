@@ -68,7 +68,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       if (params) {
         if (params.tournament_id) {
           console.log(`[TournamentScorecardCreateComponent] Processing query parameter: tournament_id=${params.tournament_id}`)
-          this.paramsTournamentId = params.flight_id;
+          this.paramsTournamentId = params.tournament_id;
         }
       }
     });

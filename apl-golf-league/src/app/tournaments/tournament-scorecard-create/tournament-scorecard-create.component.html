@@ -69,6 +69,7 @@
   <div class="card-container" *ngIf="!hideForPrint && selectedTournament">
     <div class="card card-small selectable match-summary-card" [ngClass]="selectedTeam === team ? 'selected' : ''" (click)="onSelectedTeamChanged(team)" *ngFor="let team of selectedTournament.teams">
       <span class="bold">{{ team.name }}</span>
+      <span class="italic" *ngIf="team.rounds && team.rounds.length > 0">{{ team.rounds.length }} rounds submitted</span>
     </div>
   </div>
 
