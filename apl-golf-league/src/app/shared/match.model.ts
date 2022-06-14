@@ -35,6 +35,14 @@ export interface MatchInput {
   rounds: RoundInput[]
 }
 
+// TODO: Move to Tournament model?
+export interface TournamentInput {
+  tournament_id: number
+  date_played: Date
+  rounds: RoundInput[]
+}
+
+// TODO: Move to Round model?
 export interface RoundInput {
   team_id: number
   golfer_id: number
@@ -45,6 +53,7 @@ export interface RoundInput {
   holes: HoleResultInput[]
 }
 
+// TODO: Move to HoleResult model?
 export interface HoleResultInput {
   hole_id: number
   gross_score: number

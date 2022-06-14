@@ -9,7 +9,7 @@ import { TournamentsService } from '../tournaments.service';
 import { CoursesService } from '../../courses/courses.service';
 import { TournamentTeamData } from '../../shared/team.model';
 import { TeamGolferData } from '../../shared/golfer.model';
-import { HoleResultInput, RoundInput } from '../../shared/match.model';
+import { HoleResultInput, RoundInput, TournamentInput } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
 import { Course } from '../../shared/course.model';
 import { Track } from '../../shared/track.model';
@@ -412,12 +412,14 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
   }
 
-  postTeamRounds(): void {
-    if (this.isMatchDataInvalid() || !this.selectedTournament || !this.selectedTeam || !this.selectedTeamGolfers || !this.roundsFront || !this.roundsBack) {
+  postRounds(): void {
+    if (this.isTournamentInputDataInvalid() || !this.selectedTournament || !this.selectedTeam || !this.selectedTeamGolfers || !this.roundsFront || !this.roundsBack) {
       // TODO: throw error
       console.error("Unable to post scores, incomplete or invalid data!");
       return;
     }
+
+    // Compile round input data
     let rounds: RoundInput[] = [];
     for (const round of this.roundsFront) {
       let holes: HoleResultInput[] = [];
@@ -439,25 +441,44 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       };
       rounds.push(roundInput);
     }
-    // TODO: Create Tournament team scorecard input model, submit through service
-    // const matchInput: MatchInput = {
-    //   match_id: this.selectedMatch.match_id,
-    //   flight_id: this.selectedTournament.id,
-    //   week: this.selectedWeek,
-    //   date_played: this.selectedDate,
-    //   home_score: this.computeTeam1Score(), // TODO: Compute in backend
-    //   away_score: this.computeTeam2Score(), // TODO: Compute in backend
-    //   rounds: rounds
-    // }
-    // this.isSubmittingRounds = true;
-    // this.tournamentsService.postTeamRounds(matchInput).subscribe(result => {
-    //   this.isSubmittingRounds = false;
-    //   // Reload form data after successful submission
-    //   this.loadTournamentData();
-    // });
+    for (const round of this.roundsBack) {
+      let holes: HoleResultInput[] = [];
+      for (const hole of round.holes) {
+        const holeResultInput: HoleResultInput = {
+          hole_id: hole.hole_id,
+          gross_score: hole.gross_score
+        }
+        holes.push(holeResultInput);
+      }
+      const roundInput: RoundInput = {
+        team_id: this.selectedTeam.id,
+        course_id: round.course_id,
+        track_id: round.track_id,
+        tee_id: round.tee_id,
+        golfer_id: round.golfer_id,
+        golfer_playing_handicap: round.golfer_playing_handicap,
+        holes: holes
+      };
+      rounds.push(roundInput);
+    }
+
+    // Submit tournament input data
+    const tournamentInput: TournamentInput = {
+      tournament_id: this.selectedTournament.id,
+      date_played: this.selectedTournament.date,
+      rounds: rounds
+    }
+    this.isSubmittingRounds = true;
+    this.tournamentsService.postRounds(tournamentInput).subscribe(result => {
+      console.log(`Submitted ${result.length} new tournament rounds`);
+      console.log(result);
+      this.isSubmittingRounds = false;
+      // Reload form data after successful submission
+      this.loadTournamentData();
+    });
   }
 
-  isMatchDataInvalid(): boolean {
+  isTournamentInputDataInvalid(): boolean {
     // Check for valid gross score entries (positive-definite, not above 2*par+handicap)
     for (const round of this.roundsFront) {
       if (!round) {

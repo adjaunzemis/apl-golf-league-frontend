@@ -2,6 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
+import { TournamentInput } from "../shared/match.model";
+import { RoundSummary } from "../shared/round.model";
 
 import { TournamentData, TournamentInfo } from "../shared/tournament.model";
 import { environment } from './../../environments/environment';
@@ -71,6 +73,10 @@ export class TournamentsService {
 
   createTeam(name: string, tournament_id: number, golfer_data: { golfer_id: number, golfer_name: string, division_id: number, role: string }[]): Observable<{ id: number, name: string }> {
     return this.http.post<{ id: number, name: string }>(environment.apiUrl + `teams/tournament-signup`, { name: name, tournament_id: tournament_id, golfer_data: golfer_data });
+  }
+
+  postRounds(tournamentInput: TournamentInput): Observable<RoundSummary[]> {
+    return this.http.post<RoundSummary[]>(environment.apiUrl + `tournaments/rounds`, tournamentInput);
   }
 
 }
