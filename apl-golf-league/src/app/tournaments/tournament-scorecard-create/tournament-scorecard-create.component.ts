@@ -421,45 +421,53 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
     // Compile round input data
     let rounds: RoundInput[] = [];
-    for (const round of this.roundsFront) {
-      let holes: HoleResultInput[] = [];
-      for (const hole of round.holes) {
-        const holeResultInput: HoleResultInput = {
-          hole_id: hole.hole_id,
-          gross_score: hole.gross_score
+
+    // For scramble tournaments, duplicate team rounds for each golfer
+    // TODO: Handle other non-individual tournament types as-needed
+    if (this.selectedTournament.scramble) {
+      for (const golfer of this.selectedTeam.golfers) {
+        for (const round of [...this.roundsFront, ...this.roundsBack]) {
+          let holes: HoleResultInput[] = [];
+          for (const hole of round.holes) {
+            const holeResultInput: HoleResultInput = {
+              hole_id: hole.hole_id,
+              gross_score: hole.gross_score
+            }
+            holes.push(holeResultInput);
+          }
+          const roundInput: RoundInput = {
+            team_id: this.selectedTeam.id,
+            course_id: round.course_id,
+            track_id: round.track_id,
+            tee_id: round.tee_id,
+            golfer_id: golfer.golfer_id,
+            golfer_playing_handicap: round.golfer_playing_handicap,
+            holes: holes
+          };
+          rounds.push(roundInput);
         }
-        holes.push(holeResultInput);
       }
-      const roundInput: RoundInput = {
-        team_id: this.selectedTeam.id,
-        course_id: round.course_id,
-        track_id: round.track_id,
-        tee_id: round.tee_id,
-        golfer_id: round.golfer_id,
-        golfer_playing_handicap: round.golfer_playing_handicap,
-        holes: holes
-      };
-      rounds.push(roundInput);
-    }
-    for (const round of this.roundsBack) {
-      let holes: HoleResultInput[] = [];
-      for (const hole of round.holes) {
-        const holeResultInput: HoleResultInput = {
-          hole_id: hole.hole_id,
-          gross_score: hole.gross_score
+    } else { // individual strokeplay scoring
+      for (const round of [...this.roundsFront, ...this.roundsBack]) {
+        let holes: HoleResultInput[] = [];
+        for (const hole of round.holes) {
+          const holeResultInput: HoleResultInput = {
+            hole_id: hole.hole_id,
+            gross_score: hole.gross_score
+          }
+          holes.push(holeResultInput);
         }
-        holes.push(holeResultInput);
+        const roundInput: RoundInput = {
+          team_id: this.selectedTeam.id,
+          course_id: round.course_id,
+          track_id: round.track_id,
+          tee_id: round.tee_id,
+          golfer_id: round.golfer_id,
+          golfer_playing_handicap: round.golfer_playing_handicap,
+          holes: holes
+        };
+        rounds.push(roundInput);
       }
-      const roundInput: RoundInput = {
-        team_id: this.selectedTeam.id,
-        course_id: round.course_id,
-        track_id: round.track_id,
-        tee_id: round.tee_id,
-        golfer_id: round.golfer_id,
-        golfer_playing_handicap: round.golfer_playing_handicap,
-        holes: holes
-      };
-      rounds.push(roundInput);
     }
 
     // Submit tournament input data
