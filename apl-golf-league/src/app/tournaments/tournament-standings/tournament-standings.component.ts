@@ -47,6 +47,9 @@ export class TournamentStandingsComponent implements OnInit {
           let individualRoundAdded = false;
           for (let individualData of this.individualStandingsData) {
             if (individualData.name === round.golfer_name) {
+              if (individualData.playingHandicap && round.golfer_playing_handicap) {
+                individualData.playingHandicap += round.golfer_playing_handicap;
+              }
               individualData.grossScore += round.gross_score;
               individualData.netScore += round.net_score;
               individualRoundAdded = true;
