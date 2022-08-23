@@ -212,7 +212,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       tee_gender: teamFirstRound.tee_gender,
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
-      tee_par: teamFirstRound.tee_par,
+      tee_par: this.selectedTournament.bestball > 0 ? this.selectedTournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
@@ -242,7 +242,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       tee_gender: teamFirstRound.tee_gender,
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
-      tee_par: teamFirstRound.tee_par,
+      tee_par: this.selectedTournament.bestball > 0 ? this.selectedTournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
@@ -378,9 +378,11 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
 
+      let holePar = hole.par;
       let grossScore = 99;
       let netScore = 99;
       if (this.selectedTournament.bestball === 2) {
+        holePar = hole.par * 2;
         let grossScores = [99, 99];
         let netScores = [99, 99];
         for (const round of rounds) {
@@ -420,7 +422,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         tee_id: hole.tee_id,
         hole_id: hole.hole_id,
         number: hole.number,
-        par: hole.par,
+        par: holePar,
         yardage: hole.yardage,
         stroke_index: hole.stroke_index,
         handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
