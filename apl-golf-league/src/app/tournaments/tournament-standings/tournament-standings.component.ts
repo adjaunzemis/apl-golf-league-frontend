@@ -70,14 +70,46 @@ export class TournamentStandingsComponent implements OnInit {
           let bestGrossScores: number[] = [];
           let bestNetScores: number[] = [];
           for (let holeNumber in holeScores) {
-            bestGrossScores.push(Math.min(...holeScores[holeNumber].grossScores))
-            bestNetScores.push(Math.min(...holeScores[holeNumber].netScores))
+            bestGrossScores.push(Math.min(...holeScores[holeNumber].grossScores));
+            bestNetScores.push(Math.min(...holeScores[holeNumber].netScores));
+          }
+
+          let grossScoreSum = bestGrossScores.reduce((partialSum, a) => partialSum + a, 0);
+          let netScoreSum = bestNetScores.reduce((partialSum, a) => partialSum + a, 0);
+
+          if (this.tournament.bestball === 2) {
+            let secondBestGrossScores: number[] = [];
+            let secondBestNetScores: number[] = [];
+            for (let holeNumber in holeScores) {
+              let minGrossScore = 99;
+              let secondMinGrossScore = 99;
+              let minNetScore = 99;
+              let secondMinNetScore = 99;
+              for (let scoreIdx = 0; scoreIdx < holeScores[holeNumber].grossScores.length; scoreIdx++) {
+                if (holeScores[holeNumber].grossScores[scoreIdx] < minGrossScore) {
+                  secondMinGrossScore = minGrossScore;
+                  minGrossScore = holeScores[holeNumber].grossScores[scoreIdx];
+                } else if (holeScores[holeNumber].grossScores[scoreIdx] < secondMinGrossScore) {
+                  secondMinGrossScore = holeScores[holeNumber].grossScores[scoreIdx];
+                }
+                if (holeScores[holeNumber].netScores[scoreIdx] < minNetScore) {
+                  secondMinNetScore = minNetScore;
+                  minNetScore = holeScores[holeNumber].netScores[scoreIdx];
+                } else if (holeScores[holeNumber].netScores[scoreIdx] < secondMinNetScore) {
+                  secondMinNetScore = holeScores[holeNumber].netScores[scoreIdx];
+                }
+              }
+              secondBestGrossScores.push(secondMinGrossScore);
+              secondBestNetScores.push(secondMinNetScore);
+            }
+            grossScoreSum += secondBestGrossScores.reduce((partialSum, a) => partialSum + a, 0);
+            netScoreSum += secondBestNetScores.reduce((partialSum, a) => partialSum + a, 0);
           }
 
           this.teamStandingsData.push({
             name: team.name,
-            grossScore: bestGrossScores.reduce((partialSum, a) => partialSum + a, 0),
-            netScore: bestNetScores.reduce((partialSum, a) => partialSum + a, 0),
+            grossScore: grossScoreSum,
+            netScore: netScoreSum,
             position: ""
           });
         }
