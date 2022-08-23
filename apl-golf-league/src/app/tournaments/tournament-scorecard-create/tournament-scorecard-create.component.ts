@@ -329,7 +329,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     if (this.selectedTournament.scramble) {
       return "Scramble";
     } else if (this.selectedTournament.bestball > 1) {
-      return `${this.selectedTournament.bestball} Best Ball`;
+      return `${this.selectedTournament.bestball} Best Balls`;
     } else {
       return "Best Ball";
     }

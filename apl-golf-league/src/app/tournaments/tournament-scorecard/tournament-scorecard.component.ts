@@ -77,8 +77,11 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   }
 
   getTeamRoundTitle(): string {
+    // TODO: Implement for other modes
     if (this.tournament.scramble) {
       return "Scramble";
+    } else if (this.tournament.bestball > 1) {
+      return `${this.tournament.bestball} Best Balls`;
     } else {
       return "Best Ball";
     }
@@ -121,7 +124,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       tee_gender: teamFirstRound.tee_gender,
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
-      tee_par: teamFirstRound.tee_par,
+      tee_par: this.tournament.bestball > 0 ? this.tournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
@@ -152,7 +155,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       tee_gender: teamFirstRound.tee_gender,
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
-      tee_par: teamFirstRound.tee_par,
+      tee_par: this.tournament.bestball > 0 ? this.tournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
@@ -167,16 +170,42 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
 
+      let holePar = hole.par;
       let grossScore = 99;
       let netScore = 99;
-      for (const round of rounds) {
-        grossScore = Math.min(grossScore, round.holes[holeIdx].gross_score);
-
-        let holeNetScore = round.holes[holeIdx].net_score;
-        if (this.tournament.scramble) {
-          holeNetScore = round.holes[holeIdx].gross_score - this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+      if (this.tournament.bestball === 2) {
+        holePar = hole.par * 2;
+        let grossScores = [99, 99];
+        let netScores = [99, 99];
+        for (const round of rounds) {
+          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+          if (round.holes[holeIdx].gross_score < grossScores[1]) {
+            if (round.holes[holeIdx].gross_score < grossScores[0]) {
+              grossScores[1] = grossScores[0];
+              grossScores[0] = round.holes[holeIdx].gross_score;
+            } else {
+              grossScores[1] = round.holes[holeIdx].gross_score;
+            }
+          }
+          if ((round.holes[holeIdx].gross_score - handicapStrokes) < netScores[1]) {
+            if ((round.holes[holeIdx].gross_score - handicapStrokes) < netScores[0]) {
+              netScores[1] = netScores[0];
+              netScores[0] = round.holes[holeIdx].gross_score - handicapStrokes;
+            } else {
+              netScores[1] = round.holes[holeIdx].gross_score - handicapStrokes;
+            }
+          }
         }
-        netScore = Math.min(netScore, holeNetScore);
+        grossScore = grossScores[0] + grossScores[1];
+        netScore = netScores[0] + netScores[1];
+      } else {
+        grossScore = 99;
+        netScore = 99;
+        for (const round of rounds) {
+          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+          grossScore = Math.min(grossScore, round.holes[holeIdx].gross_score);
+          netScore = Math.min(netScore, round.holes[holeIdx].gross_score - handicapStrokes);
+        }
       }
 
       holeResultData.push({
@@ -185,7 +214,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
         tee_id: hole.tee_id,
         hole_id: hole.hole_id,
         number: hole.number,
-        par: hole.par,
+        par: holePar,
         yardage: hole.yardage,
         stroke_index: hole.stroke_index,
         handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
