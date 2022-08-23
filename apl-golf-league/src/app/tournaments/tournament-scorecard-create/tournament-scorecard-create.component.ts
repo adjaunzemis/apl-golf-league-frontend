@@ -328,6 +328,8 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     // TODO: Implement for other modes
     if (this.selectedTournament.scramble) {
       return "Scramble";
+    } else if (this.selectedTournament.bestball > 1) {
+      return `${this.selectedTournament.bestball} Best Ball`;
     } else {
       return "Best Ball";
     }
@@ -378,10 +380,38 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
       let grossScore = 99;
       let netScore = 99;
-      for (const round of rounds) {
-        const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
-        grossScore = Math.min(grossScore, round.holes[holeIdx].gross_score);
-        netScore = Math.min(netScore, round.holes[holeIdx].gross_score - handicapStrokes);
+      if (this.selectedTournament.bestball === 2) {
+        let grossScores = [99, 99];
+        let netScores = [99, 99];
+        for (const round of rounds) {
+          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+          if (round.holes[holeIdx].gross_score < grossScores[1]) {
+            if (round.holes[holeIdx].gross_score < grossScores[0]) {
+              grossScores[1] = grossScores[0];
+              grossScores[0] = round.holes[holeIdx].gross_score;
+            } else {
+              grossScores[1] = round.holes[holeIdx].gross_score;
+            }
+          }
+          if ((round.holes[holeIdx].gross_score - handicapStrokes) < netScores[1]) {
+            if ((round.holes[holeIdx].gross_score - handicapStrokes) < netScores[0]) {
+              netScores[1] = netScores[0];
+              netScores[0] = round.holes[holeIdx].gross_score - handicapStrokes;
+            } else {
+              netScores[1] = round.holes[holeIdx].gross_score - handicapStrokes;
+            }
+          }
+        }
+        grossScore = grossScores[0] + grossScores[1];
+        netScore = netScores[0] + netScores[1];
+      } else {
+        grossScore = 99;
+        netScore = 99;
+        for (const round of rounds) {
+          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+          grossScore = Math.min(grossScore, round.holes[holeIdx].gross_score);
+          netScore = Math.min(netScore, round.holes[holeIdx].gross_score - handicapStrokes);
+        }
       }
 
       holeResultData.push({
