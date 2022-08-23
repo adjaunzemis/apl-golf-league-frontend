@@ -145,7 +145,7 @@
 
     <ng-template #flightSignupWindowClosed>
       <div class="content">
-        <h3 class="italic" *ngIf="this.selectedTournament.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
+        <h3 class="italic" *ngIf="this.selectedTournament.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} {{ getDaysUntilSignup() > 1 ? 'days' : 'day' }}!</h3>
         <h3 class="italic" *ngIf="this.selectedTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
       </div>
     </ng-template>
