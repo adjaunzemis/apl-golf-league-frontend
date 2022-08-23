@@ -42,7 +42,7 @@
   <div class="card-container">
     <div class="card card-small bold" *ngIf="tournament.shotgun">Shotgun Start</div>
     <div class="card card-small bold" *ngIf="tournament.strokeplay">Strokeplay</div>
-    <div class="card card-small bold" *ngIf="tournament.bestball">Team Best-Ball</div>
+    <div class="card card-small bold" *ngIf="tournament.bestball > 0">Team {{ tournament.bestball > 1 ? tournament.bestball : null | number:'1.0-0' }} Best-Ball</div>
     <div class="card card-small bold" *ngIf="tournament.scramble">Scramble</div>
     <div class="card card-small bold" *ngIf="tournament.ryder_cup">Ryder Cup</div>
     <div class="card card-small bold" *ngIf="tournament.chachacha">Cha-Cha-Cha</div>

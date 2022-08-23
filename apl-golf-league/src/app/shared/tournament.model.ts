@@ -19,7 +19,7 @@ export interface TournamentData {
     teams: TournamentTeamData[]
     shotgun: boolean
     strokeplay: boolean
-    bestball: boolean
+    bestball: number
     scramble: boolean
     ryder_cup: boolean
     individual: boolean
@@ -41,7 +41,7 @@ export interface TournamentInfo {
   logo_url?: string
   shotgun: boolean
   strokeplay: boolean
-  bestball: boolean
+  bestball: number
   scramble: boolean
   ryder_cup: boolean
   individual: boolean
