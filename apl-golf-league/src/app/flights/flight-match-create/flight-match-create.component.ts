@@ -141,16 +141,21 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       this.selectedFlight = result;
       this.flightSelector.setValue(result.name);
       this.isLoading = false;
-      for (const courseInfo of this.courseOptions) {
-        if (courseInfo.name.toLowerCase() === result.course.toLowerCase()) {
-          this.selectedCourseInfo = courseInfo;
-          this.loadCourseData();
-          break;
+
+      if (result.course !== null && result.course !== undefined) {
+        for (const courseInfo of this.courseOptions) {
+          if (courseInfo.name.toLowerCase() === result.course.toLowerCase()) {
+            this.selectedCourseInfo = courseInfo;
+            this.loadCourseData();
+            break;
+          }
         }
       }
+
       this.setWeekOptions();
       this.selectedWeek = this.determineCurrentWeek();
       this.setSelectedWeekMatches();
+
       this.clearSelectedTeam(1);
       this.clearSelectedTeam(2);
     });
