@@ -13,12 +13,13 @@ import { MatchesService } from '../../matches/matches.service';
 })
 export class FlightScheduleComponent implements OnInit, OnDestroy{
   @Input() flight: FlightData;
+  isPlayoffFlight: boolean = false;
 
   private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
-  selectedWeek: number = 1;
-  weekOptions: string[] = [];
-
-  selectedWeekMatches: MatchSummary[] = [];
+  selectedWeekOrRound: number = 1;
+  weekOrRoundLabel: string = "Week";
+  weekOrRoundOptions: string[] = [];
+  selectedWeekOrRoundMatches: MatchSummary[] = [];
 
   showScorecard: boolean = false;
   isLoadingSelectedMatchData: boolean = false;
@@ -28,6 +29,9 @@ export class FlightScheduleComponent implements OnInit, OnDestroy{
   constructor(private matchesService: MatchesService) { }
 
   ngOnInit(): void {
+    this.isPlayoffFlight = this.flight.name.includes("Playoffs");
+    this.weekOrRoundLabel = this.isPlayoffFlight ? "Round" : "Week";
+
     this.matchDataSub = this.matchesService.getMatchUpdateListener()
       .subscribe(result => {
         console.log(`[FlightScheduleComponent] Received data for match: id=${result.match_id}`)
@@ -35,18 +39,18 @@ export class FlightScheduleComponent implements OnInit, OnDestroy{
         this.isLoadingSelectedMatchData = false;
       });
 
-    this.setWeekOptions();
-    this.selectedWeek = this.determineCurrentWeek();
-    this.setSelectedWeekMatches();
+    this.setWeekOrRoundOptions();
+    this.selectedWeekOrRound = this.determineCurrentWeekOrRound();
+    this.setSelectedWeekOrRoundMatches();
   }
 
   ngOnDestroy(): void {
     this.matchDataSub.unsubscribe();
   }
 
-  onSelectedWeekChanged(selectedWeekChange: MatSelectChange): void {
-    this.selectedWeek = parseInt((selectedWeekChange.value as string).split(' ')[0]);
-    this.setSelectedWeekMatches();
+  onSelectedWeekOrRoundChanged(selectedWeekOrRoundChange: MatSelectChange): void {
+    this.selectedWeekOrRound = parseInt((selectedWeekOrRoundChange.value as string).split(' ')[0]);
+    this.setSelectedWeekOrRoundMatches();
   }
 
   onSelectMatch(matchSummary: MatchSummary): void {
@@ -61,7 +65,7 @@ export class FlightScheduleComponent implements OnInit, OnDestroy{
     }
   }
 
-  private determineCurrentWeek(): number {
+  private determineCurrentWeekOrRound(): number {
     if (this.currentDate < this.flight.start_date) {
       return 1;
     } else {
@@ -76,27 +80,41 @@ export class FlightScheduleComponent implements OnInit, OnDestroy{
     return 1; // fall-through case, shouldn't be reachable
   }
 
-  private setWeekOptions(): void {
+  private setWeekOrRoundOptions(): void {
     for (let week = 1; week <= this.flight.weeks; week++) {
-      let weekStartDate = new Date(this.flight.start_date);
-      weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
+      if (!this.isPlayoffFlight) {
+        let weekStartDate = new Date(this.flight.start_date);
+        weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
 
-      let nextWeekStartDate = new Date(weekStartDate);
-      nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
+        let nextWeekStartDate = new Date(weekStartDate);
+        nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
 
-      this.weekOptions.push(week + ": " + weekStartDate.toLocaleString('default', { month: 'short' }) + " " + weekStartDate.getDate() + " - " + nextWeekStartDate.toLocaleString('default', { month: 'short' }) + " " + nextWeekStartDate.getDate());
+        this.weekOrRoundOptions.push(week + ": " + weekStartDate.toLocaleString('default', { month: 'short' }) + " " + weekStartDate.getDate() + " - " + nextWeekStartDate.toLocaleString('default', { month: 'short' }) + " " + nextWeekStartDate.getDate());
+      } else {
+        let roundName: string;
+        if (week === this.flight.weeks) {
+          roundName = "Finals";
+        } else if (week === this.flight.weeks - 1) {
+          roundName = "Semi-Finals";
+        } else if (week === this.flight.weeks - 2) {
+          roundName = "Quarter-Finals";
+        } else {
+          roundName = `Round of ${Math.pow(2, this.flight.weeks - week + 1)}`;
+        }
+        this.weekOrRoundOptions.push(week + ": " + roundName);
+      }
     }
   }
 
-  private setSelectedWeekMatches(): void {
+  private setSelectedWeekOrRoundMatches(): void {
     this.showScorecard = false;
     this.selectedMatchData = null;
 
-    this.selectedWeekMatches = [];
+    this.selectedWeekOrRoundMatches = [];
     if (this.flight.matches) {
       for (let match of this.flight.matches) {
-        if (match.week === this.selectedWeek) {
-          this.selectedWeekMatches.push(match);
+        if (match.week === this.selectedWeekOrRound) {
+          this.selectedWeekOrRoundMatches.push(match);
         }
       }
     }

@@ -1,14 +1,14 @@
 <div class="content">
 
   <mat-form-field appearance="fill" class="input-field">
-    <mat-label>Week</mat-label>
-    <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
-      <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
+    <mat-label>{{ weekOrRoundLabel }}</mat-label>
+    <mat-select [value]="weekOrRoundOptions[selectedWeekOrRound - 1]" (selectionChange)="onSelectedWeekOrRoundChanged($event)">
+      <mat-option *ngFor="let week of weekOrRoundOptions" [value]="week">{{ week }}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <div class="card-container" *ngIf="selectedWeekMatches.length > 0; else noMatches">
-    <div class="card card-small match-summary-card" [ngClass]="[match.home_score || match.away_score ? 'selectable' : '', showScorecard && selectedMatchData && (selectedMatchData.match_id === match.match_id) ? 'selected' : '']" *ngFor="let match of selectedWeekMatches" (click)="onSelectMatch(match)">
+  <div class="card-container" *ngIf="selectedWeekOrRoundMatches.length > 0; else noMatches">
+    <div class="card card-small match-summary-card" [ngClass]="[match.home_score || match.away_score ? 'selectable' : '', showScorecard && selectedMatchData && (selectedMatchData.match_id === match.match_id) ? 'selected' : '']" *ngFor="let match of selectedWeekOrRoundMatches" (click)="onSelectMatch(match)">
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
       <span *ngIf="match.home_score || match.away_score">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
       <span class="italic" *ngIf="!match.home_score && !match.away_score">TBD</span>
