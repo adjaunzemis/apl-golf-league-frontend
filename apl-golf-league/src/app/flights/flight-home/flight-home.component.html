@@ -36,28 +36,23 @@
     </a>
   </div>
 
-  <app-division-list [divisions]="flight.divisions"></app-division-list>
+  <h2 *ngIf="flight.divisions && flight.divisions.length > 0">Divisions</h2>
+  <app-division-list [divisions]="flight.divisions" *ngIf="flight.divisions && flight.divisions.length > 0"></app-division-list>
 
-  <h2>Standings</h2>
-
-  <app-flight-standings [flight]="flight"></app-flight-standings>
+  <h2 *ngIf="!isPlayoffFlight">Standings</h2>
+  <app-flight-standings [flight]="flight" *ngIf="!isPlayoffFlight"></app-flight-standings>
 
   <h2>Schedule</h2>
-
-  <div class="card card-small selectable" [ngClass]="showScheduleMatrix ? 'selected' : ''" (click)="showScheduleMatrix = !showScheduleMatrix">
+  <div class="card card-small selectable" [ngClass]="showScheduleMatrix ? 'selected' : ''" (click)="showScheduleMatrix = !showScheduleMatrix" *ngIf="!isPlayoffFlight">
     <span class="bold">Flight Schedule</span>
   </div>
+  <app-flight-schedule-matrix class="full-width" [flight]="flight" *ngIf="!isPlayoffFlight && showScheduleMatrix"></app-flight-schedule-matrix>
 
-  <app-flight-schedule-matrix class="full-width" [flight]="flight" *ngIf="showScheduleMatrix"></app-flight-schedule-matrix>
-
-  <h3>Week-by-Week Schedule</h3>
-
+  <h3 *ngIf="!isPlayoffFlight">Week-by-Week Schedule</h3>
   <app-flight-schedule class="full-width" [flight]="flight"></app-flight-schedule>
 
   <h2>Teams</h2>
-
   <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0">No team data to show</span>
-
   <div class="card-container team-list">
     <a class="card team-card selectable" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
       <span class="bold">{{ team.name }}</span>
@@ -66,7 +61,6 @@
   </div>
 
   <!-- <h2>Statistics</h2>
-
   <div class="card-container">
     <div class="card card-small">
       <span class="bold">Coming soon...</span>

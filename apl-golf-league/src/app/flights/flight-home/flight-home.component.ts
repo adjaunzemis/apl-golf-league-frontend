@@ -20,6 +20,8 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
 
   showScheduleMatrix = false;
 
+  isPlayoffFlight = false;
+
   constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -28,6 +30,11 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
           console.log(`[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`);
           this.flight = flightData;
           this.isLoading = false;
+
+          if (flightData.name.includes("Playoffs")) {
+            console.log(`[FlightHomeComponent] Displaying playoff-specific flight details`)
+            this.isPlayoffFlight = true;
+          }
       });
 
     this.route.queryParams.subscribe(params => {
