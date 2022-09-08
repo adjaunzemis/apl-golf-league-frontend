@@ -42,6 +42,9 @@
   <h2 *ngIf="!isPlayoffFlight">Standings</h2>
   <app-flight-standings [flight]="flight" *ngIf="!isPlayoffFlight"></app-flight-standings>
 
+  <!-- <h2 *ngIf="isPlayoffFlight">Bracket</h2>
+  <app-playoff-bracket *ngIf="isPlayoffFlight"></app-playoff-bracket> -->
+
   <h2>Schedule</h2>
   <div class="card card-small selectable" [ngClass]="showScheduleMatrix ? 'selected' : ''" (click)="showScheduleMatrix = !showScheduleMatrix" *ngIf="!isPlayoffFlight">
     <span class="bold">Flight Schedule</span>

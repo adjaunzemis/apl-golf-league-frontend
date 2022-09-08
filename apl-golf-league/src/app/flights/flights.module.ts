@@ -19,6 +19,7 @@ import { FlightMatchScorecardComponent } from './flight-match-create/flight-matc
 import { DivisionsModule } from "../divisions/divisions.module";
 import { PaymentsModule } from "../payments/payments.module";
 import { ScorecardModule } from "../shared/scorecard/scorecard.module";
+import { PlayoffBracketComponent } from "./playoff-bracket/playoff-bracket.component";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ScorecardModule } from "../shared/scorecard/scorecard.module";
     FlightScheduleComponent,
     FlightScheduleMatrixComponent,
     FlightMatchScorecardComponent,
-    FlightMatchCreateComponent
+    FlightMatchCreateComponent,
+    PlayoffBracketComponent
   ],
   imports: [
     CommonModule,
