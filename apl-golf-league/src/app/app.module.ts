@@ -23,6 +23,7 @@ import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AppConfigService } from './app-config.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
+import { CarouselComponent } from './carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PaymentsModule } from './payments/payments.module';
     FooterComponent,
     LeagueHomeComponent,
     RulesComponent,
-    HandicapsComponent
+    HandicapsComponent,
+    CarouselComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,7 @@ import { PaymentsModule } from './payments/payments.module';
     TournamentsModule,
     DivisionsModule,
     AuthModule,
-    PaymentsModule
+    PaymentsModule,
   ],
   providers: [
     {
