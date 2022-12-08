@@ -8,9 +8,9 @@ import { CarouselContents } from "../shared/carousel-contents.model";
 })
 export class CarouselComponent {
   @Input() contents: CarouselContents[] = [
-    {"background_image_url": "/assets/apl_golf_logo.png"},
-    {"background_image_url": "/assets/trophy.png"},
-    {"background_image_url": "/assets/courses/Greystone/logo.png"}
+    {"image_url": "/assets/apl_golf_logo.png", "image_position": "left"},
+    {"image_url": "/assets/trophy.png"},
+    {"image_url": "/assets/courses/Greystone/logo.png", "image_position": "right"}
   ];
 
   currentIndex: number = 0;
@@ -33,8 +33,14 @@ export class CarouselComponent {
     this.currentIndex = idx;
   }
 
-  getCurrentBackgroundImageUrl(): string {
-    return `url(${this.contents[this.currentIndex].background_image_url})`
+  getCurrentImageUrl(): string {
+    return `url(${this.contents[this.currentIndex].image_url})`
   }
 
+  getCurrentImagePosition(): string {
+    if (this.contents[this.currentIndex].image_position) {
+      return `${this.contents[this.currentIndex].image_position}`;
+    }
+    return 'center';
+  }
 }

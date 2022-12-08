@@ -1,11 +1,7 @@
 export interface CarouselContents {
   title?: string
   text?: string
-
   link?: string
-
-  background_image_url?: string
-
-  detail_image_url?: string
-  detail_image_location?: string
+  image_url?: string
+  image_position?: string
 }
