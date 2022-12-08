@@ -9,7 +9,8 @@ import { CarouselContents } from "../shared/carousel-contents.model";
 export class CarouselComponent {
   @Input() contents: CarouselContents[] = [
     {"background_image_url": "/assets/apl_golf_logo.png"},
-    {"background_image_url": "/assets/trophy.png"}
+    {"background_image_url": "/assets/trophy.png"},
+    {"background_image_url": "/assets/courses/Greystone/logo.png"}
   ];
 
   currentIndex: number = 0;
@@ -33,7 +34,7 @@ export class CarouselComponent {
   }
 
   getCurrentBackgroundImageUrl(): string {
-    return `${this.contents[this.currentIndex].background_image_url}`
+    return `url(${this.contents[this.currentIndex].background_image_url})`
   }
 
 }

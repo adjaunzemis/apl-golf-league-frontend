@@ -1,11 +1,10 @@
-<div class="slider">
+<div class="carousel">
   <div>
     <div class="leftArrow" (click)="goToPrevious()">❰</div>
     <div class="rightArrow" (click)="goToNext()">❱</div>
   </div>
-  <img class="slide" [src]="getCurrentBackgroundImageUrl()">
-  <div class="slide" [ngStyle]="{'background': getCurrentBackgroundImageUrl()}"></div>
+  <div class="carouselContents" [ngStyle]="{'background-image': getCurrentBackgroundImageUrl()}"></div>
   <div class="dotsContainer">
-    <div class="dot" *ngFor="let content of contents; let idx = index" (click)="goToIndex(idx)">●</div>
+    <div *ngFor="let content of contents; let idx = index" [ngClass]="idx === currentIndex ? 'currentDot' : 'dot'" (click)="goToIndex(idx)">●</div>
   </div>
 </div>
