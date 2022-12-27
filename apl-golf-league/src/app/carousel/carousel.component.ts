@@ -9,8 +9,8 @@ import { CarouselContents } from "../shared/carousel-contents.model";
 export class CarouselComponent {
   @Input() contents: CarouselContents[] = [
     {"image_url": "/assets/apl_golf_logo.png", "image_position": "left", "title": "Title Here", "description": "Lorem ipsum..."},
-    {"image_url": "/assets/trophy.png", "title": "Title Here", "description": "Lorem ipsum..."},
-    {"image_url": "/assets/courses/Greystone/logo.png", "image_position": "right", "title": "Title Here", "description": "Lorem ipsum..."}
+    {"image_url": "/assets/trophy.png"},
+    {"image_url": "/assets/courses/Greystone/logo.png", "image_position": "right", "title": "Title Only"}
   ];
 
   currentIndex: number = 0;
