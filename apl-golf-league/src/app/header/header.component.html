@@ -1,37 +1,57 @@
 <mat-toolbar color="primary">
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/auth/login" *ngIf="!isAuthenticated">
+      <mat-icon>account_circle</mat-icon>
+      <span>Login</span>
+    </button>
+    <!-- <button mat-menu-item routerLink="/auth/user" *ngIf="isAuthenticated">
+      <mat-icon>account_circle</mat-icon>
+      <span>Profile</span>
+    </button> -->
+    <button mat-menu-item routerLink="/golfer/search">
+      <mat-icon>person_search</mat-icon>
+      <span>Golfer Search</span>
+    </button>
+    <!-- <button mat-menu-item>
+      <mat-icon>golf_course</mat-icon>
+      <span>Course Search</span>
+    </button> -->
+    <button mat-menu-item routerLink="/flight/signup">
+      <mat-icon>group_add</mat-icon>
+      <span>Flight Sign-Up</span>
+    </button>
+    <button mat-menu-item routerLink="/tournament/signup">
+      <mat-icon>group_add</mat-icon>
+      <span>Tournament Sign-Up</span>
+    </button>
+    <button mat-menu-item routerLink="/flight/match/edit" *ngIf="isAuthenticated && currentUser?.edit_flights">
+      <mat-icon>sports_golf</mat-icon>
+      <span>Post Flight Scores</span>
+    </button>
+    <button mat-menu-item routerLink="/tournament/scores" *ngIf="isAuthenticated && currentUser?.edit_tournaments">
+      <mat-icon>sports_golf</mat-icon>
+      <span>Post Tournament Scores</span>
+    </button>
+    <button mat-menu-item routerLink="/golfer/qualifying" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>sports_golf</mat-icon>
+      <span>Post Qualifying Scores</span>
+    </button>
+    <button mat-menu-item routerLink="/payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
+      <mat-icon>attach_money</mat-icon>
+      <span>Payments</span>
+    </button>
+    <button mat-menu-item (click)="onLogout()" *ngIf="isAuthenticated">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+
   <span class="title">
     <a routerLink="">APL Golf League</a>
   </span>
 
-  <span class="spacer"></span>
-
-  <ul>
-    <li *ngIf="isAuthenticated && currentUser?.is_admin">
-      <a mat-button routerLink="/golfer/qualifying" routerLinkActive="mat-accent">Qualifying</a>
-    </li>
-    <li *ngIf="isAuthenticated && currentUser?.edit_payments">
-      <a mat-button routerLink="/payments" routerLinkActive="mat-accent">Payments</a>
-    </li>
-    <li *ngIf="isAuthenticated && currentUser?.edit_tournaments">
-      <a mat-button routerLink="/tournament/scores" routerLinkActive="mat-accent">Post Tournament Scores</a>
-    </li>
-    <li *ngIf="isAuthenticated && currentUser?.edit_flights">
-      <a mat-button routerLink="/flight/match/edit" routerLinkActive="mat-accent">Post Flight Scores</a>
-    </li>
-    <li>
-      <a mat-button routerLink="/tournament/signup" routerLinkActive="mat-accent">Tournament Sign-Ups</a>
-    </li>
-    <li>
-      <a mat-button routerLink="/flight/signup" routerLinkActive="mat-accent">Flight Sign-Ups</a>
-    </li>
-    <li>
-      <a mat-button routerLink="/golfer/search" routerLinkActive="mat-accent">Golfer Search</a>
-    </li>
-    <li *ngIf="!isAuthenticated">
-      <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">Login</a>
-    </li>
-    <li *ngIf="isAuthenticated">
-      <a mat-button (click)="onLogout()">Logout</a>
-    </li>
-  </ul>
 </mat-toolbar>
