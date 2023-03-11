@@ -1,0 +1,203 @@
+<div class="content">
+  <h1>Membership Dues</h1>
+
+  <span class="bold">Full: $40.00 USD | Tournament-Only: $35.00 USD</span>
+  <span>Dues may be paid either by writing a check or via PayPal.</span>
+  <span class="italic bold">Update (2022-08-08) - The Paypal payment option is no longer available. Please pay via check (payable to APL Golf League).</span>
+  <span>Drop off checks at Bob’s office 200-E352 (door is unlocked, place check on the desk if Bob is not in).</span>
+
+  <!-- TODO: Re-enable when PayPal is a valid option again -->
+  <!-- <div>
+    <span>Those who use PayPal </span>
+    <span class="italic bold">must</span>
+    <span> use the </span>
+    <span class="bold">"send money to a friend"</span>
+    <span> payment option.</span>
+  </div>
+  <div>
+    <span>Payments </span>
+    <span class="italic">will be returned</span>
+    <span> if this option is not selected since the league is charged a fee.</span>
+  </div>
+
+  <div>
+    <span>The league PayPal address is: </span>
+    <span class="bold">APLGolfLeague@gmail.com</span>
+  </div>
+
+  <div>
+    <span>Checks should be sent to the treasurer: </span>
+    <span class="bold">Bob Erlandson (200-E352)</span>
+  </div> -->
+
+  <!-- TODO: Enable click-to-pay PayPal -->
+  <!-- <form target='paypal' action='https://www.paypal.com/cgi-bin/webscr' method='post'>
+    <input type='hidden' name='cmd' value='_s-xclick'>
+    <input type='hidden' name='hosted_button_id' value='TG44TY8QTWDGW'>
+    <table>
+      <tr>
+        <td>
+          <input type='hidden' name='on0' value='Lake Presidential Tournament'><b>Lake Presidential Tournament</b>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <select name='os0'>
+            <option value='Tournament Fee (League Members)'>Tournament Fee (League Members) $69.00 USD</option>
+            <option value='Tournament Fee Guest . Non-Member'>Tournament Fee Guest . Non-Member $77.00 USD</option>
+            <option value='Tournament Only Membership'>Tournament Only Membership $35.00 USD</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type='hidden' name='on1' value='Enter Names of Golfers'><b>Enter Names of Golfers</b>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type='text' name='os1' maxlength='200'>
+        </td>
+      </tr>
+    </table>
+    <input type='hidden' name='currency_code' value='USD'>
+    <input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_cart_LG.gif' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!'>
+    <img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1'>
+  </form> -->
+
+  <h1>Flight Sign-Up</h1>
+</div>
+
+<div class="content" *ngIf="!isLoadingFlights && !isLoadingGolfers">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select Flight</mat-label>
+    <mat-select [formControl]="flightControl" required>
+      <mat-option>--</mat-option>
+      <mat-option *ngFor="let flight of flights" [value]="flight" (click)="getSelectedFlightData(flight.id)">{{ flight.name }} ({{ flight.year }})</mat-option>
+    </mat-select>
+    <mat-error *ngIf="flightControl.hasError('required')">Please choose a flight</mat-error>
+  </mat-form-field>
+
+  <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlight && !isLoadingSelectedFlight">
+
+    <div class="content" *ngIf="isSelectedFlightSignupWindowOpen; else flightSignupWindowClosed">
+
+      <h2>Add Team</h2>
+
+      <div>
+        <mat-form-field class="team-name-input" appearance="fill">
+            <mat-label>Team Name</mat-label>
+            <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
+            <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+            <mat-error *ngIf="teamNameControl.hasError('minlength')">Team name is too short</mat-error>
+            <mat-error *ngIf="teamNameControl.hasError('maxlength')">Team name is too long</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeamForm.valid" (click)="onSubmitTeam()">Submit</button>
+
+        <button mat-raised-button color="primary" (click)="onAddNewGolfer()">New Golfer</button>
+
+      </div>
+
+      <form [formGroup]="newTeamForm" (ngSubmit)="onSubmitTeam()" (keydown.enter)="$event.preventDefault()">
+        <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
+          <div formGroupName="{{ idx }}">
+
+            <mat-form-field appearance="fill" class="input-field">
+              <mat-label>Golfer</mat-label>
+              <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g.name">{{ g.name }}</mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('required')">Select a golfer</mat-error>
+              <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="input-field">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="teamGolfer.get('role')?.hasError('required')">Select a role</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="input-field">
+              <mat-label>Division</mat-label>
+              <mat-select formControlName="division" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let d of selectedFlight.divisions" [value]="d">{{ d.name }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="teamGolfer.get('division')?.hasError('required')">Select a division</mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
+
+            <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
+
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <ng-template #flightSignupWindowClosed>
+      <div class="content">
+        <h3 class="italic" *ngIf="this.selectedFlight.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
+        <h3 class="italic" *ngIf="this.selectedFlight.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
+      </div>
+    </ng-template>
+
+
+    <h2>{{ selectedFlight.name | titlecase }} ({{ selectedFlight.year }}) Flight Info</h2>
+
+    <div class="card-container">
+      <a class="card card-small selectable" href="mailto:{{ selectedFlight.secretary_email }}">
+        <span class="bold">Secretary</span>
+        <span>{{ selectedFlight.secretary }}</span>
+      </a>
+
+      <div class="card card-small">
+        <span class="bold">Course</span>
+        <span>{{ selectedFlight.course }}</span>
+      </div>
+
+      <div class="card card-small">
+        <span class="bold">Sign-Up Dates</span>
+        <span>{{ selectedFlight.signup_start_date | date:'longDate' }} - {{ selectedFlight.signup_stop_date | date:'longDate' }}</span>
+      </div>
+
+      <div class="card card-small">
+        <span class="bold">Start Date</span>
+        <span>{{ selectedFlight.start_date | date:'longDate' }}</span>
+      </div>
+    </div>
+
+    <h3>Divisions</h3>
+
+    <app-division-list [divisions]="selectedFlight.divisions"></app-division-list>
+
+    <h3>Teams</h3>
+
+    <p class="italic" *ngIf="selectedFlight.teams?.length === 0">No teams have signed-up yet...</p>
+
+    <div class="card-container team-list">
+      <a class="card team-card" *ngFor="let team of selectedFlight.teams">
+        <span class="bold">{{ team.name }}</span>
+        <div *ngFor="let golfer of team.golfers">
+          <span>{{ golfer.golfer_name }} - {{ golfer.division_name }} - Hcp: </span>
+          <span *ngIf="golfer.handicap_index; else noHandicapIndex">{{ golfer.handicap_index | number:'1.1' }}</span>
+          <ng-template #noHandicapIndex>
+            <span>--</span>
+          </ng-template>
+
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<mat-spinner *ngIf="isLoadingFlights || isLoadingGolfers || isLoadingSelectedFlight"></mat-spinner>

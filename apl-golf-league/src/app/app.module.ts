@@ -24,6 +24,7 @@ import { AppConfigService } from './app-config.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
 import { CarouselComponent } from './carousel/carousel.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CarouselComponent } from './carousel/carousel.component';
     LeagueHomeComponent,
     RulesComponent,
     HandicapsComponent,
-    CarouselComponent
+    CarouselComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
