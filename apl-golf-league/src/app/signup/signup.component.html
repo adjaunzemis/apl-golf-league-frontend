@@ -1,4 +1,4 @@
-<mat-tab-group class="content" animationDuration="0ms" style="width: 100%">
+<mat-tab-group class="content" animationDuration="0ms" [(selectedIndex)]="selectedTabIdx">
   <mat-tab label="Flight Sign-Ups">
 
     <div class="content" *ngIf="!isLoadingFlights && !isLoadingGolfers">

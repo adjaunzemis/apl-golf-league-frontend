@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subscription, forkJoin } from 'rxjs';
@@ -23,6 +24,8 @@ import { AppConfigService } from '../app-config.service';
 export class SignupComponent implements OnInit, OnDestroy {
   private currentYear: number;
   currentDate = new Date();
+
+  selectedTabIdx = 0; // 0 = 'flight', 1 = 'tournament'
 
   isLoadingGolfers = true;
 
@@ -58,7 +61,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   newTeamForm: FormGroup;
 
-  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog) { }
+  constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
@@ -118,6 +121,14 @@ export class SignupComponent implements OnInit, OnDestroy {
       teamGolfers: this.formBuilder.array([])
     });
     this.addNewTeamGolferForm();
+
+    this.route.queryParams.subscribe(params => {
+      if (params) {
+        if (params.type) {
+          this.setSelectedTabIdxByType(params.type);
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -126,6 +137,15 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.tournamentsSub.unsubscribe();
     this.selectedTournamentSub.unsubscribe();
     this.golfersSub.unsubscribe();
+  }
+
+  private setSelectedTabIdxByType(type: string): void {
+    if ((type.toLowerCase() === "tournament") || (type.toLowerCase() === "tournaments")) {
+      this.selectedTabIdx = 1;
+    } else {
+      this.selectedTabIdx = 0;
+    }
+    console.log(`[SignupComponent] Selected tab ${this.selectedTabIdx} for type '${type}'`)
   }
 
   getSelectedFlightData(id: number): void {
