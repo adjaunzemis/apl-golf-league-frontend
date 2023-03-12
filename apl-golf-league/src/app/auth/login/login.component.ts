@@ -32,20 +32,22 @@ export class LoginComponent {
   }
 
   onLogin(): void {
-    this.loginAttempted = false;
-    this.loginSuccessful = false;
-    this.authService.login(this.usernameControl.value, this.passwordControl.value).subscribe(
-      result => {
-        this.loginAttempted = true;
-        this.loginSuccessful = true;
+    if (this.usernameControl.valid && this.passwordControl.valid) {
+      this.loginAttempted = false;
+      this.loginSuccessful = false;
+      this.authService.login(this.usernameControl.value, this.passwordControl.value).subscribe(
+        result => {
+          this.loginAttempted = true;
+          this.loginSuccessful = true;
 
-        this.usernameControl.reset();
-        this.passwordControl.reset();
-      },
-      errorMessage => {
-        this.loginAttempted = true;
-        this.loginSuccessful = false;
-      });
+          this.usernameControl.reset();
+          this.passwordControl.reset();
+        },
+        errorMessage => {
+          this.loginAttempted = true;
+          this.loginSuccessful = false;
+        });
+    }
   }
 
   onLogout(): void {
