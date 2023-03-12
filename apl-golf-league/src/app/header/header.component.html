@@ -20,6 +20,10 @@
       <mat-icon>golf_course</mat-icon>
       <span>Course Search</span>
     </button> -->
+    <button mat-menu-item (click)="onAddNewGolfer()" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>person_add</mat-icon>
+      <span>Add Golfer</span>
+    </button>
     <button mat-menu-item routerLink="/signup">
       <mat-icon>group_add</mat-icon>
       <span>Sign-Ups</span>

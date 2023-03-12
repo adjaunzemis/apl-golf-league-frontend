@@ -109,12 +109,12 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isLoadingGolfers = false;
       });
 
+    this.golfersService.getAllGolfers();
+
     this.newTeamForm = this.formBuilder.group({
       teamGolfers: this.formBuilder.array([])
     });
     this.addNewTeamGolferForm();
-
-    this.golfersService.getAllGolfers();
 
     this.route.queryParams.subscribe(params => {
       if (params) {
