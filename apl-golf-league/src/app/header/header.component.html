@@ -24,14 +24,6 @@
       <mat-icon>group_add</mat-icon>
       <span>Sign-Ups</span>
     </button>
-    <button mat-menu-item routerLink="/flight/signup">
-      <mat-icon>group_add</mat-icon>
-      <span>Flight Sign-Up</span>
-    </button>
-    <button mat-menu-item routerLink="/tournament/signup">
-      <mat-icon>group_add</mat-icon>
-      <span>Tournament Sign-Up</span>
-    </button>
     <button mat-menu-item routerLink="/flight/match/edit" *ngIf="isAuthenticated && currentUser?.edit_flights">
       <mat-icon>sports_golf</mat-icon>
       <span>Post Flight Scores</span>

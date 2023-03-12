@@ -144,7 +144,6 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onTabIndexChanged(tabIdx: number): void {
-    console.log(`Tab index changed: '${tabIdx}'`)
     this.clearSignupForms();
     this.flightControl.setValue("--");
     this.tournamentControl.setValue("--");
@@ -206,6 +205,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     return [];
   }
 
+  // TODO: Conslidate with onSubmitTournamentTeam()
   onSubmitFlightTeam(): void {
     if (!this.selectedFlightOrTournament) {
       return;
@@ -264,6 +264,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     );
   }
 
+  // TODO: Conslidate with onSubmitFlightTeam()
   onSubmitTournamentTeam(): void {
     if (!this.selectedFlightOrTournament) {
       return;
@@ -309,7 +310,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.isLoadingSelectedFlightOrTournament = true
     this.tournamentsService.createTeam(newTeamName, this.selectedFlightOrTournament.id, golferData).subscribe(
       team => {
-        console.log(`[TournamentSignupComponent] Created team '${team.name}' (id=${team.id})`);
+        console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id})`);
         this.clearSignupForms();
         if (this.selectedFlightOrTournament) {
           this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team
