@@ -12,6 +12,7 @@ import { TournamentsService } from '../tournaments/tournaments.service';
 import { Golfer, GolferAffiliation } from '../shared/golfer.model';
 import { GolfersService } from '../golfers/golfers.service';
 import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
+import { TeamData, TournamentTeamData } from '../shared/team.model';
 import { DivisionData } from '../shared/division.model';
 import { ErrorDialogComponent } from '../shared/error/error-dialog/error-dialog.component';
 import { AppConfigService } from '../app-config.service';
@@ -28,30 +29,28 @@ export class SignupComponent implements OnInit, OnDestroy {
   selectedTabIdx = 0; // 0 = 'flight', 1 = 'tournament'
 
   isLoadingGolfers = true;
-
   isLoadingFlights = true;
-  isLoadingSelectedFlight = false;
-  isSelectedFlightSignupWindowOpen = false;
-
   isLoadingTournaments = true;
+
+  isLoadingSelectedFlightOrTournament = false;
+  isSelectedSignupWindowOpen = false;
+
   isLoadingSelectedTournament = false;
   isSelectedTournamentSignupWindowOpen = false;
 
-  teamNameControl = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
-
   flightControl = new FormControl('', Validators.required);
-
   tournamentControl = new FormControl('', Validators.required);
 
   private flightsSub: Subscription;
   flights: FlightInfo[] = [];
-  selectedFlight: FlightData;
   private selectedFlightSub: Subscription;
 
   private tournamentsSub: Subscription;
   tournaments: TournamentInfo[] = [];
   selectedTournament: TournamentData;
   private selectedTournamentSub: Subscription;
+
+  selectedFlightOrTournament: FlightData | TournamentData | undefined;
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
@@ -60,6 +59,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   roleOptions = ['Captain', 'Player'];
 
   newTeamForm: FormGroup;
+  teamNameControl = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
 
   constructor(private appConfigService: AppConfigService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private golfersService: GolfersService, private formBuilder: FormBuilder, private dialog: MatDialog, private route: ActivatedRoute) { }
 
@@ -70,17 +70,33 @@ export class SignupComponent implements OnInit, OnDestroy {
       .subscribe(result => {
         this.flights = result.flights;
         this.isLoadingFlights = false;
-
-        this.golfersService.getAllGolfers();
       });
+
+    this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
+      .subscribe(result => {
+        this.selectedFlightOrTournament = result;
+        this.isLoadingSelectedFlightOrTournament = false;
+
+        this.isSelectedSignupWindowOpen = this.selectedFlightOrTournament.signup_start_date <= this.currentDate && this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
+      });
+
+    this.flightsService.getFlightsList(this.currentYear);
 
     this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
       .subscribe(result => {
         this.tournaments = result.tournaments;
         this.isLoadingTournaments = false;
-
-        this.golfersService.getAllGolfers();
       });
+
+    this.selectedTournamentSub = this.tournamentsService.getTournamentUpdateListener()
+      .subscribe(result => {
+        this.selectedTournament = result;
+        this.isLoadingSelectedTournament = false;
+
+        this.isSelectedTournamentSignupWindowOpen = this.selectedTournament.signup_start_date <= this.currentDate && this.selectedTournament.signup_stop_date >= this.currentDate;
+      });
+
+    this.tournamentsService.getTournamentsList(this.currentYear);
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
       .subscribe(result => {
@@ -97,30 +113,12 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isLoadingGolfers = false;
       });
 
-    this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
-      .subscribe(result => {
-        this.selectedFlight = result;
-        this.isLoadingSelectedFlight = false;
-
-        this.isSelectedFlightSignupWindowOpen = this.selectedFlight.signup_start_date <= this.currentDate && this.selectedFlight.signup_stop_date >= this.currentDate;
-      });
-
-    this.flightsService.getFlightsList(this.currentYear);
-
-    this.selectedTournamentSub = this.tournamentsService.getTournamentUpdateListener()
-      .subscribe(result => {
-        this.selectedTournament = result;
-        this.isLoadingSelectedTournament = false;
-
-        this.isSelectedTournamentSignupWindowOpen = this.selectedTournament.signup_start_date <= this.currentDate && this.selectedTournament.signup_stop_date >= this.currentDate;
-      });
-
-    this.tournamentsService.getTournamentsList(this.currentYear);
-
     this.newTeamForm = this.formBuilder.group({
       teamGolfers: this.formBuilder.array([])
     });
     this.addNewTeamGolferForm();
+
+    this.golfersService.getAllGolfers();
 
     this.route.queryParams.subscribe(params => {
       if (params) {
@@ -146,10 +144,18 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.selectedTabIdx = 0;
     }
     console.log(`[SignupComponent] Selected tab ${this.selectedTabIdx} for type '${type}'`)
+    this.onTabIndexChanged(this.selectedTabIdx);
+  }
+
+  onTabIndexChanged(tabIdx: number): void {
+    console.log(`Tab index changed: '${tabIdx}'`)
+    this.clearSignupForms();
+    this.flightControl.setValue("--");
+    this.tournamentControl.setValue("--");
   }
 
   getSelectedFlightData(id: number): void {
-    this.isLoadingSelectedFlight = true;
+    this.isLoadingSelectedFlightOrTournament = true;
     this.flightsService.getFlight(id);
   }
 
@@ -159,10 +165,55 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   getDaysUntilSignup(): number {
-    return Math.floor((Date.UTC(this.selectedFlight.signup_start_date.getFullYear(), this.selectedFlight.signup_start_date.getMonth(), this.selectedFlight.signup_start_date.getDate()) - Date.UTC(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate())) / (1000 * 60 * 60 * 24));
+    if (!this.selectedFlightOrTournament) {
+      return 0;
+    }
+    return Math.floor((Date.UTC(this.selectedFlightOrTournament.signup_start_date.getFullYear(), this.selectedFlightOrTournament.signup_start_date.getMonth(), this.selectedFlightOrTournament.signup_start_date.getDate()) - Date.UTC(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate())) / (1000 * 60 * 60 * 24));
+  }
+
+  getFlightStartOrTournamentDate(): Date {
+    if (this.selectedTabIdx === 0) {
+      const selectedFlight = this.selectedFlightOrTournament as FlightData;
+      return selectedFlight.start_date;
+    } else {
+      const selectedTournament = this.selectedFlightOrTournament as TournamentData;
+      return selectedTournament.date;
+    }
+  }
+
+  getFlightStartOrTournamentDateLabel(): string {
+    if (this.selectedTabIdx === 0) {
+      return "Start Date";
+    } else {
+      return "Tournament Date";
+    }
+  }
+
+  getSelectedFlightOrTournamentTeams(): TeamData[] {
+    if (this.selectedFlightOrTournament) {
+      if (this.selectedTabIdx === 0) {
+        const selectedFlight = this.selectedFlightOrTournament as FlightData;
+        if (!selectedFlight.teams) {
+          return []
+        }
+        return selectedFlight.teams;
+      } else {
+        const selectedTournament = this.selectedFlightOrTournament as TournamentData;
+        if (!selectedTournament.teams) {
+          return []
+        }
+        // return selectedTournament.teams;
+        return []; // TODO: Map tournament team data to TeamData[]
+      }
+    }
+    return [];
   }
 
   onSubmitFlightTeam(): void {
+    if (!this.selectedFlightOrTournament) {
+      return;
+    }
+
     // Extract new team signup info from form
     const newTeamName = this.teamNameControl.value as string;
 
@@ -200,16 +251,18 @@ export class SignupComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.isLoadingSelectedFlight = true
-    this.flightsService.createTeam(newTeamName, this.selectedFlight.id, golferData).subscribe(
+    this.isLoadingSelectedFlightOrTournament = true
+    this.flightsService.createTeam(newTeamName, this.selectedFlightOrTournament.id, golferData).subscribe(
       team => {
-        console.log(`[FlightSignupComponent] Created team '${team.name}' (id=${team.id})`);
+        console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id})`);
         this.clearSignupForms();
-        this.getSelectedFlightData(this.selectedFlight.id); // refresh flight info to get updated team
+        if (this.selectedFlightOrTournament) {
+          this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team
+        }
       },
       error => {
         console.error(`Unable to create team ${newTeamName}`);
-        this.isLoadingSelectedFlight = false
+        this.isLoadingSelectedFlightOrTournament = false
       }
     );
   }
@@ -260,7 +313,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.getSelectedTournamentData(this.selectedTournament.id); // refresh tournament info to get updated team
       },
       error => {
-        console.error(`Unable to create team ${newTeamName}`);
+        console.error(`Unable to create team '${newTeamName}'`);
         this.isLoadingSelectedTournament = false
       }
     );
@@ -343,7 +396,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
 
         this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email !== '' ? golferData.email : null, golferData.phone !== '' ? golferData.phone : null).subscribe(result => {
-          console.log(`[FlightSignupComponent] Successfully added golfer: ${result.name}`);
+          console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);
           this.golfersService.getAllGolfers(); // refresh golfer name options
         });
       }
