@@ -28,6 +28,7 @@ export interface FlightInfo {
   logo_url?: string
   secretary?: string
   secretary_email?: string
+  secretary_phone?: string
   signup_start_date: Date
   signup_stop_date: Date
   start_date: Date

@@ -1,0 +1,16 @@
+mat-form-field {
+  margin-right: 8px;
+  width: 225px;
+}
+
+.short-field {
+  width: 85px;
+}
+
+.medium-field {
+  width: 125px;
+}
+
+.date-selection-field {
+  width: 140px;
+}

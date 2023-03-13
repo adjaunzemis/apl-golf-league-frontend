@@ -20,10 +20,6 @@
       <mat-icon>golf_course</mat-icon>
       <span>Course Search</span>
     </button> -->
-    <button mat-menu-item (click)="onAddNewGolfer()" *ngIf="isAuthenticated && currentUser?.is_admin">
-      <mat-icon>person_add</mat-icon>
-      <span>Add Golfer</span>
-    </button>
     <button mat-menu-item routerLink="/signup">
       <mat-icon>group_add</mat-icon>
       <span>Sign-Ups</span>
@@ -36,9 +32,17 @@
       <mat-icon>sports_golf</mat-icon>
       <span>Post Tournament Scores</span>
     </button>
+    <button mat-menu-item (click)="onAddNewGolfer()" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>person_add</mat-icon>
+      <span>Add Golfer</span>
+    </button>
     <button mat-menu-item routerLink="/golfer/qualifying" *ngIf="isAuthenticated && currentUser?.is_admin">
       <mat-icon>sports_golf</mat-icon>
       <span>Post Qualifying Scores</span>
+    </button>
+    <button mat-menu-item (click)="onAddNewFlight()" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>golf_course</mat-icon>
+      <span>Add Flight</span>
     </button>
     <button mat-menu-item routerLink="/payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
       <mat-icon>attach_money</mat-icon>
