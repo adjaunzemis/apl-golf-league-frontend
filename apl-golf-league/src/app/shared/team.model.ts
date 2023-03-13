@@ -1,6 +1,7 @@
 import { Golfer, TeamGolferData } from "./golfer.model"
 import { MatchData } from "./match.model"
 import { RoundData } from "./round.model"
+import { DivisionData } from "./division.model"
 
 export interface TeamData {
     id: number
@@ -26,4 +27,15 @@ export interface TournamentTeamData {
     tournament_id: number
     golfers: TeamGolferData[]
     rounds?: RoundData[]
+}
+
+export interface TeamGolferCreate {
+  golfer: Golfer
+  role: string
+  division: DivisionData
+}
+
+export interface TeamCreate {
+  name: string
+  golfers: TeamGolferCreate[]
 }

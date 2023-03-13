@@ -24,7 +24,8 @@ import { AppConfigService } from './app-config.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
 import { CarouselComponent } from './carousel/carousel.component';
-import { SignupComponent } from './signup/signup.component';
+import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
+import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SignupComponent } from './signup/signup.component';
     RulesComponent,
     HandicapsComponent,
     CarouselComponent,
-    SignupComponent
+    SignupComponent,
+    TeamCreateComponent
   ],
   imports: [
     BrowserModule,

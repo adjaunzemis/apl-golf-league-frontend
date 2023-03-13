@@ -12,7 +12,9 @@ import { TournamentsService } from '../tournaments/tournaments.service';
 import { Golfer, GolferAffiliation } from '../shared/golfer.model';
 import { GolfersService } from '../golfers/golfers.service';
 import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
-import { TeamData, TournamentTeamData } from '../shared/team.model';
+import { TeamData } from '../shared/team.model';
+import { TeamCreate } from './../shared/team.model';
+import { TeamCreateComponent } from './team-create.component';
 import { DivisionData } from '../shared/division.model';
 import { ErrorDialogComponent } from '../shared/error/error-dialog/error-dialog.component';
 import { AppConfigService } from '../app-config.service';
@@ -403,6 +405,51 @@ export class SignupComponent implements OnInit, OnDestroy {
           console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);
           this.golfersService.getAllGolfers(); // refresh golfer name options
         });
+      }
+    });
+  }
+
+  // TODO: Adapt for modifying existing teams
+  onAddNewTeam(): void {
+    const dialogRef = this.dialog.open(TeamCreateComponent, {
+      width: '500px',
+      data: {
+        name: '',
+        divisions: this.selectedFlightOrTournament?.divisions
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((teamData: TeamCreate) => {
+      if (teamData !== null && teamData !== undefined && this.selectedFlightOrTournament !== undefined) {
+        console.log(teamData);
+
+        // Submit new team signup
+        let teamGolferSignupData : { golfer_id: number, golfer_name: string, division_id: number, role: string }[] = [];
+
+        for (const teamGolfer of teamData.golfers) {
+          teamGolferSignupData.push({
+            golfer_id: teamGolfer.golfer.id,
+            golfer_name: teamGolfer.golfer.name,
+            division_id: teamGolfer.division.id,
+            role: teamGolfer.role
+          });
+        }
+
+        // TODO: choose between tournament or flight service
+        this.isLoadingSelectedFlightOrTournament = true
+        this.flightsService.createTeam(teamData.name, this.selectedFlightOrTournament.id, teamGolferSignupData).subscribe(
+          team => {
+            console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id}) for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+            this.clearSignupForms();
+            if (this.selectedFlightOrTournament) {
+              this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
+            }
+          },
+          error => {
+            console.error(`Unable to create team ${teamData.name}`);
+            this.isLoadingSelectedFlightOrTournament = false
+          }
+        );
       }
     });
   }

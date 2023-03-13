@@ -47,6 +47,8 @@
 
 <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlightOrTournament && !isLoadingSelectedFlightOrTournament">
 
+  <button mat-raised-button color="primary" (click)="onAddNewTeam()">New Team</button>
+
   <div *ngIf="isSelectedSignupWindowOpen; else signupWindowClosed">
 
     <h2>Add Team</h2>

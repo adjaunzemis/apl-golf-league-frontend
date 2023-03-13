@@ -1,0 +1,68 @@
+<div class="content">
+
+  <h1 mat-dialog-title>Create/Update Team</h1>
+
+  <div mat-dialog-content>
+
+    <div>
+      <mat-form-field class="team-name-input" appearance="fill">
+          <mat-label>Team Name</mat-label>
+          <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
+          <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
+          <mat-error *ngIf="teamNameControl.hasError('minlength')">Team name is too short</mat-error>
+          <mat-error *ngIf="teamNameControl.hasError('maxlength')">Team name is too long</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="onAddNewGolfer()">New Golfer</button>
+    </div>
+
+    <form [formGroup]="newTeamForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+      <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
+        <div formGroupName="{{ idx }}">
+
+          <mat-form-field appearance="fill" class="input-field">
+            <mat-label>Golfer</mat-label>
+            <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g.name">{{ g.name }}</mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('required')">Select a golfer</mat-error>
+            <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="input-field">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="teamGolfer.get('role')?.hasError('required')">Select a role</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="input-field">
+            <mat-label>Division</mat-label>
+            <mat-select formControlName="division" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let d of divisions" [value]="d">{{ d.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="teamGolfer.get('division')?.hasError('required')">Select a division</mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
+
+          <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
+
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+  <div mat-dialog-actions>
+
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button color="primary" (click)="onSubmit()">Submit</button>
+
+  </div>
+
+</div>
