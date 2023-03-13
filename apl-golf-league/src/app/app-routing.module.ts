@@ -1,4 +1,3 @@
-import { TournamentScorecardCreateComponent } from './tournaments/tournament-scorecard-create/tournament-scorecard-create.component';
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
@@ -8,10 +7,9 @@ import { SignupComponent } from "./signup/signup.component";
 import { FlightHomeComponent } from "./flights/flight-home/flight-home.component";
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from "./flights/team-home/team-home.component";
-import { FlightSignupComponent } from "./flights/flight-signup/flight-signup.component";
-import { TournamentSignupComponent } from "./tournaments/tournament-signup/tournament-signup.component";
 import { FlightMatchScorecardComponent } from "./flights/flight-match-create/flight-match-scorecard.component";
 import { FlightMatchCreateComponent } from "./flights/flight-match-create/flight-match-create.component";
+import { TournamentScorecardCreateComponent } from './tournaments/tournament-scorecard-create/tournament-scorecard-create.component';
 import { CourseListComponent } from "./courses/course-list/course-list.component";
 import { CourseCreateComponent } from "./courses/course-create/course-create.component";
 import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component";
@@ -31,7 +29,6 @@ const routes: Routes = [
   { path: "signup", component: SignupComponent },
   { path: "flight", component: FlightHomeComponent},
   { path: "flight/team", component: TeamHomeComponent },
-  { path: "flight/signup", component: FlightSignupComponent},
   { path: "flight/history", component: FlightHistoryComponent },
   { path: "flight/match/scorecard", component: FlightMatchScorecardComponent },
   {
@@ -45,7 +42,6 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: "tournament", component: TournamentHomeComponent },
-  { path: "tournament/signup", component: TournamentSignupComponent},
   { path: "tournament/history", component: TournamentHistoryComponent },
   {
     path: "tournament/scores",

@@ -10,7 +10,6 @@ import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics
 import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
-import { FlightSignupComponent } from './flight-signup/flight-signup.component';
 import { ErrorModule } from "../shared/error/error.module";
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightScheduleMatrixComponent } from "./flight-schedule-matrix/flight-schedule-matrix.component";
@@ -30,7 +29,6 @@ import { FlightCreateComponent } from "./flight-create/flight-create.component";
     FlightHomeComponent,
     FlightStandingsComponent,
     FlightHistoryComponent,
-    FlightSignupComponent,
     FlightScheduleComponent,
     FlightScheduleMatrixComponent,
     FlightMatchScorecardComponent,

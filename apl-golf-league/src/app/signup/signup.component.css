@@ -1,3 +1,7 @@
+.content {
+  margin-bottom: 0px;
+}
+
 .team-list {
   justify-content: center;
   align-items: center;
@@ -21,7 +25,7 @@ mat-form-field:not(:first-of-type) {
   margin-left: 16px;
 }
 
-button {
+button:not(:first-child) {
   margin-left: 16px;
 }
 

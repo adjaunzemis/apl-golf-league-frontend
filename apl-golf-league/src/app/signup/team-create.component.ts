@@ -144,7 +144,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  // TODO: Consolidate with other implementations (signup component, admin panel)
+  // TODO: Consolidate with other implementations (admin panel)
   onAddNewGolfer(): void {
     const dialogRef = this.dialog.open(GolferCreateComponent, {
       width: '300px',

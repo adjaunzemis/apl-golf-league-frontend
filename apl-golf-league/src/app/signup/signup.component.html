@@ -6,10 +6,10 @@
     <span>Drop off checks at Bob’s office: 200-E352.</span>
   </div>
 
-  <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTabIdx" (selectedIndexChange)="onTabIndexChanged($event)" *ngIf="!isLoadingFlights && !isLoadingTournaments && !isLoadingGolfers">
+  <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTabIdx" (selectedIndexChange)="onTabIndexChanged($event)" *ngIf="!isLoadingFlights && !isLoadingTournaments">
     <mat-tab label="Flight Sign-Ups">
 
-      <div class="content">
+      <div class="content" *ngIf="!isLoadingFlights">
 
         <mat-form-field appearance="fill">
           <mat-label>Select Flight</mat-label>
@@ -26,7 +26,7 @@
 
     <mat-tab label="Tournament Sign-Ups">
 
-      <div class="content" *ngIf="!isLoadingTournaments && !isLoadingGolfers">
+      <div class="content" *ngIf="!isLoadingTournaments">
 
         <mat-form-field appearance="fill">
           <mat-label>Select Tournament</mat-label>
@@ -47,77 +47,6 @@
 
 <div class="content" *ngIf="!flightControl.hasError('required') && selectedFlightOrTournament && !isLoadingSelectedFlightOrTournament">
 
-  <button mat-raised-button color="primary" (click)="onAddNewTeam()">New Team</button>
-
-  <div *ngIf="isSelectedSignupWindowOpen; else signupWindowClosed">
-
-    <h2>Add Team</h2>
-
-    <div>
-      <mat-form-field class="team-name-input" appearance="fill">
-          <mat-label>Team Name</mat-label>
-          <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
-          <mat-error *ngIf="teamNameControl.hasError('required')">Please enter a team name</mat-error>
-          <mat-error *ngIf="teamNameControl.hasError('minlength')">Team name is too short</mat-error>
-          <mat-error *ngIf="teamNameControl.hasError('maxlength')">Team name is too long</mat-error>
-      </mat-form-field>
-
-      <button mat-raised-button color="accent" [disabled]="!teamNameControl.valid || !newTeamForm.valid" (click)="onSubmitFlightTeam()">Submit</button> <!-- TODO: onSubmitTournamentTeam() -->
-
-      <button mat-raised-button color="primary" (click)="onAddNewGolfer()">New Golfer</button>
-
-    </div>
-
-    <form [formGroup]="newTeamForm" (ngSubmit)="onSubmitFlightTeam()" (keydown.enter)="$event.preventDefault()">  <!-- TODO: onSubmitTournamentTeam() -->
-      <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
-        <div formGroupName="{{ idx }}">
-
-          <mat-form-field appearance="fill" class="input-field">
-            <mat-label>Golfer</mat-label>
-            <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g.name">{{ g.name }}</mat-option>
-            </mat-autocomplete>
-            <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('required')">Select a golfer</mat-error>
-            <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="input-field">
-            <mat-label>Role</mat-label>
-            <mat-select formControlName="role" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let r of roleOptions" [value]="r">{{ r }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="teamGolfer.get('role')?.hasError('required')">Select a role</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="input-field">
-            <mat-label>Division</mat-label>
-            <mat-select formControlName="division" required>
-              <mat-option>--</mat-option>
-              <mat-option *ngFor="let d of selectedFlightOrTournament.divisions" [value]="d">{{ d.name }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="teamGolfer.get('division')?.hasError('required')">Select a division</mat-error>
-          </mat-form-field>
-
-          <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
-
-          <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
-
-        </div>
-      </div>
-    </form>
-
-  </div>
-
-  <ng-template #signupWindowClosed>
-    <!-- <div class="content"> -->
-      <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
-      <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
-    <!-- </div> -->
-  </ng-template>
-
-
   <h2>{{ selectedFlightOrTournament.name | titlecase }} ({{ selectedFlightOrTournament.year }}) Flight Info</h2>
 
   <div class="card-container">
@@ -133,12 +62,12 @@
 
     <div class="card card-small">
       <span class="bold">Sign-Up Dates</span>
-      <span>{{ selectedFlightOrTournament.signup_start_date | date:'longDate' }} - {{ selectedFlightOrTournament.signup_stop_date | date:'longDate' }}</span>
+      <span>{{ selectedFlightOrTournament.signup_start_date | date:'mediumDate' }} - {{ selectedFlightOrTournament.signup_stop_date | date:'mediumDate' }}</span>
     </div>
 
     <div class="card card-small">
       <span class="bold">{{ getFlightStartOrTournamentDateLabel() }}</span>
-      <span>{{ getFlightStartOrTournamentDate() | date:'longDate' }}</span>
+      <span>{{ getFlightStartOrTournamentDate() | date:'mediumDate' }}</span>
     </div>
   </div>
 
@@ -147,6 +76,15 @@
   <app-division-list [divisions]="selectedFlightOrTournament.divisions"></app-division-list>
 
   <h3>Teams</h3>
+
+  <div *ngIf="!isSelectedSignupWindowOpen">
+    <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_start_date > this.currentDate">Sign-up window opens in {{ getDaysUntilSignup() }} days!</h3>
+    <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
+  </div>
+
+  <div *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">
+    <button mat-raised-button color="primary" (click)="onAddNewTeam()">Add New Team</button>
+  </div>
 
   <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>
 
@@ -165,4 +103,4 @@
 
 </div>
 
-<mat-spinner *ngIf="isLoadingFlights || isLoadingTournaments || isLoadingGolfers || isLoadingSelectedFlightOrTournament"></mat-spinner>
+<mat-spinner *ngIf="isLoadingFlights || isLoadingTournaments || isLoadingSelectedFlightOrTournament"></mat-spinner>
