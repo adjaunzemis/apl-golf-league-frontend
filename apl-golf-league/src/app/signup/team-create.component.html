@@ -4,7 +4,7 @@
 
   <div mat-dialog-content>
 
-    <div>
+    <div class="center">
       <mat-form-field class="team-name-input" appearance="fill">
           <mat-label>Team Name</mat-label>
           <input matInput required [formControl]="teamNameControl" placeholder="Ex. Teamy McTeamFace" title="Enter team name." value="">
@@ -13,14 +13,14 @@
           <mat-error *ngIf="teamNameControl.hasError('maxlength')">Team name is too long</mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" (click)="onAddNewGolfer()">New Golfer</button>
+      <button mat-raised-button color="primary" (click)="onAddNewGolfer()">Register New Golfer</button>
     </div>
 
     <form [formGroup]="newTeamForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
       <div formArrayName="teamGolfers" *ngFor="let teamGolfer of getTeamGolfersArray().controls; let idx = index">
         <div formGroupName="{{ idx }}">
 
-          <mat-form-field appearance="fill" class="input-field">
+          <mat-form-field appearance="fill" class="long-field">
             <mat-label>Golfer</mat-label>
             <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete">
@@ -30,7 +30,7 @@
             <mat-error *ngIf="teamGolfer.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="input-field">
+          <mat-form-field appearance="fill" class="short-field">
             <mat-label>Role</mat-label>
             <mat-select formControlName="role" required>
               <mat-option>--</mat-option>
@@ -39,7 +39,7 @@
             <mat-error *ngIf="teamGolfer.get('role')?.hasError('required')">Select a role</mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="input-field">
+          <mat-form-field appearance="fill" class="short-field">
             <mat-label>Division</mat-label>
             <mat-select formControlName="division" required>
               <mat-option>--</mat-option>
@@ -49,7 +49,6 @@
           </mat-form-field>
 
           <button mat-raised-button color="warn" (click)="removeNewTeamGolferForm(idx)" [disabled]="getTeamGolfersArray().length < 2">-</button>
-
           <button mat-raised-button color="primary" (click)="addNewTeamGolferForm()" *ngIf="idx === getTeamGolfersArray().length - 1">+</button>
 
         </div>

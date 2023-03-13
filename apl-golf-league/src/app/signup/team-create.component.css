@@ -9,3 +9,19 @@ button {
 mat-error:not(:first-child) {
   display: none;
 }
+
+.center {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.short-field {
+  width: 125px;
+}
+
+.long-field {
+  width: 200px;
+}

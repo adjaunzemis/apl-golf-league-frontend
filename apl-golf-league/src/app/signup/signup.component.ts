@@ -184,7 +184,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   onAddNewTeam(): void {
     // TODO: Adapt for modifying existing teams (pass info into dialog)
     const dialogRef = this.dialog.open(TeamCreateComponent, {
-      width: '500px',
+      width: '750px',
       data: {
         name: '',
         divisions: this.selectedFlightOrTournament?.divisions
