@@ -1,4 +1,4 @@
-import { DivisionData } from "./division.model"
+import { DivisionData, DivisionCreate } from "./division.model"
 import { MatchSummary } from "./match.model"
 import { TeamData } from "./team.model"
 
@@ -33,4 +33,20 @@ export interface FlightInfo {
   signup_stop_date: Date
   start_date: Date
   weeks: number
+}
+
+export interface FlightCreate {
+  name: string
+  year: number
+  course_id: number
+  logo_url: string
+  secretary: string
+  secretary_email: string
+  secretary_phone: string
+  signup_start_date: Date
+  signup_stop_date: Date
+  start_date: Date
+  weeks: number
+  locked?: boolean
+  divisions: DivisionCreate[]
 }

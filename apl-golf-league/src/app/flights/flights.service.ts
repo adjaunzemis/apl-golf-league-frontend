@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
-import { FlightData, FlightInfo } from "../shared/flight.model";
+import { FlightData, FlightInfo, FlightCreate } from "../shared/flight.model";
 import { TeamData, TeamDataWithMatches } from "../shared/team.model";
 import { environment } from './../../environments/environment';
 
@@ -71,6 +71,10 @@ export class FlightsService {
 
   getFlightUpdateListener(): Observable<FlightData> {
     return this.flightDataUpdated.asObservable();
+  }
+
+  createFlight(flight: FlightCreate): Observable<FlightInfo> {
+    return this.http.post<FlightInfo>(environment.apiUrl + `flights`, flight);
   }
 
   // TODO: Move team routes to own service

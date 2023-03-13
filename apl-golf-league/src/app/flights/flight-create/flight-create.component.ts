@@ -4,33 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSelectChange } from '@angular/material/select';
 import { Subscription } from 'rxjs';
 
+import { FlightCreate } from "../../shared/flight.model";
+import { DivisionCreate } from "../../shared/division.model";
 import { Course } from "../../shared/course.model";
 import { CoursesService } from "../../courses/courses.service";
-
-// TODO: Move to data models
-interface FlightDivisionCreateData {
-  name: string
-  gender: string
-  primary_tee_id: number
-  secondary_tee_id: number
-}
-
-// TODO: Move to data models
-interface FlightCreateData {
-  name: string
-  year: number
-  course_id: number
-  logo_url: string
-  secretary: string
-  secretary_email: string
-  secretary_phone: string
-  signup_start_date: Date
-  signup_stop_date: Date
-  start_date: Date
-  weeks: number
-  locked?: boolean
-  divisions: FlightDivisionCreateData[]
-}
 
 @Component({
   templateUrl: './flight-create.component.html',
@@ -83,7 +60,7 @@ export class FlightCreateComponent implements OnInit {
 
   divisionGenderOptions: string[] = ["Men's", "Ladies'"]
 
-  constructor(public dialogRef: MatDialogRef<FlightCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: FlightCreateData, private coursesService: CoursesService) { }
+  constructor(public dialogRef: MatDialogRef<FlightCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: FlightCreate, private coursesService: CoursesService) { }
 
   ngOnInit(): void {
     this.courseListSub = this.coursesService.getCoursesUpdateListener().subscribe(result => {
@@ -125,7 +102,7 @@ export class FlightCreateComponent implements OnInit {
     flightName = flightName.split(' ').map(namePart => (namePart.charAt(0).toUpperCase() + namePart.slice(1))).join(' ').trim();
 
     // TODO: Fix hard-coding of 4 divisions
-    let flightDivisions: FlightDivisionCreateData[] = [];
+    let flightDivisions: DivisionCreate[] = [];
     flightDivisions.push({
       name: this.division1NameControl.value.trim(),
       gender: this.division1GenderControl.value.trim(),
@@ -151,7 +128,7 @@ export class FlightCreateComponent implements OnInit {
       secondary_tee_id: this.divisionTeeMap[this.division4SecondaryTeeControl.value],
     });
 
-    const flightData: FlightCreateData = {
+    const flightData: FlightCreate = {
       name: flightName,
       year: this.yearControl.value,
       course_id: this.courseControl.value.id,

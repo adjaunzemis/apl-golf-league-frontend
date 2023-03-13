@@ -145,10 +145,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
 
         console.log(flightData);
-        // this.flightsService.createFlight(flightData).subscribe(result => {
-        //   console.log(`[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`);
-        //   this.flightsService.getFlightsList(); // refresh flights list
-        // });
+        this.flightsService.createFlight(flightData).subscribe(result => {
+          console.log(`[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`);
+          this.flightsService.getFlightsList(); // refresh flights list
+        });
       }
     });
   }

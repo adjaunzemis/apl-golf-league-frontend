@@ -19,3 +19,10 @@ export interface DivisionData {
     secondary_tee_rating: number
     secondary_tee_slope: number
 }
+
+export interface DivisionCreate {
+  name: string
+  gender: string
+  primary_tee_id: number
+  secondary_tee_id: number
+}
