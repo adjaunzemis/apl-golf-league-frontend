@@ -3,6 +3,13 @@ import { MatchData } from "./match.model"
 import { RoundData } from "./round.model"
 import { DivisionData } from "./division.model"
 
+export interface TeamInfo {
+  id: number
+  name: string
+  year: number
+  golfers: TeamGolferData[]
+}
+
 export interface TeamData {
     id: number
     flight_id: number

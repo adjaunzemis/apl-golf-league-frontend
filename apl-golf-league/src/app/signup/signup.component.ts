@@ -8,7 +8,7 @@ import { FlightData, FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentData, TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
-import { TeamData } from '../shared/team.model';
+import { TeamInfo } from '../shared/team.model';
 import { TeamCreate } from './../shared/team.model';
 import { TeamCreateComponent } from './team-create.component';
 import { AppConfigService } from '../app-config.service';
@@ -188,7 +188,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
   }
 
-  getSelectedFlightOrTournamentTeams(): TeamData[] {
+  getSelectedFlightOrTournamentTeams(): TeamInfo[] {
     if (this.selectedFlightOrTournament) {
       if (this.selectedTabIdx === 0) { // flight
         const selectedFlight = this.selectedFlightOrTournament as FlightData;
@@ -202,7 +202,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           return []
         }
         // return selectedTournament.teams;
-        return []; // TODO: Map tournament team data to TeamData[]
+        return selectedTournament.teams;
       }
     }
     return [];
