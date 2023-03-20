@@ -50,6 +50,11 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tournamentSub.unsubscribe();
   }
+  
+  getSignupLink(tournament: TournamentData): string {
+    // TODO: Fix routerlink
+    return `/signup?type=tournament&id=${tournament.id}`;
+  }
 
   getTournamentEmailList(): string {
     let emailList = "";

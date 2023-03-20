@@ -51,6 +51,11 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
       this.flightSub.unsubscribe();
   }
 
+  getSignupLink(flight: FlightData): string {
+    // TODO: Fix routerlink
+    return `/signup?type=flight&id=${flight.id}`;
+  }
+
   getFlightEmailList(): string {
     let emailList = "";
     if (this.flight.secretary_email) {
