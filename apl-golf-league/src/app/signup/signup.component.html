@@ -83,13 +83,13 @@
   </div>
 
   <div *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">
-    <button mat-raised-button color="primary" (click)="onAddNewTeam()">Add New Team</button>
+    <button mat-raised-button color="primary" (click)="onCreateTeam()">Create Team</button>
   </div>
 
   <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>
 
   <div class="card-container team-list">
-    <a class="card team-card" *ngFor="let team of getSelectedFlightOrTournamentTeams()">
+    <a class="card team-card selectable" *ngFor="let team of getSelectedFlightOrTournamentTeams()" (click)="onUpdateTeam(team)">
       <span class="bold">{{ team.name }}</span>
       <div *ngFor="let golfer of team.golfers">
         <span>{{ golfer.golfer_name }} - {{ golfer.division_name }} - Hcp: </span>

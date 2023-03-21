@@ -28,7 +28,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   divisions: DivisionData[] = [];
 
-  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamName: string, golfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private golfersService: GolfersService) { }
+  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private golfersService: GolfersService) { }
 
   ngOnInit(): void {
     this.teamNameControl.setValue(this.data.teamName);
@@ -52,7 +52,19 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     this.newTeamForm = this.formBuilder.group({
       teamGolfers: this.formBuilder.array([])
     });
-    this.addNewTeamGolferForm();
+
+    if (this.data.teamGolfers.length > 0) {
+      for (const teamGolfer of this.data.teamGolfers) {
+        this.addNewTeamGolferForm();
+        const newTeamGolferForm = this.getTeamGolfersArray().at(0);
+        newTeamGolferForm.value.golfer = teamGolfer.golfer;
+        newTeamGolferForm.value.division = teamGolfer.division.name as string;
+        newTeamGolferForm.value.role = teamGolfer.role as string;
+        console.log(newTeamGolferForm);
+      }
+    } else {
+      this.addNewTeamGolferForm();
+    }
   }
 
   ngOnDestroy(): void {

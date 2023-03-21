@@ -8,8 +8,11 @@ import { FlightData, FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentData, TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
+import { Golfer } from '../shared/golfer.model';
+import { DivisionData } from '../shared/division.model';
+import { GolfersService } from '../golfers/golfers.service';
 import { TeamInfo } from '../shared/team.model';
-import { TeamCreate } from './../shared/team.model';
+import { TeamCreate, TeamGolferCreate } from './../shared/team.model';
 import { TeamCreateComponent } from './team-create.component';
 import { AppConfigService } from '../app-config.service';
 import { AuthService } from '../auth/auth.service';
@@ -35,6 +38,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   isLoadingFlights = true;
   isLoadingTournaments = true;
+  isLoadingGolfers = true;
 
   isLoadingSelectedFlightOrTournament = false;
   isSelectedSignupWindowOpen = false;
@@ -50,9 +54,12 @@ export class SignupComponent implements OnInit, OnDestroy {
   tournaments: TournamentInfo[] = [];
   private selectedTournamentSub: Subscription;
 
+  private golfersSub: Subscription;
+  golfers: Golfer[] = [];
+
   selectedFlightOrTournament: FlightData | TournamentData | undefined;
 
-  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private dialog: MatDialog, private route: ActivatedRoute) { }
+  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private golfersService: GolfersService, private dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
@@ -114,6 +121,14 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     this.tournamentsService.getTournamentsList(this.currentYear);
 
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
+      .subscribe(result => {
+        this.golfers = result;
+        this.isLoadingGolfers = false;
+      });
+
+    this.golfersService.getAllGolfers();
+
     this.route.queryParams.subscribe(params => {
       if (params) {
         if (params.type) {
@@ -133,6 +148,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.flightsSub.unsubscribe();
+    this.golfersSub.unsubscribe();
     this.selectedFlightSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
     this.selectedTournamentSub.unsubscribe();
@@ -208,12 +224,57 @@ export class SignupComponent implements OnInit, OnDestroy {
     return [];
   }
 
-  onAddNewTeam(): void {
-    // TODO: Adapt for modifying existing teams (pass info into dialog)
+  onCreateTeam(): void {
+    this.createOrUpdateTeam();
+  }
+
+  onUpdateTeam(team: TeamInfo) {
+    this.createOrUpdateTeam(team);
+  }
+
+  private createOrUpdateTeam(initTeam?: TeamInfo): void {
+    if (!this.selectedFlightOrTournament) {
+      return // TODO: refactor?
+    }
+
+    // Modify existing team
+    let initTeamName = "";
+    let initTeamGolfers: TeamGolferCreate[] = [];
+    if (initTeam) {
+      initTeamName = initTeam.name;
+
+      for (const initTeamGolfer of initTeam.golfers) {
+        let golfer: Golfer | null = null;
+        for (const g of this.golfers) {
+          if (g.id == initTeamGolfer.golfer_id) {
+            golfer = g;
+            break;
+          }
+        }
+
+        let division: DivisionData | null = null;
+        for (const d of this.selectedFlightOrTournament?.divisions) {
+          if (d.id == initTeamGolfer.division_id) {
+            division = d;
+            break;
+          }
+        }
+
+        if (golfer && division) {
+          initTeamGolfers.push({
+            golfer: golfer,
+            role: initTeamGolfer.role,
+            division: division
+          });
+        }
+      }
+    }
+
     const dialogRef = this.dialog.open(TeamCreateComponent, {
       width: '750px',
       data: {
-        name: '',
+        teamName: initTeamName,
+        teamGolfers: initTeamGolfers,
         divisions: this.selectedFlightOrTournament?.divisions
       }
     });
