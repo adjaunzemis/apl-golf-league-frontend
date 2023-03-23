@@ -54,13 +54,17 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     });
 
     if (this.data.teamGolfers.length > 0) {
-      for (const teamGolfer of this.data.teamGolfers) {
+      for (let idx = 0; idx < this.data.teamGolfers.length; idx++) {
+      // for (const teamGolfer of this.data.teamGolfers) {
         this.addNewTeamGolferForm();
-        const newTeamGolferForm = this.getTeamGolfersArray().at(0);
-        newTeamGolferForm.value.golfer = teamGolfer.golfer;
-        newTeamGolferForm.value.division = teamGolfer.division.name as string;
-        newTeamGolferForm.value.role = teamGolfer.role as string;
-        console.log(newTeamGolferForm);
+        const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
+
+        const teamGolfer = this.data.teamGolfers[idx];
+        newTeamGolferForm.setValue({
+          golfer: teamGolfer.golfer.name,
+          division: teamGolfer.division,
+          role: teamGolfer.role
+        });
       }
     } else {
       this.addNewTeamGolferForm();
