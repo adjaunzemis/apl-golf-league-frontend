@@ -5,7 +5,7 @@
 
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
-  <a class="card announcements-card card-small" [routerLink]="getSignupLink(flight)" *ngIf="flight.signup_stop_date >= currentDate">
+  <a class="card announcements-card card-small" routerLink="/signup" [queryParams]="{ type: 'flight', id: flight.id }" *ngIf="flight.signup_stop_date >= currentDate">
     <span class="bold">Sign-Ups</span>
     <span>{{ flight.signup_start_date | date:'longDate' }} - {{ flight.signup_stop_date | date:'longDate' }}</span>
     <span class="italic">Click to go to sign-up page</span>
