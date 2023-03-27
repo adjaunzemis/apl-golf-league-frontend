@@ -43,6 +43,9 @@ export interface TeamGolferCreate {
 }
 
 export interface TeamCreate {
+  team_id?: number
+  flight_id?: number
+  tournament_id?: number
   name: string
   golfers: TeamGolferCreate[]
 }

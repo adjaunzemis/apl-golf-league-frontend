@@ -91,7 +91,11 @@ export class FlightsService {
   }
 
   createTeam(name: string, flight_id: number, golfer_data: { golfer_id: number, golfer_name: string, division_id: number, role: string }[]): Observable<{ id: number, name: string }> {
-    return this.http.post<{ id: number, name: string }>(environment.apiUrl + `teams/flight-signup`, { name: name, flight_id: flight_id, golfer_data: golfer_data });
+    return this.http.post<{ id: number, name: string }>(environment.apiUrl + `teams/`, { name: name, flight_id: flight_id, golfer_data: golfer_data });
+  }
+
+  updateTeam(team_id: number, name: string, flight_id: number, golfer_data: { golfer_id: number, golfer_name: string, division_id: number, role: string }[]): Observable<{ id: number, name: string }> {
+    return this.http.put<{ id: number, name: string }>(environment.apiUrl + `teams/${team_id}`, { name: name, flight_id: flight_id, golfer_data: golfer_data })
   }
 
 }

@@ -17,6 +17,8 @@ import { ErrorDialogComponent } from "../shared/error/error-dialog/error-dialog.
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
 
+  updateMode: boolean = false;
+
   teamNameControl: FormControl = new FormControl(this.data.teamName, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
   newTeamForm: FormGroup
 
@@ -28,9 +30,13 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   divisions: DivisionData[] = [];
 
-  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private golfersService: GolfersService) { }
+  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private golfersService: GolfersService) { }
 
   ngOnInit(): void {
+    if (this.data.teamId > 0 && this.data.teamName.length > 0 && this.data.teamGolfers.length > 0) {
+      this.updateMode = true;
+    }
+
     this.teamNameControl.setValue(this.data.teamName);
     this.divisions = this.data.divisions;
 
@@ -55,7 +61,6 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
     if (this.data.teamGolfers.length > 0) {
       for (let idx = 0; idx < this.data.teamGolfers.length; idx++) {
-      // for (const teamGolfer of this.data.teamGolfers) {
         this.addNewTeamGolferForm();
         const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
 
@@ -106,6 +111,10 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       name: teamName,
       golfers: teamGolfers
     };
+
+    if (this.data.teamId > 0) {
+      teamData.team_id = this.data.teamId;
+    }
 
     this.dialogRef.close(teamData);
   }
@@ -160,7 +169,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  // TODO: Consolidate with other implementations (admin panel)
+  // TODO: Consolidate with other implementations (e.g. admin panel)
   onAddNewGolfer(): void {
     const dialogRef = this.dialog.open(GolferCreateComponent, {
       width: '300px',
