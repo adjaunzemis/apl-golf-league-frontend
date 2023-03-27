@@ -8,6 +8,7 @@ import { FlightData, FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentData, TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
+import { TeamsService } from '../teams/teams.service';
 import { Golfer } from '../shared/golfer.model';
 import { DivisionData } from '../shared/division.model';
 import { GolfersService } from '../golfers/golfers.service';
@@ -59,7 +60,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   selectedFlightOrTournament: FlightData | TournamentData | undefined;
 
-  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private golfersService: GolfersService, private dialog: MatDialog, private route: ActivatedRoute) { }
+  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private teamsService: TeamsService, private golfersService: GolfersService, private dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
@@ -284,85 +285,56 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     // Submit team signup (create or update)
     dialogRef.afterClosed().subscribe((teamData: TeamCreate) => {
-      if (teamData !== null && teamData !== undefined && this.selectedFlightOrTournament !== undefined) {      
-        let teamGolferSignupData : { golfer_id: number, golfer_name: string, division_id: number, role: string }[] = [];
-
-        for (const teamGolfer of teamData.golfers) {
-          teamGolferSignupData.push({
-            golfer_id: teamGolfer.golfer.id,
-            golfer_name: teamGolfer.golfer.name,
-            division_id: teamGolfer.division.id,
-            role: teamGolfer.role
-          });
+      if (teamData !== null && teamData !== undefined && this.selectedFlightOrTournament !== undefined) {
+        let flightTournamentStr = "";
+        if (this.selectedTabIdx === 0) { // flight
+          flightTournamentStr = "flight";
+          teamData.flight_id = this.selectedFlightOrTournament.id;
+        }
+        else if (this.selectedTabIdx === 1) { // tournament
+          flightTournamentStr = "tournament";
+          teamData.tournament_id = this.selectedFlightOrTournament.id;
         }
 
-        if (this.selectedTabIdx === 0) { // flight
-          this.isLoadingSelectedFlightOrTournament = true;
-
-          if (teamData.team_id) { // update existing team
-            this.flightsService.updateTeam(teamData.team_id, teamData.name, this.selectedFlightOrTournament.id, teamGolferSignupData).subscribe(
-              team => {
-                console.log(`[SignupComponent] Updated team '${team.name}' (id=${team.id}) for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                if (this.selectedFlightOrTournament) {
+        this.isLoadingSelectedFlightOrTournament = true;
+        if (teamData.team_id) { // update existing team
+          this.teamsService.updateTeam(teamData).subscribe(
+            team => {
+              console.log(`[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              if (this.selectedFlightOrTournament) {
+                if (this.selectedTabIdx === 0) {
                   this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
                 }
-              },
-              error => {
-                // TODO: add ErrorDialogComponent?
-                console.error(`[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.flight_id}) for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                this.isLoadingSelectedFlightOrTournament = false;
+                else {
+                  this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
+                }
               }
-            )
-          } else { // create new team
-            this.flightsService.createTeam(teamData.name, this.selectedFlightOrTournament.id, teamGolferSignupData).subscribe(
-              team => {
-                console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id}) for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                if (this.selectedFlightOrTournament) {
+            },
+            error => {
+              // TODO: add ErrorDialogComponent?
+              console.error(`[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.team_id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              this.isLoadingSelectedFlightOrTournament = false;
+            }
+          )
+        } else { // create new team
+          this.teamsService.createTeam(teamData).subscribe(
+            team => {
+              console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              if (this.selectedFlightOrTournament) {
+                if (this.selectedTabIdx === 0) {
                   this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
                 }
-              },
-              error => {
-                // TODO: add ErrorDialogComponent?
-                console.error(`[SignupComponent] Unable to create team '${teamData.name}' for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                this.isLoadingSelectedFlightOrTournament = false;
-              }
-            );
-          }
-        } else if (this.selectedTabIdx === 1) { // tournament
-          this.isLoadingSelectedFlightOrTournament = true;
-
-          if (teamData.team_id) { // update existing team
-            this.tournamentsService.updateTeam(teamData.team_id, teamData.name, this.selectedFlightOrTournament.id, teamGolferSignupData).subscribe(
-              team => {
-                console.log(`[SignupComponent] Updated team '${team.name}' (id=${team.id}) for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                if (this.selectedFlightOrTournament) {
-                  this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
+                else {
+                  this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
                 }
-              },
-              error => {
-                // TODO: add ErrorDialogComponent?
-                console.error(`[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.flight_id}) for flight '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                this.isLoadingSelectedFlightOrTournament = false;
               }
-            )
-          } else { // create new team
-            this.tournamentsService.createTeam(teamData.name, this.selectedFlightOrTournament.id, teamGolferSignupData).subscribe(
-              team => {
-                console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id}) for tournament '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                if (this.selectedFlightOrTournament) {
-                  this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team
-                }
-              },
-              error => {
-                // TODO: add ErrorDialogComponent?
-                console.error(`[SignupComponent] Unable to create team '${teamData.name}' for tournament '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
-                this.isLoadingSelectedFlightOrTournament = false;
-              }
-            );
-          }
-        } else {
-          // TODO: add ErrorDialogComponent?
-          console.error(`[SignupComponent] Invalid selected tab index: ${this.selectedTabIdx}`)
+            },
+            error => {
+              // TODO: add ErrorDialogComponent?
+              console.error(`[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              this.isLoadingSelectedFlightOrTournament = false;
+            }
+          );
         }
       }
     });
