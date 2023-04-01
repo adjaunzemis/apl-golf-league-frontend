@@ -9,7 +9,7 @@ import { FlightsService } from '../flights/flights.service';
 import { TournamentData, TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
 import { TeamsService } from '../teams/teams.service';
-import { Golfer } from '../shared/golfer.model';
+import { Golfer, TeamGolferData } from '../shared/golfer.model';
 import { DivisionData } from '../shared/division.model';
 import { GolfersService } from '../golfers/golfers.service';
 import { TeamInfo } from '../shared/team.model';
@@ -233,6 +233,27 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.createOrUpdateTeam(team);
   }
 
+  private convertTeamCreateToTeamInfo(teamCreate: TeamCreate): TeamInfo {
+    let golfers: TeamGolferData[] = [];
+    for (const golfer of teamCreate.golfers) {
+      golfers.push({
+        golfer_id: golfer.golfer.id,
+        golfer_name: golfer.golfer.name,
+        division_id: golfer.division.id,
+        division_name: golfer.division.name,
+        role: golfer.role,
+        team_id: teamCreate.id ? teamCreate.id : -1, // TODO: refactor placeholder
+        team_name: teamCreate.name,
+        year: -1 // TODO: refactor placeholder
+      });
+    }
+    return {
+      id: teamCreate.id,
+      name: teamCreate.name,
+      golfers: golfers
+    };
+  }
+
   private createOrUpdateTeam(initTeam?: TeamInfo): void {
     if (!this.selectedFlightOrTournament) {
       return // TODO: refactor?
@@ -243,7 +264,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     let initTeamName = "";
     let initTeamGolfers: TeamGolferCreate[] = [];
     if (initTeam) {
-      initTeamId = initTeam.id;
+      if (initTeam.id) {
+        initTeamId = initTeam.id;
+      }
       initTeamName = initTeam.name;
 
       for (const initTeamGolfer of initTeam.golfers) {
@@ -297,7 +320,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
 
         this.isLoadingSelectedFlightOrTournament = true;
-        if (teamData.team_id) { // update existing team
+        if (teamData.id) { // update existing team
           this.teamsService.updateTeam(teamData).subscribe(
             team => {
               console.log(`[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
@@ -311,9 +334,11 @@ export class SignupComponent implements OnInit, OnDestroy {
               }
             },
             error => {
-              // TODO: add ErrorDialogComponent?
-              console.error(`[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.team_id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              console.error(`[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
               this.isLoadingSelectedFlightOrTournament = false;
+
+              // Re-open team edit dialog to allow retrying
+              this.createOrUpdateTeam(this.convertTeamCreateToTeamInfo(teamData));
             }
           )
         } else { // create new team
@@ -330,9 +355,11 @@ export class SignupComponent implements OnInit, OnDestroy {
               }
             },
             error => {
-              // TODO: add ErrorDialogComponent?
               console.error(`[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
               this.isLoadingSelectedFlightOrTournament = false;
+
+              // Re-open team edit dialog to allow retrying
+              this.createOrUpdateTeam(this.convertTeamCreateToTeamInfo(teamData));
             }
           );
         }

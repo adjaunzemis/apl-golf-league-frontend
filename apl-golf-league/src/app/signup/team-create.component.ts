@@ -113,7 +113,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     };
 
     if (this.data.teamId > 0) {
-      teamData.team_id = this.data.teamId;
+      teamData.id = this.data.teamId;
     }
 
     this.dialogRef.close(teamData);

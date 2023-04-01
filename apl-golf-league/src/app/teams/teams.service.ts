@@ -26,9 +26,9 @@ export class TeamsService {
   updateTeam(teamData: TeamCreate): Observable<{ id: number, name: string }> {
     const teamGolfersSignupData = this.extractTeamGolferSignupData(teamData.golfers);
     if (teamData.flight_id) {
-      return this.http.put<{ id: number, name: string }>(environment.apiUrl + `teams/${teamData.team_id}`, { name: teamData.name, flight_id: teamData.flight_id, golfer_data: teamGolfersSignupData });
+      return this.http.put<{ id: number, name: string }>(environment.apiUrl + `teams/${teamData.id}`, { name: teamData.name, flight_id: teamData.flight_id, golfer_data: teamGolfersSignupData });
     } else {
-      return this.http.put<{ id: number, name: string }>(environment.apiUrl + `teams/${teamData.team_id}`, { name: teamData.name, tournament_id: teamData.tournament_id, golfer_data: teamGolfersSignupData });
+      return this.http.put<{ id: number, name: string }>(environment.apiUrl + `teams/${teamData.id}`, { name: teamData.name, tournament_id: teamData.tournament_id, golfer_data: teamGolfersSignupData });
     }
   }
 
@@ -44,5 +44,5 @@ export class TeamsService {
     }
     return teamGolferSignupData;
   }
-  
+
 }

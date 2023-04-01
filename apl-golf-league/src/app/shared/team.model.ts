@@ -4,9 +4,8 @@ import { RoundData } from "./round.model"
 import { DivisionData } from "./division.model"
 
 export interface TeamInfo {
-  id: number
+  id?: number
   name: string
-  year: number
   golfers: TeamGolferData[]
 }
 
@@ -43,7 +42,7 @@ export interface TeamGolferCreate {
 }
 
 export interface TeamCreate {
-  team_id?: number
+  id?: number
   flight_id?: number
   tournament_id?: number
   name: string
