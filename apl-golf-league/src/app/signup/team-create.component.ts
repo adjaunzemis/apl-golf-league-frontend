@@ -195,6 +195,11 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
         this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email !== '' ? golferData.email : null, golferData.phone !== '' ? golferData.phone : null).subscribe(result => {
           console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);
+          this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+
           this.golfersService.getAllGolfers(); // refresh golfer name options
         });
       }

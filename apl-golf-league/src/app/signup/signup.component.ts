@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, Validators } from "@angular/forms";
 import { Subscription } from 'rxjs';
 
@@ -60,7 +61,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   selectedFlightOrTournament: FlightData | TournamentData | undefined;
 
-  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private teamsService: TeamsService, private golfersService: GolfersService, private dialog: MatDialog, private route: ActivatedRoute) { }
+  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private teamsService: TeamsService, private golfersService: GolfersService, private snackBar: MatSnackBar, private dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
@@ -323,6 +324,11 @@ export class SignupComponent implements OnInit, OnDestroy {
           this.teamsService.updateTeam(teamData).subscribe(
             team => {
               console.log(`[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              this.snackBar.open(`Updated team '${team.name}'`, undefined, {
+                duration: 5000,
+                panelClass: ['success-snackbar']
+              });
+
               if (this.selectedFlightOrTournament) {
                 if (this.selectedTabIdx === 0) {
                   this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
@@ -344,6 +350,11 @@ export class SignupComponent implements OnInit, OnDestroy {
           this.teamsService.createTeam(teamData).subscribe(
             team => {
               console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
+              this.snackBar.open(`Created team '${team.name}'`, undefined, {
+                duration: 5000,
+                panelClass: ['success-snackbar']
+              });
+
               if (this.selectedFlightOrTournament) {
                 if (this.selectedTabIdx === 0) {
                   this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
