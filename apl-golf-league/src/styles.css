@@ -158,6 +158,30 @@ mat-spinner {
     margin-top: 36px;
 }
 
+.success-snackbar {
+  background: green;
+  color: white;
+  justify-content: center;
+}
+
+.info-snackbar {
+  background: #2196F3;
+  color: white;
+  justify-content: center;
+}
+
+.warning-snackbar {
+  background: rgb(197, 197, 0);
+  color: black;
+  justify-content: center;
+}
+
+.error-snackbar {
+  background: red;
+  color: white;
+  justify-content: center;
+}
+
 /* Custom styles */
 .full-width {
   width: 100%;

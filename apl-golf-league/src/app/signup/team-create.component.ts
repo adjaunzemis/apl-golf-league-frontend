@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -9,7 +10,6 @@ import { DivisionData } from './../shared/division.model';
 import { Golfer, GolferAffiliation } from "../shared/golfer.model";
 import { GolfersService } from "../golfers/golfers.service";
 import { GolferCreateComponent } from "../golfers/golfer-create/golfer-create.component";
-import { ErrorDialogComponent } from "../shared/error/error-dialog/error-dialog.component";
 
 @Component({
   templateUrl: './team-create.component.html',
@@ -30,7 +30,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   divisions: DivisionData[] = [];
 
-  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private golfersService: GolfersService) { }
+  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar, private golfersService: GolfersService) { }
 
   ngOnInit(): void {
     if (this.data.teamId > 0 && this.data.teamName.length > 0 && this.data.teamGolfers.length > 0) {
@@ -93,8 +93,9 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
       const golferMatches = this.golferOptions.filter((g) => g.name === golferName);
       if (golferMatches.length !== 1) {
-        this.dialog.open(ErrorDialogComponent, {
-          data: { title: "Team Sign-Up Error", message: `Invalid golfer name: ${golferName}` }
+        this.snackBar.open(`Invalid golfer name: ${golferName}`, undefined, {
+          duration: 5000,
+          panelClass: ['error-snackbar']
         });
         return;
       }
@@ -185,8 +186,9 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       if (golferData !== null && golferData !== undefined) {
         const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
         if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
-          this.dialog.open(ErrorDialogComponent, {
-            data: { title: "New Golfer Error", message: `Golfer with name '${golferData.name}' already exists!` }
+          this.snackBar.open(`Golfer with name '${golferData.name}' already exists!`, undefined, {
+            duration: 5000,
+            panelClass: ['error-snackbar']
           });
           return;
         }

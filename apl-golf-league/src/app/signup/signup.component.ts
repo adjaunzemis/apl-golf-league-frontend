@@ -95,8 +95,6 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isSelectedSignupWindowOpen = this.selectedFlightOrTournament.signup_start_date <= this.currentDate && this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
       });
 
-    this.flightsService.getFlightsList(this.currentYear);
-
     this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
       .subscribe(result => {
         this.tournaments = result.tournaments;
@@ -120,7 +118,6 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isSelectedSignupWindowOpen = this.selectedFlightOrTournament.signup_start_date <= this.currentDate && this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
       });
 
-    this.tournamentsService.getTournamentsList(this.currentYear);
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
       .subscribe(result => {
@@ -143,6 +140,8 @@ export class SignupComponent implements OnInit, OnDestroy {
           }
         }
       }
+      this.flightsService.getFlightsList(this.currentYear);
+      this.tournamentsService.getTournamentsList(this.currentYear);
     });
   }
 

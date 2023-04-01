@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../app-config.service';
@@ -8,7 +9,6 @@ import { FlightCreateComponent } from '../flights/flight-create/flight-create.co
 import { FlightsService } from '../flights/flights.service';
 import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
 import { GolfersService } from '../golfers/golfers.service';
-import { ErrorDialogComponent } from '../shared/error/error-dialog/error-dialog.component';
 import { FlightInfo } from '../shared/flight.model';
 import { Golfer, GolferAffiliation } from '../shared/golfer.model';
 import { User } from '../shared/user.model';
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   flights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
-  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private dialog: MatDialog) { }
+  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(user => {
@@ -91,14 +91,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (golferData !== null && golferData !== undefined) {
         const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
         if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
-          this.dialog.open(ErrorDialogComponent, {
-            data: { title: "New Golfer Error", message: `Golfer with name '${golferData.name}' already exists!` }
+          this.snackBar.open(`Golfer with name '${golferData.name}' already exists!`, undefined, {
+            duration: 5000,
+            panelClass: ['error-snackbar']
           });
           return;
         }
 
         this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email !== '' ? golferData.email : null, golferData.phone !== '' ? golferData.phone : null).subscribe(result => {
           console.log(`[HeaderComponent] Successfully added golfer: ${result.name}`);
+          this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+
           this.golfersService.getAllGolfers(); // refresh golfer name options
         });
       }
@@ -138,8 +144,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         const existingFlights = this.flights.filter((f) => f.year == flightData.year);
         const existingFlightNames = existingFlights.map((f) => f.name.toLowerCase());
         if (existingFlightNames.includes(flightData.name.toLowerCase())) {
-          this.dialog.open(ErrorDialogComponent, {
-            data: { title: "New Flight Error", message: `Flight with name '${flightData.name}' and year '${flightData.year}' already exists!` }
+          this.snackBar.open(`Flight with name '${flightData.name}' and year '${flightData.year}' already exists!`, undefined, {
+            duration: 5000,
+            panelClass: ['error-snackbar']
           });
           return;
         }
@@ -147,6 +154,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log(flightData);
         this.flightsService.createFlight(flightData).subscribe(result => {
           console.log(`[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully created flight: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+
           this.flightsService.getFlightsList(); // refresh flights list
         });
       }
