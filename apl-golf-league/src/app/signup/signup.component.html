@@ -71,9 +71,9 @@
     </div>
   </div>
 
-  <h3>Divisions</h3>
+  <!-- <h3>Divisions</h3>
 
-  <app-division-list [divisions]="selectedFlightOrTournament.divisions"></app-division-list>
+  <app-division-list [divisions]="selectedFlightOrTournament.divisions"></app-division-list> -->
 
   <h3>Teams</h3>
 
@@ -82,9 +82,8 @@
     <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
   </div>
 
-  <div *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">
-    <button mat-raised-button color="primary" (click)="onCreateTeam()">Create Team</button>
-  </div>
+  <button mat-raised-button color="primary" (click)="onCreateTeam()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Create Team</button>
+  <p class="italic" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Click on a team card to update sign-ups</p>
 
   <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>
 
