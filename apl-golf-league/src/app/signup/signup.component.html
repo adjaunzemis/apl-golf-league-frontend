@@ -1,12 +1,7 @@
 <div class="content">
-  <div class="card announcements-card card-small">
-    <h2>Membership Dues</h2>
-    <span class="bold">Full: $45.00 USD | Tournament-Only: $40.00 USD</span>
-    <span class="regular">Dues may be paid through PayPal or by check.</span>
-    <span>Drop off checks at Bob’s office: 200-E352.</span>
-  </div>
 
   <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTabIdx" (selectedIndexChange)="onTabIndexChanged($event)" *ngIf="!isLoadingFlights && !isLoadingTournaments">
+
     <mat-tab label="Flight Sign-Ups">
 
       <div class="content" *ngIf="!isLoadingFlights">
@@ -82,7 +77,10 @@
     <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
   </div>
 
-  <button mat-raised-button color="primary" (click)="onCreateTeam()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Create Team</button>
+  <div>
+    <button mat-raised-button color="primary" (click)="onCreateTeam()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Create Team</button>
+    <button mat-raised-button color="accent" (click)="onPayDues()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Pay Dues</button>
+  </div>
   <p class="italic" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Click on a team card to update sign-ups</p>
 
   <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>

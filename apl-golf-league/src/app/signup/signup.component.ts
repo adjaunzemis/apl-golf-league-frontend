@@ -19,6 +19,7 @@ import { TeamCreateComponent } from './team-create.component';
 import { AppConfigService } from '../app-config.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../shared/user.model';
+import { FlightDuesPaymentComponent } from '../payments/flight-dues-payment/flight-dues-payment.component';
 
 @Component({
   selector: 'app-signup',
@@ -374,6 +375,13 @@ export class SignupComponent implements OnInit, OnDestroy {
           );
         }
       }
+    });
+  }
+
+  onPayDues(): void {
+    const dialogRef = this.dialog.open(FlightDuesPaymentComponent, {
+      width: '750px',
+      data: {}
     });
   }
 
