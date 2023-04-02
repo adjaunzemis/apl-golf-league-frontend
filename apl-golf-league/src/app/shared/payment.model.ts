@@ -1,3 +1,10 @@
+export interface LeagueDues {
+  id: number
+  year: number
+  type: string
+  amount: number
+}
+
 export interface LeagueDuesPaymentInfo {
   id: number
   golfer_id: number

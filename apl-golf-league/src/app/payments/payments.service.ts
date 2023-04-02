@@ -4,12 +4,15 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { environment } from "../../environments/environment";
-import { LeagueDuesPaymentData, LeagueDuesPaymentInfo } from "../shared/payment.model";
+import { LeagueDues, LeagueDuesPaymentData, LeagueDuesPaymentInfo } from "../shared/payment.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class PaymentsService {
+  private leagueDuesList: LeagueDues[] = []
+  private leagueDuesListUpdated = new Subject<LeagueDues[]>();
+
   private leagueDuesPaymentDataList: LeagueDuesPaymentData[] = []
   private leagueDuesPaymentDataListUpdated = new Subject<LeagueDuesPaymentData[]>();
 
@@ -17,6 +20,22 @@ export class PaymentsService {
   private leagueDuesPaymentInfoListUpdated = new Subject<LeagueDuesPaymentInfo[]>();
 
   constructor(private http: HttpClient, private router: Router) {}
+
+  getLeagueDuesList(year?: number): void {
+    let queryParams: string = ``;
+    if (year) {
+      queryParams = `?year=${year}&`;
+    }
+    this.http.get<LeagueDues[]>(environment.apiUrl + "payments/dues/amounts" + queryParams)
+      .subscribe(result => {
+        this.leagueDuesList = result;
+        this.leagueDuesListUpdated.next(result);
+      });
+  }
+
+  getLeagueDuesListUpdateListener(): Observable<LeagueDues[]> {
+    return this.leagueDuesListUpdated.asObservable();
+  }
 
   getLeagueDuesPaymentDataList(year?: number): void {
     let queryParams: string = ``;
