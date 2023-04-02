@@ -6,11 +6,11 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 declare var paypal: any;
 
 @Component({
-  selector: 'app-flight-dues-payment',
-  templateUrl: './flight-dues-payment.component.html',
-  styleUrls: ['./flight-dues-payment.component.css']
+  selector: 'app-league-dues-payment',
+  templateUrl: './league-dues-payment.component.html',
+  styleUrls: ['./league-dues-payment.component.css']
 })
-export class FlightDuesPaymentComponent implements OnInit {
+export class LeagueDuesPaymentComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
   product = {
@@ -19,7 +19,7 @@ export class FlightDuesPaymentComponent implements OnInit {
   };
   paidFor = false;
 
-  constructor(public dialogRef: MatDialogRef<FlightDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
+  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     paypal
