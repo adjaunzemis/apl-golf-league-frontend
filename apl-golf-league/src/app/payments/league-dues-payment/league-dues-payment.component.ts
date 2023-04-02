@@ -1,11 +1,13 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, Subscription  } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 
-import { Golfer } from "../../shared/golfer.model";
+import { PaymentsService } from "../payments.service";
+import { AppConfigService } from "../../app-config.service";
+import { LeagueDuesPaymentInfo } from "src/app/shared/payment.model";
 
 declare var paypal: any;
 
@@ -14,22 +16,57 @@ declare var paypal: any;
   templateUrl: './league-dues-payment.component.html',
   styleUrls: ['./league-dues-payment.component.css']
 })
-export class LeagueDuesPaymentComponent implements OnInit {
+export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
   year = 0;
-  league_dues_full = 0;
-  league_dues_tournament_only = 0;
+  leagueDuesFlight = 0;
+  leagueDuesTournamentOnly = 0;
+
+  private leagueDuesListSub: Subscription;
+  private leagueDuesPaymentInfoListSub: Subscription;
+  leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = [];
 
   golferPaymentsForm: FormGroup;
-  golferOptions: Golfer[] = [];
   golferNameOptions: string[] = [];
-  filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
+  filteredGolferNameOptionsArray: Observable<string[]>[] = [];
+
   typeOptions = ['Flight Dues', 'Tournament-Only Dues'];
 
-  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
+  isLoadingLeagueDuesList: boolean = true;
+  isLoadingLeagueDuesPaymentInfoList: boolean = true;
+
+  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService) {}
 
   ngOnInit(): void {
+    this.year = this.appConfigService.currentYear;
+
+    // Initialize payments info subscriptions
+    this.leagueDuesListSub = this.paymentsService.getLeagueDuesListUpdateListener().subscribe(leagueDues => {
+      for (const dues of leagueDues) {
+        if (dues.type == "Flight Dues") {
+          this.leagueDuesFlight = dues.amount;
+        }
+        else if (dues.type == "Tournament-Only Dues") {
+          this.leagueDuesTournamentOnly = dues.amount;
+        }
+      }
+      this.isLoadingLeagueDuesList = false;
+    });
+    this.paymentsService.getLeagueDuesList(this.year);
+
+    this.leagueDuesPaymentInfoListSub = this.paymentsService.getLeagueDuesPaymentInfoListUpdateListener().subscribe(paymentInfoList => {
+      this.leagueDuesPaymentInfoList = paymentInfoList;
+
+      this.golferNameOptions = [];
+      for (const paymentInfo of paymentInfoList) {
+        this.golferNameOptions.push(paymentInfo.golfer_name);
+      }
+
+      this.isLoadingLeagueDuesPaymentInfoList = false;
+    });
+    this.paymentsService.getLeagueDuesPaymentInfoList(this.year);
+
     // Initialize golfer payments form
     this.golferPaymentsForm = this.formBuilder.group({
       golferPayments: this.formBuilder.array([])
@@ -77,6 +114,11 @@ export class LeagueDuesPaymentComponent implements OnInit {
       .render(this.paypalElement.nativeElement);
   }
 
+  ngOnDestroy(): void {
+    this.leagueDuesListSub.unsubscribe();
+    this.leagueDuesPaymentInfoListSub.unsubscribe();
+  }
+
   private getPaymentDescription(): string {
     let description = `APL Golf League Dues (${this.year}) - `
     // TODO: Add list of golfers and dues types
@@ -85,7 +127,15 @@ export class LeagueDuesPaymentComponent implements OnInit {
   }
 
   getPaymentTotalAmount(): number {
-    return 123.45; // TODO: total amount due from golfers on form
+    let total = 0;
+    for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
+      if (golferPaymentForm.get("type")?.value === "Flight Dues") {
+        total += this.leagueDuesFlight;
+      } else if (golferPaymentForm.get("type")?.value === "Tournament-Only Dues") {
+        total += this.leagueDuesTournamentOnly;
+      }
+    }
+    return total;
   }
 
   getGolferPaymentsArray(): FormArray {
@@ -98,14 +148,10 @@ export class LeagueDuesPaymentComponent implements OnInit {
       type: new FormControl("", Validators.required)
     });
 
-    this.filteredGolferOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
+    this.filteredGolferNameOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
       startWith(''),
       map(value => {
-        if (this.isGolfer(value)) {
-          return this._filter(value.name);
-        } else {
-          return this._filter(value);
-        }
+        return this._filter(value);
       }),
     ));
 
@@ -114,16 +160,12 @@ export class LeagueDuesPaymentComponent implements OnInit {
 
   removeNewGolferPaymentForm(idx: number): void {
     this.getGolferPaymentsArray().removeAt(idx);
-    this.filteredGolferOptionsArray.splice(idx, 1);
+    this.filteredGolferNameOptionsArray.splice(idx, 1);
   }
 
-  private isGolfer(object: any): object is Golfer {
-    return (<Golfer> object).name !== undefined;
-  }
-
-  private _filter(value: string): Golfer[] {
+  private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.golferNameOptions.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   private checkGolferName(control: FormControl): { [s: string]: boolean } | null {

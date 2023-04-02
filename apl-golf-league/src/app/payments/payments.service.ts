@@ -37,7 +37,7 @@ export class PaymentsService {
     return this.leagueDuesListUpdated.asObservable();
   }
 
-  getLeagueDuesPaymentDataList(year?: number): void {
+  getLeagueDuesPaymentInfoList(year?: number): void {
     let queryParams: string = ``;
     if (year) {
       queryParams = `?year=${year}&`;
@@ -53,7 +53,7 @@ export class PaymentsService {
     return this.leagueDuesPaymentInfoListUpdated.asObservable();
   }
 
-  getLeagueDuesPaymentInfoList(year?: number): void {
+  getLeagueDuesPaymentDataList(year?: number): void {
     let queryParams: string = ``;
     if (year) {
       queryParams = `?year=${year}&`;

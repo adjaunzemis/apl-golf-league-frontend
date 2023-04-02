@@ -2,10 +2,12 @@
 
   <h1 mat-dialog-title>Pay League Dues</h1>
 
-  <p class="bold">Flight: ${{ league_dues_full }} USD | Tournament-Only: ${{ league_dues_tournament_only }} USD</p>
-  <p class="italic" style="margin-bottom: 16px;">("Flight dues" grant eligibility for both flight and tournament play)</p>
+  <p class="bold">Flight Dues: ${{ leagueDuesFlight }} USD | Tournament-Only Dues: ${{ leagueDuesTournamentOnly }} USD</p>
+  <p class="italic" style="margin-bottom: 16px;">Note: "Flight Dues" grant eligibility for both flight and tournament play</p>
 
-  <form [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()">
+  <mat-spinner *ngIf="isLoadingLeagueDuesList || isLoadingLeagueDuesPaymentInfoList"></mat-spinner>
+
+  <form [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()" *ngIf="!isLoadingLeagueDuesList && !isLoadingLeagueDuesPaymentInfoList">
     <div formArrayName="golferPayments" *ngFor="let golferPayment of getGolferPaymentsArray().controls; let idx = index">
       <div formGroupName="{{ idx }}">
 
@@ -13,7 +15,7 @@
           <mat-label>Golfer</mat-label>
           <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let g of filteredGolferOptionsArray[idx] | async" [value]="g.name">{{ g.name }}</mat-option>
+            <mat-option *ngFor="let name of filteredGolferNameOptionsArray[idx] | async" [value]="name">{{ name }}</mat-option>
           </mat-autocomplete>
           <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')">Select a golfer</mat-error>
           <mat-error *ngIf="golferPayment.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
@@ -36,7 +38,7 @@
   </form>
 
   <div>
-    <h3>Total: ${{ getPaymentTotalAmount() }}</h3>
+    <h3>Total: ${{ getPaymentTotalAmount() | number : '1.2-2' }}</h3>
   </div>
 
   <p class="italic" style="color: red; margin-bottom: 16px;" *ngIf="!golferPaymentsForm.valid">Complete form before selecting payment option!</p>
