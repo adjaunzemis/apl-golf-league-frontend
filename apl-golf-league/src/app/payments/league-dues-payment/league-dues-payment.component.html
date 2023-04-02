@@ -1,10 +1,15 @@
-<div *ngIf="!paidFor">
-  <h1>Buy this Couch - ${{ product.price }} OBO</h1>
-  <p>{{ product.description }}</p>
-</div>
+<div class="content">
 
-<div *ngIf="paidFor">
-  <h1>Yay, you bought a sweet couch!</h1>
-</div>
+  <h1 mat-dialog-title>Pay League Dues</h1>
 
-<div #paypal></div>
+  <div mat-dialog-content>
+
+    <p class="bold">Full: ${{ league_dues_full }} | Tournament-Only: ${{ league_dues_tournament_only }}</p>
+
+    <p class="italic">Select golfers to update total, pay through PayPal</p>
+
+  </div>
+
+  <div #paypal></div>
+
+</div>

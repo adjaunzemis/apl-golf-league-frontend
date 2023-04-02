@@ -380,8 +380,22 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onPayDues(): void {
     const dialogRef = this.dialog.open(LeagueDuesPaymentComponent, {
-      width: '750px',
+      width: '500px',
       data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((paymentSuccessful) => {
+      if (paymentSuccessful) {
+        // Reload selected flight/tournament to capture updated dues statuses
+        if (this.selectedFlightOrTournament) {
+          if (this.selectedTabIdx === 0) {
+            this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
+          }
+          else {
+            this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
+          }
+        }
+      }
     });
   }
 
