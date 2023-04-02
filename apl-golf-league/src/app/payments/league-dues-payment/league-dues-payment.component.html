@@ -41,7 +41,7 @@
     <h3>Total: ${{ getPaymentTotalAmount() | number : '1.2-2' }}</h3>
   </div>
 
-  <p class="italic" style="color: red; margin-bottom: 16px;" *ngIf="!golferPaymentsForm.valid">Complete form before selecting payment option!</p>
+  <p class="italic bold" style="color: red; margin-bottom: 16px;" *ngIf="!golferPaymentsForm.valid">Complete form before selecting payment option!</p>
 
   <div #paypal></div>
 

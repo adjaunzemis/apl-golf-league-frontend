@@ -79,7 +79,7 @@
 
   <div>
     <button mat-raised-button color="primary" (click)="onCreateTeam()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Create Team</button>
-    <button mat-raised-button color="accent" (click)="onPayDues()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Pay Dues</button>
+    <button mat-raised-button color="primary" (click)="onPayDues()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Pay Dues</button>
   </div>
   <p class="italic" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Click on a team card to update sign-ups</p>
 

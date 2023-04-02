@@ -60,7 +60,9 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
       this.golferNameOptions = [];
       for (const paymentInfo of paymentInfoList) {
-        this.golferNameOptions.push(paymentInfo.golfer_name);
+        if (paymentInfo.amount_due > paymentInfo.amount_paid) {
+          this.golferNameOptions.push(paymentInfo.golfer_name);
+        }
       }
 
       this.isLoadingLeagueDuesPaymentInfoList = false;
