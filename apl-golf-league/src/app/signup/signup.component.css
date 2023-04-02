@@ -29,6 +29,10 @@ button:not(:first-of-type) {
   margin-left: 16px;
 }
 
+button {
+  width: 120px;
+}
+
 mat-error:not(:first-child) {
   display: none;
 }

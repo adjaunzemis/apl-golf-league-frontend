@@ -24,7 +24,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
-  golferNameOptions: string[] = []
+  golferNameOptions: string[] = [];
   filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
   roleOptions = ['Captain', 'Player'];
 

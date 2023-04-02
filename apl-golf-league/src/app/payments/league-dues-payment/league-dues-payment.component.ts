@@ -1,7 +1,11 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Observable, Subscription  } from "rxjs";
+import { map, startWith } from "rxjs/operators";
+
+import { Golfer } from "../../shared/golfer.model";
 
 declare var paypal: any;
 
@@ -13,14 +17,26 @@ declare var paypal: any;
 export class LeagueDuesPaymentComponent implements OnInit {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
-
   year = 0;
   league_dues_full = 0;
   league_dues_tournament_only = 0;
 
+  golferPaymentsForm: FormGroup;
+  golferOptions: Golfer[] = [];
+  golferNameOptions: string[] = [];
+  filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
+  typeOptions = ['Flight Dues', 'Tournament-Only Dues'];
+
   constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
+    // Initialize golfer payments form
+    this.golferPaymentsForm = this.formBuilder.group({
+      golferPayments: this.formBuilder.array([])
+    });
+    this.addNewGolferPaymentForm();
+
+    // Configure PayPal buttons
     paypal
       .Buttons({
         createOrder: (data: any, actions: any) => {
@@ -29,7 +45,7 @@ export class LeagueDuesPaymentComponent implements OnInit {
               description: this.getPaymentDescription(),
               amount: {
                 currency_code: 'USD',
-                value: this.getPaymentTotal()
+                value: this.getPaymentTotalAmount()
               }
             }]
           });
@@ -68,8 +84,53 @@ export class LeagueDuesPaymentComponent implements OnInit {
     return description
   }
 
-  getPaymentTotal(): number {
+  getPaymentTotalAmount(): number {
     return 123.45; // TODO: total amount due from golfers on form
+  }
+
+  getGolferPaymentsArray(): FormArray {
+    return this.golferPaymentsForm.get('golferPayments') as FormArray;
+  }
+
+  addNewGolferPaymentForm(): void {
+    const newGolferPaymentForm = this.formBuilder.group({
+      golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
+      type: new FormControl("", Validators.required)
+    });
+
+    this.filteredGolferOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        if (this.isGolfer(value)) {
+          return this._filter(value.name);
+        } else {
+          return this._filter(value);
+        }
+      }),
+    ));
+
+    this.getGolferPaymentsArray().push(newGolferPaymentForm);
+  }
+
+  removeNewGolferPaymentForm(idx: number): void {
+    this.getGolferPaymentsArray().removeAt(idx);
+    this.filteredGolferOptionsArray.splice(idx, 1);
+  }
+
+  private isGolfer(object: any): object is Golfer {
+    return (<Golfer> object).name !== undefined;
+  }
+
+  private _filter(value: string): Golfer[] {
+    const filterValue = value.toLowerCase();
+    return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
+
+  private checkGolferName(control: FormControl): { [s: string]: boolean } | null {
+    if (this.golferNameOptions.indexOf(control.value) === -1) {
+      return { 'golferNameInvalid': true };
+    }
+    return null;
   }
 
 }

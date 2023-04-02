@@ -380,7 +380,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onPayDues(): void {
     const dialogRef = this.dialog.open(LeagueDuesPaymentComponent, {
-      width: '500px',
+      width: '600px',
       data: {}
     });
 
