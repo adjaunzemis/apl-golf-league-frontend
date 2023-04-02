@@ -12,11 +12,13 @@ import { GolfersService } from '../golfers/golfers.service';
 import { FlightInfo } from '../shared/flight.model';
 import { Golfer, GolferAffiliation } from '../shared/golfer.model';
 import { User } from '../shared/user.model';
+import { SignupComponent } from '../signup/signup.component';
 
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"]
+  styleUrls: ["./header.component.css"],
+  providers: [SignupComponent]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
@@ -29,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   flights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
-  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private signupComponent: SignupComponent, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(user => {
@@ -72,6 +74,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout(): void {
     this.authService.logout();
     this.currentUser = null;
+  }
+
+  onPayDues(): void {
+    this.signupComponent.onPayDues();
   }
 
   // TODO: Consolidate `onAddNewGolfer()` usage from header, signups
