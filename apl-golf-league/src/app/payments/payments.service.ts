@@ -4,35 +4,54 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { environment } from "../../environments/environment";
-import { LeagueDuesPayment } from "../shared/payment.model";
+import { LeagueDuesPaymentData, LeagueDuesPaymentInfo } from "../shared/payment.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class PaymentsService {
-  private leagueDuesPaymentsList: LeagueDuesPayment[] = []
-  private leagueDuesPaymentsListUpdated = new Subject<LeagueDuesPayment[]>();
+  private leagueDuesPaymentDataList: LeagueDuesPaymentData[] = []
+  private leagueDuesPaymentDataListUpdated = new Subject<LeagueDuesPaymentData[]>();
+
+  private leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = []
+  private leagueDuesPaymentInfoListUpdated = new Subject<LeagueDuesPaymentInfo[]>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getLeagueDuesPaymentsList(year?: number): void {
+  getLeagueDuesPaymentDataList(year?: number): void {
     let queryParams: string = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
-    this.http.get<LeagueDuesPayment[]>(environment.apiUrl + "payments/" + queryParams)
+    this.http.get<LeagueDuesPaymentInfo[]>(environment.apiUrl + "payments/dues/info" + queryParams)
       .subscribe(result => {
-        this.leagueDuesPaymentsList = result;
-        this.leagueDuesPaymentsListUpdated.next(result);
+        this.leagueDuesPaymentInfoList = result;
+        this.leagueDuesPaymentInfoListUpdated.next(result);
       });
   }
 
-  getLeagueDuesPaymentsListUpdateListener(): Observable<LeagueDuesPayment[]> {
-    return this.leagueDuesPaymentsListUpdated.asObservable();
+  getLeagueDuesPaymentInfoListUpdateListener(): Observable<LeagueDuesPaymentInfo[]> {
+    return this.leagueDuesPaymentInfoListUpdated.asObservable();
   }
 
-  updateLeagueDuesPayment(payment: LeagueDuesPayment): Observable<LeagueDuesPayment> {
-    return this.http.patch<LeagueDuesPayment>(environment.apiUrl + `payments/${payment.id}`, payment);
+  getLeagueDuesPaymentInfoList(year?: number): void {
+    let queryParams: string = ``;
+    if (year) {
+      queryParams = `?year=${year}&`;
+    }
+    this.http.get<LeagueDuesPaymentData[]>(environment.apiUrl + "payments/dues/data" + queryParams)
+      .subscribe(result => {
+        this.leagueDuesPaymentDataList = result;
+        this.leagueDuesPaymentDataListUpdated.next(result);
+      });
+  }
+
+  getLeagueDuesPaymentDataListUpdateListener(): Observable<LeagueDuesPaymentData[]> {
+    return this.leagueDuesPaymentDataListUpdated.asObservable();
+  }
+
+  updateLeagueDuesPayment(payment: LeagueDuesPaymentData): Observable<LeagueDuesPaymentData> {
+    return this.http.patch<LeagueDuesPaymentData>(environment.apiUrl + `payments/${payment.id}`, payment);
   }
 
 }

@@ -3,7 +3,7 @@ import { Sort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 
 import { PaymentsService } from "../payments.service";
-import { LeagueDuesPayment } from './../../shared/payment.model';
+import { LeagueDuesPaymentData } from './../../shared/payment.model';
 
 @Component({
   selector: 'app-payments-list',
@@ -17,31 +17,31 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   leagueDuesSub: Subscription;
 
-  leagueDuesPayments: LeagueDuesPayment[];
-  sortedData: LeagueDuesPayment[];
+  leagueDuesPayments: LeagueDuesPaymentData[];
+  sortedData: LeagueDuesPaymentData[];
   private currentSort: Sort | null = null;
 
-  updatedPayment: LeagueDuesPayment | null = null;
+  updatedPayment: LeagueDuesPaymentData | null = null;
 
   displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
   constructor(private paymentsService: PaymentsService) { }
 
   ngOnInit(): void {
-    this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentsListUpdateListener().subscribe(result => {
+    this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentDataListUpdateListener().subscribe(result => {
       this.leagueDuesPayments = result;
       this.sortedData = this.leagueDuesPayments;
       this.isLoading = false;
     });
 
-    this.paymentsService.getLeagueDuesPaymentsList(this.selectedYear);
+    this.paymentsService.getLeagueDuesPaymentDataList(this.selectedYear);
   }
 
   ngOnDestroy(): void {
     this.leagueDuesSub.unsubscribe();
   }
 
-  editPaymentInfo(payment: LeagueDuesPayment): void {
+  editPaymentInfo(payment: LeagueDuesPaymentData): void {
     this.updatedPayment = {
       id: payment.id,
       golfer_id: payment.golfer_id,
