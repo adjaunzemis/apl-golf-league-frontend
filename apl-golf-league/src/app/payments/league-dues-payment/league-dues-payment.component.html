@@ -24,10 +24,10 @@
         <mat-form-field appearance="fill" class="short-field">
           <mat-label>Type</mat-label>
           <mat-select formControlName="type" required>
-            <mat-option>--</mat-option>
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select a payment type</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select a dues type</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')">Dues type not valid for selected golfer</mat-error>
         </mat-form-field>
 
         <button mat-raised-button color="warn" (click)="removeNewGolferPaymentForm(idx)" [disabled]="getGolferPaymentsArray().length < 2">-</button>

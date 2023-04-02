@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, Subscription  } from "rxjs";
@@ -147,8 +147,8 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   addNewGolferPaymentForm(): void {
     const newGolferPaymentForm = this.formBuilder.group({
       golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
-      type: new FormControl("", Validators.required)
-    });
+      type: new FormControl("", [Validators.required])
+    }, { validators: this.golferPaymentTypeValidator });
 
     this.filteredGolferNameOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
       startWith(''),
@@ -175,6 +175,20 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
       return { 'golferNameInvalid': true };
     }
     return null;
+  }
+
+  private golferPaymentTypeValidator(group: FormGroup) {
+    const golferControl = group.controls['golfer'];
+    const typeControl = group.controls['type'];
+    if (typeControl.value === "--") {
+      typeControl.setErrors({ 'required': true });
+      return;
+    }
+    let golferPaymentTypeInvalid = true;
+    // TODO: Implement validation by paymentInfoList
+    if (golferPaymentTypeInvalid) {
+      typeControl.setErrors({ 'golferPaymentTypeInvalid': true });
+    }
   }
 
 }
