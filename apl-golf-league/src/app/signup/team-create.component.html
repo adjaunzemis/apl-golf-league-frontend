@@ -61,7 +61,7 @@
   <div mat-dialog-actions>
 
     <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button color="primary" (click)="onSubmit()">Submit</button>
+    <button mat-button color="primary" [disabled]="!teamNameControl.valid || !newTeamForm.valid" (click)="onSubmit()">Submit</button>
 
   </div>
 
