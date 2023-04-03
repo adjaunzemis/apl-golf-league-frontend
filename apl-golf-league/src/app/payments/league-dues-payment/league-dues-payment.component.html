@@ -27,7 +27,7 @@
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
           </mat-select>
           <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select a dues type</mat-error>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')">Dues type not valid for selected golfer</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')">Dues type does not match golfer sign-up</mat-error>
         </mat-form-field>
 
         <button mat-raised-button color="warn" (click)="removeNewGolferPaymentForm(idx)" [disabled]="getGolferPaymentsArray().length < 2">-</button>

@@ -25,7 +25,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   private leagueDuesListSub: Subscription;
   private leagueDuesPaymentInfoListSub: Subscription;
-  leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = [];
+  private leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = [];
 
   golferPaymentsForm: FormGroup;
   golferNameOptions: string[] = [];
@@ -148,7 +148,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     const newGolferPaymentForm = this.formBuilder.group({
       golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
       type: new FormControl("", [Validators.required])
-    }, { validators: this.golferPaymentTypeValidator });
+    }, { validators: this.golferPaymentTypeValidator.bind(this) });
 
     this.filteredGolferNameOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
       startWith(''),
@@ -179,13 +179,20 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   private golferPaymentTypeValidator(group: FormGroup) {
     const golferControl = group.controls['golfer'];
+    const golferName = golferControl.value.toLowerCase();
+
     const typeControl = group.controls['type'];
-    if (typeControl.value === "--") {
-      typeControl.setErrors({ 'required': true });
-      return;
-    }
+    const typeName = typeControl.value.toLowerCase();
+
     let golferPaymentTypeInvalid = true;
-    // TODO: Implement validation by paymentInfoList
+    for (const paymentInfo of this.leagueDuesPaymentInfoList) {
+      if (paymentInfo.golfer_name.toLowerCase() === golferName) {
+        if (paymentInfo.type.toLowerCase() === typeName) {
+          golferPaymentTypeInvalid = false;
+          break;
+        }
+      }
+    }
     if (golferPaymentTypeInvalid) {
       typeControl.setErrors({ 'golferPaymentTypeInvalid': true });
     }
