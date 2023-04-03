@@ -122,14 +122,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
             return; // leave dialog box open
           }
 
-          this.snackBar.open("Payment successful!", undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
-
           // Capture payment details in backend
-          console.log(order);
-
           try {
             let transactionItems: LeagueDuesPaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
@@ -178,7 +171,12 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
               payer_name: `${payerGivenName} ${payerSurname}`,
               payer_email: payerEmail
             }
-            this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe();
+            this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe(() => {
+              this.snackBar.open("Payment successful!", undefined, {
+                duration: 5000,
+                panelClass: ['success-snackbar']
+              });
+            });
           } catch(err) {
             this.snackBar.open("ERROR: Payment was successful, but not recorded in our database - please contact treasurer or webmaster!", undefined, {
               duration: 10000,
@@ -214,17 +212,21 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Dues (${this.year}) for `
-    for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
-      const golferControl = golferPaymentForm.get("golfer");
-      const golferName = golferControl ? golferControl.value : "unknown";
+    let description = `APL Golf League Dues (${this.year}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? "golfers" : "golfer"}`
 
-      const typeControl = golferPaymentForm.get("type");
-      const typeName = typeControl ? typeControl.value : "unknown";
+    // TODO: Re-enable more verbose description with character limit?
+    // let description = `APL Golf League Dues (${this.year}) for `
+    // for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
+    //   const golferControl = golferPaymentForm.get("golfer");
+    //   const golferName = golferControl ? golferControl.value : "unknown";
 
-      description += `${golferName} (${typeName}), `;
-    }
-    description = description.substring(0, description.length - 2);
+    //   const typeControl = golferPaymentForm.get("type");
+    //   const typeName = typeControl ? typeControl.value : "unknown";
+
+    //   description += `${golferName} (${typeName}), `;
+    // }
+    // description = description.substring(0, description.length - 2);
+
     return description
   }
 
