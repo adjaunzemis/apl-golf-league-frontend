@@ -86,7 +86,7 @@
   <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>
 
   <div class="card-container team-list">
-    <a class="card team-card selectable" *ngFor="let team of getSelectedFlightOrTournamentTeams()" (click)="onUpdateTeam(team)">
+    <a class="card team-card" [ngClass]="{'selectable': isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)}" *ngFor="let team of getSelectedFlightOrTournamentTeams()" (click)="onUpdateTeam(team)">
       <span class="bold">{{ team.name }}</span>
       <div *ngFor="let golfer of team.golfers">
         <span>{{ golfer.golfer_name }} - {{ golfer.division_name }} - Hcp: </span>

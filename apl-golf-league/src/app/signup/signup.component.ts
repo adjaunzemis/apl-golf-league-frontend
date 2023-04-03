@@ -231,7 +231,9 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onUpdateTeam(team: TeamInfo) {
-    this.createOrUpdateTeam(team);
+    if (this.isSelectedSignupWindowOpen) {
+      this.createOrUpdateTeam(team);
+    }
   }
 
   private convertTeamCreateToTeamInfo(teamCreate: TeamCreate): TeamInfo {
