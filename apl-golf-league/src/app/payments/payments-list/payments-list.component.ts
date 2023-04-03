@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 
 import { PaymentsService } from "../payments.service";
 import { LeagueDuesPaymentData } from './../../shared/payment.model';
+import { AppConfigService } from "../../app-config.service";
 
 @Component({
   selector: 'app-payments-list',
@@ -13,7 +14,7 @@ import { LeagueDuesPaymentData } from './../../shared/payment.model';
 export class PaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  selectedYear = 2022;
+  selectedYear = 0;
 
   leagueDuesSub: Subscription;
 
@@ -25,9 +26,11 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
-  constructor(private paymentsService: PaymentsService) { }
+  constructor(private paymentsService: PaymentsService, private appConfigService: AppConfigService) { }
 
   ngOnInit(): void {
+    this.selectedYear = this.appConfigService.currentYear;
+
     this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentDataListUpdateListener().subscribe(result => {
       this.leagueDuesPayments = result;
       this.sortedData = this.leagueDuesPayments;
