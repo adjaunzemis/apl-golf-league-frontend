@@ -78,6 +78,16 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     // Configure PayPal buttons
     paypal
       .Buttons({
+        onClick: () => {
+          if (!this.golferPaymentsForm.valid) {
+            this.snackBar.open("Must complete form before submitting payment!", undefined, {
+              duration: 5000,
+              panelClass: ["error-snackbar"]
+            });
+            return false;
+          }
+          return true;
+        },
         createOrder: (data: any, actions: any) => {
           return actions.order.create({
             purchase_units: [{
@@ -122,9 +132,17 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Dues (${this.year}) - `
-    // TODO: Add list of golfers and dues types
-    // TODO: Trim description if needed (1000 char max?)
+    let description = `APL Golf League Dues (${this.year}) for `
+    for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
+      const golferControl = golferPaymentForm.get("golfer");
+      const golferName = golferControl ? golferControl.value : "unknown";
+
+      const typeControl = golferPaymentForm.get("type");
+      const typeName = typeControl ? typeControl.value : "unknown";
+
+      description += `${golferName} (${typeName}), `;
+    }
+    description = description.substring(0, description.length - 2);
     return description
   }
 
