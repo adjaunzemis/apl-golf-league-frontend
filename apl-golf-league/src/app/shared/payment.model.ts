@@ -30,3 +30,20 @@ export interface LeagueDuesPaymentData {
   method: string
   comment: string
 }
+
+export interface LeagueDuesPaypalTransactionItem {
+  id?: number
+  golfer_id: number
+  type: string
+}
+
+export interface LeagueDuesPaypalTransaction {
+  year: number
+  amount: number
+  description: string
+  items: LeagueDuesPaypalTransactionItem[]
+  resource_id?: string
+  update_time?: string
+  payer_name?: string
+  payer_email?: string
+}

@@ -7,7 +7,9 @@ import { map, startWith } from "rxjs/operators";
 
 import { PaymentsService } from "../payments.service";
 import { AppConfigService } from "../../app-config.service";
-import { LeagueDuesPaymentInfo } from "src/app/shared/payment.model";
+import { LeagueDuesPaymentInfo, LeagueDuesPaypalTransaction, LeagueDuesPaypalTransactionItem } from "../../shared/payment.model";
+import { GolfersService } from "../../golfers/golfers.service";
+import { Golfer } from "../../shared/golfer.model";
 
 declare var paypal: any;
 
@@ -19,13 +21,16 @@ declare var paypal: any;
 export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
-  year = 0;
-  leagueDuesFlight = 0;
-  leagueDuesTournamentOnly = 0;
+  year: number = 0;
+  leagueDuesFlight: number = 0;
+  leagueDuesTournamentOnly: number = 0;
 
   private leagueDuesListSub: Subscription;
   private leagueDuesPaymentInfoListSub: Subscription;
   private leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = [];
+
+  private golfersSub: Subscription;
+  golferOptions: Golfer[] = [];
 
   golferPaymentsForm: FormGroup;
   golferNameOptions: string[] = [];
@@ -36,10 +41,16 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   isLoadingLeagueDuesList: boolean = true;
   isLoadingLeagueDuesPaymentInfoList: boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService) {}
+  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private golfersService: GolfersService) {}
 
   ngOnInit(): void {
     this.year = this.appConfigService.currentYear;
+
+    // Initialize golfer info subscriptions
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe(golfers => {
+      this.golferOptions = golfers;
+    });
+    this.golfersService.getAllGolfers();
 
     // Initialize payments info subscriptions
     this.leagueDuesListSub = this.paymentsService.getLeagueDuesListUpdateListener().subscribe(leagueDues => {
@@ -101,19 +112,82 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
         },
         onApprove: async (data: any, actions: any) => {
           const order = await actions.order.capture();
+
+          // Check for completed status
           if (order.status !== "COMPLETED") {
             this.snackBar.open("ERROR: Payment was not 'COMPLETED' - please contact treasurer or webmaster!", undefined, {
-              duration: 5000,
+              duration: 10000,
               panelClass: ['error-snackbar']
             });
             return; // leave dialog box open
           }
+
           this.snackBar.open("Payment successful!", undefined, {
             duration: 5000,
             panelClass: ['success-snackbar']
           });
-          // TODO: Capture payment details in backend
+
+          // Capture payment details in backend
           console.log(order);
+
+          try {
+            let transactionItems: LeagueDuesPaypalTransactionItem[] = [];
+            for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
+              const golferControl = golferPaymentForm.get("golfer");
+              const golferName = golferControl ? golferControl.value.toLowerCase() : "unknown";
+
+              const typeControl = golferPaymentForm.get("type");
+              const typeName = typeControl ? typeControl.value.toLowerCase() : "unknown";
+
+              let golferPaymentInfoMatched = false;
+              for (const paymentInfo of this.leagueDuesPaymentInfoList) {
+                if ((paymentInfo.golfer_name.toLowerCase() === golferName) && (paymentInfo.type.toLowerCase() === typeName)) {
+                  golferPaymentInfoMatched = true;
+
+                  transactionItems.push({
+                    id: paymentInfo.id,
+                    golfer_id: paymentInfo.golfer_id,
+                    type: paymentInfo.type
+                  });
+
+                  break;
+                }
+              }
+
+              if (!golferPaymentInfoMatched) {
+                console.error(`Unable to match payment info for golfer '${golferName}', type '${typeName}'`)
+                // transactionItems.push({
+                //   id: -1,
+                //   golfer_id: paymentGolferId,
+                //   type: typeName
+                // });
+              }
+            }
+
+            const payerGivenName = order.payer?.name?.given_name ? order.payer.name.given_name : "";
+            const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : "";
+            const payerEmail = order.payer?.email_address ? order.payer.email_address : "";
+
+            let transaction: LeagueDuesPaypalTransaction = {
+              year: this.year,
+              amount: order.purchase_units[0].amount.value,
+              description: order.purchase_units[0].description,
+              items: transactionItems,
+              resource_id: order.id,
+              update_time: order.update_time,
+              payer_name: `${payerGivenName} ${payerSurname}`,
+              payer_email: payerEmail
+            }
+            this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe();
+          } catch(err) {
+            this.snackBar.open("ERROR: Payment was successful, but not recorded in our database - please contact treasurer or webmaster!", undefined, {
+              duration: 10000,
+              panelClass: ['error-snackbar']
+            });
+            console.log(err);
+          }
+
+          // Close dialog box
           this.dialogRef.close(true); // true to indicate payment was successful
         },
         onCancel: (data: any) => {
@@ -123,8 +197,8 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
           });
         },
         onError: (err: any) => {
-          this.snackBar.open("Error processing PayPal payment!", undefined, {
-            duration: 5000,
+          this.snackBar.open("Error processing PayPal payment - please contact treasurer or webmaster!", undefined, {
+            duration: 10000,
             panelClass: ['error-snackbar']
           });
           console.error(err);
@@ -134,6 +208,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.golfersSub.unsubscribe();
     this.leagueDuesListSub.unsubscribe();
     this.leagueDuesPaymentInfoListSub.unsubscribe();
   }
@@ -211,11 +286,9 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
     let golferPaymentTypeInvalid = true;
     for (const paymentInfo of this.leagueDuesPaymentInfoList) {
-      if (paymentInfo.golfer_name.toLowerCase() === golferName) {
-        if (paymentInfo.type.toLowerCase() === typeName) {
-          golferPaymentTypeInvalid = false;
-          break;
-        }
+      if ((paymentInfo.golfer_name.toLowerCase() === golferName) && (paymentInfo.type.toLowerCase() === typeName)) {
+        golferPaymentTypeInvalid = false;
+        break;
       }
     }
     if (golferPaymentTypeInvalid) {

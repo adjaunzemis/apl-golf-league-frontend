@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { environment } from "../../environments/environment";
-import { LeagueDues, LeagueDuesPaymentData, LeagueDuesPaymentInfo } from "../shared/payment.model";
+import { LeagueDues, LeagueDuesPaymentData, LeagueDuesPaymentInfo, LeagueDuesPaypalTransaction } from "../shared/payment.model";
 
 @Injectable({
   providedIn: "root"
@@ -71,6 +71,10 @@ export class PaymentsService {
 
   updateLeagueDuesPayment(payment: LeagueDuesPaymentData): Observable<LeagueDuesPaymentData> {
     return this.http.patch<LeagueDuesPaymentData>(environment.apiUrl + `payments/${payment.id}`, payment);
+  }
+
+  postLeagueDuesPaypalTransaction(transaction: LeagueDuesPaypalTransaction): Observable<any> {
+    return this.http.post(environment.apiUrl + `payments/dues/`, transaction);
   }
 
 }
