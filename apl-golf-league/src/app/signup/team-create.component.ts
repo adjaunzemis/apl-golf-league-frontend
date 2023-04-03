@@ -52,6 +52,11 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
           return 0;
         });
         this.golferNameOptions = result.map(golfer => golfer.name);
+        for (const newTeamGolferForm of this.getTeamGolfersArray().controls) {
+          newTeamGolferForm.get("golfer")?.updateValueAndValidity();
+          newTeamGolferForm.get("division")?.updateValueAndValidity();
+          newTeamGolferForm.get("role")?.updateValueAndValidity();
+        }
       });
 
     this.golfersService.getAllGolfers();
