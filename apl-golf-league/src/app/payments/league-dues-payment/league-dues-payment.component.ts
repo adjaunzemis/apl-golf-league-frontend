@@ -101,6 +101,13 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
         },
         onApprove: async (data: any, actions: any) => {
           const order = await actions.order.capture();
+          if (order.status !== "COMPLETED") {
+            this.snackBar.open("ERROR: Payment was not 'COMPLETED' - please contact treasurer or webmaster!", undefined, {
+              duration: 5000,
+              panelClass: ['error-snackbar']
+            });
+            return; // leave dialog box open
+          }
           this.snackBar.open("Payment successful!", undefined, {
             duration: 5000,
             panelClass: ['success-snackbar']
