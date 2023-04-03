@@ -31,10 +31,10 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
-
-  golferPaymentsForm: FormGroup;
   golferNameOptions: string[] = [];
   filteredGolferNameOptionsArray: Observable<string[]>[] = [];
+
+  golferPaymentsForm: FormGroup;
 
   typeOptions = ['Flight Dues', 'Tournament-Only Dues'];
 
@@ -49,6 +49,10 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     // Initialize golfer info subscriptions
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe(golfers => {
       this.golferOptions = golfers;
+      this.golferNameOptions = [];
+      for (const golfer of golfers) {
+        this.golferNameOptions.push(golfer.name);
+      }
     });
     this.golfersService.getAllGolfers();
 
@@ -68,13 +72,6 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
     this.leagueDuesPaymentInfoListSub = this.paymentsService.getLeagueDuesPaymentInfoListUpdateListener().subscribe(paymentInfoList => {
       this.leagueDuesPaymentInfoList = paymentInfoList;
-
-      this.golferNameOptions = [];
-      for (const paymentInfo of paymentInfoList) {
-        if (paymentInfo.amount_due > paymentInfo.amount_paid) {
-          this.golferNameOptions.push(paymentInfo.golfer_name);
-        }
-      }
 
       this.isLoadingLeagueDuesPaymentInfoList = false;
     });
@@ -127,14 +124,14 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
             let transactionItems: LeagueDuesPaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
               const golferControl = golferPaymentForm.get("golfer");
-              const golferName = golferControl ? golferControl.value.toLowerCase() : "unknown";
+              const golferName = golferControl ? golferControl.value : "unknown";
 
               const typeControl = golferPaymentForm.get("type");
-              const typeName = typeControl ? typeControl.value.toLowerCase() : "unknown";
+              const typeName = typeControl ? typeControl.value : "unknown";
 
               let golferPaymentInfoMatched = false;
               for (const paymentInfo of this.leagueDuesPaymentInfoList) {
-                if ((paymentInfo.golfer_name.toLowerCase() === golferName) && (paymentInfo.type.toLowerCase() === typeName)) {
+                if ((paymentInfo.golfer_name.toLowerCase() === golferName.toLowerCase()) && (paymentInfo.type.toLowerCase() === typeName.toLowerCase())) {
                   golferPaymentInfoMatched = true;
 
                   transactionItems.push({
@@ -148,12 +145,21 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
               }
 
               if (!golferPaymentInfoMatched) {
-                console.error(`Unable to match payment info for golfer '${golferName}', type '${typeName}'`)
-                // transactionItems.push({
-                //   id: -1,
-                //   golfer_id: paymentGolferId,
-                //   type: typeName
-                // });
+                // Create new payment item (omit payment id)
+                let paymentGolferId = -1;
+                for (const golfer of this.golferOptions) {
+                  if (golfer.name.toLowerCase() === golferName.toLowerCase()) {
+                    paymentGolferId = golfer.id;
+                  }
+                }
+                if (paymentGolferId === -1) {
+                  console.error(`Unable to match golfer option for '${golferName}' - omitting from transaction!`);
+                } else {
+                  transactionItems.push({
+                    golfer_id: paymentGolferId,
+                    type: typeName
+                  });
+                }
               }
             }
 
@@ -171,6 +177,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
               payer_name: `${payerGivenName} ${payerSurname}`,
               payer_email: payerEmail
             }
+
             this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe(() => {
               this.snackBar.open("Payment successful!", undefined, {
                 duration: 5000,
@@ -250,7 +257,8 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     const newGolferPaymentForm = this.formBuilder.group({
       golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
       type: new FormControl("", [Validators.required])
-    }, { validators: this.golferPaymentTypeValidator.bind(this) });
+    });
+    // }, { validators: this.golferPaymentTypeValidator.bind(this) }); // TODO: re-enable or remove this validation
 
     this.filteredGolferNameOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
       startWith(''),
