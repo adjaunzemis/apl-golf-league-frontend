@@ -5,7 +5,7 @@ import { Observable, Subject } from "rxjs";
 import { TournamentInput } from "../shared/match.model";
 import { RoundSummary } from "../shared/round.model";
 
-import { TournamentData, TournamentInfo } from "../shared/tournament.model";
+import { TournamentCreate, TournamentData, TournamentInfo } from "../shared/tournament.model";
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -69,6 +69,10 @@ export class TournamentsService {
 
   getTournamentUpdateListener(): Observable<TournamentData> {
     return this.tournamentDataUpdated.asObservable();
+  }
+
+  createTournament(tournament: TournamentCreate): Observable<TournamentInfo> {
+    return this.http.post<TournamentInfo>(environment.apiUrl + `tournaments`, tournament);
   }
 
   postRounds(tournamentInput: TournamentInput): Observable<RoundSummary[]> {

@@ -234,16 +234,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
 
         console.log(tournamentData);
-        // // TODO: Implement tournament creation in service
-        // this.tournamentsService.createTournament(tournamentData).subscribe(result => {
-        //   console.log(`[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`);
-        //   this.snackBar.open(`Successfully created tournament: ${result.name} (${result.year})`, undefined, {
-        //     duration: 5000,
-        //     panelClass: ['success-snackbar']
-        //   });
+        // TODO: Implement tournament creation in service
+        this.tournamentsService.createTournament(tournamentData).subscribe(result => {
+          console.log(`[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully created tournament: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
 
-        //   this.tournamentsService.getTournamentsList(this.appConfigService.currentYear); // refresh flights list
-        // });
+          this.tournamentsService.getTournamentsList(this.appConfigService.currentYear); // refresh tournaments list
+        });
       }
     });
   }
