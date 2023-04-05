@@ -13,6 +13,9 @@ import { FlightInfo } from '../shared/flight.model';
 import { Golfer, GolferAffiliation } from '../shared/golfer.model';
 import { User } from '../shared/user.model';
 import { SignupComponent } from '../signup/signup.component';
+import { TournamentCreateComponent } from '../tournaments/tournament-create/tournament-create.component';
+import { TournamentsService } from '../tournaments/tournaments.service';
+import { TournamentInfo } from '../shared/tournament.model';
 
 @Component({
   selector: "app-header",
@@ -31,7 +34,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   flights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
-  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private signupComponent: SignupComponent, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  tournaments: TournamentInfo[] = [];
+  private tournamentsSub: Subscription;
+
+  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private signupComponent: SignupComponent, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe(user => {
@@ -62,13 +68,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.flights = result.flights;
       });
 
-    this.flightsService.getFlightsList();
+    this.flightsService.getFlightsList(this.appConfigService.currentYear);
+
+    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
+      .subscribe(result => {
+        this.tournaments = result.tournaments;
+      });
+
+    this.tournamentsService.getTournamentsList(this.appConfigService.currentYear);
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.golfersSub.unsubscribe();
     this.flightsSub.unsubscribe();
+    this.tournamentsSub.unsubscribe();
   }
 
   onLogout(): void {
@@ -154,6 +168,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
+          // TODO: re-open dialog window to edit selections
           return;
         }
 
@@ -165,8 +180,70 @@ export class HeaderComponent implements OnInit, OnDestroy {
             panelClass: ['success-snackbar']
           });
 
-          this.flightsService.getFlightsList(); // refresh flights list
+          this.flightsService.getFlightsList(this.appConfigService.currentYear); // refresh flights list
         });
+      }
+    });
+  }
+
+  // TODO: Move to admin view?
+  onAddNewTournament(): void {
+    const dialogRef = this.dialog.open(TournamentCreateComponent, {
+      width: '900px',
+      data: {
+        year: this.appConfigService.currentYear,
+        bestball: 0,
+        shotgun: 0,
+        strokeplay: 0,
+        scramble: 0,
+        individual: 0,
+        ryder_cup: 0,
+        chachacha: 0,
+        divisions: [
+          {
+            name: "Middle",
+            gender: "Men's"
+          },
+          {
+            name: "Senior",
+            gender: "Men's"
+          },
+          {
+            name: "Super-Senior",
+            gender: "Men's"
+          },
+          {
+            name: "Forward",
+            gender: "Ladies'"
+          }
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(tournamentData => {
+      if (tournamentData !== null && tournamentData !== undefined) {
+        const existingTournaments = this.tournaments.filter((t) => t.year == tournamentData.year);
+        const existingTournamentNames = existingTournaments.map((t) => t.name.toLowerCase());
+        if (existingTournamentNames.includes(tournamentData.name.toLowerCase())) {
+          this.snackBar.open(`Tournament with name '${tournamentData.name}' and year '${tournamentData.year}' already exists!`, undefined, {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+          // TODO: re-open dialog window to edit selections
+          return;
+        }
+
+        console.log(tournamentData);
+        // // TODO: Implement tournament creation in service
+        // this.tournamentsService.createTournament(tournamentData).subscribe(result => {
+        //   console.log(`[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`);
+        //   this.snackBar.open(`Successfully created tournament: ${result.name} (${result.year})`, undefined, {
+        //     duration: 5000,
+        //     panelClass: ['success-snackbar']
+        //   });
+
+        //   this.tournamentsService.getTournamentsList(this.appConfigService.currentYear); // refresh flights list
+        // });
       }
     });
   }

@@ -48,6 +48,10 @@
       <mat-icon>golf_course</mat-icon>
       <span>Add Flight</span>
     </button>
+    <button mat-menu-item (click)="onAddNewTournament()" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>golf_course</mat-icon>
+      <span>Add Tournament</span>
+    </button>
     <button mat-menu-item routerLink="/payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
       <mat-icon>attach_money</mat-icon>
       <span>Payments</span>

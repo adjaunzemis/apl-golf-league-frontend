@@ -4,16 +4,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSelectChange } from '@angular/material/select';
 import { Subscription } from 'rxjs';
 
-import { FlightCreate } from "../../shared/flight.model";
+import { TournamentCreate } from "../../shared/tournament.model";
 import { DivisionCreate } from "../../shared/division.model";
 import { Course } from "../../shared/course.model";
 import { CoursesService } from "../../courses/courses.service";
 
 @Component({
-  templateUrl: './flight-create.component.html',
-  styleUrls: ['./flight-create.component.css']
+  templateUrl: './tournament-create.component.html',
+  styleUrls: ['./tournament-create.component.css']
 })
-export class FlightCreateComponent implements OnInit {
+export class TournamentCreateComponent implements OnInit {
 
   nameControl: FormControl = new FormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
   yearControl: FormControl = new FormControl(this.data.year, [Validators.required])
@@ -24,8 +24,17 @@ export class FlightCreateComponent implements OnInit {
   secretaryPhoneControl: FormControl = new FormControl(this.data.secretary_phone, []);
   signupStartDateControl: FormControl = new FormControl(this.data.signup_start_date, [Validators.required]);
   signupStopDateControl: FormControl = new FormControl(this.data.signup_stop_date, [Validators.required]);
-  startDateControl: FormControl = new FormControl(this.data.start_date, [Validators.required]);
-  weeksControl: FormControl = new FormControl(this.data.weeks, [Validators.required]);
+  dateControl: FormControl = new FormControl(this.data.date, [Validators.required]);
+  membersEntryFeeControl: FormControl = new FormControl(this.data.members_entry_fee, [Validators.required]);
+  nonMembersEntryFeeControl: FormControl = new FormControl(this.data.non_members_entry_fee, [Validators.required]);
+  bestballControl: FormControl = new FormControl(this.data.bestball, [Validators.required]);
+  // TODO: Change mode selections to multi-select combobox
+  shotgunControl: FormControl = new FormControl(this.data.shotgun, [Validators.required]);
+  strokeplayControl: FormControl = new FormControl(this.data.strokeplay, [Validators.required]);
+  scrambleControl: FormControl = new FormControl(this.data.scramble, [Validators.required]);
+  individualControl: FormControl = new FormControl(this.data.individual, [Validators.required]);
+  ryderCupControl: FormControl = new FormControl(this.data.ryder_cup, [Validators.required]);
+  chachachaControl: FormControl = new FormControl(this.data.chachacha, [Validators.required]);
   // lockedControl: FormControl = new FormControl(this.data.locked, [Validators.required]);
 
   // TODO: Make this more robust to varying numbers/types of divisions
@@ -60,7 +69,7 @@ export class FlightCreateComponent implements OnInit {
 
   divisionGenderOptions: string[] = ["Men's", "Ladies'"]
 
-  constructor(public dialogRef: MatDialogRef<FlightCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: FlightCreate, private coursesService: CoursesService) { }
+  constructor(public dialogRef: MatDialogRef<TournamentCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: TournamentCreate, private coursesService: CoursesService) { }
 
   ngOnInit(): void {
     this.courseListSub = this.coursesService.getCoursesUpdateListener().subscribe(result => {
@@ -98,38 +107,38 @@ export class FlightCreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    let flightName: string = this.nameControl.value;
-    flightName = flightName.split(' ').map(namePart => (namePart.charAt(0).toUpperCase() + namePart.slice(1))).join(' ').trim();
+    let tournamentName: string = this.nameControl.value;
+    tournamentName = tournamentName.split(' ').map(namePart => (namePart.charAt(0).toUpperCase() + namePart.slice(1))).join(' ').trim();
 
     // TODO: Fix hard-coding of 4 divisions
-    let flightDivisions: DivisionCreate[] = [];
-    flightDivisions.push({
+    let tournamentDivisions: DivisionCreate[] = [];
+    tournamentDivisions.push({
       name: this.division1NameControl.value.trim(),
       gender: this.division1GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeMap[this.division1PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeMap[this.division1SecondaryTeeControl.value],
     });
-    flightDivisions.push({
+    tournamentDivisions.push({
       name: this.division2NameControl.value.trim(),
       gender: this.division2GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeMap[this.division2PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeMap[this.division2SecondaryTeeControl.value],
     });
-    flightDivisions.push({
+    tournamentDivisions.push({
       name: this.division3NameControl.value.trim(),
       gender: this.division3GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeMap[this.division3PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeMap[this.division3SecondaryTeeControl.value],
     });
-    flightDivisions.push({
+    tournamentDivisions.push({
       name: this.division4NameControl.value.trim(),
       gender: this.division4GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeMap[this.division4PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeMap[this.division4SecondaryTeeControl.value],
     });
 
-    const flightData: FlightCreate = {
-      name: flightName,
+    const tournamentData: TournamentCreate = {
+      name: tournamentName,
       year: this.yearControl.value,
       course_id: this.courseControl.value.id,
       logo_url: this.logoUrlControl.value.trim(),
@@ -138,13 +147,21 @@ export class FlightCreateComponent implements OnInit {
       secretary_phone: this.secretaryPhoneControl.value,
       signup_start_date: this.signupStartDateControl.value,
       signup_stop_date: this.signupStopDateControl.value,
-      start_date: this.startDateControl.value,
-      weeks: this.weeksControl.value,
+      date: this.dateControl.value,
+      members_entry_fee: this.membersEntryFeeControl.value,
+      non_members_entry_fee: this.nonMembersEntryFeeControl.value,
+      bestball: this.bestballControl.value,
+      shotgun: this.shotgunControl.value,
+      strokeplay: this.strokeplayControl.value,
+      scramble: this.scrambleControl.value,
+      ryder_cup: this.ryderCupControl.value,
+      individual: this.individualControl.value,
+      chachacha: this.chachachaControl.value,
       // locked: this.lockedControl.value
-      divisions: flightDivisions
+      divisions: tournamentDivisions
     };
 
-    this.dialogRef.close(flightData);
+    this.dialogRef.close(tournamentData);
   }
 
   onCancel(): void {

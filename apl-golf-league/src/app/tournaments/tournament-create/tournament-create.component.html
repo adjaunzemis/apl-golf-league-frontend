@@ -1,0 +1,262 @@
+<div class="content">
+
+  <h1 mat-dialog-title>Add Tournament</h1>
+
+  <div mat-dialog-content>
+
+    <!-- General tournament info -->
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="nameControl">
+        <mat-error *ngIf="nameControl.hasError('required') || nameControl.hasError('pattern')">Enter a valid tournament name</mat-error>
+        <mat-error *ngIf="nameControl.hasError('minlength')">Name is too short</mat-error>
+        <mat-error *ngIf="nameControl.hasError('maxlength')">Name is too long</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="short-field" appearance="fill">
+        <mat-label>Year</mat-label>
+        <input type="number" matInput [formControl]="yearControl">
+        <mat-error *ngIf="yearControl.hasError('required')">Enter a valid year</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Tournament course info -->
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Course</mat-label>
+        <mat-select [formControl]="courseControl" (selectionChange)="onCourseSelected($event)">
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let option of courseOptions" [value]="option">{{ option.name }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="courseControl.hasError('required')">Select a course</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Logo URL</mat-label>
+        <input matInput [formControl]="logoUrlControl">
+        <mat-error *ngIf="logoUrlControl.hasError('required')">Enter a valid logo URL</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Tournament secretary info -->
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Secretary</mat-label>
+        <input matInput [formControl]="secretaryControl">
+        <mat-error *ngIf="secretaryControl.hasError('required') || secretaryControl.hasError('pattern')">Enter a valid secreatry name</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Secretary Email</mat-label>
+        <input matInput [formControl]="secretaryEmailControl">
+        <mat-error *ngIf="secretaryEmailControl.hasError('required') || secretaryEmailControl.hasError('email')">Enter a valid email</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Secretary Phone (optional)</mat-label>
+        <input matInput [formControl]="secretaryPhoneControl">
+      </mat-form-field>
+    </div>
+
+    <!-- Tournament sign-up window, start, and date -->
+    <div>
+      <mat-form-field class="date-selection-field" appearance="fill">
+        <mat-label>Sign-up Start</mat-label>
+        <input matInput [matDatepicker]="signupStartDatePicker" [formControl]="signupStartDateControl">
+        <mat-datepicker-toggle matSuffix [for]="signupStartDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #signupStartDatePicker></mat-datepicker>
+        <mat-error *ngIf="signupStopDateControl.hasError('required')">Enter a valid sign-up start date</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="date-selection-field" appearance="fill">
+        <mat-label>Sign-up Stop</mat-label>
+        <input matInput [matDatepicker]="signupStopDatePicker" [formControl]="signupStopDateControl">
+        <mat-datepicker-toggle matSuffix [for]="signupStopDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #signupStopDatePicker></mat-datepicker>
+        <mat-error *ngIf="signupStopDateControl.hasError('required')">Enter a valid sign-up stop date</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="date-selection-field" appearance="fill">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="datePicker" [formControl]="dateControl">
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+        <mat-error *ngIf="dateControl.hasError('required')">Enter a valid tournament date</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="short-field" appearance="fill">
+        <mat-label>Best Ball</mat-label>
+        <input type="number" matInput [formControl]="bestballControl">
+        <mat-error *ngIf="bestballControl.hasError('required')">Enter a valid best-ball count</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Tournament options -->
+    <div>
+      <mat-checkbox class="checkbox-field" [formControl]="shotgunControl">Shotgun</mat-checkbox>
+
+      <mat-checkbox class="checkbox-field" [formControl]="strokeplayControl">Strokeplay</mat-checkbox>
+
+      <mat-checkbox class="checkbox-field" [formControl]="scrambleControl">Scramble</mat-checkbox>
+
+      <mat-checkbox class="checkbox-field" [formControl]="individualControl">Individual</mat-checkbox>
+
+      <mat-checkbox class="checkbox-field" [formControl]="ryderCupControl">Ryder Cup</mat-checkbox>
+
+      <mat-checkbox class="checkbox-field" [formControl]="chachachaControl">Cha-Cha-Cha</mat-checkbox>
+    </div>
+
+    <!-- Divisions -->
+    <!-- TODO: Make number/type of divisions more dynamic -->
+    <div>
+      <!-- Division 1 -->
+      <div>
+        <mat-form-field class="medium-field" appearance="fill">
+          <mat-label>Division Name</mat-label>
+          <input matInput [formControl]="division1NameControl">
+          <mat-error *ngIf="division1NameControl.hasError('required') || division1NameControl.hasError('pattern')">Enter a valid division name</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="short-field" appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select [formControl]="division1GenderControl">
+            <mat-option *ngFor="let option of divisionGenderOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division1GenderControl.hasError('required')">Select a division gender</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Primary Tee</mat-label>
+          <mat-select [formControl]="division1PrimaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division1PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Secondary Tee</mat-label>
+          <mat-select [formControl]="division1SecondaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division1SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Division 2 -->
+      <div>
+        <mat-form-field class="medium-field" appearance="fill">
+          <mat-label>Division Name</mat-label>
+          <input matInput [formControl]="division2NameControl">
+          <mat-error *ngIf="division2NameControl.hasError('required') || division2NameControl.hasError('pattern')">Enter a valid division name</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="short-field" appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select [formControl]="division2GenderControl">
+            <mat-option *ngFor="let option of divisionGenderOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division2GenderControl.hasError('required')">Select a division gender</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Primary Tee</mat-label>
+          <mat-select [formControl]="division2PrimaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division2PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Secondary Tee</mat-label>
+          <mat-select [formControl]="division2SecondaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division2SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Division 3 -->
+      <div>
+        <mat-form-field class="medium-field" appearance="fill">
+          <mat-label>Division Name</mat-label>
+          <input matInput [formControl]="division3NameControl">
+          <mat-error *ngIf="division3NameControl.hasError('required') || division3NameControl.hasError('pattern')">Enter a valid division name</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="short-field" appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select [formControl]="division3GenderControl">
+            <mat-option *ngFor="let option of divisionGenderOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division3GenderControl.hasError('required')">Select a division gender</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Primary Tee</mat-label>
+          <mat-select [formControl]="division3PrimaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division3PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Secondary Tee</mat-label>
+          <mat-select [formControl]="division3SecondaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division3SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Division 4 -->
+      <div>
+        <mat-form-field class="medium-field" appearance="fill">
+          <mat-label>Division Name</mat-label>
+          <input matInput [formControl]="division4NameControl">
+          <mat-error *ngIf="division4NameControl.hasError('required') || division4NameControl.hasError('pattern')">Enter a valid division name</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="short-field" appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select [formControl]="division4GenderControl">
+            <mat-option *ngFor="let option of divisionGenderOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division4GenderControl.hasError('required')">Select a division gender</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Primary Tee</mat-label>
+          <mat-select [formControl]="division4PrimaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division4PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Secondary Tee</mat-label>
+          <mat-select [formControl]="division4SecondaryTeeControl">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="division4SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button color="primary" (click)="onSubmit()">Submit</button>
+
+  </div>
+
+</div>

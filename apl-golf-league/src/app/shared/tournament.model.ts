@@ -1,4 +1,4 @@
-import { DivisionData } from "./division.model";
+import { DivisionCreate, DivisionData } from "./division.model";
 import { TournamentTeamData } from "./team.model";
 
 export interface TournamentData {
@@ -46,4 +46,28 @@ export interface TournamentInfo {
   ryder_cup: boolean
   individual: boolean
   chachacha: boolean
+}
+
+export interface TournamentCreate {
+  name: string
+  year: number
+  course_id: number
+  logo_url: string
+  secretary: string
+  secretary_email: string
+  secretary_phone: string
+  signup_start_date: Date
+  signup_stop_date: Date
+  date: Date
+  members_entry_fee: number
+  non_members_entry_fee: number
+  bestball: number
+  shotgun: boolean
+  strokeplay: boolean
+  scramble: boolean
+  individual: boolean
+  ryder_cup: boolean
+  chachacha: boolean
+  locked?: boolean
+  divisions: DivisionCreate[]
 }
