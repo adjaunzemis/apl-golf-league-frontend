@@ -85,15 +85,27 @@
         <mat-error *ngIf="dateControl.hasError('required')">Enter a valid tournament date</mat-error>
       </mat-form-field>
 
-      <mat-form-field class="short-field" appearance="fill">
-        <mat-label>Best Ball</mat-label>
-        <input type="number" matInput [formControl]="bestballControl">
-        <mat-error *ngIf="bestballControl.hasError('required')">Enter a valid best-ball count</mat-error>
+      <mat-form-field class="medium-field" appearance="fill">
+        <mat-label>Entry Fee (Member)</mat-label>
+        <input type="number" matInput [formControl]="membersEntryFeeControl">
+        <mat-error *ngIf="membersEntryFeeControl.hasError('required')">Enter a valid member's entry fee</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="medium-field" appearance="fill">
+        <mat-label>Entry Fee (Non-Member)</mat-label>
+        <input type="number" matInput [formControl]="nonMembersEntryFeeControl">
+        <mat-error *ngIf="nonMembersEntryFeeControl.hasError('required')">Enter a valid non-member's entry fee</mat-error>
       </mat-form-field>
     </div>
 
     <!-- Tournament options -->
     <div>
+      <mat-form-field class="short-field" appearance="fill">
+        <mat-label>Best Ball</mat-label>
+        <input type="number" matInput [formControl]="bestballControl">
+        <mat-error *ngIf="bestballControl.hasError('required')">Enter a valid best-ball count</mat-error>
+      </mat-form-field>
+
       <mat-checkbox class="checkbox-field" [formControl]="shotgunControl">Shotgun</mat-checkbox>
 
       <mat-checkbox class="checkbox-field" [formControl]="strokeplayControl">Strokeplay</mat-checkbox>
