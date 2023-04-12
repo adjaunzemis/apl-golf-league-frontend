@@ -77,9 +77,10 @@
     <h3 class="italic" *ngIf="this.selectedFlightOrTournament.signup_stop_date < this.currentDate">Sign-up window is closed</h3>
   </div>
 
-  <div>
-    <button mat-raised-button color="primary" (click)="onCreateTeam()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Create Team</button>
-    <button mat-raised-button color="primary" (click)="onPayDues()" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Pay Dues</button>
+  <div style="margin-bottom: 8px;" >
+    <button mat-raised-button color="primary" (click)="onCreateTeam()" [disabled]="!isSelectedSignupWindowOpen && !(isAuthenticated && currentUser?.is_admin)">Create Team</button>
+    <button mat-raised-button color="primary" (click)="onPayDues()">Pay Dues</button>
+    <button mat-raised-button color="primary" (click)="onPayEntryFees()" *ngIf="selectedTabIdx === 1">Pay Entry Fees</button>
   </div>
 
   <p class="italic" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Click on a team card to update sign-ups</p>

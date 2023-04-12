@@ -20,6 +20,7 @@ import { AppConfigService } from '../app-config.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../shared/user.model';
 import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
+import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entry-fees-payment/tournament-entry-fees-payment.component';
 
 @Component({
   selector: 'app-signup',
@@ -399,6 +400,27 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  onPayEntryFees(): void {
+    if (this.selectedTabIdx === 1) {
+      const selectedTournament = (this.selectedFlightOrTournament as TournamentData);
+      const dialogRef = this.dialog.open(TournamentEntryFeesPaymentComponent, {
+        width: '600px',
+        data: {
+          tournamentId: selectedTournament.id
+        }
+      });
+
+      dialogRef.afterClosed().subscribe((paymentSuccessful) => {
+        if (paymentSuccessful) {
+          // Reload selected tournament to capture updated fees statuses
+          if (this.selectedFlightOrTournament) {
+            this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
+          }
+        }
+      });
+    }
   }
 
 }

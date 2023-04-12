@@ -1,13 +1,14 @@
 <div class="content">
 
-  <h1 mat-dialog-title>Pay League Dues</h1>
+  <h1 mat-dialog-title>Pay Tournament Entry Fees</h1>
 
-  <p class="bold">Flight Dues: ${{ leagueDuesFlight }} USD | Tournament-Only Dues: ${{ leagueDuesTournamentOnly }} USD</p>
-  <p class="italic" style="margin-bottom: 16px;">Note: "Flight Dues" grant eligibility for both flight and tournament play</p>
+  <mat-spinner *ngIf="isLoadingTournament || isLoadingLeagueDuesPaymentInfoList"></mat-spinner>
 
-  <mat-spinner *ngIf="isLoadingLeagueDuesList || isLoadingLeagueDuesPaymentInfoList"></mat-spinner>
+  <p class="bold" *ngIf="!isLoadingTournament">Tournament: {{ tournament.name }}</p>
+  <p class="bold" *ngIf="!isLoadingTournament">Members: ${{ tournament.members_entry_fee }} USD | Non-Members: ${{ tournament.non_members_entry_fee }} USD</p>
 
-  <form style="margin-top: 8px;" [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()" *ngIf="!isLoadingLeagueDuesList && !isLoadingLeagueDuesPaymentInfoList">
+  <form style="margin-top: 8px;" [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()" *ngIf="!isLoadingTournament && !isLoadingLeagueDuesPaymentInfoList">
+
     <div formArrayName="golferPayments" *ngFor="let golferPayment of getGolferPaymentsArray().controls; let idx = index">
       <div formGroupName="{{ idx }}">
 
@@ -26,8 +27,8 @@
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select a dues type</mat-error>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')">Dues type does not match golfer sign-up</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select an entry fee type</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')">Entry fee type does not match golfer sign-up</mat-error>
         </mat-form-field>
 
         <button mat-raised-button color="warn" (click)="removeNewGolferPaymentForm(idx)" [disabled]="getGolferPaymentsArray().length < 2">-</button>
