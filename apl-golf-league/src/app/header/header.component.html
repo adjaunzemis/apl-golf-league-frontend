@@ -28,10 +28,10 @@
       <mat-icon>attach_money</mat-icon>
       <span>Pay Dues</span>
     </button>
-    <button mat-menu-item (click)="onPayEntryFees()">
+    <!-- <button mat-menu-item (click)="onPayEntryFees()">
       <mat-icon>attach_money</mat-icon>
       <span>Pay Entry Fees</span>
-    </button>
+    </button> -->
     <button mat-menu-item routerLink="/flight/match/edit" *ngIf="isAuthenticated && currentUser?.edit_flights">
       <mat-icon>sports_golf</mat-icon>
       <span>Post Flight Scores</span>
