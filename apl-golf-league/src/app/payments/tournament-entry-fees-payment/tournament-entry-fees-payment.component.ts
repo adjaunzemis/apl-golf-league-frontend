@@ -7,7 +7,7 @@ import { map, startWith } from "rxjs/operators";
 
 import { PaymentsService } from "../payments.service";
 import { AppConfigService } from "../../app-config.service";
-import { LeagueDuesPaymentInfo, LeagueDuesPaypalTransaction, LeagueDuesPaypalTransactionItem } from "../../shared/payment.model";
+import { TournamentEntryFeePaymentInfo, TournamentEntryFeePaypalTransaction, TournamentEntryFeePaypalTransactionItem } from "../../shared/payment.model";
 import { GolfersService } from "../../golfers/golfers.service";
 import { Golfer } from "../../shared/golfer.model";
 import { TournamentsService } from "../../tournaments/tournaments.service";
@@ -24,9 +24,10 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
   year: number = 0;
+  tournamentId: number = -1;
 
-  private leagueDuesPaymentInfoListSub: Subscription;
-  private leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = [];
+  private tournamentEntryFeePaymentInfoListSub: Subscription;
+  private tournamentEntryFeePaymentInfoList: TournamentEntryFeePaymentInfo[] = [];
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
@@ -41,12 +42,13 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   typeOptions = ['Member Fee', 'Non-Member Fee'];
 
   isLoadingTournament: boolean = true;
-  isLoadingLeagueDuesPaymentInfoList: boolean = true;
+  isLoadingTournamentEntryFeePaymentInfoList: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<TournamentEntryFeesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: { tournamentId: number }, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private tournamentsService: TournamentsService, private golfersService: GolfersService) {}
 
   ngOnInit(): void {
     this.year = this.appConfigService.currentYear;
+    this.tournamentId = this.data.tournamentId;
 
     // Initialize golfer info subscriptions
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe(golfers => {
@@ -63,14 +65,14 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
       this.tournament = result;
       this.isLoadingTournament = false;
     });
-    this.tournamentsService.getTournament(this.data.tournamentId);
+    this.tournamentsService.getTournament(this.tournamentId);
 
-    this.leagueDuesPaymentInfoListSub = this.paymentsService.getLeagueDuesPaymentInfoListUpdateListener().subscribe(paymentInfoList => {
-      this.leagueDuesPaymentInfoList = paymentInfoList;
+    this.tournamentEntryFeePaymentInfoListSub = this.paymentsService.getTournamentEntryFeePaymentInfoListUpdateListener().subscribe(paymentInfoList => {
+      this.tournamentEntryFeePaymentInfoList = paymentInfoList;
 
-      this.isLoadingLeagueDuesPaymentInfoList = false;
+      this.isLoadingTournamentEntryFeePaymentInfoList = false;
     });
-    this.paymentsService.getLeagueDuesPaymentInfoList(this.year);
+    this.paymentsService.getTournamentEntryFeePaymentInfoList(this.tournamentId);
 
     // Initialize golfer payments form
     this.golferPaymentsForm = this.formBuilder.group({
@@ -116,7 +118,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
           // Capture payment details in backend
           try {
-            let transactionItems: LeagueDuesPaypalTransactionItem[] = [];
+            let transactionItems: TournamentEntryFeePaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
               const golferControl = golferPaymentForm.get("golfer");
               const golferName = golferControl ? golferControl.value : "unknown";
@@ -125,7 +127,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
               const typeName = typeControl ? typeControl.value : "unknown";
 
               let golferPaymentInfoMatched = false;
-              for (const paymentInfo of this.leagueDuesPaymentInfoList) {
+              for (const paymentInfo of this.tournamentEntryFeePaymentInfoList) {
                 if ((paymentInfo.golfer_name.toLowerCase() === golferName.toLowerCase()) && (paymentInfo.type.toLowerCase() === typeName.toLowerCase())) {
                   golferPaymentInfoMatched = true;
 
@@ -162,8 +164,9 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
             const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : "";
             const payerEmail = order.payer?.email_address ? order.payer.email_address : "";
 
-            let transaction: LeagueDuesPaypalTransaction = {
+            let transaction: TournamentEntryFeePaypalTransaction = {
               year: this.year,
+              tournament_id: this.tournamentId,
               amount: order.purchase_units[0].amount.value,
               description: order.purchase_units[0].description,
               items: transactionItems,
@@ -173,7 +176,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
               payer_email: payerEmail
             }
 
-            this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe(() => {
+            this.paymentsService.postTournamentEntryFeePaypalTransaction(transaction).subscribe(() => {
               this.snackBar.open("Payment successful!", undefined, {
                 duration: 5000,
                 panelClass: ['success-snackbar']
@@ -210,14 +213,14 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.golfersSub.unsubscribe();
     this.tournamentSub.unsubscribe();
-    this.leagueDuesPaymentInfoListSub.unsubscribe();
+    this.tournamentEntryFeePaymentInfoListSub.unsubscribe();
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Tournament Entry Fees (${this.year}), ${this.tournament.name}, ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? "golfers" : "golfer"}`
+    let description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? "golfers" : "golfer"}`
 
     // TODO: Re-enable more verbose description with character limit?
-    // let description = `APL Golf League Dues (${this.year}) for `
+    // let description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}) for `
     // for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
     //   const golferControl = golferPaymentForm.get("golfer");
     //   const golferName = golferControl ? golferControl.value : "unknown";
@@ -235,9 +238,9 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   getPaymentTotalAmount(): number {
     let total = 0;
     for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
-      if (golferPaymentForm.get("type")?.value === "Member") {
+      if (golferPaymentForm.get("type")?.value === "Member Fee") {
         total += this.tournament.members_entry_fee;
-      } else if (golferPaymentForm.get("type")?.value === "Non-Member") {
+      } else if (golferPaymentForm.get("type")?.value === "Non-Member Fee") {
         total += this.tournament.non_members_entry_fee;
       }
     }
@@ -290,7 +293,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     const typeName = typeControl.value.toLowerCase();
 
     let golferPaymentTypeInvalid = true;
-    for (const paymentInfo of this.leagueDuesPaymentInfoList) {
+    for (const paymentInfo of this.tournamentEntryFeePaymentInfoList) {
       if ((paymentInfo.golfer_name.toLowerCase() === golferName) && (paymentInfo.type.toLowerCase() === typeName)) {
         golferPaymentTypeInvalid = false;
         break;

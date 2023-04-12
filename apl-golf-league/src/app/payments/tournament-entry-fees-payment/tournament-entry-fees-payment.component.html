@@ -2,12 +2,12 @@
 
   <h1 mat-dialog-title>Pay Tournament Entry Fees</h1>
 
-  <mat-spinner *ngIf="isLoadingTournament || isLoadingLeagueDuesPaymentInfoList"></mat-spinner>
+  <mat-spinner *ngIf="isLoadingTournament || isLoadingTournamentEntryFeePaymentInfoList"></mat-spinner>
 
   <p class="bold" *ngIf="!isLoadingTournament">Tournament: {{ tournament.name }}</p>
   <p class="bold" *ngIf="!isLoadingTournament">Members: ${{ tournament.members_entry_fee }} USD | Non-Members: ${{ tournament.non_members_entry_fee }} USD</p>
 
-  <form style="margin-top: 8px;" [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()" *ngIf="!isLoadingTournament && !isLoadingLeagueDuesPaymentInfoList">
+  <form style="margin-top: 8px;" [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()" *ngIf="!isLoadingTournament && !isLoadingTournamentEntryFeePaymentInfoList">
 
     <div formArrayName="golferPayments" *ngFor="let golferPayment of getGolferPaymentsArray().controls; let idx = index">
       <div formGroupName="{{ idx }}">

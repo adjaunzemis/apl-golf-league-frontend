@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 
 import { environment } from "../../environments/environment";
-import { LeagueDues, LeagueDuesPaymentData, LeagueDuesPaymentInfo, LeagueDuesPaypalTransaction } from "../shared/payment.model";
+import { LeagueDues, LeagueDuesPaymentData, LeagueDuesPaymentInfo, LeagueDuesPaypalTransaction, TournamentEntryFeePaymentData, TournamentEntryFeePaymentInfo, TournamentEntryFeePaypalTransaction } from "../shared/payment.model";
 
 @Injectable({
   providedIn: "root"
@@ -19,8 +19,15 @@ export class PaymentsService {
   private leagueDuesPaymentInfoList: LeagueDuesPaymentInfo[] = []
   private leagueDuesPaymentInfoListUpdated = new Subject<LeagueDuesPaymentInfo[]>();
 
+  private tournamentEntryFeePaymentDataList: TournamentEntryFeePaymentData[] = []
+  private tournamentEntryFeePaymentDataListUpdated = new Subject<TournamentEntryFeePaymentData[]>();
+
+  private tournamentEntryFeePaymentInfoList: TournamentEntryFeePaymentInfo[] = []
+  private tournamentEntryFeePaymentInfoListUpdated = new Subject<TournamentEntryFeePaymentInfo[]>();
+
   constructor(private http: HttpClient, private router: Router) {}
 
+  /** LEAGUE DUES */
   getLeagueDuesList(year?: number): void {
     let queryParams: string = ``;
     if (year) {
@@ -77,4 +84,36 @@ export class PaymentsService {
     return this.http.post(environment.apiUrl + `payments/dues/`, transaction);
   }
 
+  /** TOURNAMENT ENTRY FEES */
+  getTournamentEntryFeePaymentInfoList(tournament_id: number): void {
+    this.http.get<TournamentEntryFeePaymentInfo[]>(environment.apiUrl + `payments/fees/info/${tournament_id}`)
+      .subscribe(result => {
+        this.tournamentEntryFeePaymentInfoList = result;
+        this.tournamentEntryFeePaymentInfoListUpdated.next(result);
+      });
+  }
+
+  getTournamentEntryFeePaymentInfoListUpdateListener(): Observable<TournamentEntryFeePaymentInfo[]> {
+    return this.tournamentEntryFeePaymentInfoListUpdated.asObservable();
+  }
+
+  getTournamentEntryFeePaymentDataList(tournament_id: number): void {
+    this.http.get<TournamentEntryFeePaymentData[]>(environment.apiUrl + `payments/fees/data/${tournament_id}`)
+      .subscribe(result => {
+        this.tournamentEntryFeePaymentDataList = result;
+        this.tournamentEntryFeePaymentDataListUpdated.next(result);
+      });
+  }
+
+  getTournamentEntryFeePaymentDataListUpdateListener(): Observable<TournamentEntryFeePaymentData[]> {
+    return this.tournamentEntryFeePaymentDataListUpdated.asObservable();
+  }
+
+  updateTournamentEntryFeePayment(payment: TournamentEntryFeePaymentData): Observable<TournamentEntryFeePaymentData> {
+    return this.http.patch<TournamentEntryFeePaymentData>(environment.apiUrl + `payments/fees/${payment.id}`, payment);
+  }
+
+  postTournamentEntryFeePaypalTransaction(transaction: TournamentEntryFeePaypalTransaction): Observable<any> {
+    return this.http.post(environment.apiUrl + `payments/fees/`, transaction);
+  }
 }
