@@ -38,7 +38,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
   golferPaymentsForm: FormGroup;
 
-  typeOptions = ['Member', 'Non-Member'];
+  typeOptions = ['Member Fee', 'Non-Member Fee'];
 
   isLoadingTournament: boolean = true;
   isLoadingLeagueDuesPaymentInfoList: boolean = true;
