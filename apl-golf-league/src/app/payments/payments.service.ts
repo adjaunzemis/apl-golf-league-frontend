@@ -70,7 +70,7 @@ export class PaymentsService {
   }
 
   updateLeagueDuesPayment(payment: LeagueDuesPaymentData): Observable<LeagueDuesPaymentData> {
-    return this.http.patch<LeagueDuesPaymentData>(environment.apiUrl + `payments/${payment.id}`, payment);
+    return this.http.patch<LeagueDuesPaymentData>(environment.apiUrl + `payments/dues/${payment.id}`, payment);
   }
 
   postLeagueDuesPaypalTransaction(transaction: LeagueDuesPaypalTransaction): Observable<any> {
