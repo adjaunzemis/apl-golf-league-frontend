@@ -1,56 +1,66 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { Sort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 
 import { PaymentsService } from "../payments.service";
-import { LeagueDuesPaymentData } from './../../shared/payment.model';
+import { TournamentEntryFeePaymentData } from '../../shared/payment.model';
 import { AppConfigService } from "../../app-config.service";
 
 @Component({
-  selector: 'app-payments-list',
-  templateUrl: './payments-list.component.html',
-  styleUrls: ['./payments-list.component.css']
+  selector: 'app-tournament-entry-fee-payments-list',
+  templateUrl: './tournament-entry-fee-payments-list.component.html',
+  styleUrls: ['./tournament-entry-fee-payments-list.component.css']
 })
-export class PaymentsListComponent implements OnInit, OnDestroy {
+export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   selectedYear = 0;
+  tournamentId = -1;
 
-  leagueDuesSub: Subscription;
+  paymentsSub: Subscription;
 
-  leagueDuesPayments: LeagueDuesPaymentData[];
-  sortedData: LeagueDuesPaymentData[];
+  tournamentEntryFeePayments: TournamentEntryFeePaymentData[];
+  sortedData: TournamentEntryFeePaymentData[];
   private currentSort: Sort | null = null;
 
-  updatedPayment: LeagueDuesPaymentData | null = null;
+  updatedPayment: TournamentEntryFeePaymentData | null = null;
 
-  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
+  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'tournament_id', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
-  constructor(private paymentsService: PaymentsService, private appConfigService: AppConfigService) { }
+  constructor(private paymentsService: PaymentsService, private appConfigService: AppConfigService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.selectedYear = this.appConfigService.currentYear;
 
-    this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentDataListUpdateListener().subscribe(result => {
-      this.leagueDuesPayments = result;
-      this.sortedData = this.leagueDuesPayments;
+    this.paymentsSub = this.paymentsService.getTournamentEntryFeePaymentDataListUpdateListener().subscribe(result => {
+      this.tournamentEntryFeePayments = result;
+      this.sortedData = this.tournamentEntryFeePayments;
       this.isLoading = false;
     });
 
-    this.paymentsService.getLeagueDuesPaymentDataList(this.selectedYear);
+    this.route.queryParams.subscribe(params => {
+      if (params) {
+        if (params.tournament_id) {
+          this.tournamentId = params.tournament_id;
+          this.paymentsService.getTournamentEntryFeePaymentDataList(this.tournamentId);
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    this.leagueDuesSub.unsubscribe();
+    this.paymentsSub.unsubscribe();
   }
 
-  editPaymentInfo(payment: LeagueDuesPaymentData): void {
+  editPaymentInfo(payment: TournamentEntryFeePaymentData): void {
     this.updatedPayment = {
       id: payment.id,
       golfer_id: payment.golfer_id,
       golfer_name: payment.golfer_name,
       golfer_email: payment.golfer_email,
       year: payment.year,
+      tournament_id: payment.tournament_id,
       type: payment.type,
       amount_due: payment.amount_due,
       amount_paid: payment.amount_paid,
@@ -63,11 +73,11 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   updatePaymentInfo(): void {
     if (this.updatedPayment) {
-      this.paymentsService.updateLeagueDuesPayment(this.updatedPayment).subscribe(result => {
-        console.log(`[PaymentsListComponent] Updated payment id=${result.id}`);
+      this.paymentsService.updateTournamentEntryFeePayment(this.updatedPayment).subscribe(result => {
+        console.log(`[TournamentEntryFeePaymentsListComponent] Updated payment id=${result.id}`);
 
         // Update item in list
-        let payment = this.leagueDuesPayments.find(entry => entry.id === result.id);
+        let payment = this.tournamentEntryFeePayments.find(entry => entry.id === result.id);
         if (payment) {
           const newPayment = {
             id: payment.id,
@@ -75,6 +85,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
             golfer_name: payment.golfer_name,
             golfer_email: payment.golfer_email,
             year: payment.year,
+            tournament_id: payment.tournament_id,
             type: payment.type,
             amount_due: result.amount_due,
             amount_paid: result.amount_paid,
@@ -84,8 +95,8 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
             comment: result.comment
           };
 
-          const paymentIdx = this.leagueDuesPayments.findIndex(entry => entry.id === result.id);
-          this.leagueDuesPayments[paymentIdx] = newPayment;
+          const paymentIdx = this.tournamentEntryFeePayments.findIndex(entry => entry.id === result.id);
+          this.tournamentEntryFeePayments[paymentIdx] = newPayment;
         }
 
         // Clear updated payment object
@@ -104,7 +115,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
   sortData(sort: Sort | null) {
     this.currentSort = sort;
 
-    const data = this.leagueDuesPayments.slice();
+    const data = this.tournamentEntryFeePayments.slice();
     if (!sort || !sort.active || sort.direction === '') {
       this.sortedData = data;
       return;
@@ -117,6 +128,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
           return compareLastNames(a.golfer_name, b.golfer_name, isAsc);
         case 'id':
         case 'year':
+        case 'tournament_id':
         case 'type':
         case 'amount_due':
         case 'amount_paid':
@@ -132,7 +144,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
 
   getUnpaidEmailAddresses(): string {
     let mailToList = "mailto:";
-    for (const payment of this.leagueDuesPayments) {
+    for (const payment of this.tournamentEntryFeePayments) {
       if (payment.amount_due > payment.amount_paid && !(payment.method === "Exempt" || payment.method === "Linked")) {
         if (payment.golfer_email !== undefined) {
           mailToList += payment.golfer_email + ";"

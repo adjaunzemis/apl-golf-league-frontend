@@ -94,6 +94,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.signupComponent.onPayDues();
   }
 
+  onPayEntryFees(): void {
+    this.signupComponent.onPayEntryFees();
+  }
+
   // TODO: Consolidate `onAddNewGolfer()` usage from header, signups
   // TODO: Move to admin view?
   onAddNewGolfer(): void {

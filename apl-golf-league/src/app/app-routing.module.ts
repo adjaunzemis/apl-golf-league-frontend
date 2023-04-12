@@ -20,7 +20,8 @@ import { UserHomeComponent } from "./auth/user-home/user-home.component";
 import { RulesComponent } from "./rules/rules.component";
 import { HandicapsComponent } from "./handicaps/handicaps.component";
 import { GolferSearchComponent } from "./golfers/golfer-search/golfer-search.component";
-import { PaymentsListComponent } from "./payments/payments-list/payments-list.component";
+import { LeagueDuesPaymentsListComponent } from "./payments/league-dues-payments-list/league-dues-payments-list.component";
+import { TournamentEntryFeePaymentsListComponent } from "./payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component";
 import { BylawsComponent } from "./bylaws/bylaws.component";
 import { AddQualifyingScoreComponent } from "./golfers/add-qualifying-score/add-qualifying-score.component";
 
@@ -37,8 +38,13 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "payments",
-    component: PaymentsListComponent,
+    path: "payments/dues",
+    component: LeagueDuesPaymentsListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "payments/fees",
+    component: TournamentEntryFeePaymentsListComponent,
     canActivate: [AuthGuard]
   },
   { path: "tournament", component: TournamentHomeComponent },

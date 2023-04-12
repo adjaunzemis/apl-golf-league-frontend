@@ -28,6 +28,10 @@
       <mat-icon>attach_money</mat-icon>
       <span>Pay Dues</span>
     </button>
+    <button mat-menu-item (click)="onPayEntryFees()">
+      <mat-icon>attach_money</mat-icon>
+      <span>Pay Entry Fees</span>
+    </button>
     <button mat-menu-item routerLink="/flight/match/edit" *ngIf="isAuthenticated && currentUser?.edit_flights">
       <mat-icon>sports_golf</mat-icon>
       <span>Post Flight Scores</span>
@@ -52,10 +56,14 @@
       <mat-icon>golf_course</mat-icon>
       <span>Add Tournament</span>
     </button>
-    <button mat-menu-item routerLink="/payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
+    <button mat-menu-item routerLink="/payments/dues" *ngIf="isAuthenticated && currentUser?.edit_payments">
       <mat-icon>attach_money</mat-icon>
-      <span>Payments</span>
+      <span>League Dues Payments</span>
     </button>
+    <!-- <button mat-menu-item routerLink="/payments/fees" *ngIf="isAuthenticated && currentUser?.edit_payments">
+      <mat-icon>attach_money</mat-icon>
+      <span>Entry Fee Payments</span>
+    </button> -->
     <button mat-menu-item (click)="onLogout()" *ngIf="isAuthenticated">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>

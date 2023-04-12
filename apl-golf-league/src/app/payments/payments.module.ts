@@ -4,14 +4,16 @@ import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 
 import { AngularMaterialModule } from "src/app/angular-material.module";
-import { PaymentsListComponent } from "./payments-list/payments-list.component";
+import { LeagueDuesPaymentsListComponent } from "./league-dues-payments-list/league-dues-payments-list.component";
 import { LeagueDuesPaymentComponent } from "./league-dues-payment/league-dues-payment.component";
+import { TournamentEntryFeePaymentsListComponent } from "./tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component";
 import { TournamentEntryFeesPaymentComponent } from "./tournament-entry-fees-payment/tournament-entry-fees-payment.component";
 
 @NgModule({
   declarations: [
-    PaymentsListComponent,
+    LeagueDuesPaymentsListComponent,
     LeagueDuesPaymentComponent,
+    TournamentEntryFeePaymentsListComponent,
     TournamentEntryFeesPaymentComponent
   ],
   imports: [

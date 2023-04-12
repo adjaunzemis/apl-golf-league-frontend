@@ -1,0 +1,48 @@
+table {
+  width: 100%;
+}
+
+tr,
+tr.mat-row {
+  height: 60px;
+}
+
+.mat-column-golfer_name {
+  width: 200px;
+}
+
+.mat-column-type {
+  width: 120px;
+}
+
+.mat-column-id,
+.mat-column-year,
+.mat-column-status,
+mat-form-field.mat-column-amount_due,
+mat-form-field.mat-column-amount_paid,
+mat-form-field.mat-column-linked_payment_id {
+  width: 65px;
+}
+
+mat-form-field.mat-column-method {
+  width: 110px;
+}
+
+.mat-column-comment,
+mat-form-field.mat-column-comment {
+  width: 250px;
+}
+
+.mat-column-edit,
+.mat-column-cancel {
+  width: 75px;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+}
+
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type {
+  padding-right: 0px;
+}
