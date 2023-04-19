@@ -56,11 +56,11 @@
       <mat-icon>golf_course</mat-icon>
       <span>Add Tournament</span>
     </button>
-    <button mat-menu-item routerLink="/payments/dues" *ngIf="isAuthenticated && currentUser?.edit_payments">
+    <button mat-menu-item routerLink="/dues-payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
       <mat-icon>attach_money</mat-icon>
       <span>League Dues Payments</span>
     </button>
-    <!-- <button mat-menu-item routerLink="/payments/fees" *ngIf="isAuthenticated && currentUser?.edit_payments">
+    <!-- <button mat-menu-item routerLink="/fee-payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
       <mat-icon>attach_money</mat-icon>
       <span>Entry Fee Payments</span>
     </button> -->

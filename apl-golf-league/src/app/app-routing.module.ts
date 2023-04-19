@@ -38,12 +38,12 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "payments/dues",
+    path: "dues-payments",
     component: LeagueDuesPaymentsListComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: "payments/fees",
+    path: "fee-payments",
     component: TournamentEntryFeePaymentsListComponent,
     canActivate: [AuthGuard]
   },
