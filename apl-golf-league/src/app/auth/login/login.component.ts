@@ -1,10 +1,9 @@
+import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from '../auth.service';
-import { UserInfo } from '../../shared/user.model';
-import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +11,10 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginAttempted = false;
-  loginSuccessful = false;
-
   usernameControl = new FormControl("", Validators.required);
-  passwordControl = new FormControl("", [Validators.required, Validators.minLength(6)]);
+  passwordControl = new FormControl("", [Validators.required]);
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
 
   isLoggedIn(): boolean {
     return !!this.authService.user.value;
@@ -31,22 +27,26 @@ export class LoginComponent {
     return "n/a"
   }
 
+  getLoggedInName(): string {
+    if (this.authService.user.value && this.authService.user.value.name) {
+      return this.authService.user.value.name;
+    }
+    return "n/a"
+  }
+
   onLogin(): void {
     if (this.usernameControl.valid && this.passwordControl.valid) {
-      this.loginAttempted = false;
-      this.loginSuccessful = false;
       this.authService.login(this.usernameControl.value, this.passwordControl.value).subscribe(
         result => {
-          this.loginAttempted = true;
-          this.loginSuccessful = true;
+          this.snackBar.open(`Successfully logged in as user '${this.getLoggedInUsername()}'!`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
 
           this.usernameControl.reset();
           this.passwordControl.reset();
-        },
-        errorMessage => {
-          this.loginAttempted = true;
-          this.loginSuccessful = false;
-        });
+        }
+      );
     }
   }
 

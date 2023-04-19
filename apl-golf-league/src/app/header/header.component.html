@@ -64,6 +64,10 @@
       <mat-icon>attach_money</mat-icon>
       <span>Entry Fee Payments</span>
     </button> -->
+    <button mat-menu-item routerLink="/auth/manage" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>settings</mat-icon>
+      <span>Manage Users</span>
+    </button>
     <button mat-menu-item (click)="onLogout()" *ngIf="isAuthenticated">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>

@@ -4,14 +4,6 @@
 
   <p class="italic">Note: Currently only enabled for flight and tournament secretaries for entering scores</p>
 
-  <div class="card announcements-card fail-card" *ngIf="loginAttempted && !loginSuccessful">
-    <span>Login unsuccessful, try again...</span>
-  </div>
-
-  <div class="card announcements-card success-card" *ngIf="loginAttempted && loginSuccessful">
-    <span>Login successful!</span>
-  </div>
-
   <div class="content" *ngIf="!isLoggedIn(); else loggedIn">
 
     <mat-form-field appearance="fill">
@@ -22,7 +14,6 @@
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
       <input type="password" matInput required [formControl]="passwordControl" (keydown.enter)="onLogin()">
-      <mat-error *ngIf="passwordControl.hasError('minlength')">Password is too short</mat-error>
     </mat-form-field>
 
     <button mat-raised-button color="accent" [disabled]="!usernameControl.valid || !passwordControl.valid" (click)="onLogin()">Login</button>
@@ -30,7 +21,7 @@
 
   <ng-template #loggedIn>
     <div class="content">
-      <p>Currently logged in as '{{ getLoggedInUsername() }}'</p>
+      <p>Currently logged in as '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</p>
     </div>
 
     <button mat-raised-button color="accent" [disabled]="!isLoggedIn()" (click)="onLogout()">Logout</button>

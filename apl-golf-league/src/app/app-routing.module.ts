@@ -16,6 +16,7 @@ import { GolferHomeComponent } from "./golfers/golfer-home/golfer-home.component
 import { FlightHistoryComponent } from "./flights/flight-history/flight-history.component";
 import { TournamentHistoryComponent } from "./tournaments/tournament-history/tournament-history.component";
 import { LoginComponent } from "./auth/login/login.component";
+import { UserManageComponent } from "./auth/user-manage/user-manage.component";
 import { UserHomeComponent } from "./auth/user-home/user-home.component";
 import { RulesComponent } from "./rules/rules.component";
 import { HandicapsComponent } from "./handicaps/handicaps.component";
@@ -64,6 +65,11 @@ const routes: Routes = [
   { path: "courses", component: CourseListComponent },
   { path: "courses/edit", component: CourseCreateComponent },
   { path: "auth/login", component: LoginComponent },
+  {
+    path: "auth/manage",
+    component: UserManageComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: "auth/user",
     component: UserHomeComponent,
