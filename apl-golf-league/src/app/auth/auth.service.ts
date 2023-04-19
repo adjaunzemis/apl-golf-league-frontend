@@ -86,8 +86,8 @@ export class AuthService {
   changePassword(username: string, oldPassword: string, newPassword: string) {
     const body = new HttpParams()
       .set('username', username)
-      .set('oldPassword', oldPassword)
-      .set('newPassword', newPassword)
+      .set('password', oldPassword)
+      .set('client_secret', newPassword)
       .set('grant_type', 'password');
     return this.http.post<UserInfo>(environment.apiUrl + `users/change-password`, body);
   }
