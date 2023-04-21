@@ -13,6 +13,7 @@ mat-form-field {
 }
 
 .database-identifiers {
+    display: flex;
     color: gray;
     font-size: x-small;
     margin-bottom: 1rem;
@@ -20,6 +21,14 @@ mat-form-field {
 
 .database-identifiers span {
     margin-right: 1rem;
+}
+
+.database-identifiers button {
+    height: 15px;
+}
+
+.database-identifiers button:first-of-type {
+    margin-left: auto;
 }
 
 .course-name-field {
