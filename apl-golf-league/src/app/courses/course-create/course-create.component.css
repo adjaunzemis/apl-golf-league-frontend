@@ -26,35 +26,35 @@ mat-form-field {
     width: 45%;
 }
 
+.course-year-field {
+    width: 10%;
+}
+
 .course-address-field {
     width: 45%;
 }
 
-.course-city-field {
-    width: 20%;
-}
-
-.course-state-field {
+.course-phone-field {
     width: 10%;
 }
 
-.course-zip-code-field {
-    width: 10%;
+.course-website-field {
+    width: 30%;
 }
 
-.course-phone {
-    width: 20%;
+.tee-rating-field {
+    width: 30%;
 }
 
-.course-website {
-    width: 40%;
+.tee-slope-field {
+    width: 30%;
 }
 
 .tee-holes-table {
     border-collapse: collapse;
     margin: auto;
     font-size: 0.9em;
-    min-width: 400px;
+    min-width: 500px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 

@@ -15,12 +15,17 @@ import { Hole } from "src/app/shared/hole.model";
     styleUrls: ["./course-create.component.css"]
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
+    editMode = false;
+    isLoadingCourse = false;
+
     courseForm: FormGroup;
 
     course: Course;
     private coursesSub: Subscription;
 
     private readonly NUM_HOLES_PER_TEE_SET = 9;
+
+    readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
 
     constructor(private coursesService: CoursesService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
 
@@ -30,12 +35,15 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 console.log("[CourseCreateComponent] Initializing forms for course '" + courseData.name + "' (id=" + courseData.id + ")");
                 this.course = courseData;
                 this.initFormsFromCourse(this.course);
+                this.isLoadingCourse = false;
             });
 
         this.route.queryParams.subscribe(params => {
             if (params) {
                 if (params.id) {
                     console.log("[CourseCreateComponent] Processing route with query parameter: id=" + params.id);
+                    this.editMode = true;
+                    this.isLoadingCourse = true;
                     this.coursesService.getCourse(params.id);
                 }
             }
