@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { CoursesService } from "../courses.service";
@@ -15,7 +15,6 @@ import { Hole } from "src/app/shared/hole.model";
     styleUrls: ["./course-create.component.css"]
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
-    editMode = false;
     isLoadingCourse = false;
 
     courseForm: FormGroup;
@@ -27,7 +26,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
 
-    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
+    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
@@ -42,7 +41,6 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             if (params) {
                 if (params.id) {
                     console.log("[CourseCreateComponent] Processing route with query parameter: id=" + params.id);
-                    this.editMode = true;
                     this.isLoadingCourse = true;
                     this.coursesService.getCourse(params.id);
                 }
@@ -180,7 +178,10 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             // TODO: Validate course entries here? Or in service?
 
             // Add to database
-            this.coursesService.addCourse(course);
+            this.coursesService.createCourse(course).subscribe(response => {
+              console.log("[CourseCreateComponent] Added course: " + response.course.name + " (" + response.course.year + ")");
+              this.router.navigate(["courses/"]);
+            });
         }
     }
 
@@ -205,6 +206,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     onRemoveTrack(trIdx: number): void {
         this.getTracksArray().removeAt(trIdx);
+        this.course?.tracks.splice(trIdx, 1)
     }
 
     getTeesArray(trIdx: number): FormArray {
@@ -235,6 +237,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     onRemoveTee(trIdx: number, tsIdx: number): void {
         this.getTeesArray(trIdx).removeAt(tsIdx);
+        this.course?.tracks[trIdx].tees.splice(tsIdx, 1)
     }
 
     getHolesArray(trIdx: number, tsIdx: number): FormArray {

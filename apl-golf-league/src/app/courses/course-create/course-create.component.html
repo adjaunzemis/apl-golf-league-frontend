@@ -1,13 +1,13 @@
 <div class="content">
-    <h2>Course {{ editMode ? 'Edit' : 'Create' }}</h2>
+    <h2>Course Details</h2>
 
     <mat-spinner *ngIf="isLoadingCourse"></mat-spinner>
 
     <mat-card class="course-card" *ngIf="!isLoadingCourse">
-        <form [formGroup]="courseForm" (ngSubmit)="onSubmitCourse()">
-            <div class="database-identifiers" *ngIf="editMode && course">
-                <span>Course ID: {{ course.id }}</span>
-                <!-- <span>Date Updated: {{ course.date_updated }}</span> -->
+        <form [formGroup]="courseForm">
+            <div class="database-identifiers">
+                <span>Course ID: {{ course ? course.id : "--" }}</span>
+                <!-- <span>Date Updated: {{ course ? course.date_updated : "--" }}</span> -->
                 <button mat-icon-button color="accent" type="button" (click)="onAddTrack()"><mat-icon>add</mat-icon></button>
             </div>
             <div>
@@ -36,9 +36,9 @@
             </div>
             <mat-card class="track-card" formArrayName="tracks" *ngFor="let track of getTracksArray().controls; let trIdx = index">
                 <div class="track-info" formGroupName="{{ trIdx }}">
-                    <div class="database-identifiers" *ngIf="editMode && course && course.tracks && course.tracks[trIdx]">
-                        <span>Track ID: {{ course.tracks[trIdx].id }}</span>
-                        <span>Course ID: {{ course.tracks[trIdx].course_id }}</span>
+                    <div class="database-identifiers">
+                        <span>Track ID: {{ (course && course.tracks[trIdx]) ? course.tracks[trIdx].id : "--" }}</span>
+                        <span>Course ID: {{ (course && course.tracks[trIdx]) ? course.tracks[trIdx].course_id : "--" }}</span>
                         <button mat-icon-button color="accent" type="button" (click)="onAddTee(trIdx, true)"><mat-icon>add</mat-icon></button>
                         <button mat-icon-button color="accent" type="button" (click)="onRemoveTrack(trIdx)"><mat-icon>delete</mat-icon></button>
                     </div>
@@ -48,9 +48,9 @@
                     </mat-form-field>
                     <mat-card class="tee-card" formArrayName="tees" *ngFor="let teeSet of getTeesArray(trIdx).controls; let tsIdx = index">
                         <div class="tee-info" formGroupName="{{ tsIdx }}">
-                            <div class="database-identifiers" *ngIf="editMode && course && course.tracks && course.tracks[trIdx].tees">
-                                <span>Tee ID: {{ course.tracks[trIdx].tees[tsIdx] ? course.tracks[trIdx].tees[tsIdx].id : "--" }}</span>
-                                <span>Track ID: {{ course.tracks[trIdx].tees[tsIdx] ? course.tracks[trIdx].tees[tsIdx].track_id : "--" }}</span>
+                            <div class="database-identifiers">
+                                <span>Tee ID: {{ (course && course.tracks[trIdx] && course.tracks[trIdx].tees[tsIdx]) ? course.tracks[trIdx].tees[tsIdx].id : "--" }}</span>
+                                <span>Track ID: {{ (course && course.tracks[trIdx] && course.tracks[trIdx].tees[tsIdx]) ? course.tracks[trIdx].tees[tsIdx].track_id : "--" }}</span>
                                 <button mat-icon-button color="accent" type="button" (click)="onRemoveTee(trIdx, tsIdx)"><mat-icon>delete</mat-icon></button>
                             </div>
                             <div style="width: 100%; display: flex;">
@@ -128,7 +128,7 @@
     </mat-card>
 
     <div *ngIf="!isLoadingCourse">
-        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-raised-button color="primary" type="button" [disabled]="!courseForm.valid" (click)="onSubmitCourse()">{{ course ? "Update" : "Create" }}</button>
         <button mat-raised-button color="accent" type="button" (click)="onClearCourse()">Clear</button>
     </div>
 

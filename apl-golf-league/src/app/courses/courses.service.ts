@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 
 import { environment } from './../../environments/environment';
@@ -20,7 +19,7 @@ export class CoursesService {
   private selectedTee: Tee
   private selectedTeeUpdated = new Subject<Tee>();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   getCourses(): void {
     this.http.get<Course[]>(environment.apiUrl + "courses/")
@@ -49,12 +48,8 @@ export class CoursesService {
     return this.selectedCourseUpdated.asObservable();
   }
 
-  addCourse(courseData: Course): void {
-    this.http.post<{ message: string, course: Course }>(environment.apiUrl + "courses/", courseData)
-      .subscribe(responseData => {
-        console.log("[CoursesService] Added course: " + courseData.name + " (" + courseData.year + ")");
-        this.router.navigate(["courses/"]);
-      });
+  createCourse(courseData: Course): Observable<{message: string, course: Course }> {
+    return this.http.post<{ message: string, course: Course }>(environment.apiUrl + "courses/", courseData);
   }
 
   getTee(id: number): void {
