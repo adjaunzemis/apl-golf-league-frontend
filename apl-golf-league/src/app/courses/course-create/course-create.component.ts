@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from "rxjs";
 
 import { CoursesService } from "../courses.service";
@@ -26,7 +27,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
 
-    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {}
+    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
@@ -177,11 +178,28 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
             // TODO: Validate course entries here? Or in service?
 
-            // Add to database
-            this.coursesService.createCourse(course).subscribe(response => {
-              console.log("[CourseCreateComponent] Added course: " + response.course.name + " (" + response.course.year + ")");
-              this.router.navigate(["courses/"]);
-            });
+            // Push course to database
+            if (this.course === undefined) {
+              // Create new course
+              this.coursesService.createCourse(course).subscribe(courseResponse => {
+                this.snackBar.open(`Successfully created course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
+                  duration: 5000,
+                  panelClass: ['success-snackbar']
+                });
+                this.router.navigate(["courses/"]);
+              });
+            } else {
+              // TODO: add ids to local course data model
+
+              // Update existing course
+              this.coursesService.updateCourse(course).subscribe(courseResponse => {
+                this.snackBar.open(`Successfully updated course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
+                  duration: 5000,
+                  panelClass: ['success-snackbar']
+                });
+                this.router.navigate(["courses/"]);
+              });
+            }
         }
     }
 
