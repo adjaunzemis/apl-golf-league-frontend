@@ -124,7 +124,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     onSubmitCourse(): void {
         if (this.courseForm.valid) {
-            const course: Course = {
+            const courseData: Course = {
                 id: -1,
                 name: this.courseForm.value.name,
                 year: this.courseForm.value.year,
@@ -173,15 +173,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                     track.tees?.push(tee);
                 }
 
-                course.tracks?.push(track);
+                courseData.tracks?.push(track);
             }
-
-            // TODO: Validate course entries here? Or in service?
 
             // Push course to database
             if (this.course === undefined) {
               // Create new course
-              this.coursesService.createCourse(course).subscribe(courseResponse => {
+              this.coursesService.createCourse(courseData).subscribe(courseResponse => {
                 this.snackBar.open(`Successfully created course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
                   duration: 5000,
                   panelClass: ['success-snackbar']
@@ -189,10 +187,34 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
                 this.router.navigate(["courses/"]);
               });
             } else {
-              // TODO: add ids to local course data model
+              // Add ids to course data
+              courseData.id = this.course.id;
+              for (let trackData of courseData.tracks) {
+                trackData.course_id = courseData.id
+                const trackMatches = this.course.tracks.filter((track) => track.name === trackData.name);
+                for (const trackMatch of trackMatches) {
+                  trackData.id = trackMatch.id;
+
+                  for (let teeData of trackData.tees) {
+                    teeData.track_id = trackData.id;
+                    const teeMatches = trackMatch.tees.filter((tee) => tee.name === teeData.name && tee.gender === teeData.gender);
+                    for (const teeMatch of teeMatches) {
+                      teeData.id = teeMatch.id;
+
+                      for (let holeData of teeData.holes) {
+                        holeData.tee_id = teeData.id;
+                        const holeMatches = teeMatch.holes.filter((hole) => hole.number === holeData.number);
+                        for (const holeMatch of holeMatches) {
+                          holeData.id = holeMatch.id;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
 
               // Update existing course
-              this.coursesService.updateCourse(course).subscribe(courseResponse => {
+              this.coursesService.updateCourse(courseData, this.course.id).subscribe(courseResponse => {
                 this.snackBar.open(`Successfully updated course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
                   duration: 5000,
                   panelClass: ['success-snackbar']
