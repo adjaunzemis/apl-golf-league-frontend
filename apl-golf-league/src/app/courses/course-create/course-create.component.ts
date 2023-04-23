@@ -214,7 +214,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
               }
 
               // Update existing course
-              this.coursesService.updateCourse(courseData, this.course.id).subscribe(courseResponse => {
+              this.coursesService.updateCourse(courseData).subscribe(courseResponse => {
                 this.snackBar.open(`Successfully updated course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
                   duration: 5000,
                   panelClass: ['success-snackbar']

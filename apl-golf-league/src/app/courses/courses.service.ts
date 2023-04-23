@@ -52,8 +52,8 @@ export class CoursesService {
     return this.http.post<Course>(environment.apiUrl + "courses/", courseData);
   }
 
-  updateCourse(courseData: Course, course_id: number): Observable<Course> {
-    return this.http.put<Course>(environment.apiUrl + `courses/${course_id}`, courseData);
+  updateCourse(courseData: Course): Observable<Course> {
+    return this.http.put<Course>(environment.apiUrl + `courses/${courseData.id}`, courseData);
   }
 
   getTee(id: number): void {

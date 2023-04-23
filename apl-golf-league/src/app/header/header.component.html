@@ -12,14 +12,14 @@
       <mat-icon>account_circle</mat-icon>
       <span>Profile</span>
     </button> -->
+    <button mat-menu-item routerLink="/courses" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>golf_course</mat-icon>
+      <span>Courses</span>
+    </button>
     <button mat-menu-item routerLink="/golfer/search">
       <mat-icon>person_search</mat-icon>
-      <span>Golfer Search</span>
+      <span>Golfers</span>
     </button>
-    <!-- <button mat-menu-item>
-      <mat-icon>golf_course</mat-icon>
-      <span>Course Search</span>
-    </button> -->
     <button mat-menu-item routerLink="/signup">
       <mat-icon>group_add</mat-icon>
       <span>Sign-Ups</span>

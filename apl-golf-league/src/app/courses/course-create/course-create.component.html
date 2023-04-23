@@ -13,7 +13,7 @@
             <div>
                 <mat-form-field class="course-name-field">
                     <mat-label>Course Name</mat-label>
-                    <input matInput type="text" formControlName="name">
+                    <input matInput type="text" formControlName="name" [readonly]="course !== undefined">
                 </mat-form-field>
                 <mat-form-field class="course-year-field">
                     <mat-label>Year</mat-label>
@@ -44,7 +44,7 @@
                     </div>
                     <mat-form-field class="track-name">
                         <mat-label>Track Name</mat-label>
-                        <input matInput type="text" formControlName="name">
+                        <input matInput type="text" formControlName="name" [readonly]="course !== undefined && course.tracks[trIdx] !== undefined">
                     </mat-form-field>
                     <mat-card class="tee-card" formArrayName="tees" *ngFor="let teeSet of getTeesArray(trIdx).controls; let tsIdx = index">
                         <div class="tee-info" formGroupName="{{ tsIdx }}">
@@ -57,7 +57,7 @@
                                 <div style="width: 30%">
                                 <mat-form-field class="tee-full-width-field">
                                     <mat-label>Tee Set Name</mat-label>
-                                    <input matInput type="text" formControlName="name">
+                                    <input matInput type="text" formControlName="name" [readonly]="course !== undefined && course.tracks[trIdx] !== undefined && course.tracks[trIdx].tees[tsIdx] !== undefined">
                                 </mat-form-field>
                                 <mat-form-field>
                                     <mat-label>Color</mat-label>
