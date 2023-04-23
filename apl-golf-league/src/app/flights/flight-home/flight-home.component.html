@@ -34,6 +34,11 @@
     <a href="mailto:{{ getFlightEmailList() }}" class="card card-small selectable">
       <span class="bold">Contact Participants</span>
     </a>
+
+    <div class="card card-small selectable" (click)="onManageFlight()">
+      <span class="bold">Manage Flight</span>
+      <mat-icon>settings</mat-icon>
+    </div>
   </div>
 
   <h2 *ngIf="flight.divisions && flight.divisions.length > 0">Divisions</h2>

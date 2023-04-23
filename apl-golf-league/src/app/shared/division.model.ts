@@ -21,6 +21,7 @@ export interface DivisionData {
 }
 
 export interface DivisionCreate {
+  id?: number
   name: string
   gender: string
   primary_tee_id: number

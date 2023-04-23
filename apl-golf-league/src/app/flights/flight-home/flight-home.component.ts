@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
-import { FlightData } from '../../shared/flight.model';
+import { FlightCreate, FlightData } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
+import { FlightCreateComponent } from '../flight-create/flight-create.component';
 
 @Component({
   selector: 'app-flight-home',
@@ -22,7 +25,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
 
   isPlayoffFlight = false;
 
-  constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
+  constructor(private flightsService: FlightsService, private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.flightSub = this.flightsService.getFlightUpdateListener()
@@ -66,6 +69,29 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
       }
     }
     return emailList.substring(0, emailList.length - 1);
+  }
+
+  // TODO: Move to admin view?
+  // TODO: Conslidate with header onAddNewFlight
+  onManageFlight(): void {
+    const dialogRef = this.dialog.open(FlightCreateComponent, {
+      width: '900px',
+      data: this.flight as FlightCreate
+    });
+
+    dialogRef.afterClosed().subscribe(flightData => {
+      if (flightData !== null && flightData !== undefined) {
+        this.flightsService.updateFlight(flightData).subscribe(result => {
+          console.log(`[FlightHomeComponent] Successfully updated flight: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully updated flight: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+
+          this.flightsService.getFlight(this.flight.id); // refresh flight data
+        });
+      }
+    });
   }
 
 }

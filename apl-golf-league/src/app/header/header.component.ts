@@ -136,6 +136,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   // TODO: Move to admin view?
+  // TODO: Conslidate with flight-home onManageFlight
   onAddNewFlight(): void {
     const dialogRef = this.dialog.open(FlightCreateComponent, {
       width: '900px',

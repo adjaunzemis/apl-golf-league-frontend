@@ -115,7 +115,7 @@
           <mat-label>Primary Tee</mat-label>
           <mat-select [formControl]="division1PrimaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division1PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
         </mat-form-field>
@@ -124,7 +124,7 @@
           <mat-label>Secondary Tee</mat-label>
           <mat-select [formControl]="division1SecondaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division1SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
         </mat-form-field>
@@ -150,7 +150,7 @@
           <mat-label>Primary Tee</mat-label>
           <mat-select [formControl]="division2PrimaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division2PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
         </mat-form-field>
@@ -159,7 +159,7 @@
           <mat-label>Secondary Tee</mat-label>
           <mat-select [formControl]="division2SecondaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division2SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
         </mat-form-field>
@@ -185,7 +185,7 @@
           <mat-label>Primary Tee</mat-label>
           <mat-select [formControl]="division3PrimaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division3PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
         </mat-form-field>
@@ -194,7 +194,7 @@
           <mat-label>Secondary Tee</mat-label>
           <mat-select [formControl]="division3SecondaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division3SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
         </mat-form-field>
@@ -220,7 +220,7 @@
           <mat-label>Primary Tee</mat-label>
           <mat-select [formControl]="division4PrimaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division4PrimaryTeeControl.hasError('required')">Select a primary tee</mat-error>
         </mat-form-field>
@@ -229,7 +229,7 @@
           <mat-label>Secondary Tee</mat-label>
           <mat-select [formControl]="division4SecondaryTeeControl">
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let option of divisionTeeOptions" [value]="option">{{ option }}</mat-option>
+            <mat-option *ngFor="let option of teeInfoOptions" [value]="option">{{ option }}</mat-option>
           </mat-select>
           <mat-error *ngIf="division4SecondaryTeeControl.hasError('required')">Select a secondary tee</mat-error>
         </mat-form-field>

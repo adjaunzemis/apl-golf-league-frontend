@@ -77,6 +77,10 @@ export class FlightsService {
     return this.http.post<FlightInfo>(environment.apiUrl + `flights`, flight);
   }
 
+  updateFlight(flight: FlightCreate): Observable<FlightInfo> {
+    return this.http.put<FlightInfo>(environment.apiUrl + `flights/${flight.id}`, flight);
+  }
+
   // TODO: Move team routes to own service
   getTeam(id: number): void {
     this.http.get<TeamDataWithMatches>(environment.apiUrl + `teams/${id}`)

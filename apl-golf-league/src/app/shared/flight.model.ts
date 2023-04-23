@@ -6,6 +6,7 @@ export class FlightData {
     id: number
     year: number
     name: string
+    course_id: number
     course: string
     logo_url?: string
     secretary?: string
@@ -36,6 +37,7 @@ export interface FlightInfo {
 }
 
 export interface FlightCreate {
+  id?: number
   name: string
   year: number
   course_id: number
