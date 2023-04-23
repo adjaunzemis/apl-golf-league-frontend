@@ -74,7 +74,7 @@ export class FlightCreateComponent implements OnInit {
         return 0;
       });
     });
-    this.coursesService.getCourses();
+    this.coursesService.getCourses(true); // include inactive courses
 
     this.selectedCourseSub = this.coursesService.getSelectedCourseUpdateListener().subscribe(result => {
       this.selectedCourse = result;

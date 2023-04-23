@@ -21,8 +21,8 @@ export class CoursesService {
 
   constructor(private http: HttpClient) {}
 
-  getCourses(): void {
-    this.http.get<Course[]>(environment.apiUrl + "courses/")
+  getCourses(include_inactive = false): void {
+    this.http.get<Course[]>(environment.apiUrl + `courses/?include_inactive=${include_inactive}`)
       .subscribe(coursesData => {
         this.courses = coursesData;
         this.coursesUpdated.next({

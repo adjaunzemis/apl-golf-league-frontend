@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from "@angular
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
+import { MatCheckboxChange } from "@angular/material/checkbox";
 import { Subscription } from "rxjs";
 
 import { CoursesService } from "../courses.service";
@@ -46,7 +47,7 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.courses = new MatTableDataSource<Course>(courseData.courses);
         this.totalCourses = courseData.courseCount;
       });
-    this.coursesService.getCourses();
+    this.coursesService.getCourses(false);
   }
 
   ngAfterViewInit(): void {
@@ -55,6 +56,11 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.coursesSub.unsubscribe();
+  }
+
+  onShowInactiveCoursesChange(e: MatCheckboxChange) {
+    this.isLoading = true;
+    this.coursesService.getCourses(e.checked);
   }
 
   doFilter = (event: Event) => {
