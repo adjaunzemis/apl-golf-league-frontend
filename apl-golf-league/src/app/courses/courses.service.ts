@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 
 import { environment } from './../../environments/environment';
-import { Course } from "../shared/course.model"
+import { Course, CourseData } from "../shared/course.model"
 import { Tee } from "../shared/tee.model";
 
 @Injectable({
@@ -48,11 +48,11 @@ export class CoursesService {
     return this.selectedCourseUpdated.asObservable();
   }
 
-  createCourse(courseData: Course): Observable<Course> {
+  createCourse(courseData: CourseData): Observable<Course> {
     return this.http.post<Course>(environment.apiUrl + "courses/", courseData);
   }
 
-  updateCourse(courseData: Course): Observable<Course> {
+  updateCourse(courseData: CourseData): Observable<Course> {
     return this.http.put<Course>(environment.apiUrl + `courses/${courseData.id}`, courseData);
   }
 

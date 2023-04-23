@@ -5,10 +5,10 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from "rxjs";
 
 import { CoursesService } from "../courses.service";
-import { Course } from "src/app/shared/course.model";
-import { Tee } from "src/app/shared/tee.model";
-import { Track } from "src/app/shared/track.model";
-import { Hole } from "src/app/shared/hole.model";
+import { Course, CourseData } from "src/app/shared/course.model";
+import { TeeData } from "src/app/shared/tee.model";
+import { TrackData } from "src/app/shared/track.model";
+import { HoleData } from "src/app/shared/hole.model";
 
 @Component({
     selector: "app-course-create",
@@ -124,8 +124,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     onSubmitCourse(): void {
         if (this.courseForm.valid) {
-            const courseData: Course = {
-                id: -1,
+            const courseData: CourseData = {
                 name: this.courseForm.value.name,
                 year: this.courseForm.value.year,
                 address: this.courseForm.value.address,
@@ -136,18 +135,14 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
             for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
                 const trackForm = this.courseForm.value.tracks[trIdx];
-                const track: Track = {
-                    id: -1,
-                    course_id: -1,
+                const track: TrackData = {
                     name: trackForm.name,
                     tees: []
                 };
 
                 for (let tsIdx = 0; tsIdx < trackForm.tees.length; tsIdx++) {
                     const teeForm = trackForm.tees[tsIdx];
-                    const tee: Tee = {
-                        id: -1,
-                        track_id: -1,
+                    const tee: TeeData = {
                         name: teeForm.name,
                         color: teeForm.color,
                         gender: teeForm.gender,
@@ -158,9 +153,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
                     for (let hIdx = 0; hIdx < teeForm.holes.length; hIdx++) {
                         const holeForm = teeForm.holes[hIdx];
-                        const hole: Hole = {
-                            id: -1,
-                            tee_id: -1,
+                        const hole: HoleData = {
                             number: +holeForm.number,
                             par: +holeForm.par,
                             stroke_index: +holeForm.stroke_index,

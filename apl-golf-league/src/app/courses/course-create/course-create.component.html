@@ -86,7 +86,7 @@
                                         <td class="bold">Hole</td>
                                         <td formArrayName="holes" *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index">
                                             <mat-form-field formGroupName="{{ hIdx }}">
-                                                <input matInput type="text" style="font-weight: bold;" formControlName="number">
+                                                <input matInput type="text" style="font-weight: bold;" formControlName="number" [disabled]="course !== undefined && course.tracks[trIdx] !== undefined && course.tracks[trIdx].tees[tsIdx] !== undefined">
                                             </mat-form-field>
                                         </td>
                                     </tr>
