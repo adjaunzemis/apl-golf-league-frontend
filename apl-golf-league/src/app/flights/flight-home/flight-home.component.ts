@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { FlightCreate, FlightData } from '../../shared/flight.model';
 import { FlightsService } from '../flights.service';
 import { FlightCreateComponent } from '../flight-create/flight-create.component';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../shared/user.model';
 
 @Component({
   selector: 'app-flight-home',
@@ -15,6 +17,10 @@ import { FlightCreateComponent } from '../flight-create/flight-create.component'
 })
 export class FlightHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
+
+  isAuthenticated = false;
+  private userSub: Subscription;
+  currentUser: User | null = null;
 
   flight: FlightData;
   private flightSub: Subscription;
@@ -25,9 +31,16 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
 
   isPlayoffFlight = false;
 
-  constructor(private flightsService: FlightsService, private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private flightsService: FlightsService, private authService: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !user ? false : true;
+      if (this.isAuthenticated) {
+        this.currentUser = user;
+      }
+    });
+
     this.flightSub = this.flightsService.getFlightUpdateListener()
       .subscribe(flightData => {
           console.log(`[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`);

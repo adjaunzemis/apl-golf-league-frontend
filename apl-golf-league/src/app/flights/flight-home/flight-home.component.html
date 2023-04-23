@@ -35,7 +35,7 @@
       <span class="bold">Contact Participants</span>
     </a>
 
-    <div class="card card-small selectable" (click)="onManageFlight()">
+    <div class="card card-small selectable" (click)="onManageFlight()" *ngIf="isAuthenticated && currentUser?.is_admin">
       <span class="bold">Manage Flight</span>
       <mat-icon>settings</mat-icon>
     </div>
