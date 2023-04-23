@@ -1,12 +1,16 @@
+<div class="content">
+  <div>
+    <mat-form-field class="filter-field">
+      <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
+    </mat-form-field>
+
+    <mat-checkbox style="margin-left: 16px;" (change)="onShowInactiveCoursesChange($event)">Show Inactive Courses</mat-checkbox>
+  </div>
+</div>
+
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div *ngIf="courses.data.length > 0 && !isLoading" style="width: 90%; margin: 0% 5%;">
-  <mat-form-field class="filter-field">
-    <input matInput type="text" (keyup)="doFilter($event)" placeholder="Filter">
-  </mat-form-field>
-
-  <mat-checkbox style="margin-left: 16px;" (change)="onShowInactiveCoursesChange($event)">Show Inactive Courses</mat-checkbox>
-
+<div class="content" *ngIf="courses.data.length > 0 && !isLoading">
   <table mat-table [dataSource]="courses" multiTemplateDataRows matSort matSortStart="asc">
     <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
