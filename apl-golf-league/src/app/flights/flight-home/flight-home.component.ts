@@ -64,7 +64,8 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      this.flightSub.unsubscribe();
+    this.userSub.unsubscribe();
+    this.flightSub.unsubscribe();
   }
 
   getFlightEmailList(): string {

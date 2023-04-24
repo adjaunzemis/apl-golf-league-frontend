@@ -64,8 +64,8 @@ export class TournamentCreateComponent implements OnInit {
   selectedCourse: Course
   selectedCourseSub: Subscription
 
-  private divisionTeeMap: {[teeInfo: string]: number} = {}
-  divisionTeeOptions: string[] = []
+  private divisionTeeIdMap: {[teeInfo: string]: number} = {}
+  teeInfoOptions: string[] = []
 
   divisionGenderOptions: string[] = ["Men's", "Ladies'"]
 
@@ -82,20 +82,28 @@ export class TournamentCreateComponent implements OnInit {
         }
         return 0;
       });
+
+      // Set controls for initial selections (if populated)
+      if (this.data.course_id) {
+        const course = this.courseOptions.filter(c => c.id === this.data.course_id)[0];
+        this.courseControl.setValue(course);
+        this.coursesService.getCourse(course.id);
+      }
     });
     this.coursesService.getCourses(true); // include inactive courses
 
     this.selectedCourseSub = this.coursesService.getSelectedCourseUpdateListener().subscribe(result => {
       this.selectedCourse = result;
+      this.updateDivisionOptions();
 
       // Update division tee options mapping
-      this.divisionTeeMap = {};
-      this.divisionTeeOptions = [];
+      this.divisionTeeIdMap = {};
+      this.teeInfoOptions = [];
       for (const track of result.tracks) {
         for (const tee of track.tees) {
           const teeInfo = `${tee.name}, ${track.name} (${tee.gender}, ${tee.rating}/${tee.slope})`;
-          this.divisionTeeMap[teeInfo] = tee.id;
-          this.divisionTeeOptions.push(teeInfo);
+          this.divisionTeeIdMap[teeInfo] = tee.id;
+          this.teeInfoOptions.push(teeInfo);
         }
       }
     })
@@ -113,31 +121,36 @@ export class TournamentCreateComponent implements OnInit {
     // TODO: Fix hard-coding of 4 divisions
     let tournamentDivisions: DivisionCreate[] = [];
     tournamentDivisions.push({
+      id: this.data.divisions[0] && this.data.divisions[0].id ? this.data.divisions[0].id : undefined,
       name: this.division1NameControl.value.trim(),
       gender: this.division1GenderControl.value.trim(),
-      primary_tee_id: this.divisionTeeMap[this.division1PrimaryTeeControl.value],
-      secondary_tee_id: this.divisionTeeMap[this.division1SecondaryTeeControl.value],
+      primary_tee_id: this.divisionTeeIdMap[this.division1PrimaryTeeControl.value],
+      secondary_tee_id: this.divisionTeeIdMap[this.division1SecondaryTeeControl.value],
     });
     tournamentDivisions.push({
+      id: this.data.divisions[1] && this.data.divisions[1].id ? this.data.divisions[1].id : undefined,
       name: this.division2NameControl.value.trim(),
       gender: this.division2GenderControl.value.trim(),
-      primary_tee_id: this.divisionTeeMap[this.division2PrimaryTeeControl.value],
-      secondary_tee_id: this.divisionTeeMap[this.division2SecondaryTeeControl.value],
+      primary_tee_id: this.divisionTeeIdMap[this.division2PrimaryTeeControl.value],
+      secondary_tee_id: this.divisionTeeIdMap[this.division2SecondaryTeeControl.value],
     });
     tournamentDivisions.push({
+      id: this.data.divisions[2] && this.data.divisions[2].id ? this.data.divisions[2].id : undefined,
       name: this.division3NameControl.value.trim(),
       gender: this.division3GenderControl.value.trim(),
-      primary_tee_id: this.divisionTeeMap[this.division3PrimaryTeeControl.value],
-      secondary_tee_id: this.divisionTeeMap[this.division3SecondaryTeeControl.value],
+      primary_tee_id: this.divisionTeeIdMap[this.division3PrimaryTeeControl.value],
+      secondary_tee_id: this.divisionTeeIdMap[this.division3SecondaryTeeControl.value],
     });
     tournamentDivisions.push({
+      id: this.data.divisions[3] && this.data.divisions[3].id ? this.data.divisions[3].id : undefined,
       name: this.division4NameControl.value.trim(),
       gender: this.division4GenderControl.value.trim(),
-      primary_tee_id: this.divisionTeeMap[this.division4PrimaryTeeControl.value],
-      secondary_tee_id: this.divisionTeeMap[this.division4SecondaryTeeControl.value],
+      primary_tee_id: this.divisionTeeIdMap[this.division4PrimaryTeeControl.value],
+      secondary_tee_id: this.divisionTeeIdMap[this.division4SecondaryTeeControl.value],
     });
 
     const tournamentData: TournamentCreate = {
+      id: this.data.id ? this.data.id : undefined,
       name: tournamentName,
       year: this.yearControl.value,
       course_id: this.courseControl.value.id,
@@ -180,6 +193,60 @@ export class TournamentCreateComponent implements OnInit {
     this.division3SecondaryTeeControl.reset();
     this.division4PrimaryTeeControl.reset();
     this.division4SecondaryTeeControl.reset();
+  }
+
+
+  private updateDivisionOptions(): void {
+    // Update division tee options mappings
+    let teeIdDivisionMap: {[teeId: number]: string} = {};
+    this.divisionTeeIdMap = {};
+    this.teeInfoOptions = [];
+    for (const track of this.selectedCourse.tracks) {
+      for (const tee of track.tees) {
+        const teeInfo = `${tee.name}, ${track.name} (${tee.gender}, ${tee.rating}/${tee.slope})`;
+        teeIdDivisionMap[tee.id] = teeInfo;
+        this.divisionTeeIdMap[teeInfo] = tee.id;
+        this.teeInfoOptions.push(teeInfo);
+      }
+    }
+
+    // Set controls for initial selections (if populated)
+    if (this.data.divisions[0]) {
+      const division = this.data.divisions[0];
+      if (division.id && division.primary_tee_id in teeIdDivisionMap) {
+        this.division1PrimaryTeeControl.setValue(teeIdDivisionMap[division.primary_tee_id]);
+      }
+      if (division.id && division.secondary_tee_id in teeIdDivisionMap) {
+        this.division1SecondaryTeeControl.setValue(teeIdDivisionMap[division.secondary_tee_id]);
+      }
+    }
+    if (this.data.divisions[1]) {
+      const division = this.data.divisions[1];
+      if (division.id && division.primary_tee_id in teeIdDivisionMap) {
+        this.division2PrimaryTeeControl.setValue(teeIdDivisionMap[division.primary_tee_id]);
+      }
+      if (division.id && division.secondary_tee_id in teeIdDivisionMap) {
+        this.division2SecondaryTeeControl.setValue(teeIdDivisionMap[division.secondary_tee_id]);
+      }
+    }
+    if (this.data.divisions[2]) {
+      const division = this.data.divisions[2];
+      if (division.id && division.primary_tee_id in teeIdDivisionMap) {
+        this.division3PrimaryTeeControl.setValue(teeIdDivisionMap[division.primary_tee_id]);
+      }
+      if (division.id && division.secondary_tee_id in teeIdDivisionMap) {
+        this.division3SecondaryTeeControl.setValue(teeIdDivisionMap[division.secondary_tee_id]);
+      }
+    }
+    if (this.data.divisions[3]) {
+      const division = this.data.divisions[3];
+      if (division.id && division.primary_tee_id in teeIdDivisionMap) {
+        this.division4PrimaryTeeControl.setValue(teeIdDivisionMap[division.primary_tee_id]);
+      }
+      if (division.id && division.secondary_tee_id in teeIdDivisionMap) {
+        this.division4SecondaryTeeControl.setValue(teeIdDivisionMap[division.secondary_tee_id]);
+      }
+    }
   }
 
 }

@@ -75,6 +75,10 @@ export class TournamentsService {
     return this.http.post<TournamentInfo>(environment.apiUrl + `tournaments`, tournament);
   }
 
+  updateTournament(tournament: TournamentCreate): Observable<TournamentInfo> {
+    return this.http.put<TournamentInfo>(environment.apiUrl + `tournaments/${tournament.id}`, tournament);
+  }
+
   postRounds(tournamentInput: TournamentInput): Observable<RoundSummary[]> {
     return this.http.post<RoundSummary[]>(environment.apiUrl + `tournaments/rounds`, tournamentInput);
   }

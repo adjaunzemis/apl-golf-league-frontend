@@ -35,6 +35,11 @@
     <a href="mailto:{{ getTournamentEmailList() }}" class="card card-small selectable">
       <span class="bold">Contact Participants</span>
     </a>
+
+    <div class="card card-small selectable" (click)="onManageTournament()" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <span class="bold">Manage Tournament</span>
+      <mat-icon>settings</mat-icon>
+    </div>
   </div>
 
   <h2>Format</h2>

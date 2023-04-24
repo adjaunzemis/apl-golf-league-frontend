@@ -1,11 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { TournamentsService } from '../tournaments.service';
-import { TournamentData } from '../../shared/tournament.model';
+import { TournamentCreate, TournamentData } from '../../shared/tournament.model';
 import { RoundData } from '../../shared/round.model';
 import { TournamentTeamData } from '../../shared/team.model';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../shared/user.model';
+import { TournamentCreateComponent } from '../tournament-create/tournament-create.component';
 
 @Component({
   selector: 'app-tournament-home',
@@ -14,6 +19,10 @@ import { TournamentTeamData } from '../../shared/team.model';
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
+
+  isAuthenticated = false;
+  private userSub: Subscription;
+  currentUser: User | null = null;
 
   showScorecard = false;
 
@@ -26,9 +35,16 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
 
   currentDate = new Date();
 
-  constructor(private tournamentsService: TournamentsService, private route: ActivatedRoute) { }
+  constructor(private tournamentsService: TournamentsService, private authService: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !user ? false : true;
+      if (this.isAuthenticated) {
+        this.currentUser = user;
+      }
+    });
+
     this.tournamentSub = this.tournamentsService.getTournamentUpdateListener()
       .subscribe(tournamentData => {
           console.log(`[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.id}`);
@@ -48,6 +64,7 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.userSub.unsubscribe();
     this.tournamentSub.unsubscribe();
   }
 
@@ -85,6 +102,29 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  // TODO: Move to admin view?
+  // TODO: Conslidate with header onAddNewTournament
+  onManageTournament(): void {
+    const dialogRef = this.dialog.open(TournamentCreateComponent, {
+      width: '900px',
+      data: this.tournament as TournamentCreate
+    });
+
+    dialogRef.afterClosed().subscribe(tournamentData => {
+      if (tournamentData !== null && tournamentData !== undefined) {
+        this.tournamentsService.updateTournament(tournamentData).subscribe(result => {
+          console.log(`[TournamentHomeComponent] Successfully updated tournament: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully updated tournament: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+
+          this.tournamentsService.getTournament(this.tournament.id); // refresh tournament data
+        });
+      }
+    });
   }
 
 }

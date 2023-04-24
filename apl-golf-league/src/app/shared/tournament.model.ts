@@ -49,13 +49,14 @@ export interface TournamentInfo {
 }
 
 export interface TournamentCreate {
+  id?: number
   name: string
   year: number
   course_id: number
   logo_url: string
   secretary: string
   secretary_email: string
-  secretary_phone: string
+  secretary_phone?: string
   signup_start_date: Date
   signup_stop_date: Date
   date: Date
