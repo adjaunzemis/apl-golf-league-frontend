@@ -48,6 +48,10 @@
       <mat-icon>sports_golf</mat-icon>
       <span>Post Qualifying Scores</span>
     </button>
+    <button mat-menu-item routerLink="/courses/edit" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <mat-icon>golf_course</mat-icon>
+      <span>Add Course</span>
+    </button>
     <button mat-menu-item (click)="onAddNewFlight()" *ngIf="isAuthenticated && currentUser?.is_admin">
       <mat-icon>golf_course</mat-icon>
       <span>Add Flight</span>
