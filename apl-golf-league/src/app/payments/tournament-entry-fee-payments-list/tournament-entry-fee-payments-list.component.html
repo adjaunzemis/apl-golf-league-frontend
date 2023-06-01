@@ -1,6 +1,8 @@
 <div class="content">
   <h1>Tournament Fee Payments</h1>
 
+  <h2 *ngIf="selectedTournament">{{selectedTournament.name}} ({{selectedTournament.year}})</h2>
+
   <a [href]="getUnpaidEmailAddresses()" class="card card-small selectable" style="margin-top: 10px;">
     <span class="bold">Email Unpaid Golfers</span>
   </a>

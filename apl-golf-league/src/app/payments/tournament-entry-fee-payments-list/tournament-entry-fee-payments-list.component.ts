@@ -4,6 +4,8 @@ import { Sort } from "@angular/material/sort";
 import { Subscription } from "rxjs";
 
 import { PaymentsService } from "../payments.service";
+import { TournamentsService } from "../../tournaments/tournaments.service";
+import { TournamentData } from "../../shared/tournament.model";
 import { TournamentEntryFeePaymentData } from '../../shared/payment.model';
 import { AppConfigService } from "../../app-config.service";
 
@@ -20,6 +22,9 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
 
   paymentsSub: Subscription;
 
+  selectedTournament: TournamentData;
+  tournamentSub: Subscription;
+
   tournamentEntryFeePayments: TournamentEntryFeePaymentData[];
   sortedData: TournamentEntryFeePaymentData[];
   private currentSort: Sort | null = null;
@@ -28,10 +33,14 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
 
   displayedColumns: string[] = ['id', 'golfer_name', 'year', 'tournament_id', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
 
-  constructor(private paymentsService: PaymentsService, private appConfigService: AppConfigService, private route: ActivatedRoute) { }
+  constructor(private paymentsService: PaymentsService, private tournamentsService: TournamentsService, private appConfigService: AppConfigService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.selectedYear = this.appConfigService.currentYear;
+
+    this.tournamentSub = this.tournamentsService.getTournamentUpdateListener().subscribe(result => {
+      this.selectedTournament = result;
+    });
 
     this.paymentsSub = this.paymentsService.getTournamentEntryFeePaymentDataListUpdateListener().subscribe(result => {
       this.tournamentEntryFeePayments = result;
@@ -43,6 +52,7 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
       if (params) {
         if (params.tournament_id) {
           this.tournamentId = params.tournament_id;
+          this.tournamentsService.getTournament(this.tournamentId);
           this.paymentsService.getTournamentEntryFeePaymentDataList(this.tournamentId);
         }
       }
@@ -50,6 +60,7 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
+    this.tournamentSub.unsubscribe();
     this.paymentsSub.unsubscribe();
   }
 
