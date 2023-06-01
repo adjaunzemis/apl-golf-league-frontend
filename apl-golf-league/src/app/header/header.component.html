@@ -64,10 +64,13 @@
       <mat-icon>attach_money</mat-icon>
       <span>League Dues Payments</span>
     </button>
-    <!-- <button mat-menu-item routerLink="/fee-payments" *ngIf="isAuthenticated && currentUser?.edit_payments">
+    <button mat-menu-item [matMenuTriggerFor]="tournamentEntryFees" *ngIf="isAuthenticated && currentUser?.edit_payments">
       <mat-icon>attach_money</mat-icon>
       <span>Entry Fee Payments</span>
-    </button> -->
+    </button>
+    <mat-menu #tournamentEntryFees="matMenu">
+      <button *ngFor="let tournament of tournaments" [routerLink]="'/fee-payments?tournament_id='+tournament.id"></button>
+    </mat-menu>
     <button mat-menu-item routerLink="/auth/manage" *ngIf="isAuthenticated && currentUser?.is_admin">
       <mat-icon>settings</mat-icon>
       <span>Manage Users</span>
