@@ -69,7 +69,7 @@
       <span>Entry Fee Payments</span>
     </button>
     <mat-menu #tournamentEntryFees="matMenu">
-      <button *ngFor="let tournament of tournaments" [routerLink]="'/fee-payments?tournament_id='+tournament.id"></button>
+      <button mat-menu-item *ngFor="let tournament of tournaments" routerLink="/fee-payments" [queryParams]="{'tournament_id': tournament.id}">{{tournament.name}}</button>
     </mat-menu>
     <button mat-menu-item routerLink="/auth/manage" *ngIf="isAuthenticated && currentUser?.is_admin">
       <mat-icon>settings</mat-icon>
