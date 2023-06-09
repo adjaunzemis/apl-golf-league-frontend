@@ -30,9 +30,13 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   divisions: DivisionData[] = [];
 
-  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[]}, private formBuilder: FormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar, private golfersService: GolfersService) { }
+  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[], allowSubstitutes: boolean}, private formBuilder: FormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar, private golfersService: GolfersService) { }
 
   ngOnInit(): void {
+    if (this.data.allowSubstitutes) {
+      this.roleOptions.push("Substitute");
+    }
+
     if (this.data.teamId > 0 && this.data.teamName.length > 0 && this.data.teamGolfers.length > 0) {
       this.updateMode = true;
     }

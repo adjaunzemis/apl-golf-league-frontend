@@ -208,21 +208,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   getSelectedFlightOrTournamentTeams(): TeamInfo[] {
-    if (this.selectedFlightOrTournament) {
-      if (this.selectedTabIdx === 0) { // flight
-        const selectedFlight = this.selectedFlightOrTournament as FlightData;
-        if (!selectedFlight.teams) {
-          return []
-        }
-        return selectedFlight.teams;
-      } else { //tournament
-        const selectedTournament = this.selectedFlightOrTournament as TournamentData;
-        if (!selectedTournament.teams) {
-          return []
-        }
-        // return selectedTournament.teams;
-        return selectedTournament.teams;
-      }
+    if (this.selectedFlightOrTournament?.teams) {
+      return this.selectedFlightOrTournament.teams;
     }
     return [];
   }
@@ -300,13 +287,17 @@ export class SignupComponent implements OnInit, OnDestroy {
       }
     }
 
+    // Only allow substitute sign-ups for flight teams and for flight-edit or admin users
+    const allowSubstitutes = (this.selectedTabIdx === 0) && this.isAuthenticated && (this.currentUser?.edit_flights || this.currentUser?.is_admin);
+
     const dialogRef = this.dialog.open(TeamCreateComponent, {
       width: '750px',
       data: {
         teamId: initTeamId,
         teamName: initTeamName,
         teamGolfers: initTeamGolfers,
-        divisions: this.selectedFlightOrTournament?.divisions
+        divisions: this.selectedFlightOrTournament?.divisions,
+        allowSubstitutes: allowSubstitutes
       }
     });
 
