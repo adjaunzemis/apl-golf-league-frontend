@@ -26,6 +26,7 @@ export class FlightCreateComponent implements OnInit {
   signupStopDateControl: FormControl = new FormControl(this.data.signup_stop_date, [Validators.required]);
   startDateControl: FormControl = new FormControl(this.data.start_date, [Validators.required]);
   weeksControl: FormControl = new FormControl(this.data.weeks, [Validators.required]);
+  teeTimesControl: FormControl = new FormControl(this.data.tee_times, []);
   // lockedControl: FormControl = new FormControl(this.data.locked, [Validators.required]);
 
   // TODO: Make this more robust to varying numbers/types of divisions
@@ -142,6 +143,7 @@ export class FlightCreateComponent implements OnInit {
       signup_stop_date: this.signupStopDateControl.value,
       start_date: this.startDateControl.value,
       weeks: this.weeksControl.value,
+      tee_times: this.teeTimesControl.value,
       // locked: this.lockedControl.value
       divisions: flightDivisions
     };
