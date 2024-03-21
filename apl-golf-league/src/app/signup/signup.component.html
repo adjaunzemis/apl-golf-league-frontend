@@ -60,6 +60,11 @@
       <span>{{ selectedFlightOrTournament.signup_start_date | date:'mediumDate' }} - {{ selectedFlightOrTournament.signup_stop_date | date:'mediumDate' }}</span>
     </div>
 
+    <div class="card card-small" *ngIf="getFlightTeeTimes()">
+      <span class="bold">Tee Times</span>
+      <span>{{ getFlightTeeTimes() }}</span>
+    </div>
+
     <div class="card card-small">
       <span class="bold">{{ getFlightStartOrTournamentDateLabel() }}</span>
       <span>{{ getFlightStartOrTournamentDate() | date:'mediumDate' }}</span>

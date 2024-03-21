@@ -189,6 +189,14 @@ export class SignupComponent implements OnInit, OnDestroy {
     return Math.floor((Date.UTC(this.selectedFlightOrTournament.signup_start_date.getFullYear(), this.selectedFlightOrTournament.signup_start_date.getMonth(), this.selectedFlightOrTournament.signup_start_date.getDate()) - Date.UTC(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate())) / (1000 * 60 * 60 * 24));
   }
 
+  getFlightTeeTimes(): string | undefined {
+    if (this.selectedTabIdx === 0) { // flight
+      const selectedFlight = this.selectedFlightOrTournament as FlightData;
+      return selectedFlight.tee_times;
+    }
+    return undefined;
+  }
+
   getFlightStartOrTournamentDate(): Date {
     if (this.selectedTabIdx === 0) { // flight
       const selectedFlight = this.selectedFlightOrTournament as FlightData;

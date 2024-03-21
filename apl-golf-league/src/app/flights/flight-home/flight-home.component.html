@@ -27,6 +27,11 @@
       <span>{{ flight.start_date | date:'longDate' }}</span>
     </div>
 
+    <div class="card card-small" *ngIf="flight.tee_times">
+      <span class="bold">Tee Times</span>
+      <span>{{ flight.tee_times }}</span>
+    </div>
+
     <a class="card card-small selectable" routerLink="/flight/match/scorecard" [queryParams]="{flight_id: flight.id}">
       <span class="bold">Match Scorecard</span>
     </a>

@@ -16,6 +16,7 @@ export class FlightData {
     signup_stop_date: Date
     start_date: Date
     weeks: number
+    tee_times?: string
     divisions: DivisionData[]
     teams?: TeamData[]
     matches?: MatchSummary[]
@@ -34,6 +35,7 @@ export interface FlightInfo {
   signup_stop_date: Date
   start_date: Date
   weeks: number
+  tee_times?: string
 }
 
 export interface FlightCreate {
@@ -49,6 +51,7 @@ export interface FlightCreate {
   signup_stop_date: Date
   start_date: Date
   weeks: number
+  tee_times?: string
   locked?: boolean
   divisions: DivisionCreate[]
 }
