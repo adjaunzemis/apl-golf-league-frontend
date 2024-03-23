@@ -85,6 +85,13 @@
         <mat-error *ngIf="startDateControl.hasError('required')">Enter a valid flight start date</mat-error>
       </mat-form-field>
 
+      <!-- <mat-form-field>
+        <input matInput [ngxMatDatetimePicker]="startDatePicker" placeholder="Choose a date" [formControl]="startDateControl">
+        <ngx-mat-datepicker-toggle matSuffix [for]="startDatePicker"></ngx-mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #startDatePicker [showSpinners]="true" [showSeconds]="false" [stepHour]="1" [stepMinute]="1">
+        </ngx-mat-datetime-picker>
+      </mat-form-field> -->
+
       <mat-form-field class="short-field" appearance="fill">
         <mat-label>Weeks</mat-label>
         <input type="number" matInput [formControl]="weeksControl">

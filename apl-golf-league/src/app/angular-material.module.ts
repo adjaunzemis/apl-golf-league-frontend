@@ -24,6 +24,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+// import {
+//   NgxMatDatetimePickerModule, 
+//   // NgxMatNativeDateModule, 
+//   // NgxMatTimepickerModule 
+// } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   exports: [
@@ -51,7 +56,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatMenuModule,
     MatTabsModule,
     MatSnackBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    // NgxMatDatetimePickerModule, 
+    // NgxMatNativeDateModule, 
+    // NgxMatTimepickerModule
   ],
   providers: [
     MatNativeDateModule
