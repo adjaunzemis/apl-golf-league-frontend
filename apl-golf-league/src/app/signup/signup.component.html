@@ -91,10 +91,10 @@
   <p class="italic" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">Click on a team card to update sign-ups</p>
 
   <!-- TODO: Un-hardcode this warning, make it configurable per-flight/tournament -->
-  <div class="content" *ngIf="isSelectedSignupWindowOpen && this.selectedFlightOrTournament.name === 'Fairway Hills'">
+  <!-- <div class="content" *ngIf="isSelectedSignupWindowOpen && this.selectedFlightOrTournament.name === 'Fairway Hills'">
     <p class="italic" style="color: red">Note: This flight is currently limited to 9 teams! Feel free to sign up beyond that but consider it a wait list.</p>
     <p class="italic" style="color: red">If more than 9 teams are registered, we will poll teams for flight changes or consider other solutions after sign-ups close.</p>
-  </div>
+  </div> -->
 
   <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>
 
