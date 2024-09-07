@@ -61,6 +61,31 @@
                 "output": "index.html"
               }
             },
+            "staging": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "index": {
+                "input": "src/index.prod.html",
+                "output": "index.html"
+              }
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,

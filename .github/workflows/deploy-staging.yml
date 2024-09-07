@@ -31,7 +31,7 @@ jobs:
       # TODO: Enable linting checks
 
       - name: Build Angular App
-        run: npm run build -- --configuration=production
+        run: npm run build -- --configuration=staging
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
