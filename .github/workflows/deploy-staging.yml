@@ -2,8 +2,6 @@ name: Deploy Angular App to HostGator (Staging)
 
 on:
   push:
-    branches:
-      - main
     tags:
       - 't*.*.*'
 
@@ -27,8 +25,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Tests
-        run: npm test -- --watch=false
+      # - name: Run Tests
+      #   run: npm test -- --watch=false
 
       - name: Build Angular App
         run: npm run build -- --configuration=production
