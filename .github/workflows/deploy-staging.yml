@@ -6,7 +6,7 @@ on:
       - 't*.*.*'
 
 jobs:
-  build-and-deploy:
+  build-staging:
     runs-on: ubuntu-latest
 
     defaults:
@@ -39,6 +39,17 @@ jobs:
           name: angular-build
           path: apl-golf-league/dist/apl-golf-league
 
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: build-staging
+
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: angular-build
+          path: ./artifacts
+
       - name: Deploy to HostGator via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
@@ -46,7 +57,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
-          local-dir: ./apl-golf-league/dist/apl-golf-league/
+          local-dir: ./artifacts/
           server-dir: /public_html/staging/
           protocol: ftp
           log-level: verbose
