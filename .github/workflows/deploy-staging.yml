@@ -1,0 +1,70 @@
+name: Deploy Angular App to HostGator (Staging)
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 't*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./apl-golf-league
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16  # Specify the node version required for your project
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test -- --watch=false
+
+      - name: Build Angular App
+        run: npm run build -- --configuration=production
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: angular-build  # Name of the artifact
+          path: dist/<your-angular-app>  # Path to the built files, update to match your Angular app's output directory
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build  # This job depends on the 'build' job
+
+  #   defaults:
+  #     run:
+  #       working-directory: ./apl-golf-league
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Download Build Artifacts
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: angular-build  # The name of the artifact to download
+
+  #     - name: Deploy to HostGator via FTP
+  #       uses: SamKirkland/FTP-Deploy-Action@4.3.0
+  #       with:
+  #         server: ${{ secrets.FTP_HOST }}
+  #         username: ${{ secrets.FTP_USERNAME }}
+  #         password: ${{ secrets.FTP_PASSWORD }}
+  #         port: ${{ secrets.FTP_PORT }}
+  #         local-dir: dist/<your-angular-app>  # Path to the downloaded artifact folder
+  #         server-dir: /public_html/staging
+  #         protocol: ftp
+  #         log-level: verbose
+  #         dry-run: false
