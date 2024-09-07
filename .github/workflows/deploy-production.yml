@@ -1,0 +1,82 @@
+name: Deploy Angular App to HostGator (Production)
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-production:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./apl-golf-league
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Extract tag name
+        id: get_tag
+        run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Update version to match tag
+        run: |
+          #!/bin/bash
+          FILE="src/environments/environment.production.ts"
+          NEW_VERSION="${{ env.TAG_NAME }}"
+          
+          # Update the version key in the dictionary
+          sed -i.bak -E "s/(version: *\")([^\"]+)(\")/\\1${NEW_VERSION}\\3/" "$FILE"
+          
+          # Remove backup file
+          rm "$FILE.bak"
+
+          echo "Updated version to $NEW_VERSION in $FILE"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
+
+      # - name: Run Tests # TODO: Re-enable tests
+      #   run: npm test -- --watch=false
+
+      # TODO: Enable linting checks
+
+      - name: Build Angular App
+        run: npm run build -- --configuration=production
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: angular-build
+          path: apl-golf-league/dist/apl-golf-league
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: build-production
+
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: angular-build
+          path: ./artifacts
+
+      - name: Deploy to HostGator via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          local-dir: ./artifacts/
+          server-dir: /public_html/
+          protocol: ftp
+          log-level: verbose
+          dry-run: false
