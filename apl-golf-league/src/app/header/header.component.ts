@@ -16,6 +16,7 @@ import { SignupComponent } from '../signup/signup.component';
 import { TournamentCreateComponent } from '../tournaments/tournament-create/tournament-create.component';
 import { TournamentsService } from '../tournaments/tournaments.service';
 import { TournamentInfo } from '../shared/tournament.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-header",
@@ -24,6 +25,8 @@ import { TournamentInfo } from '../shared/tournament.model';
   providers: [SignupComponent]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  title = environment.title
+  
   isAuthenticated = false;
   private userSub: Subscription;
   currentUser: User | null = null;

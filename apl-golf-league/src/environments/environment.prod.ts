@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://aplgolfapi.jaunzenet.com/'
+  apiUrl: 'https://aplgolfapi.jaunzenet.com/',
+  title: "APL Golf League"
 };
