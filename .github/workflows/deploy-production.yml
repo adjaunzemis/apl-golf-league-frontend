@@ -24,7 +24,7 @@ jobs:
       - name: Update version to match tag
         run: |
           #!/bin/bash
-          FILE="src/environments/environment.production.ts"
+          FILE="src/environments/environment.prod.ts"
           NEW_VERSION="${{ env.TAG_NAME }}"
           
           # Update the version key in the dictionary
