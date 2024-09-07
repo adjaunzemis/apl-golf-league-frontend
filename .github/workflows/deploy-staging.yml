@@ -16,6 +16,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Extract tag name
+        id: get_tag
+        run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Update version to match tag
+        run: |
+          #!/bin/bash
+          FILE="src/environments/environment-staging.ts"
+          NEW_VERSION="${{ env.TAG_NAME }}"
+          
+          # Update the version key in the dictionary
+          sed -i.bak -E "s/(version: *\")([^\"]+)(\")/\\1${NEW_VERSION}\\3/" "$FILE"
+          
+          # Remove backup file
+          rm "$FILE.bak"
+
+          echo "Updated version to $NEW_VERSION in $FILE"
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
