@@ -1,12 +1,12 @@
-name: Deploy Angular App to HostGator (Staging)
+name: Deploy Angular App to HostGator (Production)
 
 on:
   push:
     tags:
-      - 't*.*.*'
+      - 'v*.*.*'
 
 jobs:
-  build-staging:
+  build-production:
     runs-on: ubuntu-latest
 
     defaults:
@@ -24,7 +24,7 @@ jobs:
       - name: Update version to match tag
         run: |
           #!/bin/bash
-          FILE="src/environments/environment.staging.ts"
+          FILE="src/environments/environment.prod.ts"
           NEW_VERSION="${{ env.TAG_NAME }}"
           
           # Update the version key in the dictionary
@@ -49,7 +49,7 @@ jobs:
       # TODO: Enable linting checks
 
       - name: Build Angular App
-        run: npm run build -- --configuration=staging
+        run: npm run build -- --configuration=production
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
@@ -57,9 +57,9 @@ jobs:
           name: angular-build
           path: apl-golf-league/dist/apl-golf-league
 
-  deploy-staging:
+  deploy-production:
     runs-on: ubuntu-latest
-    needs: build-staging
+    needs: build-production
 
     steps:
       - name: Download Build Artifacts
@@ -76,7 +76,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           local-dir: ./artifacts/
-          server-dir: /public_html/staging/
+          server-dir: /public_html/
           protocol: ftp
           log-level: verbose
           dry-run: false
