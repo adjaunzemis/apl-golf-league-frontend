@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, Subscription  } from "rxjs";
@@ -37,14 +37,14 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   private tournamentSub: Subscription;
   tournament: TournamentData;
 
-  golferPaymentsForm: FormGroup;
+  golferPaymentsForm: UntypedFormGroup;
 
   typeOptions = ['Member Fee', 'Non-Member Fee'];
 
   isLoadingTournament: boolean = true;
   isLoadingTournamentEntryFeePaymentInfoList: boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<TournamentEntryFeesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: { tournamentId: number }, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private tournamentsService: TournamentsService, private golfersService: GolfersService) {}
+  constructor(public dialogRef: MatDialogRef<TournamentEntryFeesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: { tournamentId: number }, private formBuilder: UntypedFormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private tournamentsService: TournamentsService, private golfersService: GolfersService) {}
 
   ngOnInit(): void {
     this.year = this.appConfigService.currentYear;
@@ -247,14 +247,14 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     return total;
   }
 
-  getGolferPaymentsArray(): FormArray {
-    return this.golferPaymentsForm.get('golferPayments') as FormArray;
+  getGolferPaymentsArray(): UntypedFormArray {
+    return this.golferPaymentsForm.get('golferPayments') as UntypedFormArray;
   }
 
   addNewGolferPaymentForm(): void {
     const newGolferPaymentForm = this.formBuilder.group({
-      golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
-      type: new FormControl("", [Validators.required])
+      golfer: new UntypedFormControl("", [Validators.required, this.checkGolferName.bind(this)]),
+      type: new UntypedFormControl("", [Validators.required])
     });
     // }, { validators: this.golferPaymentTypeValidator.bind(this) }); // TODO: re-enable or remove this validation
 
@@ -278,14 +278,14 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     return this.golferNameOptions.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  private checkGolferName(control: FormControl): { [s: string]: boolean } | null {
+  private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
       return { 'golferNameInvalid': true };
     }
     return null;
   }
 
-  private golferPaymentTypeValidator(group: FormGroup) {
+  private golferPaymentTypeValidator(group: UntypedFormGroup) {
     const golferControl = group.controls['golfer'];
     const golferName = golferControl.value.toLowerCase();
 

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, UntypedFormControl, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
 
 import { GolfersService } from "../golfers.service";
@@ -14,7 +14,7 @@ import { map, startWith } from "rxjs/operators";
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  golferControl = new FormControl("");
+  golferControl = new UntypedFormControl("");
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];

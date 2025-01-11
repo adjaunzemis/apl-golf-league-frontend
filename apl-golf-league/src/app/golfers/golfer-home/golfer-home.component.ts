@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -19,7 +19,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoadingTeamData = false;
   isLoadingRoundData = false;
 
-  yearControl = new FormControl('', Validators.required);
+  yearControl = new UntypedFormControl('', Validators.required);
 
   golferId: number;
   year: number;

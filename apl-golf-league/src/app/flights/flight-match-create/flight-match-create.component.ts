@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -41,7 +41,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   flightOptions: FlightInfo[] = [];
   selectedFlightInfo: FlightInfo;
 
-  flightSelector = new FormControl("");
+  flightSelector = new UntypedFormControl("");
   private flightDataSub: Subscription;
   selectedFlight: FlightData;
 

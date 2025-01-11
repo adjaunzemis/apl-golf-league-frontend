@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -39,7 +39,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   tournamentOptions: TournamentInfo[] = [];
   selectedTournamentInfo: TournamentInfo;
 
-  tournamentSelector = new FormControl("");
+  tournamentSelector = new UntypedFormControl("");
   private tournamentDataSub: Subscription;
   selectedTournament: TournamentData;
 

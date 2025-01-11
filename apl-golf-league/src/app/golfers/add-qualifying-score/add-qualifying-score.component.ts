@@ -1,6 +1,6 @@
 import { QualifyingScore } from './../../shared/qualifying-score.model';
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
 import { map, min, startWith } from "rxjs/operators";
 
@@ -15,18 +15,18 @@ import { GolfersService } from "../golfers.service";
 export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  golferControl = new FormControl('');
+  golferControl = new UntypedFormControl('');
 
   typeOptions: string[] = [
     "Qualifying Round",
     "Official Handicap Index"
   ];
 
-  typeControl = new FormControl('', Validators.required);
+  typeControl = new UntypedFormControl('', Validators.required);
 
-  handicapIndexDateControl = new FormControl('', Validators.required);
-  handicapIndexControl = new FormControl('', Validators.required);
-  commentControl = new FormControl('');
+  handicapIndexDateControl = new UntypedFormControl('', Validators.required);
+  handicapIndexControl = new UntypedFormControl('', Validators.required);
+  commentControl = new UntypedFormControl('');
 
   round1Group = this.formBuilder.group({
     datePlayed: [''],
@@ -99,7 +99,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   filteredGolferOptions: Observable<Golfer[]>;
   selectedGolfer: Golfer | null;
 
-  constructor(private golfersService: GolfersService, private formBuilder: FormBuilder) { }
+  constructor(private golfersService: GolfersService, private formBuilder: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe(result => {

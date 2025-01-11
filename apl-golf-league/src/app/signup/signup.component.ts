@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Subscription } from 'rxjs';
 
 import { FlightData, FlightInfo } from '../shared/flight.model';
@@ -47,8 +47,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   isLoadingSelectedFlightOrTournament = false;
   isSelectedSignupWindowOpen = false;
 
-  flightControl = new FormControl('', Validators.required);
-  tournamentControl = new FormControl('', Validators.required);
+  flightControl = new UntypedFormControl('', Validators.required);
+  tournamentControl = new UntypedFormControl('', Validators.required);
 
   private flightsSub: Subscription;
   flights: FlightInfo[] = [];
