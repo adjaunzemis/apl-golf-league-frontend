@@ -3,7 +3,7 @@ name: Deploy Angular App to HostGator (Staging)
 on:
   push:
     tags:
-      - 't*.*.*'
+      - "v*.*.*.dev*"
 
 jobs:
   build-staging:
