@@ -25,6 +25,7 @@ export class FooterComponent implements OnInit, OnDestroy {
         console.log(`[FooterComponent] Received API info`);
         this.apiVersion = result.version;
       })
+    this.apiService.getInfo();
   }
 
   ngOnDestroy(): void {
