@@ -5,9 +5,10 @@ import { FlightsService } from '../flights.service';
 import { FlightInfo } from '../../shared/flight.model';
 
 @Component({
-  selector: 'app-flight-history',
-  templateUrl: './flight-history.component.html',
-  styleUrls: ['./flight-history.component.css']
+    selector: 'app-flight-history',
+    templateUrl: './flight-history.component.html',
+    styleUrls: ['./flight-history.component.css'],
+    standalone: false
 })
 export class FlightHistoryComponent implements OnInit, OnDestroy {
   isLoading = true;

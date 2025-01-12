@@ -6,9 +6,10 @@ import { Officer } from './../shared/officer.model';
 import { OfficersService } from '../officers/officers.service';
 
 @Component({
-  selector: 'app-rules',
-  templateUrl: './rules.component.html',
-  styleUrls: ['./rules.component.css']
+    selector: 'app-rules',
+    templateUrl: './rules.component.html',
+    styleUrls: ['./rules.component.css'],
+    standalone: false
 })
 export class RulesComponent implements OnInit {
   private currentYear: number

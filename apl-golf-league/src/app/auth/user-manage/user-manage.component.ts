@@ -1,26 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { AuthService } from '../auth.service';
-import { User, UserInfo } from '../../shared/user.model';
+import { User } from '../../shared/user.model';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './user-manage.component.html',
-  styleUrls: ['./user-manage.component.css']
+    selector: 'app-login',
+    templateUrl: './user-manage.component.html',
+    styleUrls: ['./user-manage.component.css'],
+    standalone: false
 })
 export class UserManageComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   isAuthenticated: boolean = false;
   currentUser: User | null = null;
 
-  usernameControl = new FormControl("", Validators.required);
-  oldPasswordControl = new FormControl("", [Validators.required]);
-  newPasswordControl = new FormControl("", [Validators.required, Validators.minLength(6)]);
-  newPasswordRepeatControl = new FormControl("", [Validators.required, Validators.minLength(6)]);
+  usernameControl = new UntypedFormControl("", Validators.required);
+  oldPasswordControl = new UntypedFormControl("", [Validators.required]);
+  newPasswordControl = new UntypedFormControl("", [Validators.required, Validators.minLength(6)]);
+  newPasswordRepeatControl = new UntypedFormControl("", [Validators.required, Validators.minLength(6)]);
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
 

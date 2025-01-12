@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -10,16 +10,17 @@ import { GolferData, TeamGolferData } from '../../shared/golfer.model';
 import { RoundData } from '../../shared/round.model';
 
 @Component({
-  selector: 'app-golfer-home',
-  templateUrl: './golfer-home.component.html',
-  styleUrls: ['./golfer-home.component.css']
+    selector: 'app-golfer-home',
+    templateUrl: './golfer-home.component.html',
+    styleUrls: ['./golfer-home.component.css'],
+    standalone: false
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoadingGolferData = true;
   isLoadingTeamData = false;
   isLoadingRoundData = false;
 
-  yearControl = new FormControl('', Validators.required);
+  yearControl = new UntypedFormControl('', Validators.required);
 
   golferId: number;
   year: number;

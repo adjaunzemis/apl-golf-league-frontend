@@ -10,9 +10,10 @@ import { TournamentEntryFeePaymentData } from '../../shared/payment.model';
 import { AppConfigService } from "../../app-config.service";
 
 @Component({
-  selector: 'app-tournament-entry-fee-payments-list',
-  templateUrl: './tournament-entry-fee-payments-list.component.html',
-  styleUrls: ['./tournament-entry-fee-payments-list.component.css']
+    selector: 'app-tournament-entry-fee-payments-list',
+    templateUrl: './tournament-entry-fee-payments-list.component.html',
+    styleUrls: ['./tournament-entry-fee-payments-list.component.css'],
+    standalone: false
 })
 export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;

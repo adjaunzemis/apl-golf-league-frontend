@@ -6,9 +6,10 @@ import { Tee } from "../../shared/tee.model";
 import { DivisionData } from "../../shared/division.model";
 
 @Component({
-  selector: 'app-division-list',
-  templateUrl: './division-list.component.html',
-  styleUrls: ['./division-list.component.css']
+    selector: 'app-division-list',
+    templateUrl: './division-list.component.html',
+    styleUrls: ['./division-list.component.css'],
+    standalone: false
 })
 export class DivisionListComponent implements OnInit, OnDestroy {
   isLoading = false;

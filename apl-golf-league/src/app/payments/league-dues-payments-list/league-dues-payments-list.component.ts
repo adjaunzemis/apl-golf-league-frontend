@@ -7,9 +7,10 @@ import { LeagueDuesPaymentData } from '../../shared/payment.model';
 import { AppConfigService } from "../../app-config.service";
 
 @Component({
-  selector: 'app-league-dues-payments-list',
-  templateUrl: './league-dues-payments-list.component.html',
-  styleUrls: ['./league-dues-payments-list.component.css']
+    selector: 'app-league-dues-payments-list',
+    templateUrl: './league-dues-payments-list.component.html',
+    styleUrls: ['./league-dues-payments-list.component.css'],
+    standalone: false
 })
 export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;

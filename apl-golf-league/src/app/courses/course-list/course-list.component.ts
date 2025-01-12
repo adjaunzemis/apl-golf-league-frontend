@@ -11,16 +11,17 @@ import { Tee } from '../../shared/tee.model';
 import { Hole } from '../../shared/hole.model';
 
 @Component({
-  selector: "app-course-list",
-  templateUrl: "./course-list.component.html",
-  styleUrls: ["./course-list.component.css"],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ])
-  ]
+    selector: "app-course-list",
+    templateUrl: "./course-list.component.html",
+    styleUrls: ["./course-list.component.css"],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ])
+    ],
+    standalone: false
 })
 export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = false;

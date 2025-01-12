@@ -5,9 +5,10 @@ import { TournamentsService } from '../tournaments.service';
 import { TournamentInfo } from '../../shared/tournament.model';
 
 @Component({
-  selector: 'app-tournament-history',
-  templateUrl: './tournament-history.component.html',
-  styleUrls: ['./tournament-history.component.css']
+    selector: 'app-tournament-history',
+    templateUrl: './tournament-history.component.html',
+    styleUrls: ['./tournament-history.component.css'],
+    standalone: false
 })
 export class TournamentHistoryComponent implements OnInit, OnDestroy {
   isLoading = true;

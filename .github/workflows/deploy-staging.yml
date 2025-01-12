@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Extract tag name
         id: get_tag
@@ -36,9 +36,9 @@ jobs:
           echo "Updated version to $NEW_VERSION in $FILE"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 22
 
       - name: Install Dependencies
         run: npm install
@@ -52,7 +52,7 @@ jobs:
         run: npm run build -- --configuration=staging
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: angular-build
           path: apl-golf-league/dist/apl-golf-league
@@ -63,19 +63,19 @@ jobs:
 
     steps:
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: angular-build
           path: ./artifacts
 
       - name: Deploy to HostGator via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
-          local-dir: ./artifacts/
+          local-dir: ./artifacts/browser/
           server-dir: /public_html/staging/
           protocol: ftp
           log-level: verbose

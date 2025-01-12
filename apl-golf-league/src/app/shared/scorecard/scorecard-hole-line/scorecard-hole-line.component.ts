@@ -4,9 +4,10 @@ import { HoleResultData } from '../../hole-result.model';
 import { Hole } from '../../hole.model';
 
 @Component({
-  selector: "app-scorecard-hole-line",
-  templateUrl: "./scorecard-hole-line.component.html",
-  styleUrls: ["./scorecard-hole-line.component.css"]
+    selector: "app-scorecard-hole-line",
+    templateUrl: "./scorecard-hole-line.component.html",
+    styleUrls: ["./scorecard-hole-line.component.css"],
+    standalone: false
 })
 export class ScorecardHoleLineComponent implements OnInit, OnChanges {
   @Input() holes: Hole[] = [];

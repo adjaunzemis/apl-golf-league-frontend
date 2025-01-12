@@ -4,9 +4,10 @@ import { HoleResultData } from "../../../shared/hole-result.model";
 import { RoundData } from "../../../shared/round.model";
 
 @Component({
-  selector: "app-average-score-line",
-  templateUrl: "./average-score-line.component.html",
-  styleUrls: ["./average-score-line.component.css"]
+    selector: "app-average-score-line",
+    templateUrl: "./average-score-line.component.html",
+    styleUrls: ["./average-score-line.component.css"],
+    standalone: false
 })
 export class AverageScoreLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData[];

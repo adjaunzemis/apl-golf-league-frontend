@@ -1,19 +1,20 @@
 import { Component, Inject } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { Golfer, GolferAffiliation } from "../../shared/golfer.model";
 
 @Component({
-  templateUrl: './golfer-create.component.html',
-  styleUrls: ['./golfer-create.component.css']
+    templateUrl: './golfer-create.component.html',
+    styleUrls: ['./golfer-create.component.css'],
+    standalone: false
 })
 export class GolferCreateComponent {
 
-  nameControl: FormControl = new FormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
-  affiliationControl: FormControl = new FormControl(this.data.affiliation, [Validators.required]);
-  emailControl: FormControl = new FormControl(this.data.email, [Validators.required, Validators.email]);
-  phoneControl: FormControl = new FormControl(this.data.phone, []);
+  nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
+  affiliationControl: UntypedFormControl = new UntypedFormControl(this.data.affiliation, [Validators.required]);
+  emailControl: UntypedFormControl = new UntypedFormControl(this.data.email, [Validators.required, Validators.email]);
+  phoneControl: UntypedFormControl = new UntypedFormControl(this.data.phone, []);
 
   affiliationOptions = [
     GolferAffiliation.APL_EMPLOYEE,

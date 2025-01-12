@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, Subscription  } from "rxjs";
@@ -14,9 +14,10 @@ import { Golfer } from "../../shared/golfer.model";
 declare var paypal: any;
 
 @Component({
-  selector: 'app-league-dues-payment',
-  templateUrl: './league-dues-payment.component.html',
-  styleUrls: ['./league-dues-payment.component.css']
+    selector: 'app-league-dues-payment',
+    templateUrl: './league-dues-payment.component.html',
+    styleUrls: ['./league-dues-payment.component.css'],
+    standalone: false
 })
 export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
@@ -34,14 +35,14 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   golferNameOptions: string[] = [];
   filteredGolferNameOptionsArray: Observable<string[]>[] = [];
 
-  golferPaymentsForm: FormGroup;
+  golferPaymentsForm: UntypedFormGroup;
 
   typeOptions = ['Flight Dues', 'Tournament-Only Dues'];
 
   isLoadingLeagueDuesList: boolean = true;
   isLoadingLeagueDuesPaymentInfoList: boolean = true;
 
-  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: FormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private golfersService: GolfersService) {}
+  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: UntypedFormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private golfersService: GolfersService) {}
 
   ngOnInit(): void {
     this.year = this.appConfigService.currentYear;
@@ -249,14 +250,14 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     return total;
   }
 
-  getGolferPaymentsArray(): FormArray {
-    return this.golferPaymentsForm.get('golferPayments') as FormArray;
+  getGolferPaymentsArray(): UntypedFormArray {
+    return this.golferPaymentsForm.get('golferPayments') as UntypedFormArray;
   }
 
   addNewGolferPaymentForm(): void {
     const newGolferPaymentForm = this.formBuilder.group({
-      golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
-      type: new FormControl("", [Validators.required])
+      golfer: new UntypedFormControl("", [Validators.required, this.checkGolferName.bind(this)]),
+      type: new UntypedFormControl("", [Validators.required])
     });
     // }, { validators: this.golferPaymentTypeValidator.bind(this) }); // TODO: re-enable or remove this validation
 
@@ -280,14 +281,14 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     return this.golferNameOptions.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  private checkGolferName(control: FormControl): { [s: string]: boolean } | null {
+  private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
       return { 'golferNameInvalid': true };
     }
     return null;
   }
 
-  private golferPaymentTypeValidator(group: FormGroup) {
+  private golferPaymentTypeValidator(group: UntypedFormGroup) {
     const golferControl = group.controls['golfer'];
     const golferName = golferControl.value.toLowerCase();
 

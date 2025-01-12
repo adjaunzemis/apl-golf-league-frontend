@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Observable, Subscription } from 'rxjs';
@@ -12,15 +12,16 @@ import { GolfersService } from "../golfers/golfers.service";
 import { GolferCreateComponent } from "../golfers/golfer-create/golfer-create.component";
 
 @Component({
-  templateUrl: './team-create.component.html',
-  styleUrls: ['./team-create.component.css']
+    templateUrl: './team-create.component.html',
+    styleUrls: ['./team-create.component.css'],
+    standalone: false
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
 
   updateMode: boolean = false;
 
-  teamNameControl: FormControl = new FormControl(this.data.teamName, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
-  newTeamForm: FormGroup
+  teamNameControl: UntypedFormControl = new UntypedFormControl(this.data.teamName, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
+  newTeamForm: UntypedFormGroup
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
@@ -30,7 +31,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   divisions: DivisionData[] = [];
 
-  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[], allowSubstitutes: boolean}, private formBuilder: FormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar, private golfersService: GolfersService) { }
+  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[], allowSubstitutes: boolean}, private formBuilder: UntypedFormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar, private golfersService: GolfersService) { }
 
   ngOnInit(): void {
     if (this.data.allowSubstitutes) {
@@ -133,15 +134,15 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  getTeamGolfersArray(): FormArray {
-    return this.newTeamForm.get('teamGolfers') as FormArray;
+  getTeamGolfersArray(): UntypedFormArray {
+    return this.newTeamForm.get('teamGolfers') as UntypedFormArray;
   }
 
   addNewTeamGolferForm(): void {
     const newTeamGolferForm = this.formBuilder.group({
-      golfer: new FormControl("", [Validators.required, this.checkGolferName.bind(this)]),
-      role: new FormControl("", Validators.required),
-      division: new FormControl("", Validators.required)
+      golfer: new UntypedFormControl("", [Validators.required, this.checkGolferName.bind(this)]),
+      role: new UntypedFormControl("", Validators.required),
+      division: new UntypedFormControl("", Validators.required)
     });
 
     this.filteredGolferOptionsArray.push(newTeamGolferForm.controls['golfer'].valueChanges.pipe(
@@ -172,7 +173,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
-  private checkGolferName(control: FormControl): { [s: string]: boolean } | null {
+  private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
       return { 'golferNameInvalid': true };
     }

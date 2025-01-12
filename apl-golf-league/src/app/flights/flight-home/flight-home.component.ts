@@ -11,9 +11,10 @@ import { AuthService } from '../../auth/auth.service';
 import { User } from '../../shared/user.model';
 
 @Component({
-  selector: 'app-flight-home',
-  templateUrl: './flight-home.component.html',
-  styleUrls: ['./flight-home.component.css']
+    selector: 'app-flight-home',
+    templateUrl: './flight-home.component.html',
+    styleUrls: ['./flight-home.component.css'],
+    standalone: false
 })
 export class FlightHomeComponent implements OnInit, OnDestroy {
   isLoading = true;

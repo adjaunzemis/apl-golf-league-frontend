@@ -4,9 +4,10 @@ import { MatchData } from "../../shared/match.model";
 import { RoundData } from "../../shared/round.model";
 
 @Component({
-  selector: "app-match-scorecard",
-  templateUrl: "./match-scorecard.component.html",
-  styleUrls: ["./match-scorecard.component.css"]
+    selector: "app-match-scorecard",
+    templateUrl: "./match-scorecard.component.html",
+    styleUrls: ["./match-scorecard.component.css"],
+    standalone: false
 })
 export class MatchScorecardComponent implements OnInit, OnChanges {
   @Input() match: MatchData;

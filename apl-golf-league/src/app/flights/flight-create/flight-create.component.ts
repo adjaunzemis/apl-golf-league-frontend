@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSelectChange } from '@angular/material/select';
 import { Subscription } from 'rxjs';
@@ -10,45 +10,46 @@ import { Course } from "../../shared/course.model";
 import { CoursesService } from "../../courses/courses.service";
 
 @Component({
-  templateUrl: './flight-create.component.html',
-  styleUrls: ['./flight-create.component.css']
+    templateUrl: './flight-create.component.html',
+    styleUrls: ['./flight-create.component.css'],
+    standalone: false
 })
 export class FlightCreateComponent implements OnInit {
 
-  nameControl: FormControl = new FormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
-  yearControl: FormControl = new FormControl(this.data.year, [Validators.required])
-  courseControl: FormControl = new FormControl(null, [Validators.required]) // TODO: Set default state from data input
-  logoUrlControl: FormControl = new FormControl(this.data.logo_url, [Validators.required]);
-  secretaryControl: FormControl = new FormControl(this.data.secretary, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
-  secretaryEmailControl: FormControl = new FormControl(this.data.secretary_email, [Validators.required, Validators.email]);
-  secretaryPhoneControl: FormControl = new FormControl(this.data.secretary_phone, []);
-  signupStartDateControl: FormControl = new FormControl(this.data.signup_start_date, [Validators.required]);
-  signupStopDateControl: FormControl = new FormControl(this.data.signup_stop_date, [Validators.required]);
-  startDateControl: FormControl = new FormControl(this.data.start_date, [Validators.required]);
-  weeksControl: FormControl = new FormControl(this.data.weeks, [Validators.required]);
-  teeTimesControl: FormControl = new FormControl(this.data.tee_times, []);
+  nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
+  yearControl: UntypedFormControl = new UntypedFormControl(this.data.year, [Validators.required])
+  courseControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]) // TODO: Set default state from data input
+  logoUrlControl: UntypedFormControl = new UntypedFormControl(this.data.logo_url, [Validators.required]);
+  secretaryControl: UntypedFormControl = new UntypedFormControl(this.data.secretary, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
+  secretaryEmailControl: UntypedFormControl = new UntypedFormControl(this.data.secretary_email, [Validators.required, Validators.email]);
+  secretaryPhoneControl: UntypedFormControl = new UntypedFormControl(this.data.secretary_phone, []);
+  signupStartDateControl: UntypedFormControl = new UntypedFormControl(this.data.signup_start_date, [Validators.required]);
+  signupStopDateControl: UntypedFormControl = new UntypedFormControl(this.data.signup_stop_date, [Validators.required]);
+  startDateControl: UntypedFormControl = new UntypedFormControl(this.data.start_date, [Validators.required]);
+  weeksControl: UntypedFormControl = new UntypedFormControl(this.data.weeks, [Validators.required]);
+  teeTimesControl: UntypedFormControl = new UntypedFormControl(this.data.tee_times, []);
   // lockedControl: FormControl = new FormControl(this.data.locked, [Validators.required]);
 
   // TODO: Make this more robust to varying numbers/types of divisions
-  division1NameControl: FormControl = new FormControl(this.data.divisions[0].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
-  division1GenderControl: FormControl = new FormControl(this.data.divisions[0].gender, [Validators.required]);
-  division1PrimaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
-  division1SecondaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
+  division1NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[0].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
+  division1GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[0].gender, [Validators.required]);
+  division1PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division1SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
-  division2NameControl: FormControl = new FormControl(this.data.divisions[1].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
-  division2GenderControl: FormControl = new FormControl(this.data.divisions[1].gender, [Validators.required]);
-  division2PrimaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
-  division2SecondaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
+  division2NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[1].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
+  division2GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[1].gender, [Validators.required]);
+  division2PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division2SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
-  division3NameControl: FormControl = new FormControl(this.data.divisions[2].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
-  division3GenderControl: FormControl = new FormControl(this.data.divisions[2].gender, [Validators.required]);
-  division3PrimaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
-  division3SecondaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
+  division3NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[2].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
+  division3GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[2].gender, [Validators.required]);
+  division3PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division3SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
-  division4NameControl: FormControl = new FormControl(this.data.divisions[3].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
-  division4GenderControl: FormControl = new FormControl(this.data.divisions[3].gender, [Validators.required]);
-  division4PrimaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
-  division4SecondaryTeeControl: FormControl = new FormControl(null, [Validators.required]);
+  division4NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[3].name, [Validators.required, Validators.pattern("^[a-zA-Z' ]*$")]);
+  division4GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[3].gender, [Validators.required]);
+  division4PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division4SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
   courseOptions: Course[] = [];
   courseListSub: Subscription

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSelectChange } from '@angular/material/select';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -20,9 +20,10 @@ import { HoleResultData } from '../../shared/hole-result.model';
 import { MatchesService } from '../../matches/matches.service';
 
 @Component({
-  selector: 'app-flight-match-create',
-  templateUrl: './flight-match-create.component.html',
-  styleUrls: ['./flight-match-create.component.css']
+    selector: 'app-flight-match-create',
+    templateUrl: './flight-match-create.component.html',
+    styleUrls: ['./flight-match-create.component.css'],
+    standalone: false
 })
 export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -41,7 +42,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   flightOptions: FlightInfo[] = [];
   selectedFlightInfo: FlightInfo;
 
-  flightSelector = new FormControl("");
+  flightSelector = new UntypedFormControl("");
   private flightDataSub: Subscription;
   selectedFlight: FlightData;
 

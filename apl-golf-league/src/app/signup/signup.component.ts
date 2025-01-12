@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Subscription } from 'rxjs';
 
 import { FlightData, FlightInfo } from '../shared/flight.model';
@@ -23,9 +23,10 @@ import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/leag
 import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entry-fees-payment/tournament-entry-fees-payment.component';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.css'],
+    standalone: false
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private currentYear: number;
@@ -47,8 +48,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   isLoadingSelectedFlightOrTournament = false;
   isSelectedSignupWindowOpen = false;
 
-  flightControl = new FormControl('', Validators.required);
-  tournamentControl = new FormControl('', Validators.required);
+  flightControl = new UntypedFormControl('', Validators.required);
+  tournamentControl = new UntypedFormControl('', Validators.required);
 
   private flightsSub: Subscription;
   flights: FlightInfo[] = [];

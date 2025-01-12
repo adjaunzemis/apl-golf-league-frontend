@@ -3,9 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FlightData } from '../../shared/flight.model';
 
 @Component({
-  selector: 'app-flight-schedule-matrix',
-  templateUrl: './flight-schedule-matrix.component.html',
-  styleUrls: ['./flight-schedule-matrix.component.css']
+    selector: 'app-flight-schedule-matrix',
+    templateUrl: './flight-schedule-matrix.component.html',
+    styleUrls: ['./flight-schedule-matrix.component.css'],
+    standalone: false
 })
 export class FlightScheduleMatrixComponent implements OnInit {
   @Input() flight: FlightData;

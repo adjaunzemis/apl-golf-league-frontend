@@ -19,10 +19,11 @@ import { TournamentInfo } from '../shared/tournament.model';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.css"],
-  providers: [SignupComponent]
+    selector: "app-header",
+    templateUrl: "./header.component.html",
+    styleUrls: ["./header.component.css"],
+    providers: [SignupComponent],
+    standalone: false
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   title = environment.title

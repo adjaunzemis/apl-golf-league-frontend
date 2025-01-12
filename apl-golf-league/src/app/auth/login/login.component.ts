@@ -1,18 +1,18 @@
-import { Subscription } from 'rxjs';
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: false
 })
 export class LoginComponent {
-  usernameControl = new FormControl("", Validators.required);
-  passwordControl = new FormControl("", [Validators.required]);
+  usernameControl = new UntypedFormControl("", Validators.required);
+  passwordControl = new UntypedFormControl("", [Validators.required]);
 
   constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
 

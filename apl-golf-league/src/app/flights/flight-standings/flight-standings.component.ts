@@ -2,9 +2,10 @@ import { FlightData } from 'src/app/shared/flight.model';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-flight-standings',
-  templateUrl: './flight-standings.component.html',
-  styleUrls: ['./flight-standings.component.css']
+    selector: 'app-flight-standings',
+    templateUrl: './flight-standings.component.html',
+    styleUrls: ['./flight-standings.component.css'],
+    standalone: false
 })
 export class FlightStandingsComponent implements OnInit {
   @Input() flight: FlightData;

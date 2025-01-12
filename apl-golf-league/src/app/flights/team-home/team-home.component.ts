@@ -7,9 +7,10 @@ import { MatchData } from '../../shared/match.model';
 import { FlightsService } from '../flights.service';
 
 @Component({
-  selector: 'app-team-home',
-  templateUrl: './team-home.component.html',
-  styleUrls: ['./team-home.component.css']
+    selector: 'app-team-home',
+    templateUrl: './team-home.component.html',
+    styleUrls: ['./team-home.component.css'],
+    standalone: false
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;

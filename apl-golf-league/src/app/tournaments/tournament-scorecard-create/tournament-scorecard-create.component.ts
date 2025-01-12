@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../../app-config.service';
@@ -18,9 +18,10 @@ import { HoleResultData } from '../../shared/hole-result.model';
 import { TournamentData, TournamentInfo } from '../../shared/tournament.model';
 
 @Component({
-  selector: 'app-tournament-scorecard-create',
-  templateUrl: './tournament-scorecard-create.component.html',
-  styleUrls: ['./tournament-scorecard-create.component.css']
+    selector: 'app-tournament-scorecard-create',
+    templateUrl: './tournament-scorecard-create.component.html',
+    styleUrls: ['./tournament-scorecard-create.component.css'],
+    standalone: false
 })
 export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -39,7 +40,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   tournamentOptions: TournamentInfo[] = [];
   selectedTournamentInfo: TournamentInfo;
 
-  tournamentSelector = new FormControl("");
+  tournamentSelector = new UntypedFormControl("");
   private tournamentDataSub: Subscription;
   selectedTournament: TournamentData;
 

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from "rxjs";
@@ -13,12 +13,13 @@ import { HoleData } from "src/app/shared/hole.model";
 @Component({
     selector: "app-course-create",
     templateUrl: "./course-create.component.html",
-    styleUrls: ["./course-create.component.css"]
+    styleUrls: ["./course-create.component.css"],
+    standalone: false
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
     isLoadingCourse = false;
 
-    courseForm: FormGroup;
+    courseForm: UntypedFormGroup;
 
     course: Course;
     private coursesSub: Subscription;
@@ -27,7 +28,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
     readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
 
-    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
+    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private router: Router, private formBuilder: UntypedFormBuilder, private snackBar: MatSnackBar) {}
 
     ngOnInit(): void {
         this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
@@ -51,13 +52,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         this.courseForm = this.createCourseForm();
     }
 
-    private createCourseForm(): FormGroup {
+    private createCourseForm(): UntypedFormGroup {
         return this.formBuilder.group({
-            name: new FormControl("", Validators.required),
-            year: new FormControl("", Validators.required),
-            address: new FormControl(""),
-            phone: new FormControl(""),
-            website: new FormControl(""),
+            name: new UntypedFormControl("", Validators.required),
+            year: new UntypedFormControl("", Validators.required),
+            address: new UntypedFormControl(""),
+            phone: new UntypedFormControl(""),
+            website: new UntypedFormControl(""),
             tracks: this.formBuilder.array([])
         });
     }
@@ -222,13 +223,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         this.courseForm.reset();
     }
 
-    getTracksArray(): FormArray {
-        return (this.courseForm.get('tracks') as FormArray);
+    getTracksArray(): UntypedFormArray {
+        return (this.courseForm.get('tracks') as UntypedFormArray);
     }
 
-    private createTrackForm(): FormGroup {
+    private createTrackForm(): UntypedFormGroup {
         return this.formBuilder.group({
-            name: new FormControl("", Validators.required),
+            name: new UntypedFormControl("", Validators.required),
             tees: this.formBuilder.array([])
         });
     }
@@ -242,17 +243,17 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         this.course?.tracks.splice(trIdx, 1)
     }
 
-    getTeesArray(trIdx: number): FormArray {
-        return (this.getTracksArray().at(trIdx).get('tees') as FormArray);
+    getTeesArray(trIdx: number): UntypedFormArray {
+        return (this.getTracksArray().at(trIdx).get('tees') as UntypedFormArray);
     }
 
-    private createTeeForm(): FormGroup {
+    private createTeeForm(): UntypedFormGroup {
         return this.formBuilder.group({
-            name: new FormControl("", Validators.required),
-            color: new FormControl("", Validators.required),
-            gender: new FormControl("", Validators.required),
-            rating: new FormControl("", Validators.required),
-            slope: new FormControl("", Validators.required),
+            name: new UntypedFormControl("", Validators.required),
+            color: new UntypedFormControl("", Validators.required),
+            gender: new UntypedFormControl("", Validators.required),
+            rating: new UntypedFormControl("", Validators.required),
+            slope: new UntypedFormControl("", Validators.required),
             holes: this.formBuilder.array([])
         });
     }
@@ -273,16 +274,16 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         this.course?.tracks[trIdx].tees.splice(tsIdx, 1)
     }
 
-    getHolesArray(trIdx: number, tsIdx: number): FormArray {
-        return (this.getTeesArray(trIdx).at(tsIdx).get('holes') as FormArray);
+    getHolesArray(trIdx: number, tsIdx: number): UntypedFormArray {
+        return (this.getTeesArray(trIdx).at(tsIdx).get('holes') as UntypedFormArray);
     }
 
-    private createHoleForm(holeNum: number): FormGroup {
+    private createHoleForm(holeNum: number): UntypedFormGroup {
         return this.formBuilder.group({
-            number: new FormControl(holeNum, Validators.required),
-            par: new FormControl("", Validators.required),
-            stroke_index: new FormControl("", Validators.required),
-            yardage: new FormControl("", Validators.required)
+            number: new UntypedFormControl(holeNum, Validators.required),
+            par: new UntypedFormControl("", Validators.required),
+            stroke_index: new UntypedFormControl("", Validators.required),
+            yardage: new UntypedFormControl("", Validators.required)
         });
     }
 
