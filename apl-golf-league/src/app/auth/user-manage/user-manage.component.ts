@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { AuthService } from '../auth.service';
-import { User, UserInfo } from '../../shared/user.model';
+import { User } from '../../shared/user.model';
 
 @Component({
   selector: 'app-login',

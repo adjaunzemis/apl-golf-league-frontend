@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from "@angular/core";
 import { animate, state, style, transition, trigger } from "@angular/animations";
-import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatSort } from "@angular/material/sort";
-import { MatLegacyCheckboxChange as MatCheckboxChange } from "@angular/material/legacy-checkbox";
+import { MatCheckboxChange } from "@angular/material/checkbox";
 import { Subscription } from "rxjs";
 
 import { CoursesService } from "../courses.service";
