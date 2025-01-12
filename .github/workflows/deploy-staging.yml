@@ -69,13 +69,13 @@ jobs:
           path: ./artifacts
 
       - name: Deploy to HostGator via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
-          local-dir: ./artifacts/
+          local-dir: ./artifacts/browser/
           server-dir: /public_html/staging/
           protocol: ftp
           log-level: verbose
