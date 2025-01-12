@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from "@angular/material/legacy-dialog";
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { Subscription } from 'rxjs';
 
 import { TournamentCreate } from "../../shared/tournament.model";
