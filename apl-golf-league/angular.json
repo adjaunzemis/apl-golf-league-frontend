@@ -101,10 +101,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "apl-golf-league:build:production"
+              "buildTarget": "apl-golf-league:build:production"
             },
             "development": {
-              "browserTarget": "apl-golf-league:build:development"
+              "buildTarget": "apl-golf-league:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -112,7 +112,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "apl-golf-league:build"
+            "buildTarget": "apl-golf-league:build"
           }
         },
         "test": {
