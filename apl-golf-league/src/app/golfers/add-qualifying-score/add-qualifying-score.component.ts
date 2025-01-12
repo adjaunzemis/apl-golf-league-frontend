@@ -8,9 +8,10 @@ import { Golfer } from "../../shared/golfer.model";
 import { GolfersService } from "../golfers.service";
 
 @Component({
-  selector: 'app-add-qualifying-score',
-  templateUrl: './add-qualifying-score.component.html',
-  styleUrls: ['./add-qualifying-score.component.css']
+    selector: 'app-add-qualifying-score',
+    templateUrl: './add-qualifying-score.component.html',
+    styleUrls: ['./add-qualifying-score.component.css'],
+    standalone: false
 })
 export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   isLoading = true;

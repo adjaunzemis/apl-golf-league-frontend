@@ -4,9 +4,10 @@ import { HoleResultData } from "../../hole-result.model";
 import { Hole } from "../../hole.model";
 
 @Component({
-  selector: "app-scorecard-tee-info",
-  templateUrl: "./scorecard-tee-info.component.html",
-  styleUrls: ["./scorecard-tee-info.component.css"]
+    selector: "app-scorecard-tee-info",
+    templateUrl: "./scorecard-tee-info.component.html",
+    styleUrls: ["./scorecard-tee-info.component.css"],
+    standalone: false
 })
 export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
   @Input() showDetails = false;

@@ -3,9 +3,10 @@ import { Component, OnInit } from "@angular/core";
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-playoff-bracket',
-  templateUrl: './playoff-bracket.component.html',
-  styleUrls: ['./playoff-bracket.component.css']
+    selector: 'app-playoff-bracket',
+    templateUrl: './playoff-bracket.component.html',
+    styleUrls: ['./playoff-bracket.component.css'],
+    standalone: false
 })
 export class PlayoffBracketComponent implements OnInit {
 

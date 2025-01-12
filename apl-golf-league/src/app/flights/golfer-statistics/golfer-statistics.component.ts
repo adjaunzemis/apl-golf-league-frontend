@@ -3,9 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TeamGolferData } from '../../shared/golfer.model';
 
 @Component({
-  selector: 'app-golfer-statistics',
-  templateUrl: './golfer-statistics.component.html',
-  styleUrls: ['./golfer-statistics.component.css']
+    selector: 'app-golfer-statistics',
+    templateUrl: './golfer-statistics.component.html',
+    styleUrls: ['./golfer-statistics.component.css'],
+    standalone: false
 })
 export class GolferStatisticsComponent implements OnInit {
   @Input() golfers: TeamGolferData[];

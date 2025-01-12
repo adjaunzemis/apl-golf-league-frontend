@@ -10,9 +10,10 @@ import { Committee, Officer } from './../shared/officer.model';
 import { OfficersService } from '../officers/officers.service';
 
 @Component({
-  selector: 'app-league-home',
-  templateUrl: './league-home.component.html',
-  styleUrls: ['./league-home.component.css']
+    selector: 'app-league-home',
+    templateUrl: './league-home.component.html',
+    styleUrls: ['./league-home.component.css'],
+    standalone: false
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
   private currentYear: number;

@@ -4,9 +4,10 @@ import { TournamentInfo } from '../../shared/tournament.model';
 import { TournamentTeamData } from '../../shared/team.model';
 
 @Component({
-  selector: 'app-tournament-standings',
-  templateUrl: './tournament-standings.component.html',
-  styleUrls: ['./tournament-standings.component.css']
+    selector: 'app-tournament-standings',
+    templateUrl: './tournament-standings.component.html',
+    styleUrls: ['./tournament-standings.component.css'],
+    standalone: false
 })
 export class TournamentStandingsComponent implements OnInit {
   @Input() tournament: TournamentInfo;

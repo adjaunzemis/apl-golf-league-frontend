@@ -10,9 +10,10 @@ import { GolferData, TeamGolferData } from '../../shared/golfer.model';
 import { RoundData } from '../../shared/round.model';
 
 @Component({
-  selector: 'app-golfer-home',
-  templateUrl: './golfer-home.component.html',
-  styleUrls: ['./golfer-home.component.css']
+    selector: 'app-golfer-home',
+    templateUrl: './golfer-home.component.html',
+    styleUrls: ['./golfer-home.component.css'],
+    standalone: false
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoadingGolferData = true;

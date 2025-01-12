@@ -23,9 +23,10 @@ import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/leag
 import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entry-fees-payment/tournament-entry-fees-payment.component';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.css'],
+    standalone: false
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private currentYear: number;

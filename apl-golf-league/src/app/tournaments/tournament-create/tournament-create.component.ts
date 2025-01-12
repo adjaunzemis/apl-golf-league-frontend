@@ -10,8 +10,9 @@ import { Course } from "../../shared/course.model";
 import { CoursesService } from "../../courses/courses.service";
 
 @Component({
-  templateUrl: './tournament-create.component.html',
-  styleUrls: ['./tournament-create.component.css']
+    templateUrl: './tournament-create.component.html',
+    styleUrls: ['./tournament-create.component.css'],
+    standalone: false
 })
 export class TournamentCreateComponent implements OnInit {
 

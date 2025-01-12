@@ -10,8 +10,9 @@ import { Course } from "../../shared/course.model";
 import { CoursesService } from "../../courses/courses.service";
 
 @Component({
-  templateUrl: './flight-create.component.html',
-  styleUrls: ['./flight-create.component.css']
+    templateUrl: './flight-create.component.html',
+    styleUrls: ['./flight-create.component.css'],
+    standalone: false
 })
 export class FlightCreateComponent implements OnInit {
 

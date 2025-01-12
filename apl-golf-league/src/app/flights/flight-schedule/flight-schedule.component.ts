@@ -7,9 +7,10 @@ import { MatchData, MatchSummary } from '../../shared/match.model';
 import { MatchesService } from '../../matches/matches.service';
 
 @Component({
-  selector: 'app-flight-schedule',
-  templateUrl: './flight-schedule.component.html',
-  styleUrls: ['./flight-schedule.component.css']
+    selector: 'app-flight-schedule',
+    templateUrl: './flight-schedule.component.html',
+    styleUrls: ['./flight-schedule.component.css'],
+    standalone: false
 })
 export class FlightScheduleComponent implements OnInit, OnDestroy{
   @Input() flight: FlightData;

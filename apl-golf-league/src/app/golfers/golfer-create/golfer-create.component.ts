@@ -5,8 +5,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Golfer, GolferAffiliation } from "../../shared/golfer.model";
 
 @Component({
-  templateUrl: './golfer-create.component.html',
-  styleUrls: ['./golfer-create.component.css']
+    templateUrl: './golfer-create.component.html',
+    styleUrls: ['./golfer-create.component.css'],
+    standalone: false
 })
 export class GolferCreateComponent {
 

@@ -14,9 +14,10 @@ import { Golfer } from "../../shared/golfer.model";
 declare var paypal: any;
 
 @Component({
-  selector: 'app-league-dues-payment',
-  templateUrl: './league-dues-payment.component.html',
-  styleUrls: ['./league-dues-payment.component.css']
+    selector: 'app-league-dues-payment',
+    templateUrl: './league-dues-payment.component.html',
+    styleUrls: ['./league-dues-payment.component.css'],
+    standalone: false
 })
 export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;

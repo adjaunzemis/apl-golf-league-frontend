@@ -3,9 +3,10 @@ import { Component, Input } from '@angular/core';
 import { RoundData } from '../../shared/round.model';
 
 @Component({
-  selector: 'app-combined-rounds-scorecard',
-  templateUrl: './combined-rounds-scorecard.component.html',
-  styleUrls: ['./combined-rounds-scorecard.component.css']
+    selector: 'app-combined-rounds-scorecard',
+    templateUrl: './combined-rounds-scorecard.component.html',
+    styleUrls: ['./combined-rounds-scorecard.component.css'],
+    standalone: false
 })
 export class CombinedRoundsScorecardComponent {
   @Input() rounds: RoundData[];

@@ -7,9 +7,10 @@ import { Golfer } from "../../shared/golfer.model";
 import { map, startWith } from "rxjs/operators";
 
 @Component({
-  selector: 'app-golfer-search',
-  templateUrl: './golfer-search.component.html',
-  styleUrls: ['./golfer-search.component.css']
+    selector: 'app-golfer-search',
+    templateUrl: './golfer-search.component.html',
+    styleUrls: ['./golfer-search.component.css'],
+    standalone: false
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;

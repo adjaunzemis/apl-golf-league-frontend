@@ -13,7 +13,8 @@ import { HoleData } from "src/app/shared/hole.model";
 @Component({
     selector: "app-course-create",
     templateUrl: "./course-create.component.html",
-    styleUrls: ["./course-create.component.css"]
+    styleUrls: ["./course-create.component.css"],
+    standalone: false
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
     isLoadingCourse = false;

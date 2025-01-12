@@ -3,9 +3,10 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { RoundData } from '../../round.model';
 
 @Component({
-  selector: 'app-scorecard-title-line',
-  templateUrl: './scorecard-title-line.component.html',
-  styleUrls: ['./scorecard-title-line.component.css']
+    selector: 'app-scorecard-title-line',
+    templateUrl: './scorecard-title-line.component.html',
+    styleUrls: ['./scorecard-title-line.component.css'],
+    standalone: false
 })
 export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData | RoundData[];

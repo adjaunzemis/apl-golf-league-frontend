@@ -16,9 +16,10 @@ import { TournamentData } from "../../shared/tournament.model";
 declare var paypal: any;
 
 @Component({
-  selector: 'app-tournament-entry-fees-payment',
-  templateUrl: './tournament-entry-fees-payment.component.html',
-  styleUrls: ['./tournament-entry-fees-payment.component.css']
+    selector: 'app-tournament-entry-fees-payment',
+    templateUrl: './tournament-entry-fees-payment.component.html',
+    styleUrls: ['./tournament-entry-fees-payment.component.css'],
+    standalone: false
 })
 export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;

@@ -3,9 +3,10 @@ import { Component, Input } from "@angular/core";
 import { RoundData } from "src/app/shared/round.model";
 
 @Component({
-  selector: "app-match-scorecard-blank-score-line",
-  templateUrl: "./match-scorecard-blank-score-line.component.html",
-  styleUrls: ["./match-scorecard-blank-score-line.component.css"]
+    selector: "app-match-scorecard-blank-score-line",
+    templateUrl: "./match-scorecard-blank-score-line.component.html",
+    styleUrls: ["./match-scorecard-blank-score-line.component.css"],
+    standalone: false
 })
 export class MatchScorecardBlankScoreLineComponent {
   @Input() topTeamRound: RoundData;

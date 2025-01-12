@@ -12,8 +12,9 @@ import { GolfersService } from "../golfers/golfers.service";
 import { GolferCreateComponent } from "../golfers/golfer-create/golfer-create.component";
 
 @Component({
-  templateUrl: './team-create.component.html',
-  styleUrls: ['./team-create.component.css']
+    templateUrl: './team-create.component.html',
+    styleUrls: ['./team-create.component.css'],
+    standalone: false
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
 

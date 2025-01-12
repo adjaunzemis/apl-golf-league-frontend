@@ -5,9 +5,10 @@ import { RoundData } from '../../shared/round.model';
 import { HoleResultData } from '../../shared/hole-result.model';
 
 @Component({
-  selector: 'app-tournament-scorecard',
-  templateUrl: './tournament-scorecard.component.html',
-  styleUrls: ['./tournament-scorecard.component.css']
+    selector: 'app-tournament-scorecard',
+    templateUrl: './tournament-scorecard.component.html',
+    styleUrls: ['./tournament-scorecard.component.css'],
+    standalone: false
 })
 export class TournamentScorecardComponent implements OnInit, OnChanges {
   @Input() tournament: TournamentInfo;

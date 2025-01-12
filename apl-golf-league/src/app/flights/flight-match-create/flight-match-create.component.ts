@@ -20,9 +20,10 @@ import { HoleResultData } from '../../shared/hole-result.model';
 import { MatchesService } from '../../matches/matches.service';
 
 @Component({
-  selector: 'app-flight-match-create',
-  templateUrl: './flight-match-create.component.html',
-  styleUrls: ['./flight-match-create.component.css']
+    selector: 'app-flight-match-create',
+    templateUrl: './flight-match-create.component.html',
+    styleUrls: ['./flight-match-create.component.css'],
+    standalone: false
 })
 export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   isLoading = true;

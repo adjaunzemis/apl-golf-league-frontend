@@ -4,9 +4,10 @@ import { HoleResultData } from "../../hole-result.model";
 import { RoundData } from "../../round.model";
 
 @Component({
-  selector: "app-scorecard-score-line",
-  templateUrl: "./scorecard-score-line.component.html",
-  styleUrls: ["./scorecard-score-line.component.css"]
+    selector: "app-scorecard-score-line",
+    templateUrl: "./scorecard-score-line.component.html",
+    styleUrls: ["./scorecard-score-line.component.css"],
+    standalone: false
 })
 export class ScorecardScoreLineComponent {
   @Input() round: RoundData;

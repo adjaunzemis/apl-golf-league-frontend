@@ -7,9 +7,10 @@ import { AuthService } from '../auth.service';
 import { User } from '../../shared/user.model';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './user-manage.component.html',
-  styleUrls: ['./user-manage.component.css']
+    selector: 'app-login',
+    templateUrl: './user-manage.component.html',
+    styleUrls: ['./user-manage.component.css'],
+    standalone: false
 })
 export class UserManageComponent implements OnInit, OnDestroy {
   private userSub: Subscription;

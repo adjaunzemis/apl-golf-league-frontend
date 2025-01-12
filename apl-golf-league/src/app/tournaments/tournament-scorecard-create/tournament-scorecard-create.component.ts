@@ -18,9 +18,10 @@ import { HoleResultData } from '../../shared/hole-result.model';
 import { TournamentData, TournamentInfo } from '../../shared/tournament.model';
 
 @Component({
-  selector: 'app-tournament-scorecard-create',
-  templateUrl: './tournament-scorecard-create.component.html',
-  styleUrls: ['./tournament-scorecard-create.component.css']
+    selector: 'app-tournament-scorecard-create',
+    templateUrl: './tournament-scorecard-create.component.html',
+    styleUrls: ['./tournament-scorecard-create.component.css'],
+    standalone: false
 })
 export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   isLoading = true;

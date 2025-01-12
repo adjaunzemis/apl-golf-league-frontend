@@ -13,9 +13,10 @@ import { User } from '../../shared/user.model';
 import { TournamentCreateComponent } from '../tournament-create/tournament-create.component';
 
 @Component({
-  selector: 'app-tournament-home',
-  templateUrl: './tournament-home.component.html',
-  styleUrls: ['./tournament-home.component.css']
+    selector: 'app-tournament-home',
+    templateUrl: './tournament-home.component.html',
+    styleUrls: ['./tournament-home.component.css'],
+    standalone: false
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
