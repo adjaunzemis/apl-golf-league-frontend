@@ -1,4 +1,4 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -51,16 +51,14 @@ import { TeamCreateComponent } from './signup/team-create.component'; // TODO: M
         DivisionsModule,
         AuthModule,
         PaymentsModule], providers: [
-        {
-            provide: APP_INITIALIZER,
-            multi: true,
-            deps: [AppConfigService],
-            useFactory: (appConfigService: AppConfigService) => {
+        provideAppInitializer(() => {
+        const initializerFn = ((appConfigService: AppConfigService) => {
                 return () => {
                     return appConfigService.loadAppConfig();
                 };
-            }
-        },
+            })(inject(AppConfigService));
+        return initializerFn();
+      }),
         {
             provide: HTTP_INTERCEPTORS,
             multi: true,
