@@ -14,9 +14,7 @@
       class="card card-small match-summary-card"
       [ngClass]="[
         match.home_score || match.away_score ? 'selectable' : '',
-        showScorecard && selectedMatchData && selectedMatchData.match_id === match.match_id
-          ? 'selected'
-          : '',
+        showScorecard && selectedMatchData && selectedMatchData.match_id === match.match_id ? 'selected' : '',
       ]"
       *ngFor="let match of selectedWeekOrRoundMatches"
       (click)="onSelectMatch(match)"
@@ -39,11 +37,6 @@
     class="full-width"
     [match]="selectedMatchData"
     [topTeamId]="selectedMatchData.home_team_id"
-    *ngIf="
-      !isLoadingSelectedMatchData &&
-      showScorecard &&
-      selectedMatchData &&
-      selectedMatchData.rounds.length > 0
-    "
+    *ngIf="!isLoadingSelectedMatchData && showScorecard && selectedMatchData && selectedMatchData.rounds.length > 0"
   ></app-match-scorecard>
 </div>

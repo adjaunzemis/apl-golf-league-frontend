@@ -10,7 +10,6 @@ import { MatchesService } from '../../matches/matches.service';
   selector: 'app-flight-schedule',
   templateUrl: './flight-schedule.component.html',
   styleUrls: ['./flight-schedule.component.css'],
-  standalone: false,
 })
 export class FlightScheduleComponent implements OnInit, OnDestroy {
   @Input() flight: FlightData;
@@ -70,7 +69,7 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
       return 1;
     } else {
       for (let week = this.flight.weeks; week > 1; week--) {
-        let weekStartDate = new Date(this.flight.start_date);
+        const weekStartDate = new Date(this.flight.start_date);
         weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
         if (this.currentDate >= weekStartDate) {
           return week;
@@ -83,10 +82,10 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
   private setWeekOrRoundOptions(): void {
     for (let week = 1; week <= this.flight.weeks; week++) {
       if (!this.isPlayoffFlight) {
-        let weekStartDate = new Date(this.flight.start_date);
+        const weekStartDate = new Date(this.flight.start_date);
         weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
 
-        let nextWeekStartDate = new Date(weekStartDate);
+        const nextWeekStartDate = new Date(weekStartDate);
         nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
 
         this.weekOrRoundOptions.push(
@@ -98,7 +97,7 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
             ' - ' +
             nextWeekStartDate.toLocaleString('default', { month: 'short' }) +
             ' ' +
-            nextWeekStartDate.getDate(),
+            nextWeekStartDate.getDate()
         );
       } else {
         let roundName: string;
@@ -122,7 +121,7 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
 
     this.selectedWeekOrRoundMatches = [];
     if (this.flight.matches) {
-      for (let match of this.flight.matches) {
+      for (const match of this.flight.matches) {
         if (match.week === this.selectedWeekOrRound) {
           this.selectedWeekOrRoundMatches.push(match);
         }

@@ -18,7 +18,7 @@ export class RoundsService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
+    private router: Router
   ) {}
 
   getRounds(golferId?: number, year?: number): void {

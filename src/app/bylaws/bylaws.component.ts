@@ -4,6 +4,5 @@ import { Component } from '@angular/core';
   selector: 'app-bylaws',
   templateUrl: './bylaws.component.html',
   styleUrls: ['./bylaws.component.css'],
-  standalone: false,
 })
 export class BylawsComponent {}

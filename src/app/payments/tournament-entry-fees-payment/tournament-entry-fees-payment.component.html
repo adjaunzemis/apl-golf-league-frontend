@@ -1,15 +1,11 @@
 <div class="content">
   <h1 mat-dialog-title>Pay Tournament Entry Fees</h1>
 
-  <mat-spinner
-    *ngIf="isLoadingTournament || isLoadingTournamentEntryFeePaymentInfoList"
-  ></mat-spinner>
+  <mat-spinner *ngIf="isLoadingTournament || isLoadingTournamentEntryFeePaymentInfoList"></mat-spinner>
 
   <p class="bold" *ngIf="!isLoadingTournament">Tournament: {{ tournament.name }}</p>
   <p class="bold" *ngIf="!isLoadingTournament">
-    Members: ${{ tournament.members_entry_fee }} USD | Non-Members: ${{
-      tournament.non_members_entry_fee
-    }}
+    Members: ${{ tournament.members_entry_fee }} USD | Non-Members: ${{ tournament.non_members_entry_fee }}
     USD
   </p>
 
@@ -35,15 +31,11 @@
             [matAutocomplete]="auto"
           />
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option
-              *ngFor="let name of filteredGolferNameOptionsArray[idx] | async"
-              [value]="name"
-              >{{ name }}</mat-option
-            >
+            <mat-option *ngFor="let name of filteredGolferNameOptionsArray[idx] | async" [value]="name">{{
+              name
+            }}</mat-option>
           </mat-autocomplete>
-          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')"
-            >Select a golfer</mat-error
-          >
+          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')">Select a golfer</mat-error>
           <mat-error *ngIf="golferPayment.get('golfer')?.hasError('golferNameInvalid')"
             >Golfer name is not valid</mat-error
           >
@@ -54,9 +46,7 @@
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')"
-            >Select an entry fee type</mat-error
-          >
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select an entry fee type</mat-error>
           <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')"
             >Entry fee type does not match golfer sign-up</mat-error
           >

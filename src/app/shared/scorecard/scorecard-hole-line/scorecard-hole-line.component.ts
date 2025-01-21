@@ -7,7 +7,6 @@ import { Hole } from '../../hole.model';
   selector: 'app-scorecard-hole-line',
   templateUrl: './scorecard-hole-line.component.html',
   styleUrls: ['./scorecard-hole-line.component.css'],
-  standalone: false,
 })
 export class ScorecardHoleLineComponent implements OnInit, OnChanges {
   @Input() holes: Hole[] = [];
@@ -23,7 +22,7 @@ export class ScorecardHoleLineComponent implements OnInit, OnChanges {
       this.holes = this.holeResultData.map(function (
         holeResult: HoleResultData,
         index: number,
-        array: HoleResultData[],
+        array: HoleResultData[]
       ) {
         return {
           id: holeResult.hole_id,

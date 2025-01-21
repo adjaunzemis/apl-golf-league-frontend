@@ -14,7 +14,6 @@ import { User } from '../../shared/user.model';
   selector: 'app-flight-home',
   templateUrl: './flight-home.component.html',
   styleUrls: ['./flight-home.component.css'],
-  standalone: false,
 })
 export class FlightHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -37,7 +36,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +49,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
 
     this.flightSub = this.flightsService.getFlightUpdateListener().subscribe((flightData) => {
       console.log(
-        `[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`,
+        `[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`
       );
       this.flight = flightData;
       this.isLoading = false;
@@ -64,9 +63,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe((params) => {
       if (params) {
         if (params.id) {
-          console.log(
-            '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
-          );
+          console.log('[FlightHomeComponent] Processing route with query parameter: id=' + params.id);
           this.flightsService.getFlight(params.id);
         }
       }
@@ -106,17 +103,11 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((flightData) => {
       if (flightData !== null && flightData !== undefined) {
         this.flightsService.updateFlight(flightData).subscribe((result) => {
-          console.log(
-            `[FlightHomeComponent] Successfully updated flight: ${result.name} (${result.year})`,
-          );
-          this.snackBar.open(
-            `Successfully updated flight: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
-          );
+          console.log(`[FlightHomeComponent] Successfully updated flight: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully updated flight: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar'],
+          });
 
           this.flightsService.getFlight(this.flight.id); // refresh flight data
         });

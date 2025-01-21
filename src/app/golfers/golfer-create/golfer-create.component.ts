@@ -7,7 +7,6 @@ import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
 @Component({
   templateUrl: './golfer-create.component.html',
   styleUrls: ['./golfer-create.component.css'],
-  standalone: false,
 })
 export class GolferCreateComponent {
   nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [
@@ -16,13 +15,8 @@ export class GolferCreateComponent {
     Validators.maxLength(25),
     Validators.pattern("^[a-zA-Z' ]*$"),
   ]);
-  affiliationControl: UntypedFormControl = new UntypedFormControl(this.data.affiliation, [
-    Validators.required,
-  ]);
-  emailControl: UntypedFormControl = new UntypedFormControl(this.data.email, [
-    Validators.required,
-    Validators.email,
-  ]);
+  affiliationControl: UntypedFormControl = new UntypedFormControl(this.data.affiliation, [Validators.required]);
+  emailControl: UntypedFormControl = new UntypedFormControl(this.data.email, [Validators.required, Validators.email]);
   phoneControl: UntypedFormControl = new UntypedFormControl(this.data.phone, []);
 
   affiliationOptions = [
@@ -35,7 +29,7 @@ export class GolferCreateComponent {
   constructor(
     public dialogRef: MatDialogRef<GolferCreateComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { name: string; affiliation: GolferAffiliation; email: string; phone: string },
+    public data: { name: string; affiliation: GolferAffiliation; email: string; phone: string }
   ) {}
 
   onSubmit(): void {

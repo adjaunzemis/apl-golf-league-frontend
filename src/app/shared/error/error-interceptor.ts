@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           panelClass: ['error-snackbar'],
         });
         return throwError(error);
-      }),
+      })
     );
   }
 }

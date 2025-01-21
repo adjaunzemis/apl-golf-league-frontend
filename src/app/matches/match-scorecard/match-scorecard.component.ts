@@ -7,7 +7,6 @@ import { RoundData } from '../../shared/round.model';
   selector: 'app-match-scorecard',
   templateUrl: './match-scorecard.component.html',
   styleUrls: ['./match-scorecard.component.css'],
-  standalone: false,
 })
 export class MatchScorecardComponent implements OnInit, OnChanges {
   @Input() match: MatchData;
@@ -33,10 +32,7 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
     if (!this.topTeamId) {
       this.topTeamId = this.match.home_team_id;
     }
-    this.bottomTeamId =
-      this.topTeamId === this.match.home_team_id
-        ? this.match.away_team_id
-        : this.match.home_team_id;
+    this.bottomTeamId = this.topTeamId === this.match.home_team_id ? this.match.away_team_id : this.match.home_team_id;
   }
 
   getMatchTitle(): string {
@@ -54,9 +50,7 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
 
   getRoundSubtitle(round: RoundData): string {
     return (
-      round.tee_name +
-      ' - Hcp: ' +
-      (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
+      round.tee_name + ' - Hcp: ' + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
     );
   }
 }

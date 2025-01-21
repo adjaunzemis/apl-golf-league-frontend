@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -12,9 +12,8 @@ import { CoursesService } from '../../courses/courses.service';
 @Component({
   templateUrl: './flight-create.component.html',
   styleUrls: ['./flight-create.component.css'],
-  standalone: false,
 })
-export class FlightCreateComponent implements OnInit {
+export class FlightCreateComponent implements OnInit, OnDestroy {
   nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [
     Validators.required,
     Validators.minLength(3),
@@ -23,9 +22,7 @@ export class FlightCreateComponent implements OnInit {
   ]);
   yearControl: UntypedFormControl = new UntypedFormControl(this.data.year, [Validators.required]);
   courseControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]); // TODO: Set default state from data input
-  logoUrlControl: UntypedFormControl = new UntypedFormControl(this.data.logo_url, [
-    Validators.required,
-  ]);
+  logoUrlControl: UntypedFormControl = new UntypedFormControl(this.data.logo_url, [Validators.required]);
   secretaryControl: UntypedFormControl = new UntypedFormControl(this.data.secretary, [
     Validators.required,
     Validators.pattern("^[a-zA-Z' ]*$"),
@@ -38,12 +35,8 @@ export class FlightCreateComponent implements OnInit {
   signupStartDateControl: UntypedFormControl = new UntypedFormControl(this.data.signup_start_date, [
     Validators.required,
   ]);
-  signupStopDateControl: UntypedFormControl = new UntypedFormControl(this.data.signup_stop_date, [
-    Validators.required,
-  ]);
-  startDateControl: UntypedFormControl = new UntypedFormControl(this.data.start_date, [
-    Validators.required,
-  ]);
+  signupStopDateControl: UntypedFormControl = new UntypedFormControl(this.data.signup_stop_date, [Validators.required]);
+  startDateControl: UntypedFormControl = new UntypedFormControl(this.data.start_date, [Validators.required]);
   weeksControl: UntypedFormControl = new UntypedFormControl(this.data.weeks, [Validators.required]);
   teeTimesControl: UntypedFormControl = new UntypedFormControl(this.data.tee_times, []);
   // lockedControl: FormControl = new FormControl(this.data.locked, [Validators.required]);
@@ -53,61 +46,41 @@ export class FlightCreateComponent implements OnInit {
     Validators.required,
     Validators.pattern("^[a-zA-Z' ]*$"),
   ]);
-  division1GenderControl: UntypedFormControl = new UntypedFormControl(
-    this.data.divisions[0].gender,
-    [Validators.required],
-  );
-  division1PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
+  division1GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[0].gender, [
     Validators.required,
   ]);
-  division1SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
-    Validators.required,
-  ]);
+  division1PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division1SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
   division2NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[1].name, [
     Validators.required,
     Validators.pattern("^[a-zA-Z' ]*$"),
   ]);
-  division2GenderControl: UntypedFormControl = new UntypedFormControl(
-    this.data.divisions[1].gender,
-    [Validators.required],
-  );
-  division2PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
+  division2GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[1].gender, [
     Validators.required,
   ]);
-  division2SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
-    Validators.required,
-  ]);
+  division2PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division2SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
   division3NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[2].name, [
     Validators.required,
     Validators.pattern("^[a-zA-Z' ]*$"),
   ]);
-  division3GenderControl: UntypedFormControl = new UntypedFormControl(
-    this.data.divisions[2].gender,
-    [Validators.required],
-  );
-  division3PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
+  division3GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[2].gender, [
     Validators.required,
   ]);
-  division3SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
-    Validators.required,
-  ]);
+  division3PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division3SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
   division4NameControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[3].name, [
     Validators.required,
     Validators.pattern("^[a-zA-Z' ]*$"),
   ]);
-  division4GenderControl: UntypedFormControl = new UntypedFormControl(
-    this.data.divisions[3].gender,
-    [Validators.required],
-  );
-  division4PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
+  division4GenderControl: UntypedFormControl = new UntypedFormControl(this.data.divisions[3].gender, [
     Validators.required,
   ]);
-  division4SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [
-    Validators.required,
-  ]);
+  division4PrimaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
+  division4SecondaryTeeControl: UntypedFormControl = new UntypedFormControl(null, [Validators.required]);
 
   courseOptions: Course[] = [];
   courseListSub: Subscription;
@@ -123,7 +96,7 @@ export class FlightCreateComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<FlightCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: FlightCreate,
-    private coursesService: CoursesService,
+    private coursesService: CoursesService
   ) {}
 
   ngOnInit(): void {
@@ -147,12 +120,10 @@ export class FlightCreateComponent implements OnInit {
     });
     this.coursesService.getCourses(true); // include inactive courses
 
-    this.selectedCourseSub = this.coursesService
-      .getSelectedCourseUpdateListener()
-      .subscribe((result) => {
-        this.selectedCourse = result;
-        this.updateDivisionOptions();
-      });
+    this.selectedCourseSub = this.coursesService.getSelectedCourseUpdateListener().subscribe((result) => {
+      this.selectedCourse = result;
+      this.updateDivisionOptions();
+    });
   }
 
   ngOnDestroy(): void {
@@ -169,34 +140,30 @@ export class FlightCreateComponent implements OnInit {
       .trim();
 
     // TODO: Fix hard-coding of 4 divisions
-    let flightDivisions: DivisionCreate[] = [];
+    const flightDivisions: DivisionCreate[] = [];
     flightDivisions.push({
-      id:
-        this.data.divisions[0] && this.data.divisions[0].id ? this.data.divisions[0].id : undefined,
+      id: this.data.divisions[0] && this.data.divisions[0].id ? this.data.divisions[0].id : undefined,
       name: this.division1NameControl.value.trim(),
       gender: this.division1GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeIdMap[this.division1PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeIdMap[this.division1SecondaryTeeControl.value],
     });
     flightDivisions.push({
-      id:
-        this.data.divisions[1] && this.data.divisions[1].id ? this.data.divisions[1].id : undefined,
+      id: this.data.divisions[1] && this.data.divisions[1].id ? this.data.divisions[1].id : undefined,
       name: this.division2NameControl.value.trim(),
       gender: this.division2GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeIdMap[this.division2PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeIdMap[this.division2SecondaryTeeControl.value],
     });
     flightDivisions.push({
-      id:
-        this.data.divisions[2] && this.data.divisions[2].id ? this.data.divisions[2].id : undefined,
+      id: this.data.divisions[2] && this.data.divisions[2].id ? this.data.divisions[2].id : undefined,
       name: this.division3NameControl.value.trim(),
       gender: this.division3GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeIdMap[this.division3PrimaryTeeControl.value],
       secondary_tee_id: this.divisionTeeIdMap[this.division3SecondaryTeeControl.value],
     });
     flightDivisions.push({
-      id:
-        this.data.divisions[3] && this.data.divisions[3].id ? this.data.divisions[3].id : undefined,
+      id: this.data.divisions[3] && this.data.divisions[3].id ? this.data.divisions[3].id : undefined,
       name: this.division4NameControl.value.trim(),
       gender: this.division4GenderControl.value.trim(),
       primary_tee_id: this.divisionTeeIdMap[this.division4PrimaryTeeControl.value],
@@ -244,7 +211,7 @@ export class FlightCreateComponent implements OnInit {
 
   private updateDivisionOptions(): void {
     // Update division tee options mappings
-    let teeIdDivisionMap: { [teeId: number]: string } = {};
+    const teeIdDivisionMap: { [teeId: number]: string } = {};
     this.divisionTeeIdMap = {};
     this.teeInfoOptions = [];
     for (const track of this.selectedCourse.tracks) {

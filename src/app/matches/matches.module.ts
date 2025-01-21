@@ -9,11 +9,7 @@ import { MatchScorecardComponent } from './match-scorecard/match-scorecard.compo
 import { MatchScorecardBlankScoreLineComponent } from './match-scorecard/match-scorecard-blank-score-line/match-scorecard-blank-score-line.component';
 
 @NgModule({
-  declarations: [
-    MatchScorecardComponent,
-    MatchScorecardScoreLineComponent,
-    MatchScorecardBlankScoreLineComponent,
-  ],
+  declarations: [MatchScorecardComponent, MatchScorecardScoreLineComponent, MatchScorecardBlankScoreLineComponent],
   imports: [CommonModule, RouterModule, AngularMaterialModule, ScorecardModule],
   exports: [MatchScorecardComponent, MatchScorecardBlankScoreLineComponent],
 })

@@ -19,7 +19,7 @@ export class AuthInterceptorService implements HttpInterceptor {
           headers: new HttpHeaders({ Authorization: `Bearer ${user.token}` }),
         });
         return next.handle(modifiedRequest);
-      }),
+      })
     );
   }
 }

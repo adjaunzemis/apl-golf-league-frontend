@@ -8,7 +8,6 @@ import { UserInfo } from '../../shared/user.model';
   selector: 'app-user-home',
   templateUrl: './user-home.component.html',
   styleUrls: ['./user-home.component.css'],
-  standalone: false,
 })
 export class UserHomeComponent implements OnInit {
   userInfo: UserInfo;

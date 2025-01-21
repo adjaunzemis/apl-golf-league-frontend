@@ -10,7 +10,6 @@ import { map, startWith } from 'rxjs/operators';
   selector: 'app-golfer-search',
   templateUrl: './golfer-search.component.html',
   styleUrls: ['./golfer-search.component.css'],
-  standalone: false,
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -48,7 +47,7 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
         } else {
           return this._filter(value);
         }
-      }),
+      })
     );
 
     this.golfersService.getAllGolfers();

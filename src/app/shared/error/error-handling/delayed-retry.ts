@@ -11,8 +11,8 @@ export function delayedRetry(delayMs: number, maxAttempts = DEFAULT_MAX_ATTEMPTS
       retryWhen((errors: Observable<any>) =>
         errors.pipe(
           delay(delayMs),
-          mergeMap((error) => (attempts++ > maxAttempts ? of(error) : throwError(error))),
-        ),
-      ),
+          mergeMap((error) => (attempts++ > maxAttempts ? of(error) : throwError(error)))
+        )
+      )
     );
 }

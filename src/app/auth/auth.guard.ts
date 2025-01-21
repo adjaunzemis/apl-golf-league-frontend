@@ -11,12 +11,12 @@ import { AuthService } from './auth.service';
 export class AuthGuard {
   constructor(
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    state: RouterStateSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this.authService.user.pipe(
       take(1),
@@ -26,7 +26,7 @@ export class AuthGuard {
           return true;
         }
         return this.router.createUrlTree(['/auth/login']);
-      }),
+      })
     );
   }
 }

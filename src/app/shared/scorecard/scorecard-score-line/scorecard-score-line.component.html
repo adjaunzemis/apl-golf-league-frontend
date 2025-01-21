@@ -2,9 +2,7 @@
   <tbody>
     <tr class="score">
       <td class="label" rowspan="1">
-        <a routerLink="/golfer" [queryParams]="{ id: round.golfer_id }" *ngIf="linkToGolferHome">{{
-          title
-        }}</a>
+        <a routerLink="/golfer" [queryParams]="{ id: round.golfer_id }" *ngIf="linkToGolferHome">{{ title }}</a>
         <span *ngIf="!linkToGolferHome">{{ title }}</span>
       </td>
       <td
@@ -24,8 +22,7 @@
             [ngClass]="{
               circle: !teamScore && getHoleRelativeScore(hole) < 0,
               square: !teamScore && getHoleRelativeScore(hole) > 0,
-              crosshatch:
-                !teamScore && (getHoleRelativeScore(hole) > 1 || getHoleRelativeScore(hole) < -1),
+              crosshatch: !teamScore && (getHoleRelativeScore(hole) > 1 || getHoleRelativeScore(hole) < -1),
             }"
             *ngIf="showScores"
           >
@@ -44,9 +41,7 @@
       </td>
       <td class="total" rowspan="2">
         <span *ngIf="showScores || enterScores">{{ getRoundScore() }}</span>
-        <span *ngIf="!teamScore && (showScores || enterScores)">
-          ({{ getRelativeScoreString() }})</span
-        >
+        <span *ngIf="!teamScore && (showScores || enterScores)"> ({{ getRelativeScoreString() }})</span>
       </td>
     </tr>
     <tr>

@@ -5,7 +5,6 @@ import { Component, Input, OnInit } from '@angular/core';
   selector: 'app-flight-standings',
   templateUrl: './flight-standings.component.html',
   styleUrls: ['./flight-standings.component.css'],
-  standalone: false,
 })
 export class FlightStandingsComponent implements OnInit {
   @Input() flight: FlightData;
@@ -25,7 +24,7 @@ export class FlightStandingsComponent implements OnInit {
       return;
     }
 
-    for (let match of this.flight.matches) {
+    for (const match of this.flight.matches) {
       if (!this.standingsData[match.home_team_id]) {
         this.standingsData[match.home_team_id] = new TeamStandingsData();
         this.standingsData[match.home_team_id].teamName = match.home_team_name;
@@ -45,7 +44,7 @@ export class FlightStandingsComponent implements OnInit {
       }
     }
 
-    for (var teamId in this.standingsData) {
+    for (const teamId in this.standingsData) {
       this.orderedTeamIds.push(parseInt(teamId));
     }
 
@@ -62,10 +61,7 @@ export class FlightStandingsComponent implements OnInit {
 
     this.standingsData[this.orderedTeamIds[0]].position = '1';
     for (let idx = 1; idx < this.orderedTeamIds.length; idx++) {
-      if (
-        this.getAveragePointsWon(this.orderedTeamIds[idx]) <
-        this.getAveragePointsWon(this.orderedTeamIds[idx - 1])
-      ) {
+      if (this.getAveragePointsWon(this.orderedTeamIds[idx]) < this.getAveragePointsWon(this.orderedTeamIds[idx - 1])) {
         this.standingsData[this.orderedTeamIds[idx]].position = (idx + 1).toString();
       } else {
         this.standingsData[this.orderedTeamIds[idx]].position = '';
@@ -86,7 +82,7 @@ export class FlightStandingsComponent implements OnInit {
     // Tie-breaker 1: head-to-head score
     let pointsWonTeam1 = 0;
     let pointsWonTeam2 = 0;
-    for (let match of this.flight.matches) {
+    for (const match of this.flight.matches) {
       if (match.home_team_id === teamId1 && match.away_team_id === teamId2) {
         pointsWonTeam1 += match.home_score;
         pointsWonTeam2 += match.away_score;

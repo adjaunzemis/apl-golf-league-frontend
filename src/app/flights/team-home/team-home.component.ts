@@ -10,7 +10,6 @@ import { FlightsService } from '../flights.service';
   selector: 'app-team-home',
   templateUrl: './team-home.component.html',
   styleUrls: ['./team-home.component.css'],
-  standalone: false,
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -25,17 +24,15 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private flightsService: FlightsService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.teamSub = this.flightsService
-      .getTeamUpdateListener()
-      .subscribe((result: TeamDataWithMatches) => {
-        console.log(`[TeamHomeComponent] Received team data`);
-        this.isLoading = false;
-        this.team = result;
-      });
+    this.teamSub = this.flightsService.getTeamUpdateListener().subscribe((result: TeamDataWithMatches) => {
+      console.log(`[TeamHomeComponent] Received team data`);
+      this.isLoading = false;
+      this.team = result;
+    });
 
     this.route.queryParams.subscribe((params) => {
       if (params) {

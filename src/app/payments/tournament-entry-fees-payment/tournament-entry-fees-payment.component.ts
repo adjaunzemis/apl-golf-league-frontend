@@ -1,11 +1,5 @@
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
@@ -23,13 +17,12 @@ import { Golfer } from '../../shared/golfer.model';
 import { TournamentsService } from '../../tournaments/tournaments.service';
 import { TournamentData } from '../../shared/tournament.model';
 
-declare var paypal: any;
+declare let paypal: any;
 
 @Component({
   selector: 'app-tournament-entry-fees-payment',
   templateUrl: './tournament-entry-fees-payment.component.html',
   styleUrls: ['./tournament-entry-fees-payment.component.css'],
-  standalone: false,
 })
 export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
@@ -63,7 +56,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     private appConfigService: AppConfigService,
     private paymentsService: PaymentsService,
     private tournamentsService: TournamentsService,
-    private golfersService: GolfersService,
+    private golfersService: GolfersService
   ) {}
 
   ngOnInit(): void {
@@ -81,12 +74,10 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     this.golfersService.getAllGolfers();
 
     // Initialize payments info subscriptions
-    this.tournamentSub = this.tournamentsService
-      .getTournamentUpdateListener()
-      .subscribe((result) => {
-        this.tournament = result;
-        this.isLoadingTournament = false;
-      });
+    this.tournamentSub = this.tournamentsService.getTournamentUpdateListener().subscribe((result) => {
+      this.tournament = result;
+      this.isLoadingTournament = false;
+    });
     this.tournamentsService.getTournament(this.tournamentId);
 
     this.tournamentEntryFeePaymentInfoListSub = this.paymentsService
@@ -141,14 +132,14 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
               {
                 duration: 10000,
                 panelClass: ['error-snackbar'],
-              },
+              }
             );
             return; // leave dialog box open
           }
 
           // Capture payment details in backend
           try {
-            let transactionItems: TournamentEntryFeePaypalTransactionItem[] = [];
+            const transactionItems: TournamentEntryFeePaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
               const golferControl = golferPaymentForm.get('golfer');
               const golferName = golferControl ? golferControl.value : 'unknown';
@@ -183,9 +174,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
                   }
                 }
                 if (paymentGolferId === -1) {
-                  console.error(
-                    `Unable to match golfer option for '${golferName}' - omitting from transaction!`,
-                  );
+                  console.error(`Unable to match golfer option for '${golferName}' - omitting from transaction!`);
                 } else {
                   transactionItems.push({
                     golfer_id: paymentGolferId,
@@ -199,7 +188,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
             const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : '';
             const payerEmail = order.payer?.email_address ? order.payer.email_address : '';
 
-            let transaction: TournamentEntryFeePaypalTransaction = {
+            const transaction: TournamentEntryFeePaypalTransaction = {
               year: this.year,
               tournament_id: this.tournamentId,
               amount: order.purchase_units[0].amount.value,
@@ -211,14 +200,12 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
               payer_email: payerEmail,
             };
 
-            this.paymentsService
-              .postTournamentEntryFeePaypalTransaction(transaction)
-              .subscribe(() => {
-                this.snackBar.open('Payment successful!', undefined, {
-                  duration: 5000,
-                  panelClass: ['success-snackbar'],
-                });
+            this.paymentsService.postTournamentEntryFeePaypalTransaction(transaction).subscribe(() => {
+              this.snackBar.open('Payment successful!', undefined, {
+                duration: 5000,
+                panelClass: ['success-snackbar'],
               });
+            });
           } catch (err) {
             this.snackBar.open(
               'ERROR: Payment was successful, but not recorded in our database - please contact treasurer or webmaster!',
@@ -226,7 +213,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
               {
                 duration: 10000,
                 panelClass: ['error-snackbar'],
-              },
+              }
             );
             console.log(err);
           }
@@ -241,14 +228,10 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
           });
         },
         onError: (err: any) => {
-          this.snackBar.open(
-            'Error processing PayPal payment - please contact treasurer or webmaster!',
-            undefined,
-            {
-              duration: 10000,
-              panelClass: ['error-snackbar'],
-            },
-          );
+          this.snackBar.open('Error processing PayPal payment - please contact treasurer or webmaster!', undefined, {
+            duration: 10000,
+            panelClass: ['error-snackbar'],
+          });
           console.error(err);
         },
       })
@@ -262,7 +245,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
+    const description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
 
     // TODO: Re-enable more verbose description with character limit?
     // let description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}) for `
@@ -308,8 +291,8 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
         startWith(''),
         map((value) => {
           return this._filter(value);
-        }),
-      ),
+        })
+      )
     );
 
     this.getGolferPaymentsArray().push(newGolferPaymentForm);
@@ -341,10 +324,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
     let golferPaymentTypeInvalid = true;
     for (const paymentInfo of this.tournamentEntryFeePaymentInfoList) {
-      if (
-        paymentInfo.golfer_name.toLowerCase() === golferName &&
-        paymentInfo.type.toLowerCase() === typeName
-      ) {
+      if (paymentInfo.golfer_name.toLowerCase() === golferName && paymentInfo.type.toLowerCase() === typeName) {
         golferPaymentTypeInvalid = false;
         break;
       }

@@ -16,7 +16,6 @@ import { TournamentCreateComponent } from '../tournament-create/tournament-creat
   selector: 'app-tournament-home',
   templateUrl: './tournament-home.component.html',
   styleUrls: ['./tournament-home.component.css'],
-  standalone: false,
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -41,7 +40,7 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -52,23 +51,19 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.tournamentSub = this.tournamentsService
-      .getTournamentUpdateListener()
-      .subscribe((tournamentData) => {
-        console.log(
-          `[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.id}`,
-        );
-        this.tournament = tournamentData;
-        this.compileRoundData();
-        this.isLoading = false;
-      });
+    this.tournamentSub = this.tournamentsService.getTournamentUpdateListener().subscribe((tournamentData) => {
+      console.log(
+        `[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.id}`
+      );
+      this.tournament = tournamentData;
+      this.compileRoundData();
+      this.isLoading = false;
+    });
 
     this.route.queryParams.subscribe((params) => {
       if (params) {
         if (params.id) {
-          console.log(
-            '[TournamentHomeComponent] Processing route with query parameter: id=' + params.id,
-          );
+          console.log('[TournamentHomeComponent] Processing route with query parameter: id=' + params.id);
           this.tournamentsService.getTournament(params.id);
         }
       }
@@ -107,9 +102,9 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   }
 
   private compileRoundData(): void {
-    for (let team of this.tournament.teams) {
+    for (const team of this.tournament.teams) {
       if (team.rounds) {
-        for (let round of team.rounds) {
+        for (const round of team.rounds) {
           this.rounds.push(round);
         }
       }
@@ -127,17 +122,11 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((tournamentData) => {
       if (tournamentData !== null && tournamentData !== undefined) {
         this.tournamentsService.updateTournament(tournamentData).subscribe((result) => {
-          console.log(
-            `[TournamentHomeComponent] Successfully updated tournament: ${result.name} (${result.year})`,
-          );
-          this.snackBar.open(
-            `Successfully updated tournament: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
-          );
+          console.log(`[TournamentHomeComponent] Successfully updated tournament: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully updated tournament: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar'],
+          });
 
           this.tournamentsService.getTournament(this.tournament.id); // refresh tournament data
         });

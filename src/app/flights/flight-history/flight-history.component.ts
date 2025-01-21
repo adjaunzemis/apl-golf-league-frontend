@@ -8,7 +8,6 @@ import { FlightInfo } from '../../shared/flight.model';
   selector: 'app-flight-history',
   templateUrl: './flight-history.component.html',
   styleUrls: ['./flight-history.component.css'],
-  standalone: false,
 })
 export class FlightHistoryComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -38,7 +37,7 @@ export class FlightHistoryComponent implements OnInit, OnDestroy {
   private sortFlightsByYear(): void {
     this.sortedYears = [];
     this.flightsSortedByYear = {};
-    for (let flight of this.flights) {
+    for (const flight of this.flights) {
       if (!this.flightsSortedByYear[flight.year]) {
         this.sortedYears.push(flight.year);
         this.flightsSortedByYear[flight.year] = [];

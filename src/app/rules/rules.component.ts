@@ -9,7 +9,6 @@ import { OfficersService } from '../officers/officers.service';
   selector: 'app-rules',
   templateUrl: './rules.component.html',
   styleUrls: ['./rules.component.css'],
-  standalone: false,
 })
 export class RulesComponent implements OnInit {
   private currentYear: number;
@@ -21,7 +20,7 @@ export class RulesComponent implements OnInit {
 
   constructor(
     private appConfigService: AppConfigService,
-    private officersService: OfficersService,
+    private officersService: OfficersService
   ) {}
 
   ngOnInit(): void {

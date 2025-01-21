@@ -7,7 +7,6 @@ import { RoundData } from '../../../shared/round.model';
   selector: 'app-average-score-line',
   templateUrl: './average-score-line.component.html',
   styleUrls: ['./average-score-line.component.css'],
-  standalone: false,
 })
 export class AverageScoreLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData[];
@@ -40,8 +39,7 @@ export class AverageScoreLineComponent implements OnInit, OnChanges {
           this.holeScores.push(this.getHoleScore(hole));
         } else {
           this.holeScores[holeIdx] =
-            this.holeScores[holeIdx] +
-            (this.getHoleScore(hole) - this.holeScores[holeIdx]) / roundNum;
+            this.holeScores[holeIdx] + (this.getHoleScore(hole) - this.holeScores[holeIdx]) / roundNum;
         }
       }
     }

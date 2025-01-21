@@ -10,10 +10,7 @@
     [holeResultData]="match.rounds[roundIdx].holes"
     [(selectedScoreMode)]="scoreMode"
   ></app-scorecard-hole-line>
-  <app-scorecard-tee-info
-    [holeResultData]="match.rounds[roundIdx].holes"
-    [showDetails]="true"
-  ></app-scorecard-tee-info>
+  <app-scorecard-tee-info [holeResultData]="match.rounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
 
   <ng-container *ngFor="let round of match.rounds">
     <app-scorecard-score-line

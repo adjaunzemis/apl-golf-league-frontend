@@ -23,7 +23,7 @@ export class TournamentsService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
+    private router: Router
   ) {}
 
   getTournamentsList(year?: number): void {
@@ -88,16 +88,10 @@ export class TournamentsService {
   }
 
   updateTournament(tournament: TournamentCreate): Observable<TournamentInfo> {
-    return this.http.put<TournamentInfo>(
-      environment.apiUrl + `tournaments/${tournament.id}`,
-      tournament,
-    );
+    return this.http.put<TournamentInfo>(environment.apiUrl + `tournaments/${tournament.id}`, tournament);
   }
 
   postRounds(tournamentInput: TournamentInput): Observable<RoundSummary[]> {
-    return this.http.post<RoundSummary[]>(
-      environment.apiUrl + `tournaments/rounds`,
-      tournamentInput,
-    );
+    return this.http.post<RoundSummary[]>(environment.apiUrl + `tournaments/rounds`, tournamentInput);
   }
 }

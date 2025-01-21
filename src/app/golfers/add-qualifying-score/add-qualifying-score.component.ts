@@ -1,12 +1,6 @@
 import { QualifyingScore } from './../../shared/qualifying-score.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  FormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, UntypedFormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, min, startWith } from 'rxjs/operators';
 
@@ -17,7 +11,6 @@ import { GolfersService } from '../golfers.service';
   selector: 'app-add-qualifying-score',
   templateUrl: './add-qualifying-score.component.html',
   styleUrls: ['./add-qualifying-score.component.css'],
-  standalone: false,
 })
 export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -105,7 +98,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
 
   constructor(
     private golfersService: GolfersService,
-    private formBuilder: UntypedFormBuilder,
+    private formBuilder: UntypedFormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -138,7 +131,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
           this.selectedGolfer = null;
         }
         return this._filter(golferName);
-      }),
+      })
     );
 
     this.golfersService.getAllGolfers();
@@ -225,7 +218,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     for (const holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
       adjustedGrossScore += Math.min(
         this.round1Group.get('scores')?.get('hole' + holeNum)?.value,
-        this.round1Group.get('pars')?.get('hole' + holeNum)?.value + 5,
+        this.round1Group.get('pars')?.get('hole' + holeNum)?.value + 5
       );
     }
     return adjustedGrossScore;
@@ -236,7 +229,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     for (const holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
       adjustedGrossScore += Math.min(
         this.round2Group.get('scores')?.get('hole' + holeNum)?.value,
-        this.round2Group.get('pars')?.get('hole' + holeNum)?.value + 5,
+        this.round2Group.get('pars')?.get('hole' + holeNum)?.value + 5
       );
     }
     return adjustedGrossScore;
@@ -281,7 +274,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     this.golfersService.postQualifyingScore(qualifyingScore).subscribe((result) => {
       this.golfersService.postQualifyingScore(qualifyingScore).subscribe((result) => {
         console.log(
-          `[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`,
+          `[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`
         );
         this.clearForm();
         this.isLoading = true;
@@ -338,7 +331,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     this.golfersService.postQualifyingScore(qualifyingScoreRound1).subscribe((result) => {
       this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe((result) => {
         console.log(
-          `[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`,
+          `[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`
         );
         this.clearForm();
         this.isLoading = true;

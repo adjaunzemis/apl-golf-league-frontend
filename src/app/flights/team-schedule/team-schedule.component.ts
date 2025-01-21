@@ -6,7 +6,6 @@ import { TeamDataWithMatches } from '../../shared/team.model';
   selector: 'app-team-schedule',
   templateUrl: './team-schedule.component.html',
   styleUrls: ['./team-schedule.component.css'],
-  standalone: false,
 })
 export class TeamScheduleComponent {
   @Input() team: TeamDataWithMatches;

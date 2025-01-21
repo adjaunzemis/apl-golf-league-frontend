@@ -10,7 +10,6 @@ import { User } from '../../shared/user.model';
   selector: 'app-login',
   templateUrl: './user-manage.component.html',
   styleUrls: ['./user-manage.component.css'],
-  standalone: false,
 })
 export class UserManageComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
@@ -20,14 +19,11 @@ export class UserManageComponent implements OnInit, OnDestroy {
   usernameControl = new UntypedFormControl('', Validators.required);
   oldPasswordControl = new UntypedFormControl('', [Validators.required]);
   newPasswordControl = new UntypedFormControl('', [Validators.required, Validators.minLength(6)]);
-  newPasswordRepeatControl = new UntypedFormControl('', [
-    Validators.required,
-    Validators.minLength(6),
-  ]);
+  newPasswordRepeatControl = new UntypedFormControl('', [Validators.required, Validators.minLength(6)]);
 
   constructor(
     private authService: AuthService,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -76,11 +72,7 @@ export class UserManageComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.checkControlValues()) {
       this.authService
-        .changePassword(
-          this.usernameControl.value,
-          this.oldPasswordControl.value,
-          this.newPasswordControl.value,
-        )
+        .changePassword(this.usernameControl.value, this.oldPasswordControl.value, this.newPasswordControl.value)
         .subscribe((result) => {
           console.log(`[UserManageComponent] Successfully changed password!`);
           this.snackBar.open(`Successfully changed password! Login with new password.`, undefined, {

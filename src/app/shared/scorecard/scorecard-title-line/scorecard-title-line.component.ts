@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import { RoundData } from '../../round.model';
 
@@ -14,7 +6,6 @@ import { RoundData } from '../../round.model';
   selector: 'app-scorecard-title-line',
   templateUrl: './scorecard-title-line.component.html',
   styleUrls: ['./scorecard-title-line.component.css'],
-  standalone: false,
 })
 export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData | RoundData[];
@@ -85,7 +76,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   private setTeeList(): void {
     this.tees = [];
     if (this.rounds instanceof Array) {
-      for (let round of this.rounds) {
+      for (const round of this.rounds) {
         const tee = {
           name: round.tee_name,
           gender: round.tee_gender,
@@ -97,9 +88,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
 
         // Remove duplicate tees
         this.tees = this.tees.reduce((tees: TeeInfo[], current: TeeInfo) => {
-          const teeIdx = tees.find(
-            (item) => item.name === current.name && item.gender === current.gender,
-          );
+          const teeIdx = tees.find((item) => item.name === current.name && item.gender === current.gender);
           if (!teeIdx) {
             return tees.concat([current]);
           }

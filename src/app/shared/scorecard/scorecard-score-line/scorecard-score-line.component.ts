@@ -7,7 +7,6 @@ import { RoundData } from '../../round.model';
   selector: 'app-scorecard-score-line',
   templateUrl: './scorecard-score-line.component.html',
   styleUrls: ['./scorecard-score-line.component.css'],
-  standalone: false,
 })
 export class ScorecardScoreLineComponent {
   @Input() round: RoundData;
@@ -29,20 +28,15 @@ export class ScorecardScoreLineComponent {
   }
 
   onGolferHandicapChanged(): void {
-    for (let hole of this.round.holes) {
-      hole.handicap_strokes = this.computeHandicapStrokes(
-        hole.stroke_index,
-        this.round.golfer_playing_handicap,
-      );
+    for (const hole of this.round.holes) {
+      hole.handicap_strokes = this.computeHandicapStrokes(hole.stroke_index, this.round.golfer_playing_handicap);
     }
     this.roundChange.emit(this.round);
   }
 
   getRoundScore(): number {
     if (this.scoreMode === 'adjusted gross') {
-      return this.round.holes
-        .map((hole) => hole.adjusted_gross_score)
-        .reduce((prev, next) => prev + next);
+      return this.round.holes.map((hole) => hole.adjusted_gross_score).reduce((prev, next) => prev + next);
     } else if (this.scoreMode === 'net') {
       return this.round.holes.map((hole) => hole.net_score).reduce((prev, next) => prev + next);
     } else {
@@ -87,8 +81,6 @@ export class ScorecardScoreLineComponent {
       // plus-handicap
       return -playingHandicap * 2 > 18 - strokeIndex ? -1 : 0;
     }
-    return (
-      Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0)
-    );
+    return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
   }
 }
