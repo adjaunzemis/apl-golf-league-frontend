@@ -4,7 +4,6 @@
   </button>
 
   <mat-menu #menu="matMenu">
-
     <button mat-menu-item routerLink="/auth/login" *ngIf="!isAuthenticated">
       <mat-icon>account_circle</mat-icon>
       <span>Login</span>
@@ -47,17 +46,29 @@
       <button mat-menu-item *ngFor="let tournament of tournaments" (click)="onPayEntryFees()">{{tournament.name}}</button>
     </mat-menu> -->
 
-    <button mat-menu-item routerLink="/flight/match/edit" *ngIf="isAuthenticated && currentUser?.edit_flights">
+    <button
+      mat-menu-item
+      routerLink="/flight/match/edit"
+      *ngIf="isAuthenticated && currentUser?.edit_flights"
+    >
       <mat-icon>sports_golf</mat-icon>
       <span>Post Flight Scores</span>
     </button>
 
-    <button mat-menu-item routerLink="/tournament/scores" *ngIf="isAuthenticated && currentUser?.edit_tournaments">
+    <button
+      mat-menu-item
+      routerLink="/tournament/scores"
+      *ngIf="isAuthenticated && currentUser?.edit_tournaments"
+    >
       <mat-icon>sports_golf</mat-icon>
       <span>Post Tournament Scores</span>
     </button>
 
-    <button mat-menu-item [matMenuTriggerFor]="treasury" *ngIf="isAuthenticated && currentUser?.edit_payments">
+    <button
+      mat-menu-item
+      [matMenuTriggerFor]="treasury"
+      *ngIf="isAuthenticated && currentUser?.edit_payments"
+    >
       <mat-icon>attach_money</mat-icon>
       <span>Treasury</span>
     </button>
@@ -68,16 +79,26 @@
     </mat-menu>
 
     <mat-menu #tournamentEntryFees="matMenu">
-      <button mat-menu-item *ngFor="let tournament of tournaments" routerLink="/fee-payments" [queryParams]="{'tournament_id': tournament.id}">{{tournament.name}}</button>
+      <button
+        mat-menu-item
+        *ngFor="let tournament of tournaments"
+        routerLink="/fee-payments"
+        [queryParams]="{ tournament_id: tournament.id }"
+      >
+        {{ tournament.name }}
+      </button>
     </mat-menu>
 
-    <button mat-menu-item [matMenuTriggerFor]="adminPanel" *ngIf="isAuthenticated && currentUser?.is_admin">
+    <button
+      mat-menu-item
+      [matMenuTriggerFor]="adminPanel"
+      *ngIf="isAuthenticated && currentUser?.is_admin"
+    >
       <mat-icon>settings</mat-icon>
       <span>Admin Panel</span>
     </button>
 
     <mat-menu #adminPanel="matMenu">
-
       <button mat-menu-item (click)="onAddNewGolfer()">
         <mat-icon>person_add</mat-icon>
         <span>Add Golfer</span>
@@ -107,18 +128,15 @@
         <mat-icon>settings</mat-icon>
         <span>Manage Users</span>
       </button>
-
     </mat-menu>
 
     <button mat-menu-item (click)="onLogout()" *ngIf="isAuthenticated">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
-
   </mat-menu>
 
   <span class="title">
     <a routerLink="">{{ title }}</a>
   </span>
-
 </mat-toolbar>

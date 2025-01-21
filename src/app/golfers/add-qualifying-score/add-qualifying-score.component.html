@@ -3,16 +3,25 @@
 
   <mat-form-field appearance="fill" class="input-field">
     <mat-label>Golfer</mat-label>
-    <input type="text" matInput required title="Start typing golfer name to autocomplete." [formControl]="golferControl" [matAutocomplete]="auto">
+    <input
+      type="text"
+      matInput
+      required
+      title="Start typing golfer name to autocomplete."
+      [formControl]="golferControl"
+      [matAutocomplete]="auto"
+    />
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let g of filteredGolferOptions | async" [value]="g.name">{{ g.name }}</mat-option>
+      <mat-option *ngFor="let g of filteredGolferOptions | async" [value]="g.name">{{
+        g.name
+      }}</mat-option>
     </mat-autocomplete>
   </mat-form-field>
 
   <div class="content" *ngIf="selectedGolfer">
     <div class="content" *ngIf="selectedGolfer.handicap_index !== null; else noHandicapIndex">
-      <p>Handicap Index: {{ selectedGolfer.handicap_index | number:'1.1-1' }}</p>
-      <p>Last Updated: {{ selectedGolfer.handicap_index_updated | date:'shortDate' }}</p>
+      <p>Handicap Index: {{ selectedGolfer.handicap_index | number: '1.1-1' }}</p>
+      <p>Last Updated: {{ selectedGolfer.handicap_index_updated | date: 'shortDate' }}</p>
     </div>
 
     <ng-template #noHandicapIndex>
@@ -25,7 +34,6 @@
       </mat-form-field>
 
       <div *ngIf="typeControl.value === 'Qualifying Round'">
-
         <ng-container [formGroup]="round1Group">
           <div>
             <h2>Round 1</h2>
@@ -33,24 +41,50 @@
 
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput required formControlName="datePlayed" [matDatepicker]="round1DatePlayed">
+            <input
+              matInput
+              required
+              formControlName="datePlayed"
+              [matDatepicker]="round1DatePlayed"
+            />
             <mat-datepicker-toggle matSuffix [for]="round1DatePlayed"></mat-datepicker-toggle>
             <mat-datepicker #round1DatePlayed></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="medium-input" appearance="fill">
             <mat-label>Course</mat-label>
-            <input type="text" matInput required formControlName="courseName" title="Enter course name." value="">
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="courseName"
+              title="Enter course name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Track</mat-label>
-            <input type="text" matInput required formControlName="trackName" title="Enter track name." value="">
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="trackName"
+              title="Enter track name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Tee</mat-label>
-            <input type="text" matInput required formControlName="teeName" title="Enter tee name." value="">
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="teeName"
+              title="Enter tee name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
@@ -63,17 +97,31 @@
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Rating</mat-label>
-            <input type="number" matInput required formControlName="teeRating" title="Enter tee rating." value="">
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeRating"
+              title="Enter tee rating."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Slope</mat-label>
-            <input type="number" matInput required formControlName="teeSlope" title="Enter tee slope." value="">
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeSlope"
+              title="Enter tee slope."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="long-input" appearance="fill">
             <mat-label>Comment</mat-label>
-            <input type="text" matInput formControlName="comment" title="Enter comment." value="">
+            <input type="text" matInput formControlName="comment" title="Enter comment." value="" />
           </mat-form-field>
 
           <div>
@@ -82,39 +130,39 @@
 
           <div formGroupName="pars">
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole1" value="">
+              <input type="number" matInput required formControlName="hole1" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole2" value="">
+              <input type="number" matInput required formControlName="hole2" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole3" value="">
+              <input type="number" matInput required formControlName="hole3" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole4" value="">
+              <input type="number" matInput required formControlName="hole4" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole5" value="">
+              <input type="number" matInput required formControlName="hole5" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole6" value="">
+              <input type="number" matInput required formControlName="hole6" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole7" value="">
+              <input type="number" matInput required formControlName="hole7" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole8" value="">
+              <input type="number" matInput required formControlName="hole8" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole9" value="">
+              <input type="number" matInput required formControlName="hole9" value="" />
             </mat-form-field>
           </div>
 
@@ -124,45 +172,49 @@
 
           <div formGroupName="scores">
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole1" value="">
+              <input type="number" matInput required formControlName="hole1" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole2" value="">
+              <input type="number" matInput required formControlName="hole2" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole3" value="">
+              <input type="number" matInput required formControlName="hole3" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole4" value="">
+              <input type="number" matInput required formControlName="hole4" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole5" value="">
+              <input type="number" matInput required formControlName="hole5" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole6" value="">
+              <input type="number" matInput required formControlName="hole6" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole7" value="">
+              <input type="number" matInput required formControlName="hole7" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole8" value="">
+              <input type="number" matInput required formControlName="hole8" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole9" value="">
+              <input type="number" matInput required formControlName="hole9" value="" />
             </mat-form-field>
           </div>
         </ng-container>
 
         <div class="content">
-          <span class="bold">Par: {{ computeRound1TotalPar() }} | Gross: {{ computeRound1TotalGrossScore() }} | A.G.: {{ computeRound1TotalAdjustedGrossScore() }} | Diff: {{ computeRound1ScoreDifferential() | number:'1.1-1'}}</span>
+          <span class="bold"
+            >Par: {{ computeRound1TotalPar() }} | Gross: {{ computeRound1TotalGrossScore() }} |
+            A.G.: {{ computeRound1TotalAdjustedGrossScore() }} | Diff:
+            {{ computeRound1ScoreDifferential() | number: '1.1-1' }}</span
+          >
         </div>
 
         <ng-container [formGroup]="round2Group">
@@ -172,24 +224,50 @@
 
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput required formControlName="datePlayed" [matDatepicker]="round2DatePlayed">
+            <input
+              matInput
+              required
+              formControlName="datePlayed"
+              [matDatepicker]="round2DatePlayed"
+            />
             <mat-datepicker-toggle matSuffix [for]="round2DatePlayed"></mat-datepicker-toggle>
             <mat-datepicker #round2DatePlayed></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="medium-input" appearance="fill">
             <mat-label>Course</mat-label>
-            <input type="text" matInput required formControlName="courseName" title="Enter course name." value="">
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="courseName"
+              title="Enter course name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Track</mat-label>
-            <input type="text" matInput required formControlName="trackName" title="Enter track name." value="">
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="trackName"
+              title="Enter track name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Tee</mat-label>
-            <input type="text" matInput required formControlName="teeName" title="Enter tee name." value="">
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="teeName"
+              title="Enter tee name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
@@ -202,17 +280,31 @@
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Rating</mat-label>
-            <input type="number" matInput required formControlName="teeRating" title="Enter tee rating." value="">
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeRating"
+              title="Enter tee rating."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Slope</mat-label>
-            <input type="number" matInput required formControlName="teeSlope" title="Enter tee slope." value="">
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeSlope"
+              title="Enter tee slope."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="long-input" appearance="fill">
             <mat-label>Comment</mat-label>
-            <input type="text" matInput formControlName="comment" title="Enter comment." value="">
+            <input type="text" matInput formControlName="comment" title="Enter comment." value="" />
           </mat-form-field>
 
           <div>
@@ -221,39 +313,39 @@
 
           <div formGroupName="pars">
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole1" value="">
+              <input type="number" matInput required formControlName="hole1" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole2" value="">
+              <input type="number" matInput required formControlName="hole2" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole3" value="">
+              <input type="number" matInput required formControlName="hole3" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole4" value="">
+              <input type="number" matInput required formControlName="hole4" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole5" value="">
+              <input type="number" matInput required formControlName="hole5" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole6" value="">
+              <input type="number" matInput required formControlName="hole6" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole7" value="">
+              <input type="number" matInput required formControlName="hole7" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole8" value="">
+              <input type="number" matInput required formControlName="hole8" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole9" value="">
+              <input type="number" matInput required formControlName="hole9" value="" />
             </mat-form-field>
           </div>
 
@@ -263,66 +355,89 @@
 
           <div formGroupName="scores">
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole1" value="">
+              <input type="number" matInput required formControlName="hole1" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole2" value="">
+              <input type="number" matInput required formControlName="hole2" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole3" value="">
+              <input type="number" matInput required formControlName="hole3" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole4" value="">
+              <input type="number" matInput required formControlName="hole4" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole5" value="">
+              <input type="number" matInput required formControlName="hole5" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole6" value="">
+              <input type="number" matInput required formControlName="hole6" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole7" value="">
+              <input type="number" matInput required formControlName="hole7" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole8" value="">
+              <input type="number" matInput required formControlName="hole8" value="" />
             </mat-form-field>
 
             <mat-form-field class="numeric-input" appearance="fill">
-              <input type="number" matInput required formControlName="hole9" value="">
+              <input type="number" matInput required formControlName="hole9" value="" />
             </mat-form-field>
           </div>
         </ng-container>
 
         <div class="content">
-          <span class="bold">Par: {{ computeRound2TotalPar() }} | Gross: {{ computeRound2TotalGrossScore() }} | A.G.: {{ computeRound2TotalAdjustedGrossScore() }} | Diff: {{ computeRound2ScoreDifferential() | number:'1.1-1'}}</span>
+          <span class="bold"
+            >Par: {{ computeRound2TotalPar() }} | Gross: {{ computeRound2TotalGrossScore() }} |
+            A.G.: {{ computeRound2TotalAdjustedGrossScore() }} | Diff:
+            {{ computeRound2ScoreDifferential() | number: '1.1-1' }}</span
+          >
         </div>
-
       </div>
 
       <div *ngIf="typeControl.value === 'Official Handicap Index'">
         <div>
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput required [formControl]="handicapIndexDateControl" [matDatepicker]="handicapDateValid">
+            <input
+              matInput
+              required
+              [formControl]="handicapIndexDateControl"
+              [matDatepicker]="handicapDateValid"
+            />
             <mat-datepicker-toggle matSuffix [for]="handicapDateValid"></mat-datepicker-toggle>
             <mat-datepicker #handicapDateValid></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Index</mat-label>
-            <input type="number" matInput required [formControl]="handicapIndexControl" placeholder="Ex. 4.6" title="Enter official handicap index." value="">
+            <input
+              type="number"
+              matInput
+              required
+              [formControl]="handicapIndexControl"
+              placeholder="Ex. 4.6"
+              title="Enter official handicap index."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="long-input" appearance="fill">
             <mat-label>Comment</mat-label>
-            <input type="text" matInput [formControl]="commentControl" placeholder="Ex. GHIN 1234567890" title="Enter comment." value="">
+            <input
+              type="text"
+              matInput
+              [formControl]="commentControl"
+              placeholder="Ex. GHIN 1234567890"
+              title="Enter comment."
+              value=""
+            />
           </mat-form-field>
         </div>
       </div>

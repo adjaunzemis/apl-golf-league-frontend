@@ -1,17 +1,26 @@
-import { Component, Input } from "@angular/core";
-import { CarouselContents } from "../shared/carousel-contents.model";
+import { Component, Input } from '@angular/core';
+import { CarouselContents } from '../shared/carousel-contents.model';
 
 @Component({
-    selector: 'app-carousel',
-    templateUrl: './carousel.component.html',
-    styleUrls: ['./carousel.component.css'],
-    standalone: false
+  selector: 'app-carousel',
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.css'],
+  standalone: false,
 })
 export class CarouselComponent {
   @Input() contents: CarouselContents[] = [
-    {"image_url": "/assets/apl_golf_logo.png", "image_position": "left", "title": "Title Here", "description": "Lorem ipsum..."},
-    {"image_url": "/assets/trophy.png"},
-    {"image_url": "/assets/courses/Greystone/logo.png", "image_position": "right", "title": "Title Only"}
+    {
+      image_url: '/assets/apl_golf_logo.png',
+      image_position: 'left',
+      title: 'Title Here',
+      description: 'Lorem ipsum...',
+    },
+    { image_url: '/assets/trophy.png' },
+    {
+      image_url: '/assets/courses/Greystone/logo.png',
+      image_position: 'right',
+      title: 'Title Only',
+    },
   ];
 
   currentIndex: number = 0;
@@ -35,7 +44,7 @@ export class CarouselComponent {
   }
 
   getCurrentImageUrl(): string {
-    return `url(${this.contents[this.currentIndex].image_url})`
+    return `url(${this.contents[this.currentIndex].image_url})`;
   }
 
   getCurrentImagePosition(): string {
@@ -64,5 +73,4 @@ export class CarouselComponent {
   getCurrentDescription(): string | undefined {
     return this.contents[this.currentIndex].description;
   }
-
 }

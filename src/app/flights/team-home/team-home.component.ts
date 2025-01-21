@@ -7,10 +7,10 @@ import { MatchData } from '../../shared/match.model';
 import { FlightsService } from '../flights.service';
 
 @Component({
-    selector: 'app-team-home',
-    templateUrl: './team-home.component.html',
-    styleUrls: ['./team-home.component.css'],
-    standalone: false
+  selector: 'app-team-home',
+  templateUrl: './team-home.component.html',
+  styleUrls: ['./team-home.component.css'],
+  standalone: false,
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -23,17 +23,21 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   focusedMatch: MatchData;
 
-  constructor(private flightsService: FlightsService, private route: ActivatedRoute) { }
+  constructor(
+    private flightsService: FlightsService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
-    this.teamSub = this.flightsService.getTeamUpdateListener()
+    this.teamSub = this.flightsService
+      .getTeamUpdateListener()
       .subscribe((result: TeamDataWithMatches) => {
         console.log(`[TeamHomeComponent] Received team data`);
         this.isLoading = false;
         this.team = result;
       });
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       if (params) {
         if (params.id) {
           console.log(`[TeamHomeComponent] Setting query parameter id=${params.id}`);
@@ -65,17 +69,16 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   }
 
   getMatchResult(score: number, opponentScore: number): string {
-    return score > opponentScore ? 'Win' : (score < opponentScore ? 'Loss' : 'Tie');
+    return score > opponentScore ? 'Win' : score < opponentScore ? 'Loss' : 'Tie';
   }
 
   getGolferEmailList(): string {
-    let emailList = "";
+    let emailList = '';
     for (const golfer of this.team.golfers) {
       if (golfer.golfer_email) {
-        emailList += golfer.golfer_email + ";"
+        emailList += golfer.golfer_email + ';';
       }
     }
     return emailList.substring(0, emailList.length - 1);
   }
-
 }

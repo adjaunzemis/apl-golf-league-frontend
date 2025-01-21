@@ -1,293 +1,347 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Subscription } from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
-import { CoursesService } from "../courses.service";
-import { Course, CourseData } from "src/app/shared/course.model";
-import { TeeData } from "src/app/shared/tee.model";
-import { TrackData } from "src/app/shared/track.model";
-import { HoleData } from "src/app/shared/hole.model";
+import { CoursesService } from '../courses.service';
+import { Course, CourseData } from 'src/app/shared/course.model';
+import { TeeData } from 'src/app/shared/tee.model';
+import { TrackData } from 'src/app/shared/track.model';
+import { HoleData } from 'src/app/shared/hole.model';
 
 @Component({
-    selector: "app-course-create",
-    templateUrl: "./course-create.component.html",
-    styleUrls: ["./course-create.component.css"],
-    standalone: false
+  selector: 'app-course-create',
+  templateUrl: './course-create.component.html',
+  styleUrls: ['./course-create.component.css'],
+  standalone: false,
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
-    isLoadingCourse = false;
+  isLoadingCourse = false;
 
-    courseForm: UntypedFormGroup;
+  courseForm: UntypedFormGroup;
 
-    course: Course;
-    private coursesSub: Subscription;
+  course: Course;
+  private coursesSub: Subscription;
 
-    private readonly NUM_HOLES_PER_TEE_SET = 9;
+  private readonly NUM_HOLES_PER_TEE_SET = 9;
 
-    readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
+  readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
 
-    constructor(private coursesService: CoursesService, private route: ActivatedRoute, private router: Router, private formBuilder: UntypedFormBuilder, private snackBar: MatSnackBar) {}
+  constructor(
+    private coursesService: CoursesService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private formBuilder: UntypedFormBuilder,
+    private snackBar: MatSnackBar,
+  ) {}
 
-    ngOnInit(): void {
-        this.coursesSub = this.coursesService.getSelectedCourseUpdateListener()
-            .subscribe(courseData => {
-                console.log("[CourseCreateComponent] Initializing forms for course '" + courseData.name + "' (id=" + courseData.id + ")");
-                this.course = courseData;
-                this.initFormsFromCourse(this.course);
-                this.isLoadingCourse = false;
+  ngOnInit(): void {
+    this.coursesSub = this.coursesService
+      .getSelectedCourseUpdateListener()
+      .subscribe((courseData) => {
+        console.log(
+          "[CourseCreateComponent] Initializing forms for course '" +
+            courseData.name +
+            "' (id=" +
+            courseData.id +
+            ')',
+        );
+        this.course = courseData;
+        this.initFormsFromCourse(this.course);
+        this.isLoadingCourse = false;
+      });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        if (params.id) {
+          console.log(
+            '[CourseCreateComponent] Processing route with query parameter: id=' + params.id,
+          );
+          this.isLoadingCourse = true;
+          this.coursesService.getCourse(params.id);
+        }
+      }
+    });
+
+    this.courseForm = this.createCourseForm();
+  }
+
+  private createCourseForm(): UntypedFormGroup {
+    return this.formBuilder.group({
+      name: new UntypedFormControl('', Validators.required),
+      year: new UntypedFormControl('', Validators.required),
+      address: new UntypedFormControl(''),
+      phone: new UntypedFormControl(''),
+      website: new UntypedFormControl(''),
+      tracks: this.formBuilder.array([]),
+    });
+  }
+
+  initFormsFromCourse(course: Course): void {
+    const courseData = {
+      name: course.name,
+      year: course.year,
+      address: course.address,
+      phone: course.phone,
+      website: course.website,
+      tracks: [] as {
+        name: string;
+        tees: {
+          name: string;
+          color: string;
+          gender: string;
+          rating: number;
+          slope: number;
+          holes: { number: number; par: number; stroke_index?: number; yardage?: number }[];
+        }[];
+      }[],
+    };
+
+    if (course.tracks) {
+      for (let trIdx = 0; trIdx < course.tracks.length; trIdx++) {
+        this.onAddTrack();
+
+        const track = course.tracks[trIdx];
+        courseData.tracks.push({
+          name: track.name,
+          tees: [] as {
+            name: string;
+            color: string;
+            gender: string;
+            rating: number;
+            slope: number;
+            holes: { number: number; par: number; stroke_index?: number; yardage?: number }[];
+          }[],
+        });
+
+        if (track.tees) {
+          for (let tsIdx = 0; tsIdx < track.tees.length; tsIdx++) {
+            this.onAddTee(trIdx, false);
+
+            const tee = track.tees[tsIdx];
+            courseData.tracks[trIdx].tees.push({
+              name: tee.name,
+              color: tee.color,
+              gender: tee.gender,
+              rating: tee.rating,
+              slope: tee.slope,
+              holes: [] as {
+                number: number;
+                par: number;
+                stroke_index?: number;
+                yardage?: number;
+              }[],
             });
 
-        this.route.queryParams.subscribe(params => {
-            if (params) {
-                if (params.id) {
-                    console.log("[CourseCreateComponent] Processing route with query parameter: id=" + params.id);
-                    this.isLoadingCourse = true;
-                    this.coursesService.getCourse(params.id);
-                }
+            if (tee.holes) {
+              for (let hIdx = 0; hIdx < tee.holes.length; hIdx++) {
+                this.onAddHole(trIdx, tsIdx, hIdx + 1);
+
+                const hole = tee.holes[hIdx];
+                courseData.tracks[trIdx].tees[tsIdx].holes.push({
+                  number: hole.number,
+                  par: hole.par,
+                  stroke_index: hole.stroke_index,
+                  yardage: hole.yardage,
+                });
+              }
             }
-        });
-
-        this.courseForm = this.createCourseForm();
+          }
+        }
+      }
     }
 
-    private createCourseForm(): UntypedFormGroup {
-        return this.formBuilder.group({
-            name: new UntypedFormControl("", Validators.required),
-            year: new UntypedFormControl("", Validators.required),
-            address: new UntypedFormControl(""),
-            phone: new UntypedFormControl(""),
-            website: new UntypedFormControl(""),
-            tracks: this.formBuilder.array([])
-        });
-    }
+    this.courseForm.setValue(courseData);
+  }
 
-    initFormsFromCourse(course: Course): void {
-        const courseData = {
-            name: course.name,
-            year: course.year,
-            address: course.address,
-            phone: course.phone,
-            website: course.website,
-            tracks: [] as { name: string, tees: { name: string, color: string, gender: string, rating: number, slope: number, holes: { number: number, par: number, stroke_index?: number, yardage?: number }[] }[] }[]
+  ngOnDestroy(): void {
+    this.coursesSub.unsubscribe();
+  }
+
+  onSubmitCourse(): void {
+    if (this.courseForm.valid) {
+      const courseData: CourseData = {
+        name: this.courseForm.value.name,
+        year: this.courseForm.value.year,
+        address: this.courseForm.value.address,
+        phone: this.courseForm.value.phone,
+        website: this.courseForm.value.website,
+        tracks: [],
+      };
+
+      for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
+        const trackForm = this.courseForm.value.tracks[trIdx];
+        const track: TrackData = {
+          name: trackForm.name,
+          tees: [],
         };
 
-        if (course.tracks) {
-            for (let trIdx = 0; trIdx < course.tracks.length; trIdx++) {
-                this.onAddTrack();
+        for (let tsIdx = 0; tsIdx < trackForm.tees.length; tsIdx++) {
+          const teeForm = trackForm.tees[tsIdx];
+          const tee: TeeData = {
+            name: teeForm.name,
+            color: teeForm.color,
+            gender: teeForm.gender,
+            rating: +teeForm.rating,
+            slope: +teeForm.slope,
+            holes: [],
+          };
 
-                const track = course.tracks[trIdx];
-                courseData.tracks.push({
-                    name: track.name,
-                    tees: [] as { name: string, color: string, gender: string, rating: number, slope: number, holes: { number: number, par: number, stroke_index?: number, yardage?: number }[] }[]
-                });
-
-                if (track.tees) {
-                    for (let tsIdx = 0; tsIdx < track.tees.length; tsIdx++) {
-                        this.onAddTee(trIdx, false);
-
-                        const tee = track.tees[tsIdx];
-                        courseData.tracks[trIdx].tees.push({
-                            name: tee.name,
-                            color: tee.color,
-                            gender: tee.gender,
-                            rating: tee.rating,
-                            slope: tee.slope,
-                            holes: [] as { number: number, par: number, stroke_index?: number, yardage?: number }[]
-                        });
-
-                        if (tee.holes) {
-                            for (let hIdx = 0; hIdx < tee.holes.length; hIdx++) {
-                                this.onAddHole(trIdx, tsIdx, hIdx + 1);
-
-                                const hole = tee.holes[hIdx];
-                                courseData.tracks[trIdx].tees[tsIdx].holes.push({
-                                    number: hole.number,
-                                    par: hole.par,
-                                    stroke_index: hole.stroke_index,
-                                    yardage: hole.yardage
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        this.courseForm.setValue(courseData);
-    }
-
-
-    ngOnDestroy(): void {
-        this.coursesSub.unsubscribe();
-    }
-
-    onSubmitCourse(): void {
-        if (this.courseForm.valid) {
-            const courseData: CourseData = {
-                name: this.courseForm.value.name,
-                year: this.courseForm.value.year,
-                address: this.courseForm.value.address,
-                phone: this.courseForm.value.phone,
-                website: this.courseForm.value.website,
-                tracks: []
+          for (let hIdx = 0; hIdx < teeForm.holes.length; hIdx++) {
+            const holeForm = teeForm.holes[hIdx];
+            const hole: HoleData = {
+              number: +holeForm.number,
+              par: +holeForm.par,
+              stroke_index: +holeForm.stroke_index,
+              yardage: +holeForm.yardage,
             };
 
-            for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
-                const trackForm = this.courseForm.value.tracks[trIdx];
-                const track: TrackData = {
-                    name: trackForm.name,
-                    tees: []
-                };
+            tee.holes?.push(hole);
+          }
 
-                for (let tsIdx = 0; tsIdx < trackForm.tees.length; tsIdx++) {
-                    const teeForm = trackForm.tees[tsIdx];
-                    const tee: TeeData = {
-                        name: teeForm.name,
-                        color: teeForm.color,
-                        gender: teeForm.gender,
-                        rating: +teeForm.rating,
-                        slope: +teeForm.slope,
-                        holes: []
-                    };
+          track.tees?.push(tee);
+        }
 
-                    for (let hIdx = 0; hIdx < teeForm.holes.length; hIdx++) {
-                        const holeForm = teeForm.holes[hIdx];
-                        const hole: HoleData = {
-                            number: +holeForm.number,
-                            par: +holeForm.par,
-                            stroke_index: +holeForm.stroke_index,
-                            yardage: +holeForm.yardage
-                        }
+        courseData.tracks?.push(track);
+      }
 
-                        tee.holes?.push(hole);
-                    }
+      // Push course to database
+      if (this.course === undefined) {
+        // Create new course
+        this.coursesService.createCourse(courseData).subscribe((courseResponse) => {
+          this.snackBar.open(
+            `Successfully created course: ${courseResponse.name} (${courseResponse.year})`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
+          this.router.navigate(['courses/']);
+        });
+      } else {
+        // Add ids to course data
+        courseData.id = this.course.id;
+        for (let trackData of courseData.tracks) {
+          trackData.course_id = courseData.id;
+          const trackMatches = this.course.tracks.filter((track) => track.name === trackData.name);
+          for (const trackMatch of trackMatches) {
+            trackData.id = trackMatch.id;
 
-                    track.tees?.push(tee);
-                }
+            for (let teeData of trackData.tees) {
+              teeData.track_id = trackData.id;
+              const teeMatches = trackMatch.tees.filter(
+                (tee) => tee.name === teeData.name && tee.gender === teeData.gender,
+              );
+              for (const teeMatch of teeMatches) {
+                teeData.id = teeMatch.id;
 
-                courseData.tracks?.push(track);
-            }
-
-            // Push course to database
-            if (this.course === undefined) {
-              // Create new course
-              this.coursesService.createCourse(courseData).subscribe(courseResponse => {
-                this.snackBar.open(`Successfully created course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
-                  duration: 5000,
-                  panelClass: ['success-snackbar']
-                });
-                this.router.navigate(["courses/"]);
-              });
-            } else {
-              // Add ids to course data
-              courseData.id = this.course.id;
-              for (let trackData of courseData.tracks) {
-                trackData.course_id = courseData.id
-                const trackMatches = this.course.tracks.filter((track) => track.name === trackData.name);
-                for (const trackMatch of trackMatches) {
-                  trackData.id = trackMatch.id;
-
-                  for (let teeData of trackData.tees) {
-                    teeData.track_id = trackData.id;
-                    const teeMatches = trackMatch.tees.filter((tee) => tee.name === teeData.name && tee.gender === teeData.gender);
-                    for (const teeMatch of teeMatches) {
-                      teeData.id = teeMatch.id;
-
-                      for (let holeData of teeData.holes) {
-                        holeData.tee_id = teeData.id;
-                        const holeMatches = teeMatch.holes.filter((hole) => hole.number === holeData.number);
-                        for (const holeMatch of holeMatches) {
-                          holeData.id = holeMatch.id;
-                        }
-                      }
-                    }
+                for (let holeData of teeData.holes) {
+                  holeData.tee_id = teeData.id;
+                  const holeMatches = teeMatch.holes.filter(
+                    (hole) => hole.number === holeData.number,
+                  );
+                  for (const holeMatch of holeMatches) {
+                    holeData.id = holeMatch.id;
                   }
                 }
               }
-
-              // Update existing course
-              this.coursesService.updateCourse(courseData).subscribe(courseResponse => {
-                this.snackBar.open(`Successfully updated course: ${courseResponse.name} (${courseResponse.year})`, undefined, {
-                  duration: 5000,
-                  panelClass: ['success-snackbar']
-                });
-                this.router.navigate(["courses/"]);
-              });
             }
+          }
         }
-    }
 
-    onClearCourse(): void {
-        this.courseForm.reset();
-    }
-
-    getTracksArray(): UntypedFormArray {
-        return (this.courseForm.get('tracks') as UntypedFormArray);
-    }
-
-    private createTrackForm(): UntypedFormGroup {
-        return this.formBuilder.group({
-            name: new UntypedFormControl("", Validators.required),
-            tees: this.formBuilder.array([])
+        // Update existing course
+        this.coursesService.updateCourse(courseData).subscribe((courseResponse) => {
+          this.snackBar.open(
+            `Successfully updated course: ${courseResponse.name} (${courseResponse.year})`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
+          this.router.navigate(['courses/']);
         });
+      }
     }
+  }
 
-    onAddTrack(): void {
-        this.getTracksArray().push(this.createTrackForm());
+  onClearCourse(): void {
+    this.courseForm.reset();
+  }
+
+  getTracksArray(): UntypedFormArray {
+    return this.courseForm.get('tracks') as UntypedFormArray;
+  }
+
+  private createTrackForm(): UntypedFormGroup {
+    return this.formBuilder.group({
+      name: new UntypedFormControl('', Validators.required),
+      tees: this.formBuilder.array([]),
+    });
+  }
+
+  onAddTrack(): void {
+    this.getTracksArray().push(this.createTrackForm());
+  }
+
+  onRemoveTrack(trIdx: number): void {
+    this.getTracksArray().removeAt(trIdx);
+    this.course?.tracks.splice(trIdx, 1);
+  }
+
+  getTeesArray(trIdx: number): UntypedFormArray {
+    return this.getTracksArray().at(trIdx).get('tees') as UntypedFormArray;
+  }
+
+  private createTeeForm(): UntypedFormGroup {
+    return this.formBuilder.group({
+      name: new UntypedFormControl('', Validators.required),
+      color: new UntypedFormControl('', Validators.required),
+      gender: new UntypedFormControl('', Validators.required),
+      rating: new UntypedFormControl('', Validators.required),
+      slope: new UntypedFormControl('', Validators.required),
+      holes: this.formBuilder.array([]),
+    });
+  }
+
+  onAddTee(trIdx: number, addDefaultHoles: boolean): void {
+    this.getTeesArray(trIdx).push(this.createTeeForm());
+
+    if (addDefaultHoles) {
+      const tsIdx = this.getTeesArray(trIdx).length - 1;
+      for (let hIdx = 0; hIdx < this.NUM_HOLES_PER_TEE_SET; hIdx++) {
+        this.onAddHole(trIdx, tsIdx, hIdx + 1);
+      }
     }
+  }
 
-    onRemoveTrack(trIdx: number): void {
-        this.getTracksArray().removeAt(trIdx);
-        this.course?.tracks.splice(trIdx, 1)
-    }
+  onRemoveTee(trIdx: number, tsIdx: number): void {
+    this.getTeesArray(trIdx).removeAt(tsIdx);
+    this.course?.tracks[trIdx].tees.splice(tsIdx, 1);
+  }
 
-    getTeesArray(trIdx: number): UntypedFormArray {
-        return (this.getTracksArray().at(trIdx).get('tees') as UntypedFormArray);
-    }
+  getHolesArray(trIdx: number, tsIdx: number): UntypedFormArray {
+    return this.getTeesArray(trIdx).at(tsIdx).get('holes') as UntypedFormArray;
+  }
 
-    private createTeeForm(): UntypedFormGroup {
-        return this.formBuilder.group({
-            name: new UntypedFormControl("", Validators.required),
-            color: new UntypedFormControl("", Validators.required),
-            gender: new UntypedFormControl("", Validators.required),
-            rating: new UntypedFormControl("", Validators.required),
-            slope: new UntypedFormControl("", Validators.required),
-            holes: this.formBuilder.array([])
-        });
-    }
+  private createHoleForm(holeNum: number): UntypedFormGroup {
+    return this.formBuilder.group({
+      number: new UntypedFormControl(holeNum, Validators.required),
+      par: new UntypedFormControl('', Validators.required),
+      stroke_index: new UntypedFormControl('', Validators.required),
+      yardage: new UntypedFormControl('', Validators.required),
+    });
+  }
 
-    onAddTee(trIdx: number, addDefaultHoles: boolean): void {
-        this.getTeesArray(trIdx).push(this.createTeeForm());
-
-        if (addDefaultHoles) {
-            const tsIdx = this.getTeesArray(trIdx).length - 1;
-            for (let hIdx = 0; hIdx < this.NUM_HOLES_PER_TEE_SET; hIdx++) {
-                this.onAddHole(trIdx, tsIdx, hIdx + 1);
-            }
-        }
-    }
-
-    onRemoveTee(trIdx: number, tsIdx: number): void {
-        this.getTeesArray(trIdx).removeAt(tsIdx);
-        this.course?.tracks[trIdx].tees.splice(tsIdx, 1)
-    }
-
-    getHolesArray(trIdx: number, tsIdx: number): UntypedFormArray {
-        return (this.getTeesArray(trIdx).at(tsIdx).get('holes') as UntypedFormArray);
-    }
-
-    private createHoleForm(holeNum: number): UntypedFormGroup {
-        return this.formBuilder.group({
-            number: new UntypedFormControl(holeNum, Validators.required),
-            par: new UntypedFormControl("", Validators.required),
-            stroke_index: new UntypedFormControl("", Validators.required),
-            yardage: new UntypedFormControl("", Validators.required)
-        });
-    }
-
-    onAddHole(trIdx: number, tsIdx: number, holeNum: number): void {
-        this.getHolesArray(trIdx, tsIdx).push(this.createHoleForm(holeNum));
-    }
+  onAddHole(trIdx: number, tsIdx: number, holeNum: number): void {
+    this.getHolesArray(trIdx, tsIdx).push(this.createHoleForm(holeNum));
+  }
 }

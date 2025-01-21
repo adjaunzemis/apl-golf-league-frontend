@@ -27,48 +27,54 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
 import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 
-@NgModule({ declarations: [
-        AppComponent,
-        HeaderComponent,
-        FooterComponent,
-        LeagueHomeComponent,
-        RulesComponent,
-        HandicapsComponent,
-        CarouselComponent,
-        SignupComponent,
-        TeamCreateComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        AngularMaterialModule,
-        CoursesModule,
-        RoundsModule,
-        FlightsModule,
-        GolfersModule,
-        MatchesModule,
-        TournamentsModule,
-        DivisionsModule,
-        AuthModule,
-        PaymentsModule], providers: [
-        provideAppInitializer(() => {
-        const initializerFn = ((appConfigService: AppConfigService) => {
-                return () => {
-                    return appConfigService.loadAppConfig();
-                };
-            })(inject(AppConfigService));
-        return initializerFn();
-      }),
-        {
-            provide: HTTP_INTERCEPTORS,
-            multi: true,
-            useClass: AuthInterceptorService
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            multi: true,
-            useClass: ErrorInterceptor
-        },
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
-export class AppModule { }
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    LeagueHomeComponent,
+    RulesComponent,
+    HandicapsComponent,
+    CarouselComponent,
+    SignupComponent,
+    TeamCreateComponent,
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    AngularMaterialModule,
+    CoursesModule,
+    RoundsModule,
+    FlightsModule,
+    GolfersModule,
+    MatchesModule,
+    TournamentsModule,
+    DivisionsModule,
+    AuthModule,
+    PaymentsModule,
+  ],
+  providers: [
+    provideAppInitializer(() => {
+      const initializerFn = ((appConfigService: AppConfigService) => {
+        return () => {
+          return appConfigService.loadAppConfig();
+        };
+      })(inject(AppConfigService));
+      return initializerFn();
+    }),
+    {
+      provide: HTTP_INTERCEPTORS,
+      multi: true,
+      useClass: AuthInterceptorService,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      multi: true,
+      useClass: ErrorInterceptor,
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
+})
+export class AppModule {}

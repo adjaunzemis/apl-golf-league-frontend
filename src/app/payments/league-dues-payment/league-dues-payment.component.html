@@ -1,24 +1,52 @@
 <div class="content">
-
   <h1 mat-dialog-title>Pay League Dues</h1>
 
-  <p class="bold">Flight Dues: ${{ leagueDuesFlight }} USD | Tournament-Only Dues: ${{ leagueDuesTournamentOnly }} USD</p>
-  <p class="italic" style="margin-bottom: 16px;">Note: "Flight Dues" grant eligibility for both flight and tournament play</p>
+  <p class="bold">
+    Flight Dues: ${{ leagueDuesFlight }} USD | Tournament-Only Dues: ${{
+      leagueDuesTournamentOnly
+    }}
+    USD
+  </p>
+  <p class="italic" style="margin-bottom: 16px">
+    Note: "Flight Dues" grant eligibility for both flight and tournament play
+  </p>
 
   <mat-spinner *ngIf="isLoadingLeagueDuesList || isLoadingLeagueDuesPaymentInfoList"></mat-spinner>
 
-  <form style="margin-top: 8px;" [formGroup]="golferPaymentsForm" (keydown.enter)="$event.preventDefault()" *ngIf="!isLoadingLeagueDuesList && !isLoadingLeagueDuesPaymentInfoList">
-    <div formArrayName="golferPayments" *ngFor="let golferPayment of getGolferPaymentsArray().controls; let idx = index">
+  <form
+    style="margin-top: 8px"
+    [formGroup]="golferPaymentsForm"
+    (keydown.enter)="$event.preventDefault()"
+    *ngIf="!isLoadingLeagueDuesList && !isLoadingLeagueDuesPaymentInfoList"
+  >
+    <div
+      formArrayName="golferPayments"
+      *ngFor="let golferPayment of getGolferPaymentsArray().controls; let idx = index"
+    >
       <div formGroupName="{{ idx }}">
-
         <mat-form-field appearance="fill" class="long-field">
           <mat-label>Golfer</mat-label>
-          <input type="text" matInput required title="Start typing golfer name to autocomplete." formControlName="golfer" [matAutocomplete]="auto">
+          <input
+            type="text"
+            matInput
+            required
+            title="Start typing golfer name to autocomplete."
+            formControlName="golfer"
+            [matAutocomplete]="auto"
+          />
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let name of filteredGolferNameOptionsArray[idx] | async" [value]="name">{{ name }}</mat-option>
+            <mat-option
+              *ngFor="let name of filteredGolferNameOptionsArray[idx] | async"
+              [value]="name"
+              >{{ name }}</mat-option
+            >
           </mat-autocomplete>
-          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')">Select a golfer</mat-error>
-          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('golferNameInvalid')">Golfer name is not valid</mat-error>
+          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')"
+            >Select a golfer</mat-error
+          >
+          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('golferNameInvalid')"
+            >Golfer name is not valid</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="short-field">
@@ -26,23 +54,41 @@
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select a dues type</mat-error>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')">Dues type does not match golfer sign-up</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')"
+            >Select a dues type</mat-error
+          >
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')"
+            >Dues type does not match golfer sign-up</mat-error
+          >
         </mat-form-field>
 
-        <button mat-raised-button color="warn" (click)="removeNewGolferPaymentForm(idx)" [disabled]="getGolferPaymentsArray().length < 2">-</button>
-        <button mat-raised-button color="primary" (click)="addNewGolferPaymentForm()" *ngIf="idx === getGolferPaymentsArray().length - 1">+</button>
-
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="removeNewGolferPaymentForm(idx)"
+          [disabled]="getGolferPaymentsArray().length < 2"
+        >
+          -
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addNewGolferPaymentForm()"
+          *ngIf="idx === getGolferPaymentsArray().length - 1"
+        >
+          +
+        </button>
       </div>
     </div>
   </form>
 
   <div>
-    <h3>Total: ${{ getPaymentTotalAmount() | number : '1.2-2' }}</h3>
+    <h3>Total: ${{ getPaymentTotalAmount() | number: '1.2-2' }}</h3>
   </div>
 
-  <p class="italic bold" style="color: red; margin-bottom: 16px;" *ngIf="!golferPaymentsForm.valid">Complete form before selecting payment option!</p>
+  <p class="italic bold" style="color: red; margin-bottom: 16px" *ngIf="!golferPaymentsForm.valid">
+    Complete form before selecting payment option!
+  </p>
 
   <div #paypal></div>
-
 </div>

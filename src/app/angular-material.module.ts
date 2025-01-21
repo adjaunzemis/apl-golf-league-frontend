@@ -53,8 +53,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSnackBarModule,
     MatCheckboxModule,
   ],
-  providers: [
-    MatNativeDateModule
-  ]
+  providers: [MatNativeDateModule],
 })
 export class AngularMaterialModule {}

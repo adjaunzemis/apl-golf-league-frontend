@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 import { AppConfigService } from '../app-config.service';
@@ -19,15 +19,15 @@ import { TournamentInfo } from '../shared/tournament.model';
 import { environment } from 'src/environments/environment';
 
 @Component({
-    selector: "app-header",
-    templateUrl: "./header.component.html",
-    styleUrls: ["./header.component.css"],
-    providers: [SignupComponent],
-    standalone: false
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css'],
+  providers: [SignupComponent],
+  standalone: false,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  title = environment.title
-  
+  title = environment.title;
+
   isAuthenticated = false;
   private userSub: Subscription;
   currentUser: User | null = null;
@@ -41,41 +41,49 @@ export class HeaderComponent implements OnInit, OnDestroy {
   tournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
-  constructor(private authService: AuthService, private appConfigService: AppConfigService, private golfersService: GolfersService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private signupComponent: SignupComponent, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(
+    private authService: AuthService,
+    private appConfigService: AppConfigService,
+    private golfersService: GolfersService,
+    private flightsService: FlightsService,
+    private tournamentsService: TournamentsService,
+    private signupComponent: SignupComponent,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe(user => {
+    this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !user ? false : true;
       if (this.isAuthenticated) {
         this.currentUser = user;
       }
     });
 
-    this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
-      .subscribe(result => {
-        const golferOptions = result.sort((a: Golfer, b: Golfer) => {
-          if (a.name < b.name) {
-            return -1;
-          }
-          if (a.name > b.name) {
-            return 1;
-          }
-          return 0;
-        });
-        this.golferNameOptions = golferOptions.map(golfer => golfer.name);
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
+      const golferOptions = result.sort((a: Golfer, b: Golfer) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
       });
+      this.golferNameOptions = golferOptions.map((golfer) => golfer.name);
+    });
 
     this.golfersService.getAllGolfers();
 
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener()
-      .subscribe(result => {
-        this.flights = result.flights;
-      });
+    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
+      this.flights = result.flights;
+    });
 
     this.flightsService.getFlightsList(this.appConfigService.currentYear);
 
-    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
-      .subscribe(result => {
+    this.tournamentsSub = this.tournamentsService
+      .getTournamentsListUpdateListener()
+      .subscribe((result) => {
         this.tournaments = result.tournaments;
       });
 
@@ -111,30 +119,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
         name: '',
         affiliation: GolferAffiliation.APL_EMPLOYEE,
         email: '',
-        phone: ''
-      }
+        phone: '',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(golferData => {
+    dialogRef.afterClosed().subscribe((golferData) => {
       if (golferData !== null && golferData !== undefined) {
         const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
         if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
           this.snackBar.open(`Golfer with name '${golferData.name}' already exists!`, undefined, {
             duration: 5000,
-            panelClass: ['error-snackbar']
+            panelClass: ['error-snackbar'],
           });
           return;
         }
 
-        this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email !== '' ? golferData.email : null, golferData.phone !== '' ? golferData.phone : null).subscribe(result => {
-          console.log(`[HeaderComponent] Successfully added golfer: ${result.name}`);
-          this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
+        this.golfersService
+          .createGolfer(
+            golferData.name,
+            golferData.affiliation,
+            golferData.email !== '' ? golferData.email : null,
+            golferData.phone !== '' ? golferData.phone : null,
+          )
+          .subscribe((result) => {
+            console.log(`[HeaderComponent] Successfully added golfer: ${result.name}`);
+            this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            });
 
-          this.golfersService.getAllGolfers(); // refresh golfer name options
-        });
+            this.golfersService.getAllGolfers(); // refresh golfer name options
+          });
       }
     });
   }
@@ -149,45 +164,55 @@ export class HeaderComponent implements OnInit, OnDestroy {
         weeks: 18, // typical season length
         divisions: [
           {
-            name: "Middle",
-            gender: "Men's"
+            name: 'Middle',
+            gender: "Men's",
           },
           {
-            name: "Senior",
-            gender: "Men's"
+            name: 'Senior',
+            gender: "Men's",
           },
           {
-            name: "Super-Senior",
-            gender: "Men's"
+            name: 'Super-Senior',
+            gender: "Men's",
           },
           {
-            name: "Forward",
-            gender: "Ladies'"
-          }
-        ]
-      }
+            name: 'Forward',
+            gender: "Ladies'",
+          },
+        ],
+      },
     });
 
-    dialogRef.afterClosed().subscribe(flightData => {
+    dialogRef.afterClosed().subscribe((flightData) => {
       if (flightData !== null && flightData !== undefined) {
         const existingFlights = this.flights.filter((f) => f.year == flightData.year);
         const existingFlightNames = existingFlights.map((f) => f.name.toLowerCase());
         if (existingFlightNames.includes(flightData.name.toLowerCase())) {
-          this.snackBar.open(`Flight with name '${flightData.name}' and year '${flightData.year}' already exists!`, undefined, {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
+          this.snackBar.open(
+            `Flight with name '${flightData.name}' and year '${flightData.year}' already exists!`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            },
+          );
           // TODO: re-open dialog window to edit selections
           return;
         }
 
         console.log(flightData);
-        this.flightsService.createFlight(flightData).subscribe(result => {
-          console.log(`[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`);
-          this.snackBar.open(`Successfully created flight: ${result.name} (${result.year})`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
+        this.flightsService.createFlight(flightData).subscribe((result) => {
+          console.log(
+            `[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`,
+          );
+          this.snackBar.open(
+            `Successfully created flight: ${result.name} (${result.year})`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
 
           this.flightsService.getFlightsList(this.appConfigService.currentYear); // refresh flights list
         });
@@ -210,51 +235,60 @@ export class HeaderComponent implements OnInit, OnDestroy {
         chachacha: 0,
         divisions: [
           {
-            name: "Middle",
-            gender: "Men's"
+            name: 'Middle',
+            gender: "Men's",
           },
           {
-            name: "Senior",
-            gender: "Men's"
+            name: 'Senior',
+            gender: "Men's",
           },
           {
-            name: "Super-Senior",
-            gender: "Men's"
+            name: 'Super-Senior',
+            gender: "Men's",
           },
           {
-            name: "Forward",
-            gender: "Ladies'"
-          }
-        ]
-      }
+            name: 'Forward',
+            gender: "Ladies'",
+          },
+        ],
+      },
     });
 
-    dialogRef.afterClosed().subscribe(tournamentData => {
+    dialogRef.afterClosed().subscribe((tournamentData) => {
       if (tournamentData !== null && tournamentData !== undefined) {
         const existingTournaments = this.tournaments.filter((t) => t.year == tournamentData.year);
         const existingTournamentNames = existingTournaments.map((t) => t.name.toLowerCase());
         if (existingTournamentNames.includes(tournamentData.name.toLowerCase())) {
-          this.snackBar.open(`Tournament with name '${tournamentData.name}' and year '${tournamentData.year}' already exists!`, undefined, {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
+          this.snackBar.open(
+            `Tournament with name '${tournamentData.name}' and year '${tournamentData.year}' already exists!`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            },
+          );
           // TODO: re-open dialog window to edit selections
           return;
         }
 
         console.log(tournamentData);
         // TODO: Implement tournament creation in service
-        this.tournamentsService.createTournament(tournamentData).subscribe(result => {
-          console.log(`[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`);
-          this.snackBar.open(`Successfully created tournament: ${result.name} (${result.year})`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
+        this.tournamentsService.createTournament(tournamentData).subscribe((result) => {
+          console.log(
+            `[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`,
+          );
+          this.snackBar.open(
+            `Successfully created tournament: ${result.name} (${result.year})`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
 
           this.tournamentsService.getTournamentsList(this.appConfigService.currentYear); // refresh tournaments list
         });
       }
     });
   }
-
 }

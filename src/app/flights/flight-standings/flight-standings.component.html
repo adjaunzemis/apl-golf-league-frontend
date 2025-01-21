@@ -7,12 +7,12 @@
       <th>Matches</th>
       <th>Avg. Points</th>
     </tr>
-    <tr *ngFor="let teamId of orderedTeamIds, let idx = index">
+    <tr *ngFor="let teamId of orderedTeamIds; let idx = index">
       <td>{{ getTeamPosition(teamId) }}</td>
       <td>{{ getTeamName(teamId) }}</td>
-      <td>{{ getPointsWon(teamId) | number : '1.1-1' }}</td>
+      <td>{{ getPointsWon(teamId) | number: '1.1-1' }}</td>
       <td>{{ getMatchesPlayed(teamId) }}</td>
-      <td class="bold">{{ getAveragePointsWon(teamId) | number : '1.2-2' }}</td>
+      <td class="bold">{{ getAveragePointsWon(teamId) | number: '1.2-2' }}</td>
     </tr>
   </table>
 </div>
