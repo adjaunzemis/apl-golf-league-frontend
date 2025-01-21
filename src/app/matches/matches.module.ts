@@ -1,28 +1,20 @@
-import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { AngularMaterialModule } from "../angular-material.module";
-import { ScorecardModule } from "../shared/scorecard/scorecard.module";
-import { MatchScorecardScoreLineComponent } from "./match-scorecard/match-scorecard-score-line/match-scorecard-score-line.component";
-import { MatchScorecardComponent } from "./match-scorecard/match-scorecard.component";
+import { AngularMaterialModule } from '../angular-material.module';
+import { ScorecardModule } from '../shared/scorecard/scorecard.module';
+import { MatchScorecardScoreLineComponent } from './match-scorecard/match-scorecard-score-line/match-scorecard-score-line.component';
+import { MatchScorecardComponent } from './match-scorecard/match-scorecard.component';
 import { MatchScorecardBlankScoreLineComponent } from './match-scorecard/match-scorecard-blank-score-line/match-scorecard-blank-score-line.component';
 
 @NgModule({
   declarations: [
     MatchScorecardComponent,
     MatchScorecardScoreLineComponent,
-    MatchScorecardBlankScoreLineComponent
+    MatchScorecardBlankScoreLineComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    AngularMaterialModule,
-    ScorecardModule
-  ],
-  exports: [
-    MatchScorecardComponent,
-    MatchScorecardBlankScoreLineComponent
-  ]
+  imports: [CommonModule, RouterModule, AngularMaterialModule, ScorecardModule],
+  exports: [MatchScorecardComponent, MatchScorecardBlankScoreLineComponent],
 })
 export class MatchesModule {}

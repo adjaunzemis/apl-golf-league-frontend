@@ -1,55 +1,85 @@
 <div class="content">
-
   <h1 *ngIf="!hideForPrint">
     <span *ngIf="editMode">Submit </span>
     <span>Tournament Scorecard</span>
   </h1>
 
-  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions" *ngIf="!editMode && !hideForPrint">
+  <div
+    class="card card-small selectable"
+    [ngClass]="showInstructions ? 'selected' : ''"
+    (click)="showInstructions = !showInstructions"
+    *ngIf="!editMode && !hideForPrint"
+  >
     <span class="bold">Instructions</span>
   </div>
 
-  <div class="card" style="height: 100%; width: 1000px;" *ngIf="!hideForPrint && showInstructions">
+  <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
     <ul>
       <li>Select the anticipated date of the match.</li>
-      <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
-        <ul>
-          <li>Navigating here from "Match Scorecard" card on flight homepage auto-populates these values.</li>
-        </ul>
+      <li>
+        Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.
+      </li>
+      <ul>
+        <li>
+          Navigating here from "Match Scorecard" card on flight homepage auto-populates these
+          values.
+        </li>
+      </ul>
       <li>On the left side, select a team.</li>
-        <ul>
-          <li>Tip: Use the weekly match cards to select both teams for a match.</li>
-        </ul>
+      <ul>
+        <li>Tip: Use the weekly match cards to select both teams for a match.</li>
+      </ul>
       <li>Select the two golfers who will play for the first team.</li>
-        <ul>
-          <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
-          <li>Otherwise, select the tees each golfer will play.</li>
-        </ul>
+      <ul>
+        <li>
+          If the selected course is the home course for the flight, tee selection will populate
+          automatically.
+        </li>
+        <li>Otherwise, select the tees each golfer will play.</li>
+      </ul>
       <li>On the right side, repeat the above process for the second team.</li>
       <ul>
         <li>Tip: Use the weekly match cards to select both teams for a match.</li>
       </ul>
       <li>Once all required information has been entered, click "Generate Scorecard".</li>
-        <ul>
-          <li>The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the tee rating/slope.</li>
-          <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
-          <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
-          <li>On the team score line, black dots indicate handicap strokes received by the team with the higher combined playing handicap.</li>
-          <li>Any selection changes will clear the generated scorecard.</li>
-        </ul>
+      <ul>
+        <li>
+          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
+          handicap index and the tee rating/slope.
+        </li>
+        <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
+        <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
+        <li>
+          On the team score line, black dots indicate handicap strokes received by the team with the
+          higher combined playing handicap.
+        </li>
+        <li>Any selection changes will clear the generated scorecard.</li>
+      </ul>
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
   </div>
 
-  <div style="margin-bottom: 16px;" *ngIf="!hideForPrint">
-    <button mat-raised-button color="accent" [disabled]="!roundsFront || roundsFront.length === 0" (click)="printScorecard()">Print Scorecard</button>
+  <div style="margin-bottom: 16px" *ngIf="!hideForPrint">
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!roundsFront || roundsFront.length === 0"
+      (click)="printScorecard()"
+    >
+      Print Scorecard
+    </button>
   </div>
 
   <div *ngIf="!hideForPrint">
     <mat-form-field class="selection-field flight-selection-field" appearance="fill">
       <mat-label>Tournament</mat-label>
-      <mat-select [value]="selectedTournamentInfo" (selectionChange)="onSelectedTournamentChanged($event)">
-        <mat-option *ngFor="let tournamentOption of tournamentOptions" [value]="tournamentOption">{{ tournamentOption.name }} ({{ tournamentOption.year }})</mat-option>
+      <mat-select
+        [value]="selectedTournamentInfo"
+        (selectionChange)="onSelectedTournamentChanged($event)"
+      >
+        <mat-option *ngFor="let tournamentOption of tournamentOptions" [value]="tournamentOption"
+          >{{ tournamentOption.name }} ({{ tournamentOption.year }})</mat-option
+        >
       </mat-select>
     </mat-form-field>
   </div>
@@ -59,7 +89,11 @@
   <div class="card-container" *ngIf="!hideForPrint && selectedTournament">
     <div class="card card-small bold" *ngIf="selectedTournament.shotgun">Shotgun Start</div>
     <div class="card card-small bold" *ngIf="selectedTournament.strokeplay">Strokeplay</div>
-    <div class="card card-small bold" *ngIf="selectedTournament.bestball > 0">Team {{ selectedTournament.bestball > 1 ? selectedTournament.bestball : null | number:'1.0-0' }} Best {{ selectedTournament.bestball > 1 ? 'Balls' : 'Ball' }}</div>
+    <div class="card card-small bold" *ngIf="selectedTournament.bestball > 0">
+      Team
+      {{ selectedTournament.bestball > 1 ? selectedTournament.bestball : (null | number: '1.0-0') }}
+      Best {{ selectedTournament.bestball > 1 ? 'Balls' : 'Ball' }}
+    </div>
     <div class="card card-small bold" *ngIf="selectedTournament.scramble">Scramble</div>
     <div class="card card-small bold" *ngIf="selectedTournament.ryder_cup">Ryder Cup</div>
     <div class="card card-small bold" *ngIf="selectedTournament.chachacha">Cha-Cha-Cha</div>
@@ -67,39 +101,127 @@
 
   <h2 *ngIf="!hideForPrint && selectedTournament">Teams</h2>
   <div class="card-container" *ngIf="!hideForPrint && selectedTournament">
-    <div class="card card-small selectable match-summary-card" [ngClass]="selectedTeam === team ? 'selected' : ''" (click)="onSelectedTeamChanged(team)" *ngFor="let team of selectedTournament.teams">
+    <div
+      class="card card-small selectable match-summary-card"
+      [ngClass]="selectedTeam === team ? 'selected' : ''"
+      (click)="onSelectedTeamChanged(team)"
+      *ngFor="let team of selectedTournament.teams"
+    >
       <span class="bold">{{ team.name }}</span>
-      <span class="italic" *ngIf="team.rounds && team.rounds.length > 0">{{ team.rounds.length }} rounds submitted</span>
+      <span class="italic" *ngIf="team.rounds && team.rounds.length > 0"
+        >{{ team.rounds.length }} rounds submitted</span
+      >
     </div>
   </div>
 
   <div class="full-width" *ngIf="!isSubmittingRounds && selectedTeam">
-    <app-scorecard-title-line [rounds]="roundsFront" [title]="getScorecardTitle()" [subtitle]="getScorecardSubtitle()"></app-scorecard-title-line>
+    <app-scorecard-title-line
+      [rounds]="roundsFront"
+      [title]="getScorecardTitle()"
+      [subtitle]="getScorecardSubtitle()"
+    ></app-scorecard-title-line>
 
-    <app-scorecard-hole-line [holeResultData]="roundsFront[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
-    <app-scorecard-tee-info [holeResultData]="roundsFront[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+    <app-scorecard-hole-line
+      [holeResultData]="roundsFront[roundIdx].holes"
+      [showScoreModeButtons]="false"
+    ></app-scorecard-hole-line>
+    <app-scorecard-tee-info
+      [holeResultData]="roundsFront[roundIdx].holes"
+      [showDetails]="true"
+    ></app-scorecard-tee-info>
     <ng-container *ngFor="let round of roundsFront; let rIdx = index">
-      <app-scorecard-score-line [(round)]="roundsFront[rIdx]" scoreMode="gross" [editHandicap]="editMode" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line
+        [(round)]="roundsFront[rIdx]"
+        scoreMode="gross"
+        [editHandicap]="editMode"
+        [enterScores]="editMode"
+        [showScores]="false"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="false"
+      ></app-scorecard-score-line>
     </ng-container>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="gross" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Gross" [linkToGolferHome]="false" *ngIf="!selectedTournament.scramble"></app-scorecard-score-line>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundFront()" scoreMode="net" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line
+      class="team-score-line"
+      [round]="getTeamRoundFront()"
+      scoreMode="gross"
+      [showScores]="editMode"
+      [title]="getTeamRoundTitle()"
+      subtitle="Gross"
+      [linkToGolferHome]="false"
+      *ngIf="!selectedTournament.scramble"
+    ></app-scorecard-score-line>
+    <app-scorecard-score-line
+      class="team-score-line"
+      [round]="getTeamRoundFront()"
+      scoreMode="net"
+      [showScores]="editMode"
+      [title]="getTeamRoundTitle()"
+      subtitle="Net"
+      [linkToGolferHome]="false"
+    ></app-scorecard-score-line>
 
-    <app-scorecard-hole-line [holeResultData]="roundsBack[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
-    <app-scorecard-tee-info [holeResultData]="roundsBack[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+    <app-scorecard-hole-line
+      [holeResultData]="roundsBack[roundIdx].holes"
+      [showScoreModeButtons]="false"
+    ></app-scorecard-hole-line>
+    <app-scorecard-tee-info
+      [holeResultData]="roundsBack[roundIdx].holes"
+      [showDetails]="true"
+    ></app-scorecard-tee-info>
     <ng-container *ngFor="let round of roundsBack; let rIdx = index">
-      <app-scorecard-score-line [(round)]="roundsBack[rIdx]" scoreMode="gross" [editHandicap]="editMode" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line
+        [(round)]="roundsBack[rIdx]"
+        scoreMode="gross"
+        [editHandicap]="editMode"
+        [enterScores]="editMode"
+        [showScores]="false"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="false"
+      ></app-scorecard-score-line>
     </ng-container>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="gross" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Gross" [linkToGolferHome]="false" *ngIf="!selectedTournament.scramble"></app-scorecard-score-line>
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRoundBack()" scoreMode="net" [showScores]="editMode" [title]="getTeamRoundTitle()" subtitle="Net" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line
+      class="team-score-line"
+      [round]="getTeamRoundBack()"
+      scoreMode="gross"
+      [showScores]="editMode"
+      [title]="getTeamRoundTitle()"
+      subtitle="Gross"
+      [linkToGolferHome]="false"
+      *ngIf="!selectedTournament.scramble"
+    ></app-scorecard-score-line>
+    <app-scorecard-score-line
+      class="team-score-line"
+      [round]="getTeamRoundBack()"
+      scoreMode="net"
+      [showScores]="editMode"
+      [title]="getTeamRoundTitle()"
+      subtitle="Net"
+      [linkToGolferHome]="false"
+    ></app-scorecard-score-line>
   </div>
 
   <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && selectedTeam">
-    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="!selectedTeam">Team card must be selected before generating scorecard!</span>
-    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="isTournamentInputDataInvalid()">Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
-    <button mat-raised-button color="accent" [disabled]="isTournamentInputDataInvalid()" (click)="postRounds()">Post Scores</button>
+    <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="!selectedTeam"
+      >Team card must be selected before generating scorecard!</span
+    >
+    <span
+      class="italic"
+      style="color: red; margin-bottom: 12px"
+      *ngIf="isTournamentInputDataInvalid()"
+      >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par +
+      handicap strokes)</span
+    >
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="isTournamentInputDataInvalid()"
+      (click)="postRounds()"
+    >
+      Post Scores
+    </button>
   </div>
 
   <mat-spinner *ngIf="isLoading || isSubmittingRounds"></mat-spinner>
-
 </div>
-

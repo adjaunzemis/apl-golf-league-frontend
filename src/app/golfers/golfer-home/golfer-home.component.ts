@@ -10,10 +10,10 @@ import { GolferData, TeamGolferData } from '../../shared/golfer.model';
 import { RoundData } from '../../shared/round.model';
 
 @Component({
-    selector: 'app-golfer-home',
-    templateUrl: './golfer-home.component.html',
-    styleUrls: ['./golfer-home.component.css'],
-    standalone: false
+  selector: 'app-golfer-home',
+  templateUrl: './golfer-home.component.html',
+  styleUrls: ['./golfer-home.component.css'],
+  standalone: false,
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoadingGolferData = true;
@@ -40,20 +40,29 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   showHandicapData: boolean = false;
 
-  constructor(private appConfigService: AppConfigService, private golfersService: GolfersService, private roundsService: RoundsService, private route: ActivatedRoute) { }
+  constructor(
+    private appConfigService: AppConfigService,
+    private golfersService: GolfersService,
+    private roundsService: RoundsService,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.year = this.appConfigService.currentYear;
     this.yearOptions = [this.year];
     this.yearControl.setValue(this.year);
 
-    this.golferSub = this.golfersService.getGolferUpdateListener()
+    this.golferSub = this.golfersService
+      .getGolferUpdateListener()
       .subscribe((result: GolferData) => {
         console.log(`[GolferHomeComponent] Received golfer data`);
         this.golfer = result;
         if (result.member_since) {
           const oldestYear = result.member_since;
-          this.yearOptions = Array.from({ length: this.appConfigService.currentYear - oldestYear + 1 }, (v, k) => k + oldestYear);
+          this.yearOptions = Array.from(
+            { length: this.appConfigService.currentYear - oldestYear + 1 },
+            (v, k) => k + oldestYear,
+          );
           this.yearOptions.sort((a, b) => b - a); // descending order
         } else {
           this.yearOptions = [this.year];
@@ -63,26 +72,25 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         this.getSelectedSeasonData();
       });
 
-    this.roundsSub = this.roundsService.getRoundUpdateListener()
-      .subscribe(result => {
-        console.log(`[GolferHomeComponent] Received ${result.length} rounds`);
-        if (result.length > 0) {
-          this.rounds = result;
-        } else {
-          this.rounds = [];
-        }
-        this.organizeRoundsByTee();
-        this.isLoadingRoundData = false;
-      });
+    this.roundsSub = this.roundsService.getRoundUpdateListener().subscribe((result) => {
+      console.log(`[GolferHomeComponent] Received ${result.length} rounds`);
+      if (result.length > 0) {
+        this.rounds = result;
+      } else {
+        this.rounds = [];
+      }
+      this.organizeRoundsByTee();
+      this.isLoadingRoundData = false;
+    });
 
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} teams`);
-      this.flightTeams = result.filter(team => team.flight_name);
-      this.tournamentTeams = result.filter(team => team.tournament_name);
+      this.flightTeams = result.filter((team) => team.flight_name);
+      this.tournamentTeams = result.filter((team) => team.tournament_name);
       this.isLoadingTeamData = false;
     });
 
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       if (params) {
         if (params.id) {
           this.golferId = params.id;
@@ -142,5 +150,4 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.roundsOrganizedByTee[round.tee_id].push(round);
     }
   }
-
 }

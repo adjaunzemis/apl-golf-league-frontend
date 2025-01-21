@@ -1,55 +1,94 @@
 <div class="content">
-
   <h1 *ngIf="!hideForPrint">
     <span *ngIf="editMode">Submit </span>
     <span>Match Scorecard</span>
   </h1>
 
-  <div class="card card-small selectable" [ngClass]="showInstructions ? 'selected' : ''" (click)="showInstructions = !showInstructions" *ngIf="!editMode && !hideForPrint">
+  <div
+    class="card card-small selectable"
+    [ngClass]="showInstructions ? 'selected' : ''"
+    (click)="showInstructions = !showInstructions"
+    *ngIf="!editMode && !hideForPrint"
+  >
     <span class="bold">Instructions</span>
   </div>
 
-  <div class="card" style="height: 100%; width: 1000px;" *ngIf="!hideForPrint && showInstructions">
+  <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
     <ul>
       <li>Select the anticipated date of the match.</li>
-      <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
-        <ul>
-          <li>Navigating here from "Match Scorecard" card on flight homepage auto-populates these values.</li>
-        </ul>
+      <li>
+        Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.
+      </li>
+      <ul>
+        <li>
+          Navigating here from "Match Scorecard" card on flight homepage auto-populates these
+          values.
+        </li>
+      </ul>
       <li>On the left side, select a team.</li>
-        <ul>
-          <li>Tip: Use the weekly match cards to select both teams for a match.</li>
-        </ul>
+      <ul>
+        <li>Tip: Use the weekly match cards to select both teams for a match.</li>
+      </ul>
       <li>Select the two golfers who will play for the first team.</li>
-        <ul>
-          <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
-          <li>Otherwise, select the tees each golfer will play.</li>
-        </ul>
+      <ul>
+        <li>
+          If the selected course is the home course for the flight, tee selection will populate
+          automatically.
+        </li>
+        <li>Otherwise, select the tees each golfer will play.</li>
+      </ul>
       <li>On the right side, repeat the above process for the second team.</li>
       <ul>
         <li>Tip: Use the weekly match cards to select both teams for a match.</li>
       </ul>
       <li>Once all required information has been entered, click "Generate Scorecard".</li>
-        <ul>
-          <li>The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the tee rating/slope.</li>
-          <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
-          <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
-          <li>On the team score line, black dots indicate handicap strokes received by the team with the higher combined playing handicap.</li>
-          <li>Any selection changes will clear the generated scorecard.</li>
-        </ul>
+      <ul>
+        <li>
+          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
+          handicap index and the tee rating/slope.
+        </li>
+        <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
+        <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
+        <li>
+          On the team score line, black dots indicate handicap strokes received by the team with the
+          higher combined playing handicap.
+        </li>
+        <li>Any selection changes will clear the generated scorecard.</li>
+      </ul>
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
   </div>
 
-  <div style="margin-bottom: 16px;" *ngIf="!hideForPrint">
-    <button mat-raised-button color="primary" [disabled]="!checkValidSelections()" (click)="createMatchRounds()">Generate Scorecard</button>
-    <button mat-raised-button color="accent" [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)" (click)="printScorecard()">Print Scorecard</button>
+  <div style="margin-bottom: 16px" *ngIf="!hideForPrint">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!checkValidSelections()"
+      (click)="createMatchRounds()"
+    >
+      Generate Scorecard
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="
+        !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
+      "
+      (click)="printScorecard()"
+    >
+      Print Scorecard
+    </button>
   </div>
 
   <div *ngIf="!hideForPrint">
     <mat-form-field class="selection-field date-selection-field" appearance="fill">
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onSelectedDateChanged($event)">
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [value]="selectedDate"
+        (dateChange)="onSelectedDateChanged($event)"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -57,38 +96,60 @@
     <mat-form-field class="selection-field flight-selection-field" appearance="fill">
       <mat-label>Flight</mat-label>
       <mat-select [value]="selectedFlightInfo" (selectionChange)="onSelectedFlightChanged($event)">
-        <mat-option *ngFor="let flightOption of flightOptions" [value]="flightOption">{{ flightOption.name }} ({{ flightOption.year }})</mat-option>
+        <mat-option *ngFor="let flightOption of flightOptions" [value]="flightOption"
+          >{{ flightOption.name }} ({{ flightOption.year }})</mat-option
+        >
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="selection-field course-selection-field" appearance="fill">
       <mat-label>Course</mat-label>
       <mat-select [value]="selectedCourseInfo" (selectionChange)="onSelectedCourseChanged($event)">
-        <mat-option *ngFor="let courseOption of courseOptions" [value]="courseOption">{{ courseOption.name }}</mat-option>
+        <mat-option *ngFor="let courseOption of courseOptions" [value]="courseOption">{{
+          courseOption.name
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="selection-field track-selection-field" appearance="fill">
       <mat-label>Track</mat-label>
-      <mat-select [value]="selectedTrack" (selectionChange)="onSelectedTrackChanged($event)" [disabled]="!selectedCourse">
-        <mat-option *ngFor="let trackOption of selectedCourse?.tracks" [value]="trackOption">{{ trackOption.name }}</mat-option>
+      <mat-select
+        [value]="selectedTrack"
+        (selectionChange)="onSelectedTrackChanged($event)"
+        [disabled]="!selectedCourse"
+      >
+        <mat-option *ngFor="let trackOption of selectedCourse?.tracks" [value]="trackOption">{{
+          trackOption.name
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
   <mat-form-field appearance="fill" class="input-field" *ngIf="!hideForPrint">
     <mat-label>Week</mat-label>
-    <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
+    <mat-select
+      [value]="weekOptions[selectedWeek - 1]"
+      (selectionChange)="onSelectedWeekChanged($event)"
+    >
       <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <span class="italic" *ngIf="editMode && !hideForPrint && selectedFlight && !selectedMatch">Select a match card...</span>
+  <span class="italic" *ngIf="editMode && !hideForPrint && selectedFlight && !selectedMatch"
+    >Select a match card...</span
+  >
 
   <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
-    <div class="card card-small selectable match-summary-card" [ngClass]="selectedMatch === match ? 'selected' : ''" (click)="onMatchSelected(match)" *ngFor="let match of selectedWeekMatches">
+    <div
+      class="card card-small selectable match-summary-card"
+      [ngClass]="selectedMatch === match ? 'selected' : ''"
+      (click)="onMatchSelected(match)"
+      *ngFor="let match of selectedWeekMatches"
+    >
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
-      <span *ngIf="editMode && (match.home_score || match.away_score)">{{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
+      <span *ngIf="editMode && (match.home_score || match.away_score)"
+        >{{ match.home_score | number: '1.1-1' }} - {{ match.away_score | number: '1.1-1' }}</span
+      >
       <span class="italic" *ngIf="editMode && !match.home_score && !match.away_score">TBD</span>
     </div>
   </div>
@@ -97,14 +158,18 @@
     <mat-form-field class="selection-field" appearance="fill">
       <mat-label>Team 1</mat-label>
       <mat-select [value]="selectedTeam1" (selectionChange)="onSelectedTeamChanged($event, 1)">
-        <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{ teamOption.name }}</mat-option>
+        <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{
+          teamOption.name
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="selection-field" appearance="fill">
       <mat-label>Team 2</mat-label>
       <mat-select [value]="selectedTeam2" (selectionChange)="onSelectedTeamChanged($event, 2)">
-        <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{ teamOption.name }}</mat-option>
+        <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{
+          teamOption.name
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -115,15 +180,29 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 1 Golfer 1</mat-label>
-            <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 1)">
-              <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam1"
+              (selectionChange)="onSelectedGolferChanged($event, 1, 1)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam1?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Team 1 Golfer 1 Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack || !selectedTeam1Golfer1" [value]="selectedTeam1Golfer1Tee" (selectionChange)="onSelectedTeeChanged($event, 1, 1)">
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
+            <mat-select
+              [disabled]="!selectedTrack || !selectedTeam1Golfer1"
+              [value]="selectedTeam1Golfer1Tee"
+              (selectionChange)="onSelectedTeeChanged($event, 1, 1)"
+            >
+              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
+                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </ng-container>
@@ -131,15 +210,29 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 2 Golfer 1</mat-label>
-            <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 1)">
-              <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam2"
+              (selectionChange)="onSelectedGolferChanged($event, 2, 1)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam2?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Team 2 Golfer 1 Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack || !selectedTeam2Golfer1" [value]="selectedTeam2Golfer1Tee" (selectionChange)="onSelectedTeeChanged($event, 2, 1)">
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
+            <mat-select
+              [disabled]="!selectedTrack || !selectedTeam2Golfer1"
+              [value]="selectedTeam2Golfer1Tee"
+              (selectionChange)="onSelectedTeeChanged($event, 2, 1)"
+            >
+              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
+                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </ng-container>
@@ -149,15 +242,29 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 1 Golfer 2</mat-label>
-            <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 2)">
-              <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam1"
+              (selectionChange)="onSelectedGolferChanged($event, 1, 2)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam1?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Team 1 Golfer 2 Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack || !selectedTeam1Golfer2" [value]="selectedTeam1Golfer2Tee" (selectionChange)="onSelectedTeeChanged($event, 1, 2)">
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
+            <mat-select
+              [disabled]="!selectedTrack || !selectedTeam1Golfer2"
+              [value]="selectedTeam1Golfer2Tee"
+              (selectionChange)="onSelectedTeeChanged($event, 1, 2)"
+            >
+              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
+                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </ng-container>
@@ -165,52 +272,147 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 2 Golfer 2</mat-label>
-            <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 2)">
-              <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{ golferOption.golfer_name }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam2"
+              (selectionChange)="onSelectedGolferChanged($event, 2, 2)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam2?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="selection-field tee-selection-field">
             <mat-label>Team 2 Golfer 2 Tees</mat-label>
-            <mat-select [disabled]="!selectedTrack || !selectedTeam2Golfer2" [value]="selectedTeam2Golfer2Tee" (selectionChange)="onSelectedTeeChanged($event, 2, 2)">
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption">{{ teeOption.name }} ({{ teeOption.gender | slice:0:1 }}: {{ teeOption.rating | number:'1.1-1' }}/{{ teeOption.slope }})</mat-option>
+            <mat-select
+              [disabled]="!selectedTrack || !selectedTeam2Golfer2"
+              [value]="selectedTeam2Golfer2Tee"
+              (selectionChange)="onSelectedTeeChanged($event, 2, 2)"
+            >
+              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
+                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </ng-container>
       </div>
-
     </ng-container>
   </div>
 
-  <div class="full-width" *ngIf="!isSubmittingRounds && selectedTeam1 && team1Golfer1Round && team1Golfer2Round && selectedTeam2 && team2Golfer1Round && team2Golfer2Round">
-    <app-scorecard-title-line [rounds]="getRounds()" [title]="getMatchTitle()" [subtitle]="getMatchSubtitle()"></app-scorecard-title-line>
+  <div
+    class="full-width"
+    *ngIf="
+      !isSubmittingRounds &&
+      selectedTeam1 &&
+      team1Golfer1Round &&
+      team1Golfer2Round &&
+      selectedTeam2 &&
+      team2Golfer1Round &&
+      team2Golfer2Round
+    "
+  >
+    <app-scorecard-title-line
+      [rounds]="getRounds()"
+      [title]="getMatchTitle()"
+      [subtitle]="getMatchSubtitle()"
+    ></app-scorecard-title-line>
 
-    <app-scorecard-hole-line [holeResultData]="getRounds()[roundIdx].holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
-    <app-scorecard-tee-info [holeResultData]="getRounds()[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+    <app-scorecard-hole-line
+      [holeResultData]="getRounds()[roundIdx].holes"
+      [showScoreModeButtons]="false"
+    ></app-scorecard-hole-line>
+    <app-scorecard-tee-info
+      [holeResultData]="getRounds()[roundIdx].holes"
+      [showDetails]="true"
+    ></app-scorecard-tee-info>
 
     <ng-container *ngFor="let round of getRoundsForTeam(1); let roundIdx = index">
-      <app-scorecard-score-line [(round)]="getRoundsForTeam(1)[roundIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line
+        [(round)]="getRoundsForTeam(1)[roundIdx]"
+        scoreMode="gross"
+        [enterScores]="editMode"
+        [showScores]="false"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="false"
+      ></app-scorecard-score-line>
     </ng-container>
 
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(1)" scoreMode="gross" [teamScore]="true" [showScores]="editMode" [title]="selectedTeam1.name" [subtitle]="getTeamRoundSubtitle(1)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line
+      class="team-score-line"
+      [round]="getTeamRound(1)"
+      scoreMode="gross"
+      [teamScore]="true"
+      [showScores]="editMode"
+      [title]="selectedTeam1.name"
+      [subtitle]="getTeamRoundSubtitle(1)"
+      [linkToGolferHome]="false"
+    ></app-scorecard-score-line>
 
-    <app-match-scorecard-blank-score-line [editMode]="editMode" [topTeamRound]="getTeamRound(1)" [bottomTeamRound]="getTeamRound(2)"></app-match-scorecard-blank-score-line>
+    <app-match-scorecard-blank-score-line
+      [editMode]="editMode"
+      [topTeamRound]="getTeamRound(1)"
+      [bottomTeamRound]="getTeamRound(2)"
+    ></app-match-scorecard-blank-score-line>
 
-    <app-scorecard-score-line class="team-score-line" [round]="getTeamRound(2)" scoreMode="gross" [teamScore]="true"  [showScores]="editMode" [title]="selectedTeam2.name" [subtitle]="getTeamRoundSubtitle(2)" [linkToGolferHome]="false"></app-scorecard-score-line>
+    <app-scorecard-score-line
+      class="team-score-line"
+      [round]="getTeamRound(2)"
+      scoreMode="gross"
+      [teamScore]="true"
+      [showScores]="editMode"
+      [title]="selectedTeam2.name"
+      [subtitle]="getTeamRoundSubtitle(2)"
+      [linkToGolferHome]="false"
+    ></app-scorecard-score-line>
 
     <ng-container *ngFor="let round of getRoundsForTeam(2); let roundIdx = index">
-      <app-scorecard-score-line [round]="getRoundsForTeam(2)[roundIdx]" scoreMode="gross" [enterScores]="editMode" [showScores]="false" [title]="round.golfer_name" [subtitle]="getRoundSubtitle(round)" [linkToGolferHome]="false"></app-scorecard-score-line>
+      <app-scorecard-score-line
+        [round]="getRoundsForTeam(2)[roundIdx]"
+        scoreMode="gross"
+        [enterScores]="editMode"
+        [showScores]="false"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="false"
+      ></app-scorecard-score-line>
     </ng-container>
   </div>
 
-  <div class="content" *ngIf="editMode && !hideForPrint && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round">
-    <span class="bold" style="margin-bottom: 12px;" *ngIf="!isMatchDataInvalid()">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
-    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="!selectedMatch">Match card must be selected before generating scorecard!</span>
-    <span class="italic" style="color: red; margin-bottom: 12px;" *ngIf="isMatchDataInvalid()">Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
-    <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">Post Scores</button>
+  <div
+    class="content"
+    *ngIf="
+      editMode &&
+      !hideForPrint &&
+      !isSubmittingRounds &&
+      team1Golfer1Round &&
+      team1Golfer2Round &&
+      team2Golfer1Round &&
+      team2Golfer2Round
+    "
+  >
+    <span class="bold" style="margin-bottom: 12px" *ngIf="!isMatchDataInvalid()"
+      >Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span
+    >
+    <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="!selectedMatch"
+      >Match card must be selected before generating scorecard!</span
+    >
+    <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="isMatchDataInvalid()"
+      >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par +
+      handicap strokes)</span
+    >
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="isMatchDataInvalid()"
+      (click)="postMatchRounds()"
+    >
+      Post Scores
+    </button>
   </div>
 
   <mat-spinner *ngIf="isLoading || isSubmittingRounds"></mat-spinner>
-
 </div>
-

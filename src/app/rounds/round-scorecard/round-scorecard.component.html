@@ -1,13 +1,20 @@
 <div class="scorecard">
   <mat-action-row>
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="onScoreModeChanged($event.value)">
+    <mat-button-toggle-group
+      name="fontStyle"
+      aria-label="Font Style"
+      (change)="onScoreModeChanged($event.value)"
+    >
       <mat-button-toggle value="gross" checked="true">Gross</mat-button-toggle>
       <mat-button-toggle value="adjusted gross">Adj Gross</mat-button-toggle>
       <mat-button-toggle value="net">Net</mat-button-toggle>
     </mat-button-toggle-group>
   </mat-action-row>
-  <app-scorecard-title-line [rounds]=round></app-scorecard-title-line>
+  <app-scorecard-title-line [rounds]="round"></app-scorecard-title-line>
   <app-scorecard-hole-line [holeResultData]="round.holes"></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holeResultData]="round.holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-tee-info
+    [holeResultData]="round.holes"
+    [showDetails]="true"
+  ></app-scorecard-tee-info>
   <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode"></app-scorecard-score-line>
 </div>

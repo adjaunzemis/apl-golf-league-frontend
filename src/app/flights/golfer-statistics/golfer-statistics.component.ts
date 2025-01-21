@@ -3,17 +3,31 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TeamGolferData } from '../../shared/golfer.model';
 
 @Component({
-    selector: 'app-golfer-statistics',
-    templateUrl: './golfer-statistics.component.html',
-    styleUrls: ['./golfer-statistics.component.css'],
-    standalone: false
+  selector: 'app-golfer-statistics',
+  templateUrl: './golfer-statistics.component.html',
+  styleUrls: ['./golfer-statistics.component.css'],
+  standalone: false,
 })
 export class GolferStatisticsComponent implements OnInit {
   @Input() golfers: TeamGolferData[];
   @Input() hideEmptyColumns = false;
-  columnsToDisplay = ['golfer_name', 'num_rounds', 'avg_gross_score', 'avg_net_score', 'num_holes', 'num_aces', 'num_albatrosses', 'num_eagles', 'num_birdies', 'num_pars', 'num_bogeys', 'num_double_bogeys', 'num_others']
+  columnsToDisplay = [
+    'golfer_name',
+    'num_rounds',
+    'avg_gross_score',
+    'avg_net_score',
+    'num_holes',
+    'num_aces',
+    'num_albatrosses',
+    'num_eagles',
+    'num_birdies',
+    'num_pars',
+    'num_bogeys',
+    'num_double_bogeys',
+    'num_others',
+  ];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     if (this.hideEmptyColumns) {
@@ -45,37 +59,36 @@ export class GolferStatisticsComponent implements OnInit {
     }
 
     if (num_aces == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_aces");
+      let idx = this.columnsToDisplay.indexOf('num_aces');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_albatrosses == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_albatrosses");
+      let idx = this.columnsToDisplay.indexOf('num_albatrosses');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_eagles == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_eagles");
+      let idx = this.columnsToDisplay.indexOf('num_eagles');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_birdies == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_birdies");
+      let idx = this.columnsToDisplay.indexOf('num_birdies');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_pars == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_pars");
+      let idx = this.columnsToDisplay.indexOf('num_pars');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_bogeys == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_bogeys");
+      let idx = this.columnsToDisplay.indexOf('num_bogeys');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_double_bogeys == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_double_bogeys");
+      let idx = this.columnsToDisplay.indexOf('num_double_bogeys');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_others == 0) {
-      let idx = this.columnsToDisplay.indexOf("num_others");
+      let idx = this.columnsToDisplay.indexOf('num_others');
       this.columnsToDisplay.splice(idx, 1);
     }
   }
-
 }

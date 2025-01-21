@@ -1,4 +1,4 @@
-import { RoundData } from "./round.model";
+import { RoundData } from './round.model';
 
 export interface MatchSummary {
   match_id: number;
@@ -26,35 +26,35 @@ export interface MatchData {
 }
 
 export interface MatchInput {
-  match_id: number
-  flight_id: number
-  week: number
-  date_played: Date
-  home_score: number
-  away_score: number
-  rounds: RoundInput[]
+  match_id: number;
+  flight_id: number;
+  week: number;
+  date_played: Date;
+  home_score: number;
+  away_score: number;
+  rounds: RoundInput[];
 }
 
 // TODO: Move to Tournament model?
 export interface TournamentInput {
-  tournament_id: number
-  date_played: Date
-  rounds: RoundInput[]
+  tournament_id: number;
+  date_played: Date;
+  rounds: RoundInput[];
 }
 
 // TODO: Move to Round model?
 export interface RoundInput {
-  team_id: number
-  golfer_id: number
-  golfer_playing_handicap?: number
-  course_id: number
-  track_id: number
-  tee_id: number
-  holes: HoleResultInput[]
+  team_id: number;
+  golfer_id: number;
+  golfer_playing_handicap?: number;
+  course_id: number;
+  track_id: number;
+  tee_id: number;
+  holes: HoleResultInput[];
 }
 
 // TODO: Move to HoleResult model?
 export interface HoleResultInput {
-  hole_id: number
-  gross_score: number
+  hole_id: number;
+  gross_score: number;
 }

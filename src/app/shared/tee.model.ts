@@ -1,4 +1,4 @@
-import { Hole, HoleData } from "./hole.model";
+import { Hole, HoleData } from './hole.model';
 
 export interface Tee {
   id: number;

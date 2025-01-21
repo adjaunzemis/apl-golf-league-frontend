@@ -4,18 +4,25 @@
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
-<div class="content"  style="margin-top: 0px" *ngIf="!isLoading">
-
+<div class="content" style="margin-top: 0px" *ngIf="!isLoading">
   <mat-form-field appearance="fill" class="input-field">
     <mat-label>Filter by name</mat-label>
-    <input type="text" matInput title="Start typing golfer name to autocomplete." [formControl]="golferControl">
+    <input
+      type="text"
+      matInput
+      title="Start typing golfer name to autocomplete."
+      [formControl]="golferControl"
+    />
   </mat-form-field>
 
   <div class="card-container">
-    <a class="card card-small" routerLink="/golfer" [queryParams]="{id: golfer.id}" *ngFor="let golfer of filteredGolferOptions | async">
+    <a
+      class="card card-small"
+      routerLink="/golfer"
+      [queryParams]="{ id: golfer.id }"
+      *ngFor="let golfer of filteredGolferOptions | async"
+    >
       <span class="bold">{{ golfer.name }}</span>
     </a>
   </div>
-
 </div>
-

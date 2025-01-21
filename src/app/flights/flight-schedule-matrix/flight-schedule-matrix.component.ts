@@ -3,10 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FlightData } from '../../shared/flight.model';
 
 @Component({
-    selector: 'app-flight-schedule-matrix',
-    templateUrl: './flight-schedule-matrix.component.html',
-    styleUrls: ['./flight-schedule-matrix.component.css'],
-    standalone: false
+  selector: 'app-flight-schedule-matrix',
+  templateUrl: './flight-schedule-matrix.component.html',
+  styleUrls: ['./flight-schedule-matrix.component.css'],
+  standalone: false,
 })
 export class FlightScheduleMatrixComponent implements OnInit {
   @Input() flight: FlightData;
@@ -20,7 +20,7 @@ export class FlightScheduleMatrixComponent implements OnInit {
 
   weeks: number[] = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.currentWeek = this.determineCurrentWeek();
@@ -40,21 +40,25 @@ export class FlightScheduleMatrixComponent implements OnInit {
         }
 
         if (!Object.keys(this.teamOpponents).includes(match.home_team_name)) {
-          this.teamOpponents[match.home_team_name] = Array(this.flight.weeks).fill("");
+          this.teamOpponents[match.home_team_name] = Array(this.flight.weeks).fill('');
         }
-        if (this.teamOpponents[match.home_team_name][match.week - 1] === "") {
-          this.teamOpponents[match.home_team_name][match.week - 1] = "" + this.teamNumbers[match.away_team_name];
+        if (this.teamOpponents[match.home_team_name][match.week - 1] === '') {
+          this.teamOpponents[match.home_team_name][match.week - 1] =
+            '' + this.teamNumbers[match.away_team_name];
         } else {
-          this.teamOpponents[match.home_team_name][match.week - 1] += " & " + this.teamNumbers[match.away_team_name];
+          this.teamOpponents[match.home_team_name][match.week - 1] +=
+            ' & ' + this.teamNumbers[match.away_team_name];
         }
 
         if (!Object.keys(this.teamOpponents).includes(match.away_team_name)) {
-          this.teamOpponents[match.away_team_name] = Array(this.flight.weeks).fill("");
+          this.teamOpponents[match.away_team_name] = Array(this.flight.weeks).fill('');
         }
-        if (this.teamOpponents[match.away_team_name][match.week - 1] === "") {
-          this.teamOpponents[match.away_team_name][match.week - 1] = "" + this.teamNumbers[match.home_team_name];
+        if (this.teamOpponents[match.away_team_name][match.week - 1] === '') {
+          this.teamOpponents[match.away_team_name][match.week - 1] =
+            '' + this.teamNumbers[match.home_team_name];
         } else {
-          this.teamOpponents[match.away_team_name][match.week - 1] += " & " + this.teamNumbers[match.home_team_name];
+          this.teamOpponents[match.away_team_name][match.week - 1] +=
+            ' & ' + this.teamNumbers[match.home_team_name];
         }
       }
     }
@@ -75,5 +79,4 @@ export class FlightScheduleMatrixComponent implements OnInit {
     }
     return 1; // fall-through case, shouldn't be reachable
   }
-
 }

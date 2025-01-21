@@ -3,7 +3,7 @@ name: Deploy Angular App to HostGator (Staging)
 on:
   push:
     tags:
-      - "v*.*.*.dev*"
+      - 'v*.*.*.dev*'
 
 jobs:
   build-staging:
@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Extract tag name
         id: get_tag
         run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
@@ -26,11 +26,8 @@ jobs:
           #!/bin/bash
           FILE="src/environments/environment.staging.ts"
           NEW_VERSION="${{ env.TAG_NAME }}"
-          
-          # Update the version key in the dictionary
-          sed -i.bak -E "s/(version: *\")([^\"]+)(\")/\\1${NEW_VERSION}\\3/" "$FILE"
-          
-          # Remove backup file
+
+          sed -i.bak -E "s/(version: *)'[^']+'/\1'${NEW_VERSION}'/" "$FILE"
           rm "$FILE.bak"
 
           echo "Updated version to $NEW_VERSION in $FILE"

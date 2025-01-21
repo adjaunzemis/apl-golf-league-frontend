@@ -1,5 +1,5 @@
 export interface APIInfo {
-    title: string
-    description: string
-    version: string
+  title: string;
+  description: string;
+  version: string;
 }

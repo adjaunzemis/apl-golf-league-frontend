@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Sort } from "@angular/material/sort";
-import { Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Sort } from '@angular/material/sort';
+import { Subscription } from 'rxjs';
 
-import { PaymentsService } from "../payments.service";
+import { PaymentsService } from '../payments.service';
 import { LeagueDuesPaymentData } from '../../shared/payment.model';
-import { AppConfigService } from "../../app-config.service";
+import { AppConfigService } from '../../app-config.service';
 
 @Component({
-    selector: 'app-league-dues-payments-list',
-    templateUrl: './league-dues-payments-list.component.html',
-    styleUrls: ['./league-dues-payments-list.component.css'],
-    standalone: false
+  selector: 'app-league-dues-payments-list',
+  templateUrl: './league-dues-payments-list.component.html',
+  styleUrls: ['./league-dues-payments-list.component.css'],
+  standalone: false,
 })
 export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -25,18 +25,36 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
 
   updatedPayment: LeagueDuesPaymentData | null = null;
 
-  displayedColumns: string[] = ['id', 'golfer_name', 'year', 'type', 'status', 'amount_due', 'amount_paid', 'method', 'linked_payment_id', 'comment', 'edit', 'cancel'];
+  displayedColumns: string[] = [
+    'id',
+    'golfer_name',
+    'year',
+    'type',
+    'status',
+    'amount_due',
+    'amount_paid',
+    'method',
+    'linked_payment_id',
+    'comment',
+    'edit',
+    'cancel',
+  ];
 
-  constructor(private paymentsService: PaymentsService, private appConfigService: AppConfigService) { }
+  constructor(
+    private paymentsService: PaymentsService,
+    private appConfigService: AppConfigService,
+  ) {}
 
   ngOnInit(): void {
     this.selectedYear = this.appConfigService.currentYear;
 
-    this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentDataListUpdateListener().subscribe(result => {
-      this.leagueDuesPayments = result;
-      this.sortedData = this.leagueDuesPayments;
-      this.isLoading = false;
-    });
+    this.leagueDuesSub = this.paymentsService
+      .getLeagueDuesPaymentDataListUpdateListener()
+      .subscribe((result) => {
+        this.leagueDuesPayments = result;
+        this.sortedData = this.leagueDuesPayments;
+        this.isLoading = false;
+      });
 
     this.paymentsService.getLeagueDuesPaymentDataList(this.selectedYear);
   }
@@ -58,17 +76,17 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
       is_paid: payment.is_paid,
       method: payment.method,
       linked_payment_id: payment.linked_payment_id,
-      comment: payment.comment
+      comment: payment.comment,
     };
   }
 
   updatePaymentInfo(): void {
     if (this.updatedPayment) {
-      this.paymentsService.updateLeagueDuesPayment(this.updatedPayment).subscribe(result => {
+      this.paymentsService.updateLeagueDuesPayment(this.updatedPayment).subscribe((result) => {
         console.log(`[PaymentsListComponent] Updated payment id=${result.id}`);
 
         // Update item in list
-        let payment = this.leagueDuesPayments.find(entry => entry.id === result.id);
+        let payment = this.leagueDuesPayments.find((entry) => entry.id === result.id);
         if (payment) {
           const newPayment = {
             id: payment.id,
@@ -82,10 +100,10 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
             is_paid: result.is_paid,
             method: result.method,
             linked_payment_id: result.linked_payment_id,
-            comment: result.comment
+            comment: result.comment,
           };
 
-          const paymentIdx = this.leagueDuesPayments.findIndex(entry => entry.id === result.id);
+          const paymentIdx = this.leagueDuesPayments.findIndex((entry) => entry.id === result.id);
           this.leagueDuesPayments[paymentIdx] = newPayment;
         }
 
@@ -132,17 +150,19 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   }
 
   getUnpaidEmailAddresses(): string {
-    let mailToList = "mailto:";
+    let mailToList = 'mailto:';
     for (const payment of this.leagueDuesPayments) {
-      if (payment.amount_due > payment.amount_paid && !(payment.method === "Exempt" || payment.method === "Linked")) {
+      if (
+        payment.amount_due > payment.amount_paid &&
+        !(payment.method === 'Exempt' || payment.method === 'Linked')
+      ) {
         if (payment.golfer_email !== undefined) {
-          mailToList += payment.golfer_email + ";"
+          mailToList += payment.golfer_email + ';';
         }
       }
     }
     return mailToList;
   }
-
 }
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {

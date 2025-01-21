@@ -1,4 +1,4 @@
-import { Tee, TeeData } from "./tee.model";
+import { Tee, TeeData } from './tee.model';
 
 export interface Track {
   id: number;

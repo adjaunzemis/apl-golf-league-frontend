@@ -1,4 +1,4 @@
-import { Track, TrackData } from "./track.model";
+import { Track, TrackData } from './track.model';
 
 export interface Course {
   id: number;
