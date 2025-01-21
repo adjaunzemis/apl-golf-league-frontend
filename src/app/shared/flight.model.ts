@@ -1,0 +1,57 @@
+import { DivisionData, DivisionCreate } from "./division.model"
+import { MatchSummary } from "./match.model"
+import { TeamData } from "./team.model"
+
+export class FlightData {
+    id: number
+    year: number
+    name: string
+    course_id: number
+    course: string
+    logo_url?: string
+    secretary?: string
+    secretary_email?: string
+    secretary_phone?: string
+    signup_start_date: Date
+    signup_stop_date: Date
+    start_date: Date
+    weeks: number
+    tee_times?: string
+    divisions: DivisionData[]
+    teams?: TeamData[]
+    matches?: MatchSummary[]
+}
+
+export interface FlightInfo {
+  id: number
+  name: string
+  year: number
+  course: string
+  logo_url?: string
+  secretary?: string
+  secretary_email?: string
+  secretary_phone?: string
+  signup_start_date: Date
+  signup_stop_date: Date
+  start_date: Date
+  weeks: number
+  tee_times?: string
+}
+
+export interface FlightCreate {
+  id?: number
+  name: string
+  year: number
+  course_id: number
+  logo_url: string
+  secretary: string
+  secretary_email: string
+  secretary_phone: string
+  signup_start_date: Date
+  signup_stop_date: Date
+  start_date: Date
+  weeks: number
+  tee_times?: string
+  locked?: boolean
+  divisions: DivisionCreate[]
+}

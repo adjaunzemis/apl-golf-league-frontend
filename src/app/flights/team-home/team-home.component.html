@@ -1,0 +1,47 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div class="content" *ngIf="!isLoading">
+
+  <h1>{{ team.name }}</h1>
+
+  <h2>Roster</h2>
+
+  <div class="card-container">
+    <a class="card card-small selectable" routerLink="/golfer" [queryParams]="{id: golfer.golfer_id}" *ngFor="let golfer of team.golfers">
+      <span class="bold">{{ golfer.golfer_name }}</span>
+      <div>
+        <span>{{ golfer.role }} - {{ golfer.division_name }}</span>
+      </div>
+    </a>
+  </div>
+
+  <a href="mailto:{{ getGolferEmailList() }}" class="card card-small selectable">
+    <span class="bold">Contact Team</span>
+  </a>
+
+  <h2>Matches</h2>
+
+  <p class="italic" *ngIf="!showScorecard">Select a match to view scorecard</p>
+
+  <app-match-scorecard class="full-width" [match]="focusedMatch" [topTeamId]="team.id" *ngIf="showScorecard"></app-match-scorecard>
+
+  <div class="card-container">
+    <div class="card card-small match-card" *ngFor="let match of team.matches" (click)="focusMatch(match)" [ngClass]="[match.home_score || match.away_score ? 'selectable' : '', showScorecard && focusedMatch === match ? 'selected' : '']">
+      <ng-container *ngIf="match.home_team_id === team.id">
+        <span class="bold">Week {{ match.week }} vs. {{ match.away_team_name }}</span>
+        <span *ngIf="match.home_score || match.away_score">{{ getMatchResult(match.home_score, match.away_score) }}: {{ match.home_score | number : '1.1-1' }} - {{ match.away_score | number : '1.1-1' }}</span>
+        <span class="italic" *ngIf="!match.home_score && !match.away_score">TBD</span>
+      </ng-container>
+      <ng-container *ngIf="match.away_team_id === team.id">
+        <span class="bold">Week {{ match.week }} vs. {{ match.home_team_name }}</span>
+        <span *ngIf="match.home_score || match.away_score">{{ getMatchResult(match.away_score, match.home_score) }}: {{ match.away_score | number : '1.1-1' }} - {{ match.home_score | number : '1.1-1' }}</span>
+        <span class="italic" *ngIf="!match.home_score && !match.away_score">TBD</span>
+      </ng-container>
+    </div>
+  </div>
+
+  <h2>Statistics</h2>
+
+  <app-golfer-statistics class="full-width" [golfers]="team.golfers" [hideEmptyColumns]="true"></app-golfer-statistics>
+
+</div>
