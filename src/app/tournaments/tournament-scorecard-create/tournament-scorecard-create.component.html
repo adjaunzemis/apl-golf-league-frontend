@@ -91,9 +91,7 @@
     <div class="card card-small bold" *ngIf="selectedTournament.strokeplay">Strokeplay</div>
     <div class="card card-small bold" *ngIf="selectedTournament.bestball > 0">
       Team
-      {{
-        selectedTournament.bestball > 1 ? selectedTournament.bestball : (null | number: '1.0-0')
-      }}
+      {{ selectedTournament.bestball > 1 ? selectedTournament.bestball : (null | number: '1.0-0') }}
       Best {{ selectedTournament.bestball > 1 ? 'Balls' : 'Ball' }}
     </div>
     <div class="card card-small bold" *ngIf="selectedTournament.scramble">Scramble</div>
