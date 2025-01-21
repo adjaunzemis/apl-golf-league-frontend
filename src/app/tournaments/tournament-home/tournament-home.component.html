@@ -1,0 +1,104 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div class="content" *ngIf="!isLoading">
+  <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="100" *ngIf="tournament.logo_url">
+
+  <h1>{{ tournament.name }} ({{ tournament.year }})</h1>
+
+  <a class="card announcements-card card-small" routerLink="/signup" [queryParams]="{ type: 'tournament', id: tournament.id }" *ngIf="tournament.signup_stop_date >= currentDate">
+    <span class="bold">Sign-Ups</span>
+    <span>{{ tournament.signup_start_date | date:'longDate' }} - {{ tournament.signup_stop_date | date:'longDate' }}</span>
+    <span class="italic">Click to go to sign-up page</span>
+  </a>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Date</span>
+      <span>{{ tournament.date | date:'mediumDate'}} {{ tournament.date | date:'shortTime'}}</span>
+    </div>
+
+    <div class="card card-small">
+      <span class="bold">Course</span>
+      <span>{{ tournament.course }}</span>
+    </div>
+
+    <a class="card card-small selectable" href="mailto:{{ tournament.secretary_email }}" *ngIf="tournament.secretary">
+      <span class="bold">Tournament Organizer</span>
+      <span>{{ tournament.secretary }}</span>
+    </a>
+
+    <a class="card card-small" *ngIf="tournament.members_entry_fee || tournament.non_members_entry_fee">
+      <span class="bold">Fee (Member / Non-Member)</span>
+      <span>{{ tournament.members_entry_fee | currency:'USD' }} / {{ tournament.non_members_entry_fee | currency:'USD' }} </span>
+    </a>
+
+    <a href="mailto:{{ getTournamentEmailList() }}" class="card card-small selectable">
+      <span class="bold">Contact Participants</span>
+    </a>
+
+    <div class="card card-small selectable" (click)="onManageTournament()" *ngIf="isAuthenticated && currentUser?.is_admin">
+      <span class="bold">Manage Tournament</span>
+      <mat-icon>settings</mat-icon>
+    </div>
+  </div>
+
+  <h2>Format</h2>
+
+  <div class="card-container">
+    <div class="card card-small bold" *ngIf="tournament.shotgun">Shotgun Start</div>
+    <div class="card card-small bold" *ngIf="tournament.strokeplay">Strokeplay</div>
+    <div class="card card-small bold" *ngIf="tournament.bestball > 0">Team {{ tournament.bestball > 1 ? tournament.bestball : null | number:'1.0-0' }} Best {{ tournament.bestball > 1 ? 'Balls' : 'Ball' }}</div>
+    <div class="card card-small bold" *ngIf="tournament.scramble">Scramble</div>
+    <div class="card card-small bold" *ngIf="tournament.ryder_cup">Ryder Cup</div>
+    <div class="card card-small bold" *ngIf="tournament.chachacha">Cha-Cha-Cha</div>
+  </div>
+
+  <h2>Divisions</h2>
+
+  <app-division-list [divisions]="tournament.divisions"></app-division-list>
+
+  <h2>Standings</h2>
+
+  <div *ngIf="tournament.date < currentDate; else notPlayedYet">
+    <app-tournament-standings [tournament]="tournament" [teamData]="tournament.teams"></app-tournament-standings>
+  </div>
+
+  <ng-template #notPlayedYet>
+    <p class="italic">Available after the tournament has been played</p>
+  </ng-template>
+
+  <h2>Teams</h2>
+
+  <div class="content" style="margin-top: 0px" *ngIf="tournament.teams.length > 0; else noTeams">
+    <p class="italic" *ngIf="!showScorecard">Select a team to view scorecards</p>
+
+    <div class="full-width" *ngIf="showScorecard">
+      <app-tournament-scorecard [tournament]="tournament" [rounds]="focusedTeam.rounds" *ngIf="focusedTeam.rounds && focusedTeam.rounds.length > 0; else noRounds"></app-tournament-scorecard>
+
+      <ng-template #noRounds>
+        <p class="no-rounds-warning">No round data for team {{ focusedTeam.name }}</p>
+      </ng-template>
+    </div>
+
+    <div class="card-container">
+      <div class="card team-card selectable" *ngFor="let team of tournament.teams" (click)="focusTeam(team)" [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''">
+        <span class="bold">{{ team.name }}</span>
+        <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noTeams>
+    <p class="italic">No teams have signed-up yet...</p>
+  </ng-template>
+
+
+  <!-- <h2>Statistics</h2>
+
+  <div class="card-container">
+    <div class="card card-small">
+      <span class="bold">Coming soon...</span>
+    </div>
+  </div> -->
+
+</div>

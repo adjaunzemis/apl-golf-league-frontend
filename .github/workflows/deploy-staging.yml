@@ -11,7 +11,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./apl-golf-league
+        working-directory: .
 
     steps:
       - name: Checkout code
@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: angular-build
-          path: apl-golf-league/dist/apl-golf-league
+          path: dist/apl-golf-league
 
   deploy-staging:
     runs-on: ubuntu-latest
