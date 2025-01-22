@@ -12,7 +12,7 @@ import { User, UserInfo } from '../shared/user.model';
 })
 export class AuthService {
   private static LOCAL_STORAGE_USER = 'aplGolfUserData';
-  private tokenExpirationTimer: any;
+  private tokenExpirationTimer: NodeJS.Timeout | null = null;
 
   user = new BehaviorSubject<User | null>(null);
 

@@ -193,7 +193,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     this.filteredGolferOptionsArray.splice(idx, 1);
   }
 
-  private isGolfer(object: any): object is Golfer {
+  private isGolfer(object: unknown): object is Golfer {
     return (object as Golfer).name !== undefined;
   }
 
