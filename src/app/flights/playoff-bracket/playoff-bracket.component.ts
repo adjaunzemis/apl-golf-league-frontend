@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./playoff-bracket.component.css'],
   standalone: false,
 })
-export class PlayoffBracketComponent { }
+export class PlayoffBracketComponent {}

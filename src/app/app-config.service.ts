@@ -27,5 +27,5 @@ export class AppConfigService {
 }
 
 interface AppConfigInfo {
-  currentYear: number
+  currentYear: number;
 }

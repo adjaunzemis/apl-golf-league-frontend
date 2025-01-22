@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./handicaps.component.css'],
   standalone: false,
 })
-export class HandicapsComponent  { }
+export class HandicapsComponent {}
