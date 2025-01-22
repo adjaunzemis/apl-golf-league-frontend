@@ -23,7 +23,7 @@ export class CarouselComponent {
     },
   ];
 
-  currentIndex: number = 0;
+  currentIndex = 0;
 
   goToNext(): void {
     this.currentIndex += 1;

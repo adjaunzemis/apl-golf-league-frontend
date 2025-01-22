@@ -12,7 +12,7 @@ import { APIService } from 'src/app/api/api.service';
 })
 export class FooterComponent implements OnInit, OnDestroy {
   websiteVersion: string = environment.version;
-  apiVersion: string = '--';
+  apiVersion = '--';
 
   private apiInfoSub: Subscription;
 

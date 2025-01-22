@@ -23,7 +23,7 @@ import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.co
   standalone: false,
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
-  updateMode: boolean = false;
+  updateMode = false;
 
   teamNameControl: UntypedFormControl = new UntypedFormControl(this.data.teamName, [
     Validators.required,
@@ -122,7 +122,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       .join(' ')
       .trim();
 
-    let teamGolfers: TeamGolferCreate[] = [];
+    const teamGolfers: TeamGolferCreate[] = [];
     for (let idx = 0; idx < this.getTeamGolfersArray().length; idx++) {
       const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
 
@@ -194,7 +194,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   }
 
   private isGolfer(object: any): object is Golfer {
-    return (<Golfer>object).name !== undefined;
+    return (object as Golfer).name !== undefined;
   }
 
   private _filter(value: string): Golfer[] {
@@ -202,7 +202,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     return this.golferOptions.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
 
-  private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
+  private checkGolferName(control: UntypedFormControl): Record<string, boolean> | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
       return { golferNameInvalid: true };
     }

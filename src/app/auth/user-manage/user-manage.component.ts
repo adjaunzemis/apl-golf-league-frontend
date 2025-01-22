@@ -14,7 +14,7 @@ import { User } from '../../shared/user.model';
 })
 export class UserManageComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
-  isAuthenticated: boolean = false;
+  isAuthenticated = false;
   currentUser: User | null = null;
 
   usernameControl = new UntypedFormControl('', Validators.required);

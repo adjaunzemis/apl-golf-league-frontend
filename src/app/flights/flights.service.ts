@@ -26,7 +26,7 @@ export class FlightsService {
   ) {}
 
   getFlightsList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }

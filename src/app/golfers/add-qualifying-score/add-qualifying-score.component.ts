@@ -348,7 +348,7 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
   }
 
   private isGolfer(object: any): object is Golfer {
-    return (<Golfer>object).name !== undefined;
+    return (object as Golfer).name !== undefined;
   }
 
   private getGolferByName(name: string): Golfer | null {

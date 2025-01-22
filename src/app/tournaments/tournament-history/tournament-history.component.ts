@@ -15,7 +15,7 @@ export class TournamentHistoryComponent implements OnInit, OnDestroy {
   tournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
-  tournamentsSortedByYear: { [year: number]: TournamentInfo[] };
+  tournamentsSortedByYear: Record<number, TournamentInfo[]>;
   sortedYears: number[];
 
   constructor(private tournamentsService: TournamentsService) {}
@@ -40,7 +40,7 @@ export class TournamentHistoryComponent implements OnInit, OnDestroy {
   private sortTournamentsByYear(): void {
     this.sortedYears = [];
     this.tournamentsSortedByYear = {};
-    for (let tournament of this.tournaments) {
+    for (const tournament of this.tournaments) {
       if (!this.tournamentsSortedByYear[tournament.year]) {
         this.sortedYears.push(tournament.year);
         this.tournamentsSortedByYear[tournament.year] = [];

@@ -36,9 +36,9 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   rounds: RoundData[] = [];
   roundsSub: Subscription;
 
-  roundsOrganizedByTee: { [tee_id: number]: RoundData[] };
+  roundsOrganizedByTee: Record<number, RoundData[]>;
 
-  showHandicapData: boolean = false;
+  showHandicapData = false;
 
   constructor(
     private appConfigService: AppConfigService,
@@ -132,7 +132,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   }
 
   private getActiveHandicapDeadline(d: Date): Date {
-    var t = new Date(d);
+    const t = new Date(d);
     t.setDate(t.getDate() - t.getDay()); // previous Sunday
     return t;
   }
@@ -143,7 +143,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   private organizeRoundsByTee(): void {
     this.roundsOrganizedByTee = {};
-    for (let round of this.rounds) {
+    for (const round of this.rounds) {
       if (!this.roundsOrganizedByTee[round.tee_id]) {
         this.roundsOrganizedByTee[round.tee_id] = [];
       }

@@ -45,7 +45,7 @@ export class GolferStatisticsComponent implements OnInit {
     let num_double_bogeys = 0;
     let num_others = 0;
 
-    for (let golfer of this.golfers) {
+    for (const golfer of this.golfers) {
       if (golfer.statistics) {
         num_aces += golfer.statistics.num_aces;
         num_albatrosses += golfer.statistics.num_albatrosses;
@@ -59,35 +59,35 @@ export class GolferStatisticsComponent implements OnInit {
     }
 
     if (num_aces == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_aces');
+      const idx = this.columnsToDisplay.indexOf('num_aces');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_albatrosses == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_albatrosses');
+      const idx = this.columnsToDisplay.indexOf('num_albatrosses');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_eagles == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_eagles');
+      const idx = this.columnsToDisplay.indexOf('num_eagles');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_birdies == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_birdies');
+      const idx = this.columnsToDisplay.indexOf('num_birdies');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_pars == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_pars');
+      const idx = this.columnsToDisplay.indexOf('num_pars');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_bogeys == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_bogeys');
+      const idx = this.columnsToDisplay.indexOf('num_bogeys');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_double_bogeys == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_double_bogeys');
+      const idx = this.columnsToDisplay.indexOf('num_double_bogeys');
       this.columnsToDisplay.splice(idx, 1);
     }
     if (num_others == 0) {
-      let idx = this.columnsToDisplay.indexOf('num_others');
+      const idx = this.columnsToDisplay.indexOf('num_others');
       this.columnsToDisplay.splice(idx, 1);
     }
   }

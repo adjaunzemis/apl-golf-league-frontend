@@ -229,13 +229,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
       } else {
         // Add ids to course data
         courseData.id = this.course.id;
-        for (let trackData of courseData.tracks) {
+        for (const trackData of courseData.tracks) {
           trackData.course_id = courseData.id;
           const trackMatches = this.course.tracks.filter((track) => track.name === trackData.name);
           for (const trackMatch of trackMatches) {
             trackData.id = trackMatch.id;
 
-            for (let teeData of trackData.tees) {
+            for (const teeData of trackData.tees) {
               teeData.track_id = trackData.id;
               const teeMatches = trackMatch.tees.filter(
                 (tee) => tee.name === teeData.name && tee.gender === teeData.gender,
@@ -243,7 +243,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
               for (const teeMatch of teeMatches) {
                 teeData.id = teeMatch.id;
 
-                for (let holeData of teeData.holes) {
+                for (const holeData of teeData.holes) {
                   holeData.tee_id = teeData.id;
                   const holeMatches = teeMatch.holes.filter(
                     (hole) => hole.number === holeData.number,

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -14,7 +14,7 @@ import { CoursesService } from '../../courses/courses.service';
   styleUrls: ['./tournament-create.component.css'],
   standalone: false,
 })
-export class TournamentCreateComponent implements OnInit {
+export class TournamentCreateComponent implements OnInit, OnDestroy {
   nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [
     Validators.required,
     Validators.minLength(3),
@@ -140,7 +140,7 @@ export class TournamentCreateComponent implements OnInit {
   selectedCourse: Course;
   selectedCourseSub: Subscription;
 
-  private divisionTeeIdMap: { [teeInfo: string]: number } = {};
+  private divisionTeeIdMap: Record<string, number> = {};
   teeInfoOptions: string[] = [];
 
   divisionGenderOptions: string[] = ["Men's", "Ladies'"];
@@ -205,7 +205,7 @@ export class TournamentCreateComponent implements OnInit {
       .trim();
 
     // TODO: Fix hard-coding of 4 divisions
-    let tournamentDivisions: DivisionCreate[] = [];
+    const tournamentDivisions: DivisionCreate[] = [];
     tournamentDivisions.push({
       id:
         this.data.divisions[0] && this.data.divisions[0].id ? this.data.divisions[0].id : undefined,
@@ -287,7 +287,7 @@ export class TournamentCreateComponent implements OnInit {
 
   private updateDivisionOptions(): void {
     // Update division tee options mappings
-    let teeIdDivisionMap: { [teeId: number]: string } = {};
+    const teeIdDivisionMap: Record<number, string> = {};
     this.divisionTeeIdMap = {};
     this.teeInfoOptions = [];
     for (const track of this.selectedCourse.tracks) {

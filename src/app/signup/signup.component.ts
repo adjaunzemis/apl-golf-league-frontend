@@ -265,7 +265,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   private convertTeamCreateToTeamInfo(teamCreate: TeamCreate): TeamInfo {
-    let golfers: TeamGolferData[] = [];
+    const golfers: TeamGolferData[] = [];
     for (const golfer of teamCreate.golfers) {
       golfers.push({
         golfer_id: golfer.golfer.id,
@@ -293,7 +293,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     // Modify existing team
     let initTeamId = -1;
     let initTeamName = '';
-    let initTeamGolfers: TeamGolferCreate[] = [];
+    const initTeamGolfers: TeamGolferCreate[] = [];
     if (initTeam) {
       if (initTeam.id) {
         initTeamId = initTeam.id;

@@ -85,7 +85,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   private setTeeList(): void {
     this.tees = [];
     if (this.rounds instanceof Array) {
-      for (let round of this.rounds) {
+      for (const round of this.rounds) {
         const tee = {
           name: round.tee_name,
           gender: round.tee_gender,

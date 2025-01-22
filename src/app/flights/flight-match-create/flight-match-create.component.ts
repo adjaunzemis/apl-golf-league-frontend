@@ -39,7 +39,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   private currentYear: number;
 
-  showInstructions: boolean = false;
+  showInstructions = false;
 
   selectedDate: Date = new Date();
 
@@ -63,7 +63,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
   weekOptions: string[] = [];
 
-  selectedWeek: number = 1;
+  selectedWeek = 1;
   selectedWeekMatches: MatchSummary[];
 
   selectedMatch: MatchData | MatchSummary | null;
@@ -203,7 +203,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     if (event.value !== null) {
       console.log(`[FlightMatchCreateComponent] Selected date: ${event.value}`);
       this.selectedDate = event.value;
-      for (let round of [
+      for (const round of [
         this.team1Golfer1Round,
         this.team1Golfer2Round,
         this.team2Golfer1Round,
@@ -279,7 +279,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       return 1;
     } else {
       for (let week = this.selectedFlight.weeks; week > 1; week--) {
-        let weekStartDate = new Date(this.selectedFlight.start_date);
+        const weekStartDate = new Date(this.selectedFlight.start_date);
         weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
         if (this.currentDate >= weekStartDate) {
           return week;
@@ -292,10 +292,10 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   private setWeekOptions(): void {
     this.weekOptions = [];
     for (let week = 1; week <= this.selectedFlight.weeks; week++) {
-      let weekStartDate = new Date(this.selectedFlight.start_date);
+      const weekStartDate = new Date(this.selectedFlight.start_date);
       weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
 
-      let nextWeekStartDate = new Date(weekStartDate);
+      const nextWeekStartDate = new Date(weekStartDate);
       nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
 
       this.weekOptions.push(
@@ -317,7 +317,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
     this.selectedWeekMatches = [];
     if (this.selectedFlight.matches) {
-      for (let match of this.selectedFlight.matches) {
+      for (const match of this.selectedFlight.matches) {
         if (match.week === this.selectedWeek) {
           this.selectedWeekMatches.push(match);
         }
@@ -531,15 +531,15 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   getRoundsForTeam(teamNum: number): RoundData[] {
-    let rounds: RoundData[] = [];
+    const rounds: RoundData[] = [];
     if (teamNum === 1) {
-      for (let round of [this.team1Golfer1Round, this.team1Golfer2Round]) {
+      for (const round of [this.team1Golfer1Round, this.team1Golfer2Round]) {
         if (round !== null && round !== undefined) {
           rounds.push(round);
         }
       }
     } else {
-      for (let round of [this.team2Golfer1Round, this.team2Golfer2Round]) {
+      for (const round of [this.team2Golfer1Round, this.team2Golfer2Round]) {
         if (round !== null && round !== undefined) {
           rounds.push(round);
         }
@@ -549,8 +549,8 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   getTeamRound(teamNum: number): RoundData {
-    let teamGolferRounds: RoundData[] = [];
-    let opponentGolferRounds: RoundData[] = [];
+    const teamGolferRounds: RoundData[] = [];
+    const opponentGolferRounds: RoundData[] = [];
     if (teamNum === 1) {
       if (this.team1Golfer1Round) {
         teamGolferRounds.push(this.team1Golfer1Round);
@@ -595,7 +595,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     const teamFirstRoundTee =
       teamNum === 1 ? this.selectedTeam1Golfer1Tee : this.selectedTeam2Golfer1Tee;
 
-    let teamRound: RoundData = {
+    const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.selectedDate,
@@ -697,7 +697,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     tee: Tee,
     playingHandicap: number | undefined,
   ): HoleResultData[] {
-    let holeResultData: HoleResultData[] = [];
+    const holeResultData: HoleResultData[] = [];
     for (const hole of tee.holes) {
       holeResultData.push({
         hole_result_id: -1, // TODO: remove placeholder?
@@ -721,7 +721,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     rounds: RoundData[],
     playingHandicap: number | undefined,
   ): HoleResultData[] {
-    let holeResultData: HoleResultData[] = [];
+    const holeResultData: HoleResultData[] = [];
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       let grossScore = 0;
       for (const round of rounds) {
@@ -788,9 +788,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       console.error('Unable to post scores, incomplete or invalid data!');
       return;
     }
-    let rounds: RoundInput[] = [];
+    const rounds: RoundInput[] = [];
     for (const round of [this.team1Golfer1Round, this.team1Golfer2Round]) {
-      let holes: HoleResultInput[] = [];
+      const holes: HoleResultInput[] = [];
       for (const hole of round.holes) {
         const holeResultInput: HoleResultInput = {
           hole_id: hole.hole_id,
@@ -810,7 +810,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       rounds.push(roundInput);
     }
     for (const round of [this.team2Golfer1Round, this.team2Golfer2Round]) {
-      let holes: HoleResultInput[] = [];
+      const holes: HoleResultInput[] = [];
       for (const hole of round.holes) {
         const holeResultInput: HoleResultInput = {
           hole_id: hole.hole_id,

@@ -21,8 +21,8 @@ export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
   @Input() slope: number;
   @Input() color = 'none';
 
-  totalPar: number = 0;
-  totalYardage: number = 0;
+  totalPar = 0;
+  totalYardage = 0;
 
   ngOnInit(): void {
     if (this.holes.length == 0) {

@@ -59,7 +59,7 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
   }
 
   private isGolfer(object: any): object is Golfer {
-    return (<Golfer>object).name !== undefined;
+    return (object as Golfer).name !== undefined;
   }
 
   private _filter(value: string): Golfer[] {

@@ -12,11 +12,11 @@ export class FlightScheduleMatrixComponent implements OnInit {
   @Input() flight: FlightData;
 
   private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
-  currentWeek: number = 1;
+  currentWeek = 1;
 
   teamNames: string[] = [];
-  teamNumbers: { [name: string]: number } = {};
-  teamOpponents: { [name: string]: string[] } = {};
+  teamNumbers: Record<string, number> = {};
+  teamOpponents: Record<string, string[]> = {};
 
   weeks: number[] = [];
 
@@ -70,7 +70,7 @@ export class FlightScheduleMatrixComponent implements OnInit {
       return 1;
     } else {
       for (let week = this.flight.weeks; week > 1; week--) {
-        let weekStartDate = new Date(this.flight.start_date);
+        const weekStartDate = new Date(this.flight.start_date);
         weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
         if (this.currentDate >= weekStartDate) {
           return week;

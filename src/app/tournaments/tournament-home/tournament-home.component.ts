@@ -107,9 +107,9 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   }
 
   private compileRoundData(): void {
-    for (let team of this.tournament.teams) {
+    for (const team of this.tournament.teams) {
       if (team.rounds) {
-        for (let round of team.rounds) {
+        for (const round of team.rounds) {
           this.rounds.push(round);
         }
       }

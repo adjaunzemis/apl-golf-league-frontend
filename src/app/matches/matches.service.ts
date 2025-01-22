@@ -22,7 +22,7 @@ export class MatchesService {
   ) {}
 
   getMatches(offset: number, limit: number, teamId?: number): void {
-    let queryParams: string = `?`;
+    let queryParams = `?`;
     if (teamId) {
       queryParams = `?team_id=${teamId}&`;
     }

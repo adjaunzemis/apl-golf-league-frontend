@@ -40,7 +40,7 @@ export class PaymentsService {
 
   /** LEAGUE DUES */
   getLeagueDuesList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
@@ -57,7 +57,7 @@ export class PaymentsService {
   }
 
   getLeagueDuesPaymentInfoList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
@@ -74,7 +74,7 @@ export class PaymentsService {
   }
 
   getLeagueDuesPaymentDataList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
