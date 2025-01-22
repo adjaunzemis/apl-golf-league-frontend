@@ -2,7 +2,7 @@
   <mat-tab-group
     animationDuration="0ms"
     [(selectedIndex)]="selectedTabIdx"
-    (selectedIndexChange)="onTabIndexChanged($event)"
+    (selectedIndexChange)="clearFlightAndTournamentControlSelections()"
     *ngIf="!isLoadingFlights && !isLoadingTournaments"
   >
     <mat-tab label="Flight Sign-Ups">
