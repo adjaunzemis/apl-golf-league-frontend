@@ -62,6 +62,7 @@
     </a>
 
     <div
+      aria-hidden="true"
       class="card card-small selectable"
       (click)="onManageTournament()"
       (keydown)="onManageTournament()"
@@ -122,6 +123,7 @@
 
     <div class="card-container">
       <div
+        aria-hidden="true"
         class="card team-card selectable"
         *ngFor="let team of tournament.teams"
         (click)="focusTeam(team)"

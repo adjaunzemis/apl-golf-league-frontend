@@ -11,6 +11,7 @@
 
   <div class="card-container" *ngIf="selectedWeekOrRoundMatches.length > 0; else noMatches">
     <div
+      aria-hidden="true"
       class="card card-small match-summary-card"
       [ngClass]="[
         match.home_score || match.away_score ? 'selectable' : '',

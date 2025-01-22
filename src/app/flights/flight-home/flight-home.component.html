@@ -63,6 +63,7 @@
     </a>
 
     <div
+      aria-hidden="true"
       class="card card-small selectable"
       (click)="onManageFlight()"
       (keydown)="onManageFlight()"
@@ -87,6 +88,7 @@
 
   <h2>Schedule</h2>
   <div
+    aria-hidden="true"
     class="card card-small selectable"
     [ngClass]="showScheduleMatrix ? 'selected' : ''"
     (click)="showScheduleMatrix = !showScheduleMatrix"

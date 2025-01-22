@@ -5,6 +5,7 @@
   </h1>
 
   <div
+    aria-hidden="true"
     class="card card-small selectable"
     [ngClass]="showInstructions ? 'selected' : ''"
     (click)="showInstructions = !showInstructions"
@@ -142,6 +143,7 @@
 
   <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
     <div
+      aria-hidden="true"
       class="card card-small selectable match-summary-card"
       [ngClass]="selectedMatch === match ? 'selected' : ''"
       (click)="onMatchSelected(match)"

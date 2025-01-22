@@ -1,7 +1,7 @@
 <div class="carousel">
   <div>
-    <div class="leftArrow" (click)="goToPrevious()" (keydown)="goToPrevious()">❰</div>
-    <div class="rightArrow" (click)="goToNext()" (keydown)="goToNext()">❱</div>
+    <div aria-hidden="true" class="leftArrow" (click)="goToPrevious()" (keydown)="goToPrevious()">❰</div>
+    <div aria-hidden="true" class="rightArrow" (click)="goToNext()" (keydown)="goToNext()">❱</div>
   </div>
   <div class="carouselContents">
     <div
@@ -17,6 +17,7 @@
   </div>
   <div class="dotsContainer">
     <div
+      aria-hidden="true"
       *ngFor="let content of contents; let idx = index"
       [ngClass]="idx === currentIndex ? 'currentDot' : 'dot'"
       (click)="goToIndex(idx)"

@@ -145,6 +145,7 @@
 
   <div class="card-container team-list">
     <a
+      aria-hidden="true"
       class="card team-card"
       [ngClass]="{
         selectable: isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin),
