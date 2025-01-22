@@ -1,10 +1,6 @@
 import { QualifyingScore } from './../../shared/qualifying-score.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 

@@ -26,9 +26,7 @@ export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.holes.length == 0) {
-      this.holes = this.holeResultData.map(function (
-        holeResult: HoleResultData
-      ) {
+      this.holes = this.holeResultData.map(function (holeResult: HoleResultData) {
         return {
           id: holeResult.hole_id,
           number: holeResult.number,
