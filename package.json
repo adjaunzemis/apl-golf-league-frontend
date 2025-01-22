@@ -9,7 +9,8 @@
     "test": "ng test",
     "format:check": "prettier . --check",
     "format:fix": "prettier . --write",
-    "lint": "ng lint"
+    "lint:check": "ng lint",
+    "lint:fix": "ng lint --fix"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +38,7 @@
     "@types/node": "^12.11.1",
     "angular-eslint": "19.0.2",
     "eslint": "^9.16.0",
+    "eslint-config-prettier": "^10.0.1",
     "jasmine-core": "~3.7.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
