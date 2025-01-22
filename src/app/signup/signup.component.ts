@@ -178,10 +178,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     } else {
       this.selectedTabIdx = 0;
     }
-    this.onTabIndexChanged(this.selectedTabIdx);
+    this.clearFlightAndTournamentControlSelections();
   }
 
-  onTabIndexChanged(tabIdx: number): void {
+  clearFlightAndTournamentControlSelections(): void {
     this.flightControl.setValue('--');
     this.tournamentControl.setValue('--');
     this.selectedFlightOrTournament = undefined;
@@ -385,7 +385,7 @@ export class SignupComponent implements OnInit, OnDestroy {
                 }
               }
             },
-            (error) => {
+            () => {
               console.error(
                 `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
@@ -415,7 +415,7 @@ export class SignupComponent implements OnInit, OnDestroy {
                 }
               }
             },
-            (error) => {
+            () => {
               console.error(
                 `[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );

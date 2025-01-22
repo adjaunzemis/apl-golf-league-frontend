@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { HoleResultData } from '../../hole-result.model';
 import { Hole } from '../../hole.model';
@@ -27,9 +27,7 @@ export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (this.holes.length == 0) {
       this.holes = this.holeResultData.map(function (
-        holeResult: HoleResultData,
-        index: number,
-        array: HoleResultData[],
+        holeResult: HoleResultData
       ) {
         return {
           id: holeResult.hole_id,

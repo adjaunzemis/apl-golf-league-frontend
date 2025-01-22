@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
 import { FlightData, FlightInfo, FlightCreate } from '../shared/flight.model';
-import { TeamData, TeamDataWithMatches } from '../shared/team.model';
+import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
 
 @Injectable({

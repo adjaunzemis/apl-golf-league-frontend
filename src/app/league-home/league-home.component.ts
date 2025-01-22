@@ -6,7 +6,7 @@ import { FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
-import { Committee, Officer } from './../shared/officer.model';
+import { Officer } from './../shared/officer.model';
 import { OfficersService } from '../officers/officers.service';
 
 @Component({

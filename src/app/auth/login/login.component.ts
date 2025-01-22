@@ -41,7 +41,7 @@ export class LoginComponent {
     if (this.usernameControl.valid && this.passwordControl.valid) {
       this.authService
         .login(this.usernameControl.value, this.passwordControl.value)
-        .subscribe((result) => {
+        .subscribe(() => {
           this.snackBar.open(
             `Successfully logged in as user '${this.getLoggedInUsername()}'!`,
             undefined,

@@ -232,7 +232,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
           // Close dialog box
           this.dialogRef.close(true); // true to indicate payment was successful
         },
-        onCancel: (data: any) => {
+        onCancel: () => {
           this.snackBar.open('Payment cancelled!', undefined, {
             duration: 5000,
             panelClass: ['warning-snackbar'],

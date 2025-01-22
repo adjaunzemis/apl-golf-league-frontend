@@ -111,7 +111,7 @@ export class AuthService {
   getUserInfo() {
     return this.user.pipe(
       take(1),
-      exhaustMap((user) => {
+      exhaustMap(() => {
         return this.http.get<UserInfo>(environment.apiUrl + `users/me`);
       }),
     );

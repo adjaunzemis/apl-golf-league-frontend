@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, UntypedFormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 
 import { GolfersService } from '../golfers.service';

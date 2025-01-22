@@ -839,7 +839,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       rounds: rounds,
     };
     this.isSubmittingRounds = true;
-    this.matchesService.postMatchRounds(matchInput).subscribe((result) => {
+    this.matchesService.postMatchRounds(matchInput).subscribe(() => {
       this.isSubmittingRounds = false;
       // Reload form data after successful submission
       this.loadFlightData();

@@ -81,7 +81,7 @@ export class UserManageComponent implements OnInit, OnDestroy {
           this.oldPasswordControl.value,
           this.newPasswordControl.value,
         )
-        .subscribe((result) => {
+        .subscribe(() => {
           console.log(`[UserManageComponent] Successfully changed password!`);
           this.snackBar.open(`Successfully changed password! Login with new password.`, undefined, {
             duration: 5000,
