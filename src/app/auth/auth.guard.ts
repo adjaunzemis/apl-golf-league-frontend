@@ -14,6 +14,14 @@ export class AuthGuard {
     private router: Router,
   ) {}
 
+
+
+
+  testVar: any;
+
+
+  
+
   canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this.authService.user.pipe(
       take(1),
