@@ -29,11 +29,11 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   hideForPrint = false;
 
-  handicapAllowance: number = 1.0;
+  handicapAllowance = 1.0;
 
   private currentYear: number;
 
-  showInstructions: boolean = false;
+  showInstructions = false;
 
   private paramsTournamentId: number;
   private tournamentInfoSub: Subscription;
@@ -248,7 +248,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   getTeamRoundFront(): RoundData {
     const teamFirstRound = this.roundsFront[0];
-    let teamRound: RoundData = {
+    const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.selectedTournament.date,
@@ -281,7 +281,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   getTeamRoundBack(): RoundData {
     const teamFirstRound = this.roundsBack[0];
-    let teamRound: RoundData = {
+    const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.selectedTournament.date,
@@ -430,7 +430,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     tee: Tee,
     playingHandicap: number | undefined,
   ): HoleResultData[] {
-    let holeResultData: HoleResultData[] = [];
+    const holeResultData: HoleResultData[] = [];
     for (const hole of tee.holes) {
       holeResultData.push({
         hole_result_id: -1, // TODO: remove placeholder?
@@ -454,7 +454,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     rounds: RoundData[],
     playingHandicap: number | undefined,
   ): HoleResultData[] {
-    let holeResultData: HoleResultData[] = [];
+    const holeResultData: HoleResultData[] = [];
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
 
@@ -463,8 +463,8 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       let netScore = 99;
       if (this.selectedTournament.bestball === 2) {
         holePar = hole.par * 2;
-        let grossScores = [99, 99];
-        let netScores = [99, 99];
+        const grossScores = [99, 99];
+        const netScores = [99, 99];
         for (const round of rounds) {
           const handicapStrokes = this.computeHandicapStrokes(
             hole.stroke_index,
@@ -548,7 +548,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     }
 
     // Compile round input data
-    let rounds: RoundInput[] = [];
+    const rounds: RoundInput[] = [];
 
     // For scramble tournaments, duplicate team rounds for each golfer
     // TODO: Handle other non-individual tournament types as-needed
@@ -571,7 +571,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
         // Set hole scores from team round data
         const roundFront = this.roundsFront[0];
-        let holesFront: HoleResultInput[] = [];
+        const holesFront: HoleResultInput[] = [];
         for (const hole of roundFront.holes) {
           const holeResultInput: HoleResultInput = {
             hole_id: hole.hole_id,
@@ -603,7 +603,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
         // Set hole scores from team round data
         const roundBack = this.roundsBack[0];
-        let holesBack: HoleResultInput[] = [];
+        const holesBack: HoleResultInput[] = [];
         for (const hole of roundBack.holes) {
           const holeResultInput: HoleResultInput = {
             hole_id: hole.hole_id,
@@ -625,7 +625,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     } else {
       // individual strokeplay scoring
       for (const round of [...this.roundsFront, ...this.roundsBack]) {
-        let holes: HoleResultInput[] = [];
+        const holes: HoleResultInput[] = [];
         for (const hole of round.holes) {
           const holeResultInput: HoleResultInput = {
             hole_id: hole.hole_id,

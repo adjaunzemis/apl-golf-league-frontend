@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   UntypedFormArray,
@@ -23,7 +24,7 @@ import { Golfer } from '../../shared/golfer.model';
 import { TournamentsService } from '../../tournaments/tournaments.service';
 import { TournamentData } from '../../shared/tournament.model';
 
-declare var paypal: any;
+declare let paypal: any;
 
 @Component({
   selector: 'app-tournament-entry-fees-payment',
@@ -34,8 +35,8 @@ declare var paypal: any;
 export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
-  year: number = 0;
-  tournamentId: number = -1;
+  year = 0;
+  tournamentId = -1;
 
   private tournamentEntryFeePaymentInfoListSub: Subscription;
   private tournamentEntryFeePaymentInfoList: TournamentEntryFeePaymentInfo[] = [];
@@ -52,8 +53,8 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
   typeOptions = ['Member Fee', 'Non-Member Fee'];
 
-  isLoadingTournament: boolean = true;
-  isLoadingTournamentEntryFeePaymentInfoList: boolean = true;
+  isLoadingTournament = true;
+  isLoadingTournamentEntryFeePaymentInfoList = true;
 
   constructor(
     public dialogRef: MatDialogRef<TournamentEntryFeesPaymentComponent>,
@@ -148,7 +149,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
           // Capture payment details in backend
           try {
-            let transactionItems: TournamentEntryFeePaypalTransactionItem[] = [];
+            const transactionItems: TournamentEntryFeePaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
               const golferControl = golferPaymentForm.get('golfer');
               const golferName = golferControl ? golferControl.value : 'unknown';
@@ -199,7 +200,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
             const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : '';
             const payerEmail = order.payer?.email_address ? order.payer.email_address : '';
 
-            let transaction: TournamentEntryFeePaypalTransaction = {
+            const transaction: TournamentEntryFeePaypalTransaction = {
               year: this.year,
               tournament_id: this.tournamentId,
               amount: order.purchase_units[0].amount.value,
@@ -234,7 +235,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
           // Close dialog box
           this.dialogRef.close(true); // true to indicate payment was successful
         },
-        onCancel: (data: any) => {
+        onCancel: () => {
           this.snackBar.open('Payment cancelled!', undefined, {
             duration: 5000,
             panelClass: ['warning-snackbar'],
@@ -262,7 +263,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
+    const description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
 
     // TODO: Re-enable more verbose description with character limit?
     // let description = `APL Golf League Tournament Entry Fees (${this.year}, ${this.tournament.name}) for `
@@ -325,7 +326,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     return this.golferNameOptions.filter((option) => option.toLowerCase().includes(filterValue));
   }
 
-  private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
+  private checkGolferName(control: UntypedFormControl): Record<string, boolean> | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
       return { golferNameInvalid: true };
     }

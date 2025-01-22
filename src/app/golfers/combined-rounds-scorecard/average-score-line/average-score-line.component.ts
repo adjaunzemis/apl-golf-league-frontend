@@ -11,7 +11,7 @@ import { RoundData } from '../../../shared/round.model';
 })
 export class AverageScoreLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData[];
-  @Input() scoreMode: string = 'gross';
+  @Input() scoreMode = 'gross';
 
   @Input() title: string;
 

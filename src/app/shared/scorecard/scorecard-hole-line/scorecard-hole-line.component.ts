@@ -16,15 +16,11 @@ export class ScorecardHoleLineComponent implements OnInit, OnChanges {
   @Input() selectedScoreMode!: string;
   @Output() selectedScoreModeChange = new EventEmitter<string>();
 
-  @Input() showScoreModeButtons: boolean = true;
+  @Input() showScoreModeButtons = true;
 
   ngOnInit(): void {
     if (this.holes.length === 0) {
-      this.holes = this.holeResultData.map(function (
-        holeResult: HoleResultData,
-        index: number,
-        array: HoleResultData[],
-      ) {
+      this.holes = this.holeResultData.map(function (holeResult: HoleResultData) {
         return {
           id: holeResult.hole_id,
           number: holeResult.number,

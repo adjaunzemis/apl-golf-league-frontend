@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AppConfigService {
-  private appConfig: any;
+  private appConfig: AppConfigInfo;
 
   constructor(private http: HttpClient) {}
 
@@ -14,15 +14,8 @@ export class AppConfigService {
       .get('/assets/config.json')
       .toPromise()
       .then((data) => {
-        this.appConfig = data;
+        this.appConfig = data as AppConfigInfo;
       });
-  }
-
-  get apiUrl(): string {
-    if (!this.appConfig) {
-      throw Error('Config file not loaded!');
-    }
-    return this.appConfig.apiBaseUrl;
   }
 
   get currentYear(): number {
@@ -31,4 +24,8 @@ export class AppConfigService {
     }
     return this.appConfig.currentYear;
   }
+}
+
+interface AppConfigInfo {
+  currentYear: number;
 }

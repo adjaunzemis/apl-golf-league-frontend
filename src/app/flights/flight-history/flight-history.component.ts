@@ -15,7 +15,7 @@ export class FlightHistoryComponent implements OnInit, OnDestroy {
   flights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
-  flightsSortedByYear: { [year: number]: FlightInfo[] };
+  flightsSortedByYear: Record<number, FlightInfo[]>;
   sortedYears: number[];
 
   constructor(private flightsService: FlightsService) {}
@@ -38,7 +38,7 @@ export class FlightHistoryComponent implements OnInit, OnDestroy {
   private sortFlightsByYear(): void {
     this.sortedYears = [];
     this.flightsSortedByYear = {};
-    for (let flight of this.flights) {
+    for (const flight of this.flights) {
       if (!this.flightsSortedByYear[flight.year]) {
         this.sortedYears.push(flight.year);
         this.flightsSortedByYear[flight.year] = [];

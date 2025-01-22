@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   UntypedFormArray,
@@ -21,7 +22,7 @@ import {
 import { GolfersService } from '../../golfers/golfers.service';
 import { Golfer } from '../../shared/golfer.model';
 
-declare var paypal: any;
+declare let paypal: any;
 
 @Component({
   selector: 'app-league-dues-payment',
@@ -32,9 +33,9 @@ declare var paypal: any;
 export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
-  year: number = 0;
-  leagueDuesFlight: number = 0;
-  leagueDuesTournamentOnly: number = 0;
+  year = 0;
+  leagueDuesFlight = 0;
+  leagueDuesTournamentOnly = 0;
 
   private leagueDuesListSub: Subscription;
   private leagueDuesPaymentInfoListSub: Subscription;
@@ -49,12 +50,12 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   typeOptions = ['Flight Dues', 'Tournament-Only Dues'];
 
-  isLoadingLeagueDuesList: boolean = true;
-  isLoadingLeagueDuesPaymentInfoList: boolean = true;
+  isLoadingLeagueDuesList = true;
+  isLoadingLeagueDuesPaymentInfoList = true;
 
   constructor(
     public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {},
+    @Inject(MAT_DIALOG_DATA) public data: object,
     private formBuilder: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private appConfigService: AppConfigService,
@@ -149,7 +150,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
           // Capture payment details in backend
           try {
-            let transactionItems: LeagueDuesPaypalTransactionItem[] = [];
+            const transactionItems: LeagueDuesPaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
               const golferControl = golferPaymentForm.get('golfer');
               const golferName = golferControl ? golferControl.value : 'unknown';
@@ -200,7 +201,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
             const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : '';
             const payerEmail = order.payer?.email_address ? order.payer.email_address : '';
 
-            let transaction: LeagueDuesPaypalTransaction = {
+            const transaction: LeagueDuesPaypalTransaction = {
               year: this.year,
               amount: order.purchase_units[0].amount.value,
               description: order.purchase_units[0].description,
@@ -232,7 +233,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
           // Close dialog box
           this.dialogRef.close(true); // true to indicate payment was successful
         },
-        onCancel: (data: any) => {
+        onCancel: () => {
           this.snackBar.open('Payment cancelled!', undefined, {
             duration: 5000,
             panelClass: ['warning-snackbar'],
@@ -260,7 +261,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Dues (${this.year}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
+    const description = `APL Golf League Dues (${this.year}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
 
     // TODO: Re-enable more verbose description with character limit?
     // let description = `APL Golf League Dues (${this.year}) for `
@@ -323,7 +324,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     return this.golferNameOptions.filter((option) => option.toLowerCase().includes(filterValue));
   }
 
-  private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
+  private checkGolferName(control: UntypedFormControl): Record<string, boolean> | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
       return { golferNameInvalid: true };
     }

@@ -14,9 +14,11 @@
     </div> -->
 
     <div
+      aria-hidden="true"
       class="card card-small selectable"
       [ngClass]="showHandicapData ? 'selected' : ''"
       (click)="toggleShowHandicapData()"
+      (keydown)="toggleShowHandicapData()"
     >
       <span class="bold">APL Handicap Index</span>
       <div *ngIf="golfer.handicap_index_data; else noHandicapData">

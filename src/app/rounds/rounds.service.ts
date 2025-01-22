@@ -22,7 +22,7 @@ export class RoundsService {
   ) {}
 
   getRounds(golferId?: number, year?: number): void {
-    let queryParams: string = `?`;
+    let queryParams = `?`;
     if (golferId) {
       queryParams += `golfer_id=${golferId}&`;
     }

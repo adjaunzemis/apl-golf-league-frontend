@@ -9,5 +9,5 @@ import { FlightMatchCreateComponent } from './flight-match-create.component';
   standalone: false,
 })
 export class FlightMatchScorecardComponent extends FlightMatchCreateComponent {
-  editMode: boolean = false;
+  editMode = false;
 }

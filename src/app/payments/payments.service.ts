@@ -40,7 +40,7 @@ export class PaymentsService {
 
   /** LEAGUE DUES */
   getLeagueDuesList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
@@ -57,7 +57,7 @@ export class PaymentsService {
   }
 
   getLeagueDuesPaymentInfoList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
@@ -74,7 +74,7 @@ export class PaymentsService {
   }
 
   getLeagueDuesPaymentDataList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
@@ -97,7 +97,7 @@ export class PaymentsService {
     );
   }
 
-  postLeagueDuesPaypalTransaction(transaction: LeagueDuesPaypalTransaction): Observable<any> {
+  postLeagueDuesPaypalTransaction(transaction: LeagueDuesPaypalTransaction): Observable<unknown> {
     return this.http.post(environment.apiUrl + `payments/dues/`, transaction);
   }
 
@@ -147,7 +147,7 @@ export class PaymentsService {
 
   postTournamentEntryFeePaypalTransaction(
     transaction: TournamentEntryFeePaypalTransaction,
-  ): Observable<any> {
+  ): Observable<unknown> {
     return this.http.post(environment.apiUrl + `payments/fees/`, transaction);
   }
 }

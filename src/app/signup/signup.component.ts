@@ -178,10 +178,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     } else {
       this.selectedTabIdx = 0;
     }
-    this.onTabIndexChanged(this.selectedTabIdx);
+    this.clearFlightAndTournamentControlSelections();
   }
 
-  onTabIndexChanged(tabIdx: number): void {
+  clearFlightAndTournamentControlSelections(): void {
     this.flightControl.setValue('--');
     this.tournamentControl.setValue('--');
     this.selectedFlightOrTournament = undefined;
@@ -265,7 +265,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   private convertTeamCreateToTeamInfo(teamCreate: TeamCreate): TeamInfo {
-    let golfers: TeamGolferData[] = [];
+    const golfers: TeamGolferData[] = [];
     for (const golfer of teamCreate.golfers) {
       golfers.push({
         golfer_id: golfer.golfer.id,
@@ -293,7 +293,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     // Modify existing team
     let initTeamId = -1;
     let initTeamName = '';
-    let initTeamGolfers: TeamGolferCreate[] = [];
+    const initTeamGolfers: TeamGolferCreate[] = [];
     if (initTeam) {
       if (initTeam.id) {
         initTeamId = initTeam.id;
@@ -310,10 +310,12 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
 
         let division: DivisionData | null = null;
-        for (const d of this.selectedFlightOrTournament?.divisions) {
-          if (d.id == initTeamGolfer.division_id) {
-            division = d;
-            break;
+        if (this.selectedFlightOrTournament) {
+          for (const d of this.selectedFlightOrTournament.divisions) {
+            if (d.id == initTeamGolfer.division_id) {
+              division = d;
+              break;
+            }
           }
         }
 
@@ -383,7 +385,7 @@ export class SignupComponent implements OnInit, OnDestroy {
                 }
               }
             },
-            (error) => {
+            () => {
               console.error(
                 `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
@@ -413,7 +415,7 @@ export class SignupComponent implements OnInit, OnDestroy {
                 }
               }
             },
-            (error) => {
+            () => {
               console.error(
                 `[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );

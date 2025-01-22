@@ -14,9 +14,9 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
   @Input() topTeamId: number;
   bottomTeamId: number;
 
-  scoreMode: string = 'gross';
+  scoreMode = 'gross';
 
-  roundIdx: number = 0;
+  roundIdx = 0;
 
   ngOnInit(): void {
     this.setTopAndBottomTeamIds();

@@ -10,7 +10,7 @@ import { RoundData } from 'src/app/shared/round.model';
 })
 export class RoundScorecardComponent {
   @Input() round: RoundData;
-  scoreMode: string = 'gross';
+  scoreMode = 'gross';
 
   onScoreModeChanged(scoreMode: string): void {
     this.scoreMode = scoreMode;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { RoundSummary } from '../../shared/round.model';
 
@@ -8,9 +8,7 @@ import { RoundSummary } from '../../shared/round.model';
   styleUrls: ['./scoring-record.component.css'],
   standalone: false,
 })
-export class ScoringRecordComponent implements OnInit {
+export class ScoringRecordComponent {
   @Input() activeRounds: RoundSummary[] | undefined;
   @Input() pendingRounds: RoundSummary[] | undefined;
-
-  ngOnInit(): void {}
 }

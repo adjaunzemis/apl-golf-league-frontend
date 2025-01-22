@@ -11,6 +11,7 @@
 
   <div class="card-container" *ngIf="selectedWeekOrRoundMatches.length > 0; else noMatches">
     <div
+      aria-hidden="true"
       class="card card-small match-summary-card"
       [ngClass]="[
         match.home_score || match.away_score ? 'selectable' : '',
@@ -20,6 +21,7 @@
       ]"
       *ngFor="let match of selectedWeekOrRoundMatches"
       (click)="onSelectMatch(match)"
+      (keydown)="onSelectMatch(match)"
     >
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
       <span *ngIf="match.home_score || match.away_score"

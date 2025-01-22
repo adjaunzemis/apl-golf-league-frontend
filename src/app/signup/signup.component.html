@@ -2,7 +2,7 @@
   <mat-tab-group
     animationDuration="0ms"
     [(selectedIndex)]="selectedTabIdx"
-    (selectedIndexChange)="onTabIndexChanged($event)"
+    (selectedIndexChange)="clearFlightAndTournamentControlSelections()"
     *ngIf="!isLoadingFlights && !isLoadingTournaments"
   >
     <mat-tab label="Flight Sign-Ups">
@@ -145,12 +145,14 @@
 
   <div class="card-container team-list">
     <a
+      aria-hidden="true"
       class="card team-card"
       [ngClass]="{
         selectable: isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin),
       }"
       *ngFor="let team of getSelectedFlightOrTournamentTeams()"
       (click)="onUpdateTeam(team)"
+      (keydown)="onUpdateTeam(team)"
     >
       <span class="bold">{{ team.name }}</span>
       <div *ngFor="let golfer of team.golfers">

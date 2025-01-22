@@ -30,7 +30,7 @@ export class DivisionListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.divisionSub = this.coursesService.getSelectedTeeUpdated().subscribe((tee) => {
-      for (let division of this.divisions) {
+      for (const division of this.divisions) {
         if (division.primary_tee_id === tee.id) {
           this.selectedPrimaryTee = tee;
           this.loadedPrimaryTee = true;

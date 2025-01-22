@@ -27,7 +27,7 @@ export class TournamentsService {
   ) {}
 
   getTournamentsList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }

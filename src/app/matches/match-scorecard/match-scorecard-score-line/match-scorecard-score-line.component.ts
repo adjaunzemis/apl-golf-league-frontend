@@ -39,7 +39,7 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
   private separateRoundsByTeam() {
     this.topTeamRounds = [];
     this.bottomTeamRounds = [];
-    for (let round of this.match.rounds) {
+    for (const round of this.match.rounds) {
       if (round.team_id === this.topTeamId) {
         this.topTeamRounds.push(round);
       } else if (round.team_id === this.bottomTeamId) {
@@ -53,11 +53,11 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
     this.bottomTeamHoleNetScores = [];
     for (let holeIdx = 0; holeIdx < this.match.rounds[0].holes.length; holeIdx++) {
       this.topTeamHoleNetScores[holeIdx] = 0;
-      for (let round of this.topTeamRounds) {
+      for (const round of this.topTeamRounds) {
         this.topTeamHoleNetScores[holeIdx] += round.holes[holeIdx].net_score;
       }
       this.bottomTeamHoleNetScores[holeIdx] = 0;
-      for (let round of this.bottomTeamRounds) {
+      for (const round of this.bottomTeamRounds) {
         this.bottomTeamHoleNetScores[holeIdx] += round.holes[holeIdx].net_score;
       }
     }
@@ -123,13 +123,13 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
   }
 
   private setWinningTeamId(): void {
-    let topTeamTotalNetScore = this.topTeamHoleNetScores.reduce(function (
+    const topTeamTotalNetScore = this.topTeamHoleNetScores.reduce(function (
       prev: number,
       cur: number,
     ) {
       return prev + cur;
     }, 0);
-    let bottomTeamTotalNetScore = this.bottomTeamHoleNetScores.reduce(function (
+    const bottomTeamTotalNetScore = this.bottomTeamHoleNetScores.reduce(function (
       prev: number,
       cur: number,
     ) {

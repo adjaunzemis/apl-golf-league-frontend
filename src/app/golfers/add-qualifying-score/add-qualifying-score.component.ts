@@ -1,14 +1,8 @@
 import { QualifyingScore } from './../../shared/qualifying-score.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  FormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { map, min, startWith } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 
 import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../golfers.service';
@@ -278,8 +272,8 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     };
 
     // Submit qualifying score data twice (need two score differentials for handicap index)
-    this.golfersService.postQualifyingScore(qualifyingScore).subscribe((result) => {
-      this.golfersService.postQualifyingScore(qualifyingScore).subscribe((result) => {
+    this.golfersService.postQualifyingScore(qualifyingScore).subscribe(() => {
+      this.golfersService.postQualifyingScore(qualifyingScore).subscribe(() => {
         console.log(
           `[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`,
         );
@@ -335,8 +329,8 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     };
 
     // Submit qualifying score data twice (need two score differentials for handicap index)
-    this.golfersService.postQualifyingScore(qualifyingScoreRound1).subscribe((result) => {
-      this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe((result) => {
+    this.golfersService.postQualifyingScore(qualifyingScoreRound1).subscribe(() => {
+      this.golfersService.postQualifyingScore(qualifyingScoreRound2).subscribe(() => {
         console.log(
           `[AddQualifyingScoreComponent] Submitted qualifying scores for ${this.selectedGolfer?.name} (id=${this.selectedGolfer?.id})`,
         );
@@ -347,8 +341,8 @@ export class AddQualifyingScoreComponent implements OnInit, OnDestroy {
     });
   }
 
-  private isGolfer(object: any): object is Golfer {
-    return (<Golfer>object).name !== undefined;
+  private isGolfer(object: unknown): object is Golfer {
+    return (object as Golfer).name !== undefined;
   }
 
   private getGolferByName(name: string): Golfer | null {

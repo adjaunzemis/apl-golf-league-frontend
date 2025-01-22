@@ -66,7 +66,7 @@ export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   doFilter = (event: Event) => {
-    const target = <HTMLInputElement>event.target;
+    const target = event.target as HTMLInputElement;
     this.courses.filter = target.value.trim().toLocaleLowerCase();
   };
 

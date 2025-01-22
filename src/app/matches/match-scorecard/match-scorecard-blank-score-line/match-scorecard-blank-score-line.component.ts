@@ -12,7 +12,7 @@ export class MatchScorecardBlankScoreLineComponent {
   @Input() topTeamRound: RoundData;
   @Input() bottomTeamRound: RoundData;
 
-  @Input() editMode: boolean = false;
+  @Input() editMode = false;
 
   getNetScoreDifference(): number {
     const topTeamNetScore = this.topTeamRound.holes

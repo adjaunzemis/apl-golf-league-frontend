@@ -5,9 +5,11 @@
   </h1>
 
   <div
+    aria-hidden="true"
     class="card card-small selectable"
     [ngClass]="showInstructions ? 'selected' : ''"
     (click)="showInstructions = !showInstructions"
+    (keydown)="showInstructions = !showInstructions"
     *ngIf="!editMode && !hideForPrint"
   >
     <span class="bold">Instructions</span>
@@ -141,9 +143,11 @@
 
   <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
     <div
+      aria-hidden="true"
       class="card card-small selectable match-summary-card"
       [ngClass]="selectedMatch === match ? 'selected' : ''"
       (click)="onMatchSelected(match)"
+      (keydown)="onMatchSelected(match)"
       *ngFor="let match of selectedWeekMatches"
     >
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>

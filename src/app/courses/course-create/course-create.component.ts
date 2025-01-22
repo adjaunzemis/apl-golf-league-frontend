@@ -176,15 +176,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         tracks: [],
       };
 
-      for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
-        const trackForm = this.courseForm.value.tracks[trIdx];
+      for (const trackForm of this.courseForm.value.tracks) {
         const track: TrackData = {
           name: trackForm.name,
           tees: [],
         };
 
-        for (let tsIdx = 0; tsIdx < trackForm.tees.length; tsIdx++) {
-          const teeForm = trackForm.tees[tsIdx];
+        for (const teeForm of trackForm.tees) {
           const tee: TeeData = {
             name: teeForm.name,
             color: teeForm.color,
@@ -194,8 +192,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             holes: [],
           };
 
-          for (let hIdx = 0; hIdx < teeForm.holes.length; hIdx++) {
-            const holeForm = teeForm.holes[hIdx];
+          for (const holeForm of teeForm.holes) {
             const hole: HoleData = {
               number: +holeForm.number,
               par: +holeForm.par,
@@ -229,13 +226,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
       } else {
         // Add ids to course data
         courseData.id = this.course.id;
-        for (let trackData of courseData.tracks) {
+        for (const trackData of courseData.tracks) {
           trackData.course_id = courseData.id;
           const trackMatches = this.course.tracks.filter((track) => track.name === trackData.name);
           for (const trackMatch of trackMatches) {
             trackData.id = trackMatch.id;
 
-            for (let teeData of trackData.tees) {
+            for (const teeData of trackData.tees) {
               teeData.track_id = trackData.id;
               const teeMatches = trackMatch.tees.filter(
                 (tee) => tee.name === teeData.name && tee.gender === teeData.gender,
@@ -243,7 +240,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
               for (const teeMatch of teeMatches) {
                 teeData.id = teeMatch.id;
 
-                for (let holeData of teeData.holes) {
+                for (const holeData of teeData.holes) {
                   holeData.tee_id = teeData.id;
                   const holeMatches = teeMatch.holes.filter(
                     (hole) => hole.number === holeData.number,

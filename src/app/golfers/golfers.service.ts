@@ -40,7 +40,7 @@ export class GolfersService {
   }
 
   getGolfers(offset: number, limit: number, year?: number): void {
-    let queryParams: string = `?`;
+    let queryParams = `?`;
     if (year) {
       queryParams = `?year=${year}&`;
     }

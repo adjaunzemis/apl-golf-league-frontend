@@ -14,7 +14,7 @@ export class TournamentStandingsComponent implements OnInit {
   @Input() teamData: TournamentTeamData[];
 
   scoreOptions: string[] = [];
-  selectedScoreOption: string = '';
+  selectedScoreOption = '';
 
   individualStandingsData: {
     name: string;
@@ -26,8 +26,6 @@ export class TournamentStandingsComponent implements OnInit {
   teamStandingsData: { name: string; grossScore: number; netScore: number; position: string }[];
   numTeamRoundsRequired = 4; // TODO: replace with team size
 
-  constructor() {}
-
   ngOnInit(): void {
     this.scoreOptions = [];
     if (this.tournament.individual) {
@@ -38,12 +36,12 @@ export class TournamentStandingsComponent implements OnInit {
     }
     this.individualStandingsData = [];
     this.teamStandingsData = [];
-    for (let team of this.teamData) {
-      let holeScores: { [holeNum: number]: { grossScores: number[]; netScores: number[] } } = [];
+    for (const team of this.teamData) {
+      const holeScores: Record<number, { grossScores: number[]; netScores: number[] }> = [];
 
       if (team.rounds) {
-        for (let round of team.rounds) {
-          for (let hole of round.holes) {
+        for (const round of team.rounds) {
+          for (const hole of round.holes) {
             if (!holeScores[hole.number]) {
               holeScores[hole.number] = { grossScores: [], netScores: [] };
             }
@@ -52,7 +50,7 @@ export class TournamentStandingsComponent implements OnInit {
           }
 
           let individualRoundAdded = false;
-          for (let individualData of this.individualStandingsData) {
+          for (const individualData of this.individualStandingsData) {
             if (individualData.name === round.golfer_name) {
               if (individualData.playingHandicap && round.golfer_playing_handicap) {
                 individualData.playingHandicap += round.golfer_playing_handicap;
@@ -74,9 +72,9 @@ export class TournamentStandingsComponent implements OnInit {
         }
 
         if (team.rounds.length >= this.numTeamRoundsRequired) {
-          let bestGrossScores: number[] = [];
-          let bestNetScores: number[] = [];
-          for (let holeNumber in holeScores) {
+          const bestGrossScores: number[] = [];
+          const bestNetScores: number[] = [];
+          for (const holeNumber in holeScores) {
             bestGrossScores.push(Math.min(...holeScores[holeNumber].grossScores));
             bestNetScores.push(Math.min(...holeScores[holeNumber].netScores));
           }
@@ -85,9 +83,9 @@ export class TournamentStandingsComponent implements OnInit {
           let netScoreSum = bestNetScores.reduce((partialSum, a) => partialSum + a, 0);
 
           if (this.tournament.bestball === 2) {
-            let secondBestGrossScores: number[] = [];
-            let secondBestNetScores: number[] = [];
-            for (let holeNumber in holeScores) {
+            const secondBestGrossScores: number[] = [];
+            const secondBestNetScores: number[] = [];
+            for (const holeNumber in holeScores) {
               let minGrossScore = 99;
               let secondMinGrossScore = 99;
               let minNetScore = 99;

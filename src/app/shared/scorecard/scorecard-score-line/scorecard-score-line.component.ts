@@ -13,23 +13,23 @@ export class ScorecardScoreLineComponent {
   @Input() round: RoundData;
   @Output() roundChange = new EventEmitter<RoundData>();
 
-  @Input() scoreMode: string = 'gross';
+  @Input() scoreMode = 'gross';
 
   @Input() title: string;
   @Input() subtitle: string;
-  @Input() linkToGolferHome: boolean = false;
+  @Input() linkToGolferHome = false;
 
-  @Input() showScores: boolean = true;
-  @Input() enterScores: boolean = false;
-  @Input() teamScore: boolean = false;
-  @Input() editHandicap: boolean = false;
+  @Input() showScores = true;
+  @Input() enterScores = false;
+  @Input() teamScore = false;
+  @Input() editHandicap = false;
 
   onHoleScoreChanged(): void {
     this.roundChange.emit(this.round);
   }
 
   onGolferHandicapChanged(): void {
-    for (let hole of this.round.holes) {
+    for (const hole of this.round.holes) {
       hole.handicap_strokes = this.computeHandicapStrokes(
         hole.stroke_index,
         this.round.golfer_playing_handicap,

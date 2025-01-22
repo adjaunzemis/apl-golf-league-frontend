@@ -13,9 +13,9 @@ import { HoleResultData } from '../../shared/hole-result.model';
 export class TournamentScorecardComponent implements OnInit, OnChanges {
   @Input() tournament: TournamentInfo;
   @Input() rounds: RoundData[];
-  scoreMode: string = 'gross';
+  scoreMode = 'gross';
 
-  roundIdx: number = 0;
+  roundIdx = 0;
 
   trackNames: string[] = [];
   frontRounds: RoundData[] = [];
@@ -33,7 +33,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   }
 
   private getTrackNames(): void {
-    for (let round of this.rounds) {
+    for (const round of this.rounds) {
       if (this.trackNames.indexOf(round.track_name) == -1) {
         this.trackNames.push(round.track_name);
       }
@@ -43,7 +43,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   private sortRoundsByTrack(): void {
     this.frontRounds = [];
     this.backRounds = [];
-    for (let round of this.rounds) {
+    for (const round of this.rounds) {
       const idx = this.trackNames.indexOf(round.track_name);
       if (idx === 0) {
         this.frontRounds.push(round);
@@ -118,7 +118,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     const playingHandicap = this.tournament.scramble
       ? teamFirstRound.golfer_playing_handicap
       : undefined;
-    let teamRound: RoundData = {
+    const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.tournament.date,
@@ -154,7 +154,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     const playingHandicap = this.tournament.scramble
       ? teamFirstRound.golfer_playing_handicap
       : undefined;
-    let teamRound: RoundData = {
+    const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.tournament.date,
@@ -189,7 +189,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     rounds: RoundData[],
     playingHandicap: number | undefined,
   ): HoleResultData[] {
-    let holeResultData: HoleResultData[] = [];
+    const holeResultData: HoleResultData[] = [];
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
 
@@ -198,8 +198,8 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       let netScore = 99;
       if (this.tournament.bestball === 2) {
         holePar = hole.par * 2;
-        let grossScores = [99, 99];
-        let netScores = [99, 99];
+        const grossScores = [99, 99];
+        const netScores = [99, 99];
         for (const round of rounds) {
           const handicapStrokes = this.computeHandicapStrokes(
             hole.stroke_index,

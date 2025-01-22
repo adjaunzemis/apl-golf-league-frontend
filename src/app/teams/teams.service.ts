@@ -55,7 +55,7 @@ export class TeamsService {
   private extractTeamGolferSignupData(
     teamGolfers: TeamGolferCreate[],
   ): { golfer_id: number; golfer_name: string; division_id: number; role: string }[] {
-    let teamGolferSignupData: {
+    const teamGolferSignupData: {
       golfer_id: number;
       golfer_name: string;
       division_id: number;

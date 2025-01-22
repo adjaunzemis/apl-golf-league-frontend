@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, retryWhen } from 'rxjs/operators';
 

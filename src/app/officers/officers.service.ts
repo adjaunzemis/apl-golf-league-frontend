@@ -15,7 +15,7 @@ export class OfficersService {
   constructor(private http: HttpClient) {}
 
   getOfficersList(year?: number): void {
-    let queryParams: string = ``;
+    let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }

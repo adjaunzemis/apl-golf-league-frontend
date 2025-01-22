@@ -36,9 +36,11 @@
 
   <div class="card-container">
     <div
+      aria-hidden="true"
       class="card card-small match-card"
       *ngFor="let match of team.matches"
       (click)="focusMatch(match)"
+      (keydown)="focusMatch(match)"
       [ngClass]="[
         match.home_score || match.away_score ? 'selectable' : '',
         showScorecard && focusedMatch === match ? 'selected' : '',

@@ -30,7 +30,7 @@
       <td mat-cell *matCellDef="let course" [attr.colspan]="columnsToDisplay.length">
         <div
           class="course-detail"
-          [@detailExpand]="course == expandedCourse ? 'expanded' : 'collapsed'"
+          [@detailExpand]="course === expandedCourse ? 'expanded' : 'collapsed'"
         >
           <div *ngFor="let track of course.tracks">
             <span class="track-name">{{ track.name }}</span>

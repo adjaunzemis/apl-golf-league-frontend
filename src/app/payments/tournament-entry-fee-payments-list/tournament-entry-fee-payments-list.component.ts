@@ -114,7 +114,7 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
           console.log(`[TournamentEntryFeePaymentsListComponent] Updated payment id=${result.id}`);
 
           // Update item in list
-          let payment = this.tournamentEntryFeePayments.find((entry) => entry.id === result.id);
+          const payment = this.tournamentEntryFeePayments.find((entry) => entry.id === result.id);
           if (payment) {
             const newPayment = {
               id: payment.id,

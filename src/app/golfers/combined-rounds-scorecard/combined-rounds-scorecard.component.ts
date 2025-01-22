@@ -11,7 +11,7 @@ import { RoundData } from '../../shared/round.model';
 export class CombinedRoundsScorecardComponent {
   @Input() rounds: RoundData[];
 
-  scoreMode: string = 'gross';
+  scoreMode = 'gross';
 
   getScorecardTitle(round: RoundData): string {
     return round.course_name + ' - ' + round.track_name;

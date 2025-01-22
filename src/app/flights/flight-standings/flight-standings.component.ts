@@ -10,10 +10,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class FlightStandingsComponent implements OnInit {
   @Input() flight: FlightData;
 
-  standingsData: { [id: number]: TeamStandingsData } = {};
+  standingsData: Record<number, TeamStandingsData> = {};
   orderedTeamIds: number[] = [];
-
-  constructor() {}
 
   ngOnInit(): void {
     if (!this.flight) {
@@ -25,7 +23,7 @@ export class FlightStandingsComponent implements OnInit {
       return;
     }
 
-    for (let match of this.flight.matches) {
+    for (const match of this.flight.matches) {
       if (!this.standingsData[match.home_team_id]) {
         this.standingsData[match.home_team_id] = new TeamStandingsData();
         this.standingsData[match.home_team_id].teamName = match.home_team_name;
@@ -45,7 +43,7 @@ export class FlightStandingsComponent implements OnInit {
       }
     }
 
-    for (var teamId in this.standingsData) {
+    for (const teamId in this.standingsData) {
       this.orderedTeamIds.push(parseInt(teamId));
     }
 
@@ -86,7 +84,7 @@ export class FlightStandingsComponent implements OnInit {
     // Tie-breaker 1: head-to-head score
     let pointsWonTeam1 = 0;
     let pointsWonTeam2 = 0;
-    for (let match of this.flight.matches) {
+    for (const match of this.flight.matches) {
       if (match.home_team_id === teamId1 && match.away_team_id === teamId2) {
         pointsWonTeam1 += match.home_score;
         pointsWonTeam2 += match.away_score;
@@ -146,7 +144,7 @@ export class FlightStandingsComponent implements OnInit {
 
 class TeamStandingsData {
   teamName: string;
-  matchesPlayed: number = 0;
-  pointsWon: number = 0;
-  position: string = '';
+  matchesPlayed = 0;
+  pointsWon = 0;
+  position = '';
 }
