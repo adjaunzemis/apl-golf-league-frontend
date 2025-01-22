@@ -20,8 +20,6 @@ export class FlightScheduleMatrixComponent implements OnInit {
 
   weeks: number[] = [];
 
-  constructor() {}
-
   ngOnInit(): void {
     this.currentWeek = this.determineCurrentWeek();
 

@@ -10,6 +10,4 @@ import { TeamDataWithMatches } from '../../shared/team.model';
 })
 export class TeamScheduleComponent {
   @Input() team: TeamDataWithMatches;
-
-  constructor() {}
 }

@@ -13,8 +13,6 @@ export class FlightStandingsComponent implements OnInit {
   standingsData: Record<number, TeamStandingsData> = {};
   orderedTeamIds: number[] = [];
 
-  constructor() {}
-
   ngOnInit(): void {
     if (!this.flight) {
       console.error('Unable to process flight standings, no flight data!');

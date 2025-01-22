@@ -26,8 +26,6 @@ export class TournamentStandingsComponent implements OnInit {
   teamStandingsData: { name: string; grossScore: number; netScore: number; position: string }[];
   numTeamRoundsRequired = 4; // TODO: replace with team size
 
-  constructor() {}
-
   ngOnInit(): void {
     this.scoreOptions = [];
     if (this.tournament.individual) {

@@ -27,8 +27,6 @@ export class GolferStatisticsComponent implements OnInit {
     'num_others',
   ];
 
-  constructor() {}
-
   ngOnInit(): void {
     if (this.hideEmptyColumns) {
       this.filterColumnsToDisplay();

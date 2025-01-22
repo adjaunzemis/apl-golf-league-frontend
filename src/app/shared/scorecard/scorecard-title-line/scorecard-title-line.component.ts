@@ -32,8 +32,6 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   tees: TeeInfo[];
   selectedTee: TeeInfo;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.setRoundInfo();
     this.setTeeList();
