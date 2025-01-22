@@ -310,10 +310,12 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
 
         let division: DivisionData | null = null;
-        for (const d of this.selectedFlightOrTournament?.divisions) {
-          if (d.id == initTeamGolfer.division_id) {
-            division = d;
-            break;
+        if (this.selectedFlightOrTournament) {
+          for (const d of this.selectedFlightOrTournament.divisions) {
+            if (d.id == initTeamGolfer.division_id) {
+              division = d;
+              break;
+            }
           }
         }
 
