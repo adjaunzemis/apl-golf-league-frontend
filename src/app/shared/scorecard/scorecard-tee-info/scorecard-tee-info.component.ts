@@ -7,6 +7,7 @@ import { Hole } from '../../hole.model';
   selector: 'app-scorecard-tee-info',
   templateUrl: './scorecard-tee-info.component.html',
   styleUrls: ['./scorecard-tee-info.component.css'],
+  standalone: false,
 })
 export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
   @Input() showDetails = false;
@@ -28,7 +29,7 @@ export class ScorecardTeeInfoComponent implements OnInit, OnChanges {
       this.holes = this.holeResultData.map(function (
         holeResult: HoleResultData,
         index: number,
-        array: HoleResultData[]
+        array: HoleResultData[],
       ) {
         return {
           id: holeResult.hole_id,

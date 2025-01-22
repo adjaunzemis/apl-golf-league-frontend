@@ -8,6 +8,7 @@ import { HoleResultData } from '../../shared/hole-result.model';
   selector: 'app-tournament-scorecard',
   templateUrl: './tournament-scorecard.component.html',
   styleUrls: ['./tournament-scorecard.component.css'],
+  standalone: false,
 })
 export class TournamentScorecardComponent implements OnInit, OnChanges {
   @Input() tournament: TournamentInfo;
@@ -32,7 +33,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   }
 
   private getTrackNames(): void {
-    for (const round of this.rounds) {
+    for (let round of this.rounds) {
       if (this.trackNames.indexOf(round.track_name) == -1) {
         this.trackNames.push(round.track_name);
       }
@@ -42,7 +43,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   private sortRoundsByTrack(): void {
     this.frontRounds = [];
     this.backRounds = [];
-    for (const round of this.rounds) {
+    for (let round of this.rounds) {
       const idx = this.trackNames.indexOf(round.track_name);
       if (idx === 0) {
         this.frontRounds.push(round);
@@ -79,7 +80,9 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
 
   getRoundSubtitle(round: RoundData): string {
     return (
-      round.tee_name + ' - Hcp: ' + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
+      round.tee_name +
+      ' - Hcp: ' +
+      (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
     );
   }
 
@@ -112,8 +115,10 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
 
   getTeamRoundFront(): RoundData {
     const teamFirstRound = this.frontRounds[0]; // TODO: Select team round info more intelligently, impacts scramble scoring?
-    const playingHandicap = this.tournament.scramble ? teamFirstRound.golfer_playing_handicap : undefined;
-    const teamRound: RoundData = {
+    const playingHandicap = this.tournament.scramble
+      ? teamFirstRound.golfer_playing_handicap
+      : undefined;
+    let teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.tournament.date,
@@ -132,7 +137,9 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
       tee_par:
-        this.tournament.bestball > 0 ? this.tournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
+        this.tournament.bestball > 0
+          ? this.tournament.bestball * teamFirstRound.tee_par
+          : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
@@ -144,8 +151,10 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
 
   getTeamRoundBack(): RoundData {
     const teamFirstRound = this.backRounds[0]; // TODO: Select team round info more intelligently, impacts scramble scoring?
-    const playingHandicap = this.tournament.scramble ? teamFirstRound.golfer_playing_handicap : undefined;
-    const teamRound: RoundData = {
+    const playingHandicap = this.tournament.scramble
+      ? teamFirstRound.golfer_playing_handicap
+      : undefined;
+    let teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.tournament.date,
@@ -164,7 +173,9 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
       tee_par:
-        this.tournament.bestball > 0 ? this.tournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
+        this.tournament.bestball > 0
+          ? this.tournament.bestball * teamFirstRound.tee_par
+          : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
@@ -174,8 +185,11 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     return teamRound;
   }
 
-  private createHoleResultDataForTeam(rounds: RoundData[], playingHandicap: number | undefined): HoleResultData[] {
-    const holeResultData: HoleResultData[] = [];
+  private createHoleResultDataForTeam(
+    rounds: RoundData[],
+    playingHandicap: number | undefined,
+  ): HoleResultData[] {
+    let holeResultData: HoleResultData[] = [];
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
 
@@ -184,10 +198,13 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       let netScore = 99;
       if (this.tournament.bestball === 2) {
         holePar = hole.par * 2;
-        const grossScores = [99, 99];
-        const netScores = [99, 99];
+        let grossScores = [99, 99];
+        let netScores = [99, 99];
         for (const round of rounds) {
-          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+          const handicapStrokes = this.computeHandicapStrokes(
+            hole.stroke_index,
+            round.golfer_playing_handicap,
+          );
           if (round.holes[holeIdx].gross_score < grossScores[1]) {
             if (round.holes[holeIdx].gross_score < grossScores[0]) {
               grossScores[1] = grossScores[0];
@@ -211,7 +228,10 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
         grossScore = 99;
         netScore = 99;
         for (const round of rounds) {
-          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
+          const handicapStrokes = this.computeHandicapStrokes(
+            hole.stroke_index,
+            round.golfer_playing_handicap,
+          );
           grossScore = Math.min(grossScore, round.holes[holeIdx].gross_score);
           netScore = Math.min(netScore, round.holes[holeIdx].gross_score - handicapStrokes);
         }
@@ -243,6 +263,8 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       // plus-handicap
       return -playingHandicap * 2 > 18 - strokeIndex ? -1 : 0;
     }
-    return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
+    return (
+      Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0)
+    );
   }
 }

@@ -20,13 +20,17 @@
     >
       <span class="bold">APL Handicap Index</span>
       <div *ngIf="golfer.handicap_index_data; else noHandicapData">
-        <span *ngIf="golfer.handicap_index_data.active_handicap_index; else noActiveHandicapIndex">{{
-          golfer.handicap_index_data.active_handicap_index | number: '1.1-1'
-        }}</span>
+        <span
+          *ngIf="golfer.handicap_index_data.active_handicap_index; else noActiveHandicapIndex"
+          >{{ golfer.handicap_index_data.active_handicap_index | number: '1.1-1' }}</span
+        >
         <ng-template #noActiveHandicapIndex>--</ng-template>
         <span *ngIf="golfer.handicap_index_data.pending_handicap_index">
           <span>, </span>
-          <span class="italic">Pending: {{ golfer.handicap_index_data.pending_handicap_index | number: '1.1-1' }}</span>
+          <span class="italic"
+            >Pending:
+            {{ golfer.handicap_index_data.pending_handicap_index | number: '1.1-1' }}</span
+          >
         </span>
       </div>
       <ng-template #noHandicapData>
@@ -70,7 +74,10 @@
 
   <mat-spinner *ngIf="isLoadingTeamData"></mat-spinner>
 
-  <p class="italic" *ngIf="!isLoadingTeamData && flightTeams.length === 0 && tournamentTeams.length === 0">
+  <p
+    class="italic"
+    *ngIf="!isLoadingTeamData && flightTeams.length === 0 && tournamentTeams.length === 0"
+  >
     No team data for selected season
   </p>
 
@@ -99,7 +106,9 @@
 
   <mat-spinner *ngIf="isLoadingRoundData"></mat-spinner>
 
-  <p class="italic" *ngIf="!isLoadingRoundData && rounds.length === 0">No round data for selected season</p>
+  <p class="italic" *ngIf="!isLoadingRoundData && rounds.length === 0">
+    No round data for selected season
+  </p>
 
   <div class="content full-width" style="margin-top: 0px" *ngIf="!isLoadingRoundData">
     <app-combined-rounds-scorecard

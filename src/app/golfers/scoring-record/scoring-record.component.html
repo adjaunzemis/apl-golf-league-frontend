@@ -2,7 +2,8 @@
   <p
     class="italic"
     *ngIf="
-      (!activeRounds || activeRounds.length === 0) && (!pendingRounds || pendingRounds.length === 0);
+      (!activeRounds || activeRounds.length === 0) &&
+        (!pendingRounds || pendingRounds.length === 0);
       else hasScoringRecordData
     "
   >

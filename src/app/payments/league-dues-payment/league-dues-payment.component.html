@@ -33,11 +33,15 @@
             [matAutocomplete]="auto"
           />
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let name of filteredGolferNameOptionsArray[idx] | async" [value]="name">{{
-              name
-            }}</mat-option>
+            <mat-option
+              *ngFor="let name of filteredGolferNameOptionsArray[idx] | async"
+              [value]="name"
+              >{{ name }}</mat-option
+            >
           </mat-autocomplete>
-          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')">Select a golfer</mat-error>
+          <mat-error *ngIf="golferPayment.get('golfer')?.hasError('required')"
+            >Select a golfer</mat-error
+          >
           <mat-error *ngIf="golferPayment.get('golfer')?.hasError('golferNameInvalid')"
             >Golfer name is not valid</mat-error
           >
@@ -48,7 +52,9 @@
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
           </mat-select>
-          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')">Select a dues type</mat-error>
+          <mat-error *ngIf="golferPayment.get('type')?.hasError('required')"
+            >Select a dues type</mat-error
+          >
           <mat-error *ngIf="golferPayment.get('type')?.hasError('golferPaymentTypeInvalid')"
             >Dues type does not match golfer sign-up</mat-error
           >

@@ -9,6 +9,7 @@ import { DivisionData } from '../../shared/division.model';
   selector: 'app-division-list',
   templateUrl: './division-list.component.html',
   styleUrls: ['./division-list.component.css'],
+  standalone: false,
 })
 export class DivisionListComponent implements OnInit, OnDestroy {
   isLoading = false;
@@ -29,7 +30,7 @@ export class DivisionListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.divisionSub = this.coursesService.getSelectedTeeUpdated().subscribe((tee) => {
-      for (const division of this.divisions) {
+      for (let division of this.divisions) {
         if (division.primary_tee_id === tee.id) {
           this.selectedPrimaryTee = tee;
           this.loadedPrimaryTee = true;

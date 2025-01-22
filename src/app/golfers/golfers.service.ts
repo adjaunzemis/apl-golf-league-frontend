@@ -25,7 +25,7 @@ export class GolfersService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   getAllGolfers(): void {
@@ -78,7 +78,12 @@ export class GolfersService {
     return this.golferDataUpdated.asObservable();
   }
 
-  createGolfer(name: string, affiliation: GolferAffiliation, email?: string, phone?: string): Observable<Golfer> {
+  createGolfer(
+    name: string,
+    affiliation: GolferAffiliation,
+    email?: string,
+    phone?: string,
+  ): Observable<Golfer> {
     return this.http.post<Golfer>(environment.apiUrl + `golfers/`, {
       name: name,
       affiliation: affiliation,
@@ -88,10 +93,12 @@ export class GolfersService {
   }
 
   getGolferTeamData(id: number, year: number): void {
-    this.http.get<TeamGolferData[]>(environment.apiUrl + `golfers/${id}/teams?year=${year}`).subscribe((result) => {
-      this.golferTeamData = result;
-      this.golferTeamDataUpdated.next([...this.golferTeamData]);
-    });
+    this.http
+      .get<TeamGolferData[]>(environment.apiUrl + `golfers/${id}/teams?year=${year}`)
+      .subscribe((result) => {
+        this.golferTeamData = result;
+        this.golferTeamDataUpdated.next([...this.golferTeamData]);
+      });
   }
 
   getGolferTeamDataUpdateListener(): Observable<TeamGolferData[]> {
@@ -102,7 +109,7 @@ export class GolfersService {
     const queryParams = `use_legacy_handicapping=True`; // TODO: change to non-legacy handicapping system when ready
     return this.http.post<QualifyingScore>(
       environment.apiUrl + `handicaps/qualifying-score/?${queryParams}`,
-      qualifyingScore
+      qualifyingScore,
     );
   }
 }

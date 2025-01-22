@@ -16,7 +16,9 @@
       <mat-label>Affiliation</mat-label>
       <mat-select [formControl]="affiliationControl">
         <mat-option>--</mat-option>
-        <mat-option *ngFor="let option of affiliationOptions" [value]="option">{{ option }}</mat-option>
+        <mat-option *ngFor="let option of affiliationOptions" [value]="option">{{
+          option
+        }}</mat-option>
       </mat-select>
       <mat-error *ngIf="affiliationControl.hasError('required')">Select an affiliation</mat-error>
     </mat-form-field>

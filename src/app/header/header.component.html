@@ -46,17 +46,29 @@
       <button mat-menu-item *ngFor="let tournament of tournaments" (click)="onPayEntryFees()">{{tournament.name}}</button>
     </mat-menu> -->
 
-    <button mat-menu-item routerLink="/flight/match/edit" *ngIf="isAuthenticated && currentUser?.edit_flights">
+    <button
+      mat-menu-item
+      routerLink="/flight/match/edit"
+      *ngIf="isAuthenticated && currentUser?.edit_flights"
+    >
       <mat-icon>sports_golf</mat-icon>
       <span>Post Flight Scores</span>
     </button>
 
-    <button mat-menu-item routerLink="/tournament/scores" *ngIf="isAuthenticated && currentUser?.edit_tournaments">
+    <button
+      mat-menu-item
+      routerLink="/tournament/scores"
+      *ngIf="isAuthenticated && currentUser?.edit_tournaments"
+    >
       <mat-icon>sports_golf</mat-icon>
       <span>Post Tournament Scores</span>
     </button>
 
-    <button mat-menu-item [matMenuTriggerFor]="treasury" *ngIf="isAuthenticated && currentUser?.edit_payments">
+    <button
+      mat-menu-item
+      [matMenuTriggerFor]="treasury"
+      *ngIf="isAuthenticated && currentUser?.edit_payments"
+    >
       <mat-icon>attach_money</mat-icon>
       <span>Treasury</span>
     </button>
@@ -77,7 +89,11 @@
       </button>
     </mat-menu>
 
-    <button mat-menu-item [matMenuTriggerFor]="adminPanel" *ngIf="isAuthenticated && currentUser?.is_admin">
+    <button
+      mat-menu-item
+      [matMenuTriggerFor]="adminPanel"
+      *ngIf="isAuthenticated && currentUser?.is_admin"
+    >
       <mat-icon>settings</mat-icon>
       <span>Admin Panel</span>
     </button>

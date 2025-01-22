@@ -26,6 +26,7 @@ import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entr
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
+  standalone: false,
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private currentYear: number;
@@ -72,7 +73,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     private golfersService: GolfersService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -108,28 +109,32 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
     });
 
-    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener().subscribe((result) => {
-      this.tournaments = result.tournaments;
-      this.isLoadingTournaments = false;
+    this.tournamentsSub = this.tournamentsService
+      .getTournamentsListUpdateListener()
+      .subscribe((result) => {
+        this.tournaments = result.tournaments;
+        this.isLoadingTournaments = false;
 
-      if (this.initTournamentId) {
-        for (const tournament of this.tournaments) {
-          if (tournament.id == this.initTournamentId) {
-            this.tournamentControl.setValue(tournament);
-            this.getSelectedTournamentData(this.initTournamentId);
+        if (this.initTournamentId) {
+          for (const tournament of this.tournaments) {
+            if (tournament.id == this.initTournamentId) {
+              this.tournamentControl.setValue(tournament);
+              this.getSelectedTournamentData(this.initTournamentId);
+            }
           }
         }
-      }
-    });
+      });
 
-    this.selectedTournamentSub = this.tournamentsService.getTournamentUpdateListener().subscribe((result) => {
-      this.selectedFlightOrTournament = result;
-      this.isLoadingSelectedFlightOrTournament = false;
+    this.selectedTournamentSub = this.tournamentsService
+      .getTournamentUpdateListener()
+      .subscribe((result) => {
+        this.selectedFlightOrTournament = result;
+        this.isLoadingSelectedFlightOrTournament = false;
 
-      this.isSelectedSignupWindowOpen =
-        this.selectedFlightOrTournament.signup_start_date <= this.currentDate &&
-        this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
-    });
+        this.isSelectedSignupWindowOpen =
+          this.selectedFlightOrTournament.signup_start_date <= this.currentDate &&
+          this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
+      });
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
       this.golfers = result;
@@ -200,10 +205,14 @@ export class SignupComponent implements OnInit, OnDestroy {
       (Date.UTC(
         this.selectedFlightOrTournament.signup_start_date.getFullYear(),
         this.selectedFlightOrTournament.signup_start_date.getMonth(),
-        this.selectedFlightOrTournament.signup_start_date.getDate()
+        this.selectedFlightOrTournament.signup_start_date.getDate(),
       ) -
-        Date.UTC(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate())) /
-        (1000 * 60 * 60 * 24)
+        Date.UTC(
+          this.currentDate.getFullYear(),
+          this.currentDate.getMonth(),
+          this.currentDate.getDate(),
+        )) /
+        (1000 * 60 * 60 * 24),
     );
   }
 
@@ -256,7 +265,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   private convertTeamCreateToTeamInfo(teamCreate: TeamCreate): TeamInfo {
-    const golfers: TeamGolferData[] = [];
+    let golfers: TeamGolferData[] = [];
     for (const golfer of teamCreate.golfers) {
       golfers.push({
         golfer_id: golfer.golfer.id,
@@ -284,7 +293,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     // Modify existing team
     let initTeamId = -1;
     let initTeamName = '';
-    const initTeamGolfers: TeamGolferCreate[] = [];
+    let initTeamGolfers: TeamGolferCreate[] = [];
     if (initTeam) {
       if (initTeam.id) {
         initTeamId = initTeam.id;
@@ -337,7 +346,11 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     // Submit team signup (create or update)
     dialogRef.afterClosed().subscribe((teamData: TeamCreate) => {
-      if (teamData !== null && teamData !== undefined && this.selectedFlightOrTournament !== undefined) {
+      if (
+        teamData !== null &&
+        teamData !== undefined &&
+        this.selectedFlightOrTournament !== undefined
+      ) {
         let flightTournamentStr = '';
         if (this.selectedTabIdx === 0) {
           // flight
@@ -355,7 +368,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           this.teamsService.updateTeam(teamData).subscribe(
             (team) => {
               console.log(
-                `[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`
+                `[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
               this.snackBar.open(`Updated team '${team.name}'`, undefined, {
                 duration: 5000,
@@ -372,20 +385,20 @@ export class SignupComponent implements OnInit, OnDestroy {
             },
             (error) => {
               console.error(
-                `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`
+                `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
               this.isLoadingSelectedFlightOrTournament = false;
 
               // Re-open team edit dialog to allow retrying
               this.createOrUpdateTeam(this.convertTeamCreateToTeamInfo(teamData));
-            }
+            },
           );
         } else {
           // create new team
           this.teamsService.createTeam(teamData).subscribe(
             (team) => {
               console.log(
-                `[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`
+                `[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
               this.snackBar.open(`Created team '${team.name}'`, undefined, {
                 duration: 5000,
@@ -402,13 +415,13 @@ export class SignupComponent implements OnInit, OnDestroy {
             },
             (error) => {
               console.error(
-                `[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`
+                `[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
               this.isLoadingSelectedFlightOrTournament = false;
 
               // Re-open team edit dialog to allow retrying
               this.createOrUpdateTeam(this.convertTeamCreateToTeamInfo(teamData));
-            }
+            },
           );
         }
       }

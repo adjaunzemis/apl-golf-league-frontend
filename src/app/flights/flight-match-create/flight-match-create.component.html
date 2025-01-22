@@ -16,9 +16,14 @@
   <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
     <ul>
       <li>Select the anticipated date of the match.</li>
-      <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
+      <li>
+        Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.
+      </li>
       <ul>
-        <li>Navigating here from "Match Scorecard" card on flight homepage auto-populates these values.</li>
+        <li>
+          Navigating here from "Match Scorecard" card on flight homepage auto-populates these
+          values.
+        </li>
       </ul>
       <li>On the left side, select a team.</li>
       <ul>
@@ -26,7 +31,10 @@
       </ul>
       <li>Select the two golfers who will play for the first team.</li>
       <ul>
-        <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
+        <li>
+          If the selected course is the home course for the flight, tee selection will populate
+          automatically.
+        </li>
         <li>Otherwise, select the tees each golfer will play.</li>
       </ul>
       <li>On the right side, repeat the above process for the second team.</li>
@@ -36,14 +44,14 @@
       <li>Once all required information has been entered, click "Generate Scorecard".</li>
       <ul>
         <li>
-          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the
-          tee rating/slope.
+          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
+          handicap index and the tee rating/slope.
         </li>
         <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
         <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
         <li>
-          On the team score line, black dots indicate handicap strokes received by the team with the higher combined
-          playing handicap.
+          On the team score line, black dots indicate handicap strokes received by the team with the
+          higher combined playing handicap.
         </li>
         <li>Any selection changes will clear the generated scorecard.</li>
       </ul>
@@ -52,13 +60,20 @@
   </div>
 
   <div style="margin-bottom: 16px" *ngIf="!hideForPrint">
-    <button mat-raised-button color="primary" [disabled]="!checkValidSelections()" (click)="createMatchRounds()">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!checkValidSelections()"
+      (click)="createMatchRounds()"
+    >
       Generate Scorecard
     </button>
     <button
       mat-raised-button
       color="accent"
-      [disabled]="!(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)"
+      [disabled]="
+        !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
+      "
       (click)="printScorecard()"
     >
       Print Scorecard
@@ -68,7 +83,12 @@
   <div *ngIf="!hideForPrint">
     <mat-form-field class="selection-field date-selection-field" appearance="fill">
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onSelectedDateChanged($event)" />
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [value]="selectedDate"
+        (dateChange)="onSelectedDateChanged($event)"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -107,7 +127,10 @@
 
   <mat-form-field appearance="fill" class="input-field" *ngIf="!hideForPrint">
     <mat-label>Week</mat-label>
-    <mat-select [value]="weekOptions[selectedWeek - 1]" (selectionChange)="onSelectedWeekChanged($event)">
+    <mat-select
+      [value]="weekOptions[selectedWeek - 1]"
+      (selectionChange)="onSelectedWeekChanged($event)"
+    >
       <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -157,10 +180,15 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 1 Golfer 1</mat-label>
-            <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 1)">
-              <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{
-                golferOption.golfer_name
-              }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam1"
+              (selectionChange)="onSelectedGolferChanged($event, 1, 1)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam1?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
@@ -182,10 +210,15 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 2 Golfer 1</mat-label>
-            <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 1)">
-              <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{
-                golferOption.golfer_name
-              }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam2"
+              (selectionChange)="onSelectedGolferChanged($event, 2, 1)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam2?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
@@ -209,10 +242,15 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 1 Golfer 2</mat-label>
-            <mat-select [disabled]="!selectedTeam1" (selectionChange)="onSelectedGolferChanged($event, 1, 2)">
-              <mat-option *ngFor="let golferOption of selectedTeam1?.golfers" [value]="golferOption">{{
-                golferOption.golfer_name
-              }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam1"
+              (selectionChange)="onSelectedGolferChanged($event, 1, 2)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam1?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
@@ -234,10 +272,15 @@
         <ng-container>
           <mat-form-field class="selection-field" appearance="fill">
             <mat-label>Team 2 Golfer 2</mat-label>
-            <mat-select [disabled]="!selectedTeam2" (selectionChange)="onSelectedGolferChanged($event, 2, 2)">
-              <mat-option *ngFor="let golferOption of selectedTeam2?.golfers" [value]="golferOption">{{
-                golferOption.golfer_name
-              }}</mat-option>
+            <mat-select
+              [disabled]="!selectedTeam2"
+              (selectionChange)="onSelectedGolferChanged($event, 2, 2)"
+            >
+              <mat-option
+                *ngFor="let golferOption of selectedTeam2?.golfers"
+                [value]="golferOption"
+                >{{ golferOption.golfer_name }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
 
@@ -358,10 +401,15 @@
       >Match card must be selected before generating scorecard!</span
     >
     <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="isMatchDataInvalid()"
-      >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap
-      strokes)</span
+      >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par +
+      handicap strokes)</span
     >
-    <button mat-raised-button color="accent" [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="isMatchDataInvalid()"
+      (click)="postMatchRounds()"
+    >
       Post Scores
     </button>
   </div>

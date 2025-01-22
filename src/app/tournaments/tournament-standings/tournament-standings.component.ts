@@ -7,6 +7,7 @@ import { TournamentTeamData } from '../../shared/team.model';
   selector: 'app-tournament-standings',
   templateUrl: './tournament-standings.component.html',
   styleUrls: ['./tournament-standings.component.css'],
+  standalone: false,
 })
 export class TournamentStandingsComponent implements OnInit {
   @Input() tournament: TournamentInfo;
@@ -37,12 +38,12 @@ export class TournamentStandingsComponent implements OnInit {
     }
     this.individualStandingsData = [];
     this.teamStandingsData = [];
-    for (const team of this.teamData) {
-      const holeScores: { [holeNum: number]: { grossScores: number[]; netScores: number[] } } = [];
+    for (let team of this.teamData) {
+      let holeScores: { [holeNum: number]: { grossScores: number[]; netScores: number[] } } = [];
 
       if (team.rounds) {
-        for (const round of team.rounds) {
-          for (const hole of round.holes) {
+        for (let round of team.rounds) {
+          for (let hole of round.holes) {
             if (!holeScores[hole.number]) {
               holeScores[hole.number] = { grossScores: [], netScores: [] };
             }
@@ -51,7 +52,7 @@ export class TournamentStandingsComponent implements OnInit {
           }
 
           let individualRoundAdded = false;
-          for (const individualData of this.individualStandingsData) {
+          for (let individualData of this.individualStandingsData) {
             if (individualData.name === round.golfer_name) {
               if (individualData.playingHandicap && round.golfer_playing_handicap) {
                 individualData.playingHandicap += round.golfer_playing_handicap;
@@ -73,9 +74,9 @@ export class TournamentStandingsComponent implements OnInit {
         }
 
         if (team.rounds.length >= this.numTeamRoundsRequired) {
-          const bestGrossScores: number[] = [];
-          const bestNetScores: number[] = [];
-          for (const holeNumber in holeScores) {
+          let bestGrossScores: number[] = [];
+          let bestNetScores: number[] = [];
+          for (let holeNumber in holeScores) {
             bestGrossScores.push(Math.min(...holeScores[holeNumber].grossScores));
             bestNetScores.push(Math.min(...holeScores[holeNumber].netScores));
           }
@@ -84,14 +85,18 @@ export class TournamentStandingsComponent implements OnInit {
           let netScoreSum = bestNetScores.reduce((partialSum, a) => partialSum + a, 0);
 
           if (this.tournament.bestball === 2) {
-            const secondBestGrossScores: number[] = [];
-            const secondBestNetScores: number[] = [];
-            for (const holeNumber in holeScores) {
+            let secondBestGrossScores: number[] = [];
+            let secondBestNetScores: number[] = [];
+            for (let holeNumber in holeScores) {
               let minGrossScore = 99;
               let secondMinGrossScore = 99;
               let minNetScore = 99;
               let secondMinNetScore = 99;
-              for (let scoreIdx = 0; scoreIdx < holeScores[holeNumber].grossScores.length; scoreIdx++) {
+              for (
+                let scoreIdx = 0;
+                scoreIdx < holeScores[holeNumber].grossScores.length;
+                scoreIdx++
+              ) {
                 if (holeScores[holeNumber].grossScores[scoreIdx] < minGrossScore) {
                   secondMinGrossScore = minGrossScore;
                   minGrossScore = holeScores[holeNumber].grossScores[scoreIdx];
@@ -149,7 +154,10 @@ export class TournamentStandingsComponent implements OnInit {
 
     this.individualStandingsData[0].position = '1';
     for (let idx = 1; idx < this.individualStandingsData.length; idx++) {
-      if (this.individualStandingsData[idx].grossScore != this.individualStandingsData[idx - 1].grossScore) {
+      if (
+        this.individualStandingsData[idx].grossScore !=
+        this.individualStandingsData[idx - 1].grossScore
+      ) {
         this.individualStandingsData[idx].position = (idx + 1).toString();
       } else {
         this.individualStandingsData[idx].position = '';
@@ -164,7 +172,9 @@ export class TournamentStandingsComponent implements OnInit {
 
     this.individualStandingsData[0].position = '1';
     for (let idx = 1; idx < this.individualStandingsData.length; idx++) {
-      if (this.individualStandingsData[idx].netScore != this.individualStandingsData[idx - 1].netScore) {
+      if (
+        this.individualStandingsData[idx].netScore != this.individualStandingsData[idx - 1].netScore
+      ) {
         this.individualStandingsData[idx].position = (idx + 1).toString();
       } else {
         this.individualStandingsData[idx].position = '';

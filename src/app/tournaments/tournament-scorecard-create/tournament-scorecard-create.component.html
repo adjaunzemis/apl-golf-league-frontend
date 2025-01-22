@@ -16,9 +16,14 @@
   <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
     <ul>
       <li>Select the anticipated date of the match.</li>
-      <li>Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.</li>
+      <li>
+        Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.
+      </li>
       <ul>
-        <li>Navigating here from "Match Scorecard" card on flight homepage auto-populates these values.</li>
+        <li>
+          Navigating here from "Match Scorecard" card on flight homepage auto-populates these
+          values.
+        </li>
       </ul>
       <li>On the left side, select a team.</li>
       <ul>
@@ -26,7 +31,10 @@
       </ul>
       <li>Select the two golfers who will play for the first team.</li>
       <ul>
-        <li>If the selected course is the home course for the flight, tee selection will populate automatically.</li>
+        <li>
+          If the selected course is the home course for the flight, tee selection will populate
+          automatically.
+        </li>
         <li>Otherwise, select the tees each golfer will play.</li>
       </ul>
       <li>On the right side, repeat the above process for the second team.</li>
@@ -36,14 +44,14 @@
       <li>Once all required information has been entered, click "Generate Scorecard".</li>
       <ul>
         <li>
-          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL handicap index and the
-          tee rating/slope.
+          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
+          handicap index and the tee rating/slope.
         </li>
         <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
         <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
         <li>
-          On the team score line, black dots indicate handicap strokes received by the team with the higher combined
-          playing handicap.
+          On the team score line, black dots indicate handicap strokes received by the team with the
+          higher combined playing handicap.
         </li>
         <li>Any selection changes will clear the generated scorecard.</li>
       </ul>
@@ -65,7 +73,10 @@
   <div *ngIf="!hideForPrint">
     <mat-form-field class="selection-field flight-selection-field" appearance="fill">
       <mat-label>Tournament</mat-label>
-      <mat-select [value]="selectedTournamentInfo" (selectionChange)="onSelectedTournamentChanged($event)">
+      <mat-select
+        [value]="selectedTournamentInfo"
+        (selectionChange)="onSelectedTournamentChanged($event)"
+      >
         <mat-option *ngFor="let tournamentOption of tournamentOptions" [value]="tournamentOption"
           >{{ tournamentOption.name }} ({{ tournamentOption.year }})</mat-option
         >
@@ -154,7 +165,10 @@
       [holeResultData]="roundsBack[roundIdx].holes"
       [showScoreModeButtons]="false"
     ></app-scorecard-hole-line>
-    <app-scorecard-tee-info [holeResultData]="roundsBack[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+    <app-scorecard-tee-info
+      [holeResultData]="roundsBack[roundIdx].holes"
+      [showDetails]="true"
+    ></app-scorecard-tee-info>
     <ng-container *ngFor="let round of roundsBack; let rIdx = index">
       <app-scorecard-score-line
         [(round)]="roundsBack[rIdx]"
@@ -192,11 +206,19 @@
     <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="!selectedTeam"
       >Team card must be selected before generating scorecard!</span
     >
-    <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="isTournamentInputDataInvalid()"
-      >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap
-      strokes)</span
+    <span
+      class="italic"
+      style="color: red; margin-bottom: 12px"
+      *ngIf="isTournamentInputDataInvalid()"
+      >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par +
+      handicap strokes)</span
     >
-    <button mat-raised-button color="accent" [disabled]="isTournamentInputDataInvalid()" (click)="postRounds()">
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="isTournamentInputDataInvalid()"
+      (click)="postRounds()"
+    >
       Post Scores
     </button>
   </div>

@@ -13,7 +13,7 @@ import { TeamCreate } from '../shared/team.model';
 export class TeamsService {
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   createTeam(teamData: TeamCreate): Observable<{ id: number; name: string }> {
@@ -36,24 +36,26 @@ export class TeamsService {
   updateTeam(teamData: TeamCreate): Observable<{ id: number; name: string }> {
     const teamGolfersSignupData = this.extractTeamGolferSignupData(teamData.golfers);
     if (teamData.flight_id) {
-      return this.http.put<{ id: number; name: string }>(environment.apiUrl + `teams/${teamData.id}`, {
-        name: teamData.name,
-        flight_id: teamData.flight_id,
-        golfer_data: teamGolfersSignupData,
-      });
+      return this.http.put<{ id: number; name: string }>(
+        environment.apiUrl + `teams/${teamData.id}`,
+        { name: teamData.name, flight_id: teamData.flight_id, golfer_data: teamGolfersSignupData },
+      );
     } else {
-      return this.http.put<{ id: number; name: string }>(environment.apiUrl + `teams/${teamData.id}`, {
-        name: teamData.name,
-        tournament_id: teamData.tournament_id,
-        golfer_data: teamGolfersSignupData,
-      });
+      return this.http.put<{ id: number; name: string }>(
+        environment.apiUrl + `teams/${teamData.id}`,
+        {
+          name: teamData.name,
+          tournament_id: teamData.tournament_id,
+          golfer_data: teamGolfersSignupData,
+        },
+      );
     }
   }
 
   private extractTeamGolferSignupData(
-    teamGolfers: TeamGolferCreate[]
+    teamGolfers: TeamGolferCreate[],
   ): { golfer_id: number; golfer_name: string; division_id: number; role: string }[] {
-    const teamGolferSignupData: {
+    let teamGolferSignupData: {
       golfer_id: number;
       golfer_name: string;
       division_id: number;

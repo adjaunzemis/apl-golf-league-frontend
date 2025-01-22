@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
@@ -14,6 +20,7 @@ import { HoleData } from 'src/app/shared/hole.model';
   selector: 'app-course-create',
   templateUrl: './course-create.component.html',
   styleUrls: ['./course-create.component.css'],
+  standalone: false,
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
   isLoadingCourse = false;
@@ -32,23 +39,31 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: UntypedFormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
-    this.coursesSub = this.coursesService.getSelectedCourseUpdateListener().subscribe((courseData) => {
-      console.log(
-        "[CourseCreateComponent] Initializing forms for course '" + courseData.name + "' (id=" + courseData.id + ')'
-      );
-      this.course = courseData;
-      this.initFormsFromCourse(this.course);
-      this.isLoadingCourse = false;
-    });
+    this.coursesSub = this.coursesService
+      .getSelectedCourseUpdateListener()
+      .subscribe((courseData) => {
+        console.log(
+          "[CourseCreateComponent] Initializing forms for course '" +
+            courseData.name +
+            "' (id=" +
+            courseData.id +
+            ')',
+        );
+        this.course = courseData;
+        this.initFormsFromCourse(this.course);
+        this.isLoadingCourse = false;
+      });
 
     this.route.queryParams.subscribe((params) => {
       if (params) {
         if (params.id) {
-          console.log('[CourseCreateComponent] Processing route with query parameter: id=' + params.id);
+          console.log(
+            '[CourseCreateComponent] Processing route with query parameter: id=' + params.id,
+          );
           this.isLoadingCourse = true;
           this.coursesService.getCourse(params.id);
         }
@@ -207,30 +222,32 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             {
               duration: 5000,
               panelClass: ['success-snackbar'],
-            }
+            },
           );
           this.router.navigate(['courses/']);
         });
       } else {
         // Add ids to course data
         courseData.id = this.course.id;
-        for (const trackData of courseData.tracks) {
+        for (let trackData of courseData.tracks) {
           trackData.course_id = courseData.id;
           const trackMatches = this.course.tracks.filter((track) => track.name === trackData.name);
           for (const trackMatch of trackMatches) {
             trackData.id = trackMatch.id;
 
-            for (const teeData of trackData.tees) {
+            for (let teeData of trackData.tees) {
               teeData.track_id = trackData.id;
               const teeMatches = trackMatch.tees.filter(
-                (tee) => tee.name === teeData.name && tee.gender === teeData.gender
+                (tee) => tee.name === teeData.name && tee.gender === teeData.gender,
               );
               for (const teeMatch of teeMatches) {
                 teeData.id = teeMatch.id;
 
-                for (const holeData of teeData.holes) {
+                for (let holeData of teeData.holes) {
                   holeData.tee_id = teeData.id;
-                  const holeMatches = teeMatch.holes.filter((hole) => hole.number === holeData.number);
+                  const holeMatches = teeMatch.holes.filter(
+                    (hole) => hole.number === holeData.number,
+                  );
                   for (const holeMatch of holeMatches) {
                     holeData.id = holeMatch.id;
                   }
@@ -248,7 +265,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             {
               duration: 5000,
               panelClass: ['success-snackbar'],
-            }
+            },
           );
           this.router.navigate(['courses/']);
         });

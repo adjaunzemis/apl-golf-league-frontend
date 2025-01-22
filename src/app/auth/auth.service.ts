@@ -18,14 +18,19 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   login(username: string, password: string) {
-    const body = new HttpParams().set('username', username).set('password', password).set('grant_type', 'password');
+    const body = new HttpParams()
+      .set('username', username)
+      .set('password', password)
+      .set('grant_type', 'password');
     return this.http.post<AuthResponseData>(environment.apiUrl + `users/token`, body).pipe(
       tap((resData) => {
-        const expirationDate = new Date(new Date().getTime() + resData.access_token_expires_in * 1000);
+        const expirationDate = new Date(
+          new Date().getTime() + resData.access_token_expires_in * 1000,
+        );
         const user = new User(
           resData.id,
           resData.username,
@@ -37,12 +42,12 @@ export class AuthService {
           resData.edit_tournaments,
           resData.edit_payments,
           resData.access_token,
-          expirationDate
+          expirationDate,
         );
         this.user.next(user);
         this.autoLogout(resData.access_token_expires_in * 1000);
         localStorage.setItem(AuthService.LOCAL_STORAGE_USER, JSON.stringify(user));
-      })
+      }),
     );
   }
 
@@ -76,12 +81,13 @@ export class AuthService {
       userData.edit_tournaments,
       userData.edit_payments,
       userData._token,
-      new Date(userData._tokenExpirationDate)
+      new Date(userData._tokenExpirationDate),
     );
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
-      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+      const expirationDuration =
+        new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDuration);
     }
   }
@@ -107,7 +113,7 @@ export class AuthService {
       take(1),
       exhaustMap((user) => {
         return this.http.get<UserInfo>(environment.apiUrl + `users/me`);
-      })
+      }),
     );
   }
 

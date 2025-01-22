@@ -7,7 +7,12 @@
 <div class="content" style="margin-top: 0px" *ngIf="!isLoading">
   <mat-form-field appearance="fill" class="input-field">
     <mat-label>Filter by name</mat-label>
-    <input type="text" matInput title="Start typing golfer name to autocomplete." [formControl]="golferControl" />
+    <input
+      type="text"
+      matInput
+      title="Start typing golfer name to autocomplete."
+      [formControl]="golferControl"
+    />
   </mat-form-field>
 
   <div class="card-container">

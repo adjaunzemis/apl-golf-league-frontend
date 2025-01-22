@@ -6,6 +6,7 @@ import * as d3 from 'd3';
   selector: 'app-playoff-bracket',
   templateUrl: './playoff-bracket.component.html',
   styleUrls: ['./playoff-bracket.component.css'],
+  standalone: false,
 })
 export class PlayoffBracketComponent implements OnInit {
   ngOnInit(): void {

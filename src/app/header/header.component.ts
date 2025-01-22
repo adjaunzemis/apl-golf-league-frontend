@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
   providers: [SignupComponent],
+  standalone: false,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   title = environment.title;
@@ -48,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private tournamentsService: TournamentsService,
     private signupComponent: SignupComponent,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -80,9 +81,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.flightsService.getFlightsList(this.appConfigService.currentYear);
 
-    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener().subscribe((result) => {
-      this.tournaments = result.tournaments;
-    });
+    this.tournamentsSub = this.tournamentsService
+      .getTournamentsListUpdateListener()
+      .subscribe((result) => {
+        this.tournaments = result.tournaments;
+      });
 
     this.tournamentsService.getTournamentsList(this.appConfigService.currentYear);
   }
@@ -136,7 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             golferData.name,
             golferData.affiliation,
             golferData.email !== '' ? golferData.email : null,
-            golferData.phone !== '' ? golferData.phone : null
+            golferData.phone !== '' ? golferData.phone : null,
           )
           .subscribe((result) => {
             console.log(`[HeaderComponent] Successfully added golfer: ${result.name}`);
@@ -191,7 +194,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             {
               duration: 5000,
               panelClass: ['error-snackbar'],
-            }
+            },
           );
           // TODO: re-open dialog window to edit selections
           return;
@@ -199,11 +202,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         console.log(flightData);
         this.flightsService.createFlight(flightData).subscribe((result) => {
-          console.log(`[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`);
-          this.snackBar.open(`Successfully created flight: ${result.name} (${result.year})`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar'],
-          });
+          console.log(
+            `[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`,
+          );
+          this.snackBar.open(
+            `Successfully created flight: ${result.name} (${result.year})`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
 
           this.flightsService.getFlightsList(this.appConfigService.currentYear); // refresh flights list
         });
@@ -256,7 +265,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             {
               duration: 5000,
               panelClass: ['error-snackbar'],
-            }
+            },
           );
           // TODO: re-open dialog window to edit selections
           return;
@@ -265,11 +274,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         console.log(tournamentData);
         // TODO: Implement tournament creation in service
         this.tournamentsService.createTournament(tournamentData).subscribe((result) => {
-          console.log(`[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`);
-          this.snackBar.open(`Successfully created tournament: ${result.name} (${result.year})`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar'],
-          });
+          console.log(
+            `[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`,
+          );
+          this.snackBar.open(
+            `Successfully created tournament: ${result.name} (${result.year})`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
 
           this.tournamentsService.getTournamentsList(this.appConfigService.currentYear); // refresh tournaments list
         });

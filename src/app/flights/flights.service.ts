@@ -22,7 +22,7 @@ export class FlightsService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   getFlightsList(year?: number): void {

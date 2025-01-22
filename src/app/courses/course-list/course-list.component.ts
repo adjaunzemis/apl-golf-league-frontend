@@ -21,6 +21,7 @@ import { Hole } from '../../shared/hole.model';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  standalone: false,
 })
 export class CourseListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = false;

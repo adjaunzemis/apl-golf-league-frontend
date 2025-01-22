@@ -6,6 +6,7 @@ import { RoundData } from 'src/app/shared/round.model';
   selector: 'app-round-scorecard',
   templateUrl: './round-scorecard.component.html',
   styleUrls: ['./round-scorecard.component.css'],
+  standalone: false,
 })
 export class RoundScorecardComponent {
   @Input() round: RoundData;

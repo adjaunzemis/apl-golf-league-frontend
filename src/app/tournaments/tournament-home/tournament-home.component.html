@@ -1,7 +1,12 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content" *ngIf="!isLoading">
-  <img src="assets/{{ tournament.logo_url }}" alt="{{ tournament.name }}" height="100" *ngIf="tournament.logo_url" />
+  <img
+    src="assets/{{ tournament.logo_url }}"
+    alt="{{ tournament.name }}"
+    height="100"
+    *ngIf="tournament.logo_url"
+  />
 
   <h1>{{ tournament.name }} ({{ tournament.year }})</h1>
 
@@ -22,7 +27,9 @@
   <div class="card-container">
     <div class="card card-small">
       <span class="bold">Date</span>
-      <span>{{ tournament.date | date: 'mediumDate' }} {{ tournament.date | date: 'shortTime' }}</span>
+      <span
+        >{{ tournament.date | date: 'mediumDate' }} {{ tournament.date | date: 'shortTime' }}</span
+      >
     </div>
 
     <div class="card card-small">
@@ -30,12 +37,19 @@
       <span>{{ tournament.course }}</span>
     </div>
 
-    <a class="card card-small selectable" href="mailto:{{ tournament.secretary_email }}" *ngIf="tournament.secretary">
+    <a
+      class="card card-small selectable"
+      href="mailto:{{ tournament.secretary_email }}"
+      *ngIf="tournament.secretary"
+    >
       <span class="bold">Tournament Organizer</span>
       <span>{{ tournament.secretary }}</span>
     </a>
 
-    <a class="card card-small" *ngIf="tournament.members_entry_fee || tournament.non_members_entry_fee">
+    <a
+      class="card card-small"
+      *ngIf="tournament.members_entry_fee || tournament.non_members_entry_fee"
+    >
       <span class="bold">Fee (Member / Non-Member)</span>
       <span
         >{{ tournament.members_entry_fee | currency: 'USD' }} /
@@ -78,7 +92,10 @@
   <h2>Standings</h2>
 
   <div *ngIf="tournament.date < currentDate; else notPlayedYet">
-    <app-tournament-standings [tournament]="tournament" [teamData]="tournament.teams"></app-tournament-standings>
+    <app-tournament-standings
+      [tournament]="tournament"
+      [teamData]="tournament.teams"
+    ></app-tournament-standings>
   </div>
 
   <ng-template #notPlayedYet>
@@ -110,7 +127,9 @@
         [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''"
       >
         <span class="bold">{{ team.name }}</span>
-        <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }} - {{ golfer.division_name }}</span>
+        <span *ngFor="let golfer of team.golfers"
+          >{{ golfer.golfer_name }} - {{ golfer.division_name }}</span
+        >
       </div>
     </div>
   </div>

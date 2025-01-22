@@ -43,8 +43,13 @@
       >
         <div class="track-info" formGroupName="{{ trIdx }}">
           <div class="database-identifiers">
-            <span>Track ID: {{ course && course.tracks[trIdx] ? course.tracks[trIdx].id : '--' }}</span>
-            <span>Course ID: {{ course && course.tracks[trIdx] ? course.tracks[trIdx].course_id : '--' }}</span>
+            <span
+              >Track ID: {{ course && course.tracks[trIdx] ? course.tracks[trIdx].id : '--' }}</span
+            >
+            <span
+              >Course ID:
+              {{ course && course.tracks[trIdx] ? course.tracks[trIdx].course_id : '--' }}</span
+            >
             <button mat-icon-button color="accent" type="button" (click)="onAddTee(trIdx, true)">
               <mat-icon>add</mat-icon>
             </button>
@@ -84,7 +89,12 @@
                       : '--'
                   }}</span
                 >
-                <button mat-icon-button color="accent" type="button" (click)="onRemoveTee(trIdx, tsIdx)">
+                <button
+                  mat-icon-button
+                  color="accent"
+                  type="button"
+                  (click)="onRemoveTee(trIdx, tsIdx)"
+                >
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -118,7 +128,9 @@
                       "
                     >
                       <mat-option>--</mat-option>
-                      <mat-option *ngFor="let option of TEE_GENDER_OPTIONS" [value]="option">{{ option }}</mat-option>
+                      <mat-option *ngFor="let option of TEE_GENDER_OPTIONS" [value]="option">{{
+                        option
+                      }}</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field class="tee-rating-field">
@@ -137,7 +149,10 @@
                         <td class="bold">Hole</td>
                         <td
                           formArrayName="holes"
-                          *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index"
+                          *ngFor="
+                            let hole of getHolesArray(trIdx, tsIdx).controls;
+                            let hIdx = index
+                          "
                         >
                           <mat-form-field formGroupName="{{ hIdx }}">
                             <input
@@ -160,7 +175,10 @@
                         <td class="bold">Par</td>
                         <td
                           formArrayName="holes"
-                          *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index"
+                          *ngFor="
+                            let hole of getHolesArray(trIdx, tsIdx).controls;
+                            let hIdx = index
+                          "
                         >
                           <mat-form-field formGroupName="{{ hIdx }}">
                             <input matInput type="text" formControlName="par" />
@@ -171,7 +189,10 @@
                         <td class="bold">Yds</td>
                         <td
                           formArrayName="holes"
-                          *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index"
+                          *ngFor="
+                            let hole of getHolesArray(trIdx, tsIdx).controls;
+                            let hIdx = index
+                          "
                         >
                           <mat-form-field formGroupName="{{ hIdx }}">
                             <input matInput type="text" formControlName="yardage" />
@@ -182,7 +203,10 @@
                         <td class="bold">Hcp</td>
                         <td
                           formArrayName="holes"
-                          *ngFor="let hole of getHolesArray(trIdx, tsIdx).controls; let hIdx = index"
+                          *ngFor="
+                            let hole of getHolesArray(trIdx, tsIdx).controls;
+                            let hIdx = index
+                          "
                         >
                           <mat-form-field formGroupName="{{ hIdx }}">
                             <input matInput type="text" formControlName="stroke_index" />
@@ -201,7 +225,13 @@
   </mat-card>
 
   <div *ngIf="!isLoadingCourse">
-    <button mat-raised-button color="primary" type="button" [disabled]="!courseForm.valid" (click)="onSubmitCourse()">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      [disabled]="!courseForm.valid"
+      (click)="onSubmitCourse()"
+    >
       {{ course ? 'Update' : 'Create' }}
     </button>
     <button mat-raised-button color="accent" type="button" (click)="onClearCourse()">Clear</button>

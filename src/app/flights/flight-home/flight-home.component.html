@@ -1,7 +1,12 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content" *ngIf="!isLoading">
-  <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="100" *ngIf="flight.logo_url" />
+  <img
+    src="assets/{{ flight.logo_url }}"
+    alt="{{ flight.name }}"
+    height="100"
+    *ngIf="flight.logo_url"
+  />
 
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
@@ -12,7 +17,10 @@
     *ngIf="flight.signup_stop_date >= currentDate"
   >
     <span class="bold">Sign-Ups</span>
-    <span>{{ flight.signup_start_date | date: 'longDate' }} - {{ flight.signup_stop_date | date: 'longDate' }}</span>
+    <span
+      >{{ flight.signup_start_date | date: 'longDate' }} -
+      {{ flight.signup_stop_date | date: 'longDate' }}</span
+    >
     <span class="italic">Click to go to sign-up page</span>
   </a>
 
@@ -42,7 +50,11 @@
       <span>{{ flight.tee_times }}</span>
     </div>
 
-    <a class="card card-small selectable" routerLink="/flight/match/scorecard" [queryParams]="{ flight_id: flight.id }">
+    <a
+      class="card card-small selectable"
+      routerLink="/flight/match/scorecard"
+      [queryParams]="{ flight_id: flight.id }"
+    >
       <span class="bold">Match Scorecard</span>
     </a>
 
@@ -50,7 +62,11 @@
       <span class="bold">Contact Participants</span>
     </a>
 
-    <div class="card card-small selectable" (click)="onManageFlight()" *ngIf="isAuthenticated && currentUser?.is_admin">
+    <div
+      class="card card-small selectable"
+      (click)="onManageFlight()"
+      *ngIf="isAuthenticated && currentUser?.is_admin"
+    >
       <span class="bold">Manage Flight</span>
       <mat-icon>settings</mat-icon>
     </div>
@@ -87,7 +103,9 @@
   <app-flight-schedule class="full-width" [flight]="flight"></app-flight-schedule>
 
   <h2>Teams</h2>
-  <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0">No team data to show</span>
+  <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0"
+    >No team data to show</span
+  >
   <div class="card-container team-list">
     <a
       class="card team-card selectable"

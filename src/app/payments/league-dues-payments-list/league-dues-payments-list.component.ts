@@ -10,6 +10,7 @@ import { AppConfigService } from '../../app-config.service';
   selector: 'app-league-dues-payments-list',
   templateUrl: './league-dues-payments-list.component.html',
   styleUrls: ['./league-dues-payments-list.component.css'],
+  standalone: false,
 })
 export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -41,17 +42,19 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private paymentsService: PaymentsService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
   ) {}
 
   ngOnInit(): void {
     this.selectedYear = this.appConfigService.currentYear;
 
-    this.leagueDuesSub = this.paymentsService.getLeagueDuesPaymentDataListUpdateListener().subscribe((result) => {
-      this.leagueDuesPayments = result;
-      this.sortedData = this.leagueDuesPayments;
-      this.isLoading = false;
-    });
+    this.leagueDuesSub = this.paymentsService
+      .getLeagueDuesPaymentDataListUpdateListener()
+      .subscribe((result) => {
+        this.leagueDuesPayments = result;
+        this.sortedData = this.leagueDuesPayments;
+        this.isLoading = false;
+      });
 
     this.paymentsService.getLeagueDuesPaymentDataList(this.selectedYear);
   }
@@ -83,7 +86,7 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
         console.log(`[PaymentsListComponent] Updated payment id=${result.id}`);
 
         // Update item in list
-        const payment = this.leagueDuesPayments.find((entry) => entry.id === result.id);
+        let payment = this.leagueDuesPayments.find((entry) => entry.id === result.id);
         if (payment) {
           const newPayment = {
             id: payment.id,
@@ -149,7 +152,10 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   getUnpaidEmailAddresses(): string {
     let mailToList = 'mailto:';
     for (const payment of this.leagueDuesPayments) {
-      if (payment.amount_due > payment.amount_paid && !(payment.method === 'Exempt' || payment.method === 'Linked')) {
+      if (
+        payment.amount_due > payment.amount_paid &&
+        !(payment.method === 'Exempt' || payment.method === 'Linked')
+      ) {
         if (payment.golfer_email !== undefined) {
           mailToList += payment.golfer_email + ';';
         }

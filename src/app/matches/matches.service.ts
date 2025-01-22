@@ -18,7 +18,7 @@ export class MatchesService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   getMatches(offset: number, limit: number, teamId?: number): void {

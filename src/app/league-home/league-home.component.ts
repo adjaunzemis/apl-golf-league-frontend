@@ -13,6 +13,7 @@ import { OfficersService } from '../officers/officers.service';
   selector: 'app-league-home',
   templateUrl: './league-home.component.html',
   styleUrls: ['./league-home.component.css'],
+  standalone: false,
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
   private currentYear: number;
@@ -34,7 +35,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     private appConfigService: AppConfigService,
     private flightsService: FlightsService,
     private tournamentsService: TournamentsService,
-    private officersService: OfficersService
+    private officersService: OfficersService,
   ) {}
 
   ngOnInit(): void {
@@ -46,13 +47,15 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
       this.isLoadingFlights = false;
     });
 
-    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener().subscribe((result) => {
-      console.log(`[LeagueHomeComponent] Received tournaments list`);
-      this.currentTournaments = result.tournaments
-        .filter((tournament) => tournament.year === this.currentYear)
-        .sort((tournA, tournB) => tournA.date.getTime() - tournB.date.getTime());
-      this.isLoadingTournaments = false;
-    });
+    this.tournamentsSub = this.tournamentsService
+      .getTournamentsListUpdateListener()
+      .subscribe((result) => {
+        console.log(`[LeagueHomeComponent] Received tournaments list`);
+        this.currentTournaments = result.tournaments
+          .filter((tournament) => tournament.year === this.currentYear)
+          .sort((tournA, tournB) => tournA.date.getTime() - tournB.date.getTime());
+        this.isLoadingTournaments = false;
+      });
 
     this.officersSub = this.officersService.getOfficersListUpdateListener().subscribe((result) => {
       console.log(`[LeagueHomeComponent] Received officers list`);

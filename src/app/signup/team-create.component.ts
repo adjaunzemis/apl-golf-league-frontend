@@ -1,5 +1,11 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
@@ -14,6 +20,7 @@ import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.co
 @Component({
   templateUrl: './team-create.component.html',
   styleUrls: ['./team-create.component.css'],
+  standalone: false,
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
   updateMode: boolean = false;
@@ -47,7 +54,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     private formBuilder: UntypedFormBuilder,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private golfersService: GolfersService
+    private golfersService: GolfersService,
   ) {}
 
   ngOnInit(): void {
@@ -115,7 +122,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       .join(' ')
       .trim();
 
-    const teamGolfers: TeamGolferCreate[] = [];
+    let teamGolfers: TeamGolferCreate[] = [];
     for (let idx = 0; idx < this.getTeamGolfersArray().length; idx++) {
       const newTeamGolferForm = this.getTeamGolfersArray().at(idx);
 
@@ -174,8 +181,8 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
           } else {
             return this._filter(value);
           }
-        })
-      )
+        }),
+      ),
     );
 
     this.getTeamGolfersArray().push(newTeamGolferForm);
@@ -230,7 +237,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
             golferData.name,
             golferData.affiliation,
             golferData.email !== '' ? golferData.email : null,
-            golferData.phone !== '' ? golferData.phone : null
+            golferData.phone !== '' ? golferData.phone : null,
           )
           .subscribe((result) => {
             console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);

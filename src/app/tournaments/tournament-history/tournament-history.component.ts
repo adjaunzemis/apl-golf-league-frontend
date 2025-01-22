@@ -8,6 +8,7 @@ import { TournamentInfo } from '../../shared/tournament.model';
   selector: 'app-tournament-history',
   templateUrl: './tournament-history.component.html',
   styleUrls: ['./tournament-history.component.css'],
+  standalone: false,
 })
 export class TournamentHistoryComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -20,12 +21,14 @@ export class TournamentHistoryComponent implements OnInit, OnDestroy {
   constructor(private tournamentsService: TournamentsService) {}
 
   ngOnInit(): void {
-    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener().subscribe((result) => {
-      console.log(`[LeagueHomeComponent] Received flights list`);
-      this.tournaments = result.tournaments;
-      this.sortTournamentsByYear();
-      this.isLoading = false;
-    });
+    this.tournamentsSub = this.tournamentsService
+      .getTournamentsListUpdateListener()
+      .subscribe((result) => {
+        console.log(`[LeagueHomeComponent] Received flights list`);
+        this.tournaments = result.tournaments;
+        this.sortTournamentsByYear();
+        this.isLoading = false;
+      });
 
     this.tournamentsService.getTournamentsList();
   }
@@ -37,7 +40,7 @@ export class TournamentHistoryComponent implements OnInit, OnDestroy {
   private sortTournamentsByYear(): void {
     this.sortedYears = [];
     this.tournamentsSortedByYear = {};
-    for (const tournament of this.tournaments) {
+    for (let tournament of this.tournaments) {
       if (!this.tournamentsSortedByYear[tournament.year]) {
         this.sortedYears.push(tournament.year);
         this.tournamentsSortedByYear[tournament.year] = [];

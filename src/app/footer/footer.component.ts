@@ -8,6 +8,7 @@ import { APIService } from 'src/app/api/api.service';
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css'],
+  standalone: false,
 })
 export class FooterComponent implements OnInit, OnDestroy {
   websiteVersion: string = environment.version;

@@ -13,6 +13,7 @@ import { AppConfigService } from '../../app-config.service';
   selector: 'app-tournament-entry-fee-payments-list',
   templateUrl: './tournament-entry-fee-payments-list.component.html',
   styleUrls: ['./tournament-entry-fee-payments-list.component.css'],
+  standalone: false,
 })
 export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -51,21 +52,25 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
     private paymentsService: PaymentsService,
     private tournamentsService: TournamentsService,
     private appConfigService: AppConfigService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.selectedYear = this.appConfigService.currentYear;
 
-    this.tournamentSub = this.tournamentsService.getTournamentUpdateListener().subscribe((result) => {
-      this.selectedTournament = result;
-    });
+    this.tournamentSub = this.tournamentsService
+      .getTournamentUpdateListener()
+      .subscribe((result) => {
+        this.selectedTournament = result;
+      });
 
-    this.paymentsSub = this.paymentsService.getTournamentEntryFeePaymentDataListUpdateListener().subscribe((result) => {
-      this.tournamentEntryFeePayments = result;
-      this.sortedData = this.tournamentEntryFeePayments;
-      this.isLoading = false;
-    });
+    this.paymentsSub = this.paymentsService
+      .getTournamentEntryFeePaymentDataListUpdateListener()
+      .subscribe((result) => {
+        this.tournamentEntryFeePayments = result;
+        this.sortedData = this.tournamentEntryFeePayments;
+        this.isLoading = false;
+      });
 
     this.route.queryParams.subscribe((params) => {
       if (params) {
@@ -103,38 +108,42 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
 
   updatePaymentInfo(): void {
     if (this.updatedPayment) {
-      this.paymentsService.updateTournamentEntryFeePayment(this.updatedPayment).subscribe((result) => {
-        console.log(`[TournamentEntryFeePaymentsListComponent] Updated payment id=${result.id}`);
+      this.paymentsService
+        .updateTournamentEntryFeePayment(this.updatedPayment)
+        .subscribe((result) => {
+          console.log(`[TournamentEntryFeePaymentsListComponent] Updated payment id=${result.id}`);
 
-        // Update item in list
-        const payment = this.tournamentEntryFeePayments.find((entry) => entry.id === result.id);
-        if (payment) {
-          const newPayment = {
-            id: payment.id,
-            golfer_id: payment.golfer_id,
-            golfer_name: payment.golfer_name,
-            golfer_email: payment.golfer_email,
-            year: payment.year,
-            tournament_id: payment.tournament_id,
-            type: payment.type,
-            amount_due: result.amount_due,
-            amount_paid: result.amount_paid,
-            is_paid: result.is_paid,
-            method: result.method,
-            linked_payment_id: result.linked_payment_id,
-            comment: result.comment,
-          };
+          // Update item in list
+          let payment = this.tournamentEntryFeePayments.find((entry) => entry.id === result.id);
+          if (payment) {
+            const newPayment = {
+              id: payment.id,
+              golfer_id: payment.golfer_id,
+              golfer_name: payment.golfer_name,
+              golfer_email: payment.golfer_email,
+              year: payment.year,
+              tournament_id: payment.tournament_id,
+              type: payment.type,
+              amount_due: result.amount_due,
+              amount_paid: result.amount_paid,
+              is_paid: result.is_paid,
+              method: result.method,
+              linked_payment_id: result.linked_payment_id,
+              comment: result.comment,
+            };
 
-          const paymentIdx = this.tournamentEntryFeePayments.findIndex((entry) => entry.id === result.id);
-          this.tournamentEntryFeePayments[paymentIdx] = newPayment;
-        }
+            const paymentIdx = this.tournamentEntryFeePayments.findIndex(
+              (entry) => entry.id === result.id,
+            );
+            this.tournamentEntryFeePayments[paymentIdx] = newPayment;
+          }
 
-        // Clear updated payment object
-        this.updatedPayment = null;
+          // Clear updated payment object
+          this.updatedPayment = null;
 
-        // Update table using current sort selection
-        this.sortData(this.currentSort);
-      });
+          // Update table using current sort selection
+          this.sortData(this.currentSort);
+        });
     }
   }
 
@@ -175,7 +184,10 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
   getUnpaidEmailAddresses(): string {
     let mailToList = 'mailto:';
     for (const payment of this.tournamentEntryFeePayments) {
-      if (payment.amount_due > payment.amount_paid && !(payment.method === 'Exempt' || payment.method === 'Linked')) {
+      if (
+        payment.amount_due > payment.amount_paid &&
+        !(payment.method === 'Exempt' || payment.method === 'Linked')
+      ) {
         if (payment.golfer_email !== undefined) {
           mailToList += payment.golfer_email + ';';
         }

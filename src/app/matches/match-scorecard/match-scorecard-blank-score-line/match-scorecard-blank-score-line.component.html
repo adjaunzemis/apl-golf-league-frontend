@@ -2,19 +2,28 @@
   <tbody>
     <tr class="score">
       <td class="label">+/-</td>
-      <td class="hole border-sides" *ngFor="let score of [1, 2, 3, 4, 5, 6, 7, 8, 9]; let holeIdx = index">
+      <td
+        class="hole border-sides"
+        *ngFor="let score of [1, 2, 3, 4, 5, 6, 7, 8, 9]; let holeIdx = index"
+      >
         <div
           *ngIf="editMode"
           [ngClass]="{
             'arrow-up':
-              topTeamRound.holes[holeIdx].gross_score - topTeamRound.holes[holeIdx].handicap_strokes <
-              bottomTeamRound.holes[holeIdx].gross_score - bottomTeamRound.holes[holeIdx].handicap_strokes,
+              topTeamRound.holes[holeIdx].gross_score -
+                topTeamRound.holes[holeIdx].handicap_strokes <
+              bottomTeamRound.holes[holeIdx].gross_score -
+                bottomTeamRound.holes[holeIdx].handicap_strokes,
             'arrow-down':
-              topTeamRound.holes[holeIdx].gross_score - topTeamRound.holes[holeIdx].handicap_strokes >
-              bottomTeamRound.holes[holeIdx].gross_score - bottomTeamRound.holes[holeIdx].handicap_strokes,
+              topTeamRound.holes[holeIdx].gross_score -
+                topTeamRound.holes[holeIdx].handicap_strokes >
+              bottomTeamRound.holes[holeIdx].gross_score -
+                bottomTeamRound.holes[holeIdx].handicap_strokes,
             dash:
-              topTeamRound.holes[holeIdx].gross_score - topTeamRound.holes[holeIdx].handicap_strokes ===
-              bottomTeamRound.holes[holeIdx].gross_score - bottomTeamRound.holes[holeIdx].handicap_strokes,
+              topTeamRound.holes[holeIdx].gross_score -
+                topTeamRound.holes[holeIdx].handicap_strokes ===
+              bottomTeamRound.holes[holeIdx].gross_score -
+                bottomTeamRound.holes[holeIdx].handicap_strokes,
           }"
         ></div>
       </td>

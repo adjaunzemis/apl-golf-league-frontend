@@ -8,6 +8,7 @@ import { AuthService } from '../auth.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  standalone: false,
 })
 export class LoginComponent {
   usernameControl = new UntypedFormControl('', Validators.required);
@@ -15,7 +16,7 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   isLoggedIn(): boolean {
@@ -38,15 +39,21 @@ export class LoginComponent {
 
   onLogin(): void {
     if (this.usernameControl.valid && this.passwordControl.valid) {
-      this.authService.login(this.usernameControl.value, this.passwordControl.value).subscribe((result) => {
-        this.snackBar.open(`Successfully logged in as user '${this.getLoggedInUsername()}'!`, undefined, {
-          duration: 5000,
-          panelClass: ['success-snackbar'],
-        });
+      this.authService
+        .login(this.usernameControl.value, this.passwordControl.value)
+        .subscribe((result) => {
+          this.snackBar.open(
+            `Successfully logged in as user '${this.getLoggedInUsername()}'!`,
+            undefined,
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            },
+          );
 
-        this.usernameControl.reset();
-        this.passwordControl.reset();
-      });
+          this.usernameControl.reset();
+          this.passwordControl.reset();
+        });
     }
   }
 

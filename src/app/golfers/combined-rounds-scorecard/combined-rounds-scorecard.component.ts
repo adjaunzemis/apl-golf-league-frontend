@@ -6,6 +6,7 @@ import { RoundData } from '../../shared/round.model';
   selector: 'app-combined-rounds-scorecard',
   templateUrl: './combined-rounds-scorecard.component.html',
   styleUrls: ['./combined-rounds-scorecard.component.css'],
+  standalone: false,
 })
 export class CombinedRoundsScorecardComponent {
   @Input() rounds: RoundData[];
@@ -39,7 +40,9 @@ export class CombinedRoundsScorecardComponent {
 
   getRoundSubtitle(round: RoundData): string {
     return (
-      round.tee_name + ' - Hcp: ' + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
+      round.tee_name +
+      ' - Hcp: ' +
+      (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
     );
   }
 }

@@ -12,7 +12,9 @@
       [matAutocomplete]="auto"
     />
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let g of filteredGolferOptions | async" [value]="g.name">{{ g.name }}</mat-option>
+      <mat-option *ngFor="let g of filteredGolferOptions | async" [value]="g.name">{{
+        g.name
+      }}</mat-option>
     </mat-autocomplete>
   </mat-form-field>
 
@@ -39,24 +41,50 @@
 
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput required formControlName="datePlayed" [matDatepicker]="round1DatePlayed" />
+            <input
+              matInput
+              required
+              formControlName="datePlayed"
+              [matDatepicker]="round1DatePlayed"
+            />
             <mat-datepicker-toggle matSuffix [for]="round1DatePlayed"></mat-datepicker-toggle>
             <mat-datepicker #round1DatePlayed></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="medium-input" appearance="fill">
             <mat-label>Course</mat-label>
-            <input type="text" matInput required formControlName="courseName" title="Enter course name." value="" />
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="courseName"
+              title="Enter course name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Track</mat-label>
-            <input type="text" matInput required formControlName="trackName" title="Enter track name." value="" />
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="trackName"
+              title="Enter track name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Tee</mat-label>
-            <input type="text" matInput required formControlName="teeName" title="Enter tee name." value="" />
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="teeName"
+              title="Enter tee name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
@@ -69,12 +97,26 @@
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Rating</mat-label>
-            <input type="number" matInput required formControlName="teeRating" title="Enter tee rating." value="" />
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeRating"
+              title="Enter tee rating."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Slope</mat-label>
-            <input type="number" matInput required formControlName="teeSlope" title="Enter tee slope." value="" />
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeSlope"
+              title="Enter tee slope."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="long-input" appearance="fill">
@@ -169,8 +211,8 @@
 
         <div class="content">
           <span class="bold"
-            >Par: {{ computeRound1TotalPar() }} | Gross: {{ computeRound1TotalGrossScore() }} | A.G.:
-            {{ computeRound1TotalAdjustedGrossScore() }} | Diff:
+            >Par: {{ computeRound1TotalPar() }} | Gross: {{ computeRound1TotalGrossScore() }} |
+            A.G.: {{ computeRound1TotalAdjustedGrossScore() }} | Diff:
             {{ computeRound1ScoreDifferential() | number: '1.1-1' }}</span
           >
         </div>
@@ -182,24 +224,50 @@
 
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput required formControlName="datePlayed" [matDatepicker]="round2DatePlayed" />
+            <input
+              matInput
+              required
+              formControlName="datePlayed"
+              [matDatepicker]="round2DatePlayed"
+            />
             <mat-datepicker-toggle matSuffix [for]="round2DatePlayed"></mat-datepicker-toggle>
             <mat-datepicker #round2DatePlayed></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field class="medium-input" appearance="fill">
             <mat-label>Course</mat-label>
-            <input type="text" matInput required formControlName="courseName" title="Enter course name." value="" />
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="courseName"
+              title="Enter course name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Track</mat-label>
-            <input type="text" matInput required formControlName="trackName" title="Enter track name." value="" />
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="trackName"
+              title="Enter track name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
             <mat-label>Tee</mat-label>
-            <input type="text" matInput required formControlName="teeName" title="Enter tee name." value="" />
+            <input
+              type="text"
+              matInput
+              required
+              formControlName="teeName"
+              title="Enter tee name."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="short-input" appearance="fill">
@@ -212,12 +280,26 @@
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Rating</mat-label>
-            <input type="number" matInput required formControlName="teeRating" title="Enter tee rating." value="" />
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeRating"
+              title="Enter tee rating."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="numeric-input" appearance="fill">
             <mat-label>Slope</mat-label>
-            <input type="number" matInput required formControlName="teeSlope" title="Enter tee slope." value="" />
+            <input
+              type="number"
+              matInput
+              required
+              formControlName="teeSlope"
+              title="Enter tee slope."
+              value=""
+            />
           </mat-form-field>
 
           <mat-form-field class="long-input" appearance="fill">
@@ -312,8 +394,8 @@
 
         <div class="content">
           <span class="bold"
-            >Par: {{ computeRound2TotalPar() }} | Gross: {{ computeRound2TotalGrossScore() }} | A.G.:
-            {{ computeRound2TotalAdjustedGrossScore() }} | Diff:
+            >Par: {{ computeRound2TotalPar() }} | Gross: {{ computeRound2TotalGrossScore() }} |
+            A.G.: {{ computeRound2TotalAdjustedGrossScore() }} | Diff:
             {{ computeRound2ScoreDifferential() | number: '1.1-1' }}</span
           >
         </div>
@@ -323,7 +405,12 @@
         <div>
           <mat-form-field class="date-input" appearance="fill">
             <mat-label>Date</mat-label>
-            <input matInput required [formControl]="handicapIndexDateControl" [matDatepicker]="handicapDateValid" />
+            <input
+              matInput
+              required
+              [formControl]="handicapIndexDateControl"
+              [matDatepicker]="handicapDateValid"
+            />
             <mat-datepicker-toggle matSuffix [for]="handicapDateValid"></mat-datepicker-toggle>
             <mat-datepicker #handicapDateValid></mat-datepicker>
           </mat-form-field>

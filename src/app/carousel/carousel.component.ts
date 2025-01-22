@@ -5,6 +5,7 @@ import { CarouselContents } from '../shared/carousel-contents.model';
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
+  standalone: false,
 })
 export class CarouselComponent {
   @Input() contents: CarouselContents[] = [

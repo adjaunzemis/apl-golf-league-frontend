@@ -22,7 +22,7 @@ export class User {
     edit_tournaments: boolean,
     edit_payments: boolean,
     token: string,
-    tokenExpirationDate: Date
+    tokenExpirationDate: Date,
   ) {
     this.id = id;
     this.username = username;

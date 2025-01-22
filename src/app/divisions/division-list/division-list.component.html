@@ -6,7 +6,9 @@
     (click)="onSelectDivision(division)"
   >
     <span class="bold"
-      >{{ division.name }} - {{ division.primary_tee_name }} ({{ division.gender | slice: 0 : 1 }})</span
+      >{{ division.name }} - {{ division.primary_tee_name }} ({{
+        division.gender | slice: 0 : 1
+      }})</span
     >
     <span
       >{{ division.primary_track_name }}: Par {{ division.primary_tee_par }} ({{
@@ -22,14 +24,23 @@
 </div>
 
 <div class="scorecard full-width" *ngIf="showScorecard && selectedDivision && !isLoading">
-  <app-scorecard-hole-line [holes]="selectedPrimaryTee.holes" [showScoreModeButtons]="false"></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holes]="selectedPrimaryTee.holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-hole-line
+    [holes]="selectedPrimaryTee.holes"
+    [showScoreModeButtons]="false"
+  ></app-scorecard-hole-line>
+  <app-scorecard-tee-info
+    [holes]="selectedPrimaryTee.holes"
+    [showDetails]="true"
+  ></app-scorecard-tee-info>
 
   <app-scorecard-hole-line
     [holes]="selectedSecondaryTee.holes"
     [showScoreModeButtons]="false"
   ></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holes]="selectedSecondaryTee.holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-tee-info
+    [holes]="selectedSecondaryTee.holes"
+    [showDetails]="true"
+  ></app-scorecard-tee-info>
 </div>
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>

@@ -11,7 +11,10 @@
           <mat-label>Select Flight</mat-label>
           <mat-select [formControl]="flightControl" required>
             <mat-option>--</mat-option>
-            <mat-option *ngFor="let flight of flights" [value]="flight" (click)="getSelectedFlightData(flight.id)"
+            <mat-option
+              *ngFor="let flight of flights"
+              [value]="flight"
+              (click)="getSelectedFlightData(flight.id)"
               >{{ flight.name }} ({{ flight.year }})</mat-option
             >
           </mat-select>
@@ -33,7 +36,9 @@
               >{{ tournament.name }} ({{ tournament.year }})</mat-option
             >
           </mat-select>
-          <mat-error *ngIf="tournamentControl.hasError('required')">Please choose a tournament</mat-error>
+          <mat-error *ngIf="tournamentControl.hasError('required')"
+            >Please choose a tournament</mat-error
+          >
         </mat-form-field>
       </div>
     </mat-tab>
@@ -42,12 +47,22 @@
 
 <div
   class="content"
-  *ngIf="!flightControl.hasError('required') && selectedFlightOrTournament && !isLoadingSelectedFlightOrTournament"
+  *ngIf="
+    !flightControl.hasError('required') &&
+    selectedFlightOrTournament &&
+    !isLoadingSelectedFlightOrTournament
+  "
 >
-  <h2>{{ selectedFlightOrTournament.name | titlecase }} ({{ selectedFlightOrTournament.year }}) Flight Info</h2>
+  <h2>
+    {{ selectedFlightOrTournament.name | titlecase }} ({{ selectedFlightOrTournament.year }}) Flight
+    Info
+  </h2>
 
   <div class="card-container">
-    <a class="card card-small selectable" href="mailto:{{ selectedFlightOrTournament.secretary_email }}">
+    <a
+      class="card card-small selectable"
+      href="mailto:{{ selectedFlightOrTournament.secretary_email }}"
+    >
       <span class="bold">Secretary</span>
       <span>{{ selectedFlightOrTournament.secretary }}</span>
     </a>
@@ -101,12 +116,20 @@
       Create Team
     </button>
     <button mat-raised-button color="primary" (click)="onPayDues()">Pay Dues</button>
-    <button mat-raised-button color="primary" (click)="onPayEntryFees()" *ngIf="selectedTabIdx === 1">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onPayEntryFees()"
+      *ngIf="selectedTabIdx === 1"
+    >
       Pay Entry Fees
     </button>
   </div>
 
-  <p class="italic" *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)">
+  <p
+    class="italic"
+    *ngIf="isSelectedSignupWindowOpen || (isAuthenticated && currentUser?.is_admin)"
+  >
     Click on a team card to update sign-ups
   </p>
 
@@ -116,7 +139,9 @@
     <p class="italic" style="color: red">If more than 9 teams are registered, we will poll teams for flight changes or consider other solutions after sign-ups close.</p>
   </div> -->
 
-  <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">No teams have signed-up yet...</p>
+  <p class="italic" *ngIf="selectedFlightOrTournament.teams?.length === 0">
+    No teams have signed-up yet...
+  </p>
 
   <div class="card-container team-list">
     <a
@@ -130,7 +155,9 @@
       <span class="bold">{{ team.name }}</span>
       <div *ngFor="let golfer of team.golfers">
         <span>{{ golfer.golfer_name }} - {{ golfer.division_name }} - Hcp: </span>
-        <span *ngIf="golfer.handicap_index; else noHandicapIndex">{{ golfer.handicap_index | number: '1.1' }}</span>
+        <span *ngIf="golfer.handicap_index; else noHandicapIndex">{{
+          golfer.handicap_index | number: '1.1'
+        }}</span>
         <ng-template #noHandicapIndex>
           <span>--</span>
         </ng-template>
@@ -139,4 +166,6 @@
   </div>
 </div>
 
-<mat-spinner *ngIf="isLoadingFlights || isLoadingTournaments || isLoadingSelectedFlightOrTournament"></mat-spinner>
+<mat-spinner
+  *ngIf="isLoadingFlights || isLoadingTournaments || isLoadingSelectedFlightOrTournament"
+></mat-spinner>

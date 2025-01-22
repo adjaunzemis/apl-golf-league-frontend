@@ -6,6 +6,7 @@ import { RoundData } from 'src/app/shared/round.model';
   selector: 'app-match-scorecard-blank-score-line',
   templateUrl: './match-scorecard-blank-score-line.component.html',
   styleUrls: ['./match-scorecard-blank-score-line.component.css'],
+  standalone: false,
 })
 export class MatchScorecardBlankScoreLineComponent {
   @Input() topTeamRound: RoundData;

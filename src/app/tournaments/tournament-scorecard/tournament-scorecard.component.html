@@ -10,7 +10,10 @@
     [holeResultData]="frontRounds[roundIdx].holes"
     [(selectedScoreMode)]="scoreMode"
   ></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holeResultData]="frontRounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-tee-info
+    [holeResultData]="frontRounds[roundIdx].holes"
+    [showDetails]="true"
+  ></app-scorecard-tee-info>
   <ng-container *ngIf="!tournament.scramble">
     <app-scorecard-score-line
       [round]="round"
@@ -36,7 +39,10 @@
     [holeResultData]="backRounds[roundIdx].holes"
     [showScoreModeButtons]="false"
   ></app-scorecard-hole-line>
-  <app-scorecard-tee-info [holeResultData]="backRounds[roundIdx].holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-tee-info
+    [holeResultData]="backRounds[roundIdx].holes"
+    [showDetails]="true"
+  ></app-scorecard-tee-info>
   <ng-container *ngIf="!tournament.scramble">
     <app-scorecard-score-line
       [round]="round"

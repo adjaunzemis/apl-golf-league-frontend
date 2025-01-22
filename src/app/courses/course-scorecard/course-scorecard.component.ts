@@ -6,6 +6,7 @@ import { Tee } from 'src/app/shared/tee.model';
   selector: 'app-course-scorecard',
   templateUrl: './course-scorecard.component.html',
   styleUrls: ['./course-scorecard.component.css'],
+  standalone: false,
 })
 export class CourseScorecardComponent {
   @Input() tees: Tee[];
