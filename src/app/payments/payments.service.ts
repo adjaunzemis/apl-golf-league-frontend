@@ -97,7 +97,7 @@ export class PaymentsService {
     );
   }
 
-  postLeagueDuesPaypalTransaction(transaction: LeagueDuesPaypalTransaction): Observable<any> {
+  postLeagueDuesPaypalTransaction(transaction: LeagueDuesPaypalTransaction): Observable<unknown> {
     return this.http.post(environment.apiUrl + `payments/dues/`, transaction);
   }
 
@@ -147,7 +147,7 @@ export class PaymentsService {
 
   postTournamentEntryFeePaypalTransaction(
     transaction: TournamentEntryFeePaypalTransaction,
-  ): Observable<any> {
+  ): Observable<unknown> {
     return this.http.post(environment.apiUrl + `payments/fees/`, transaction);
   }
 }
