@@ -20,6 +20,7 @@
       ]"
       *ngFor="let match of selectedWeekOrRoundMatches"
       (click)="onSelectMatch(match)"
+      (keydown)="onSelectMatch(match)"
     >
       <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
       <span *ngIf="match.home_score || match.away_score"

@@ -64,6 +64,7 @@
     <div
       class="card card-small selectable"
       (click)="onManageTournament()"
+      (keydown)="onManageTournament()"
       *ngIf="isAuthenticated && currentUser?.is_admin"
     >
       <span class="bold">Manage Tournament</span>
@@ -124,6 +125,7 @@
         class="card team-card selectable"
         *ngFor="let team of tournament.teams"
         (click)="focusTeam(team)"
+        (keydown)="focusTeam(team)"
         [ngClass]="showScorecard && focusedTeam === team ? 'selected' : ''"
       >
         <span class="bold">{{ team.name }}</span>

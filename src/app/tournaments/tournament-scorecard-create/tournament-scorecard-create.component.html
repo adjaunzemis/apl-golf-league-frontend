@@ -8,6 +8,7 @@
     class="card card-small selectable"
     [ngClass]="showInstructions ? 'selected' : ''"
     (click)="showInstructions = !showInstructions"
+    (keydown)="showInstructions = !showInstructions"
     *ngIf="!editMode && !hideForPrint"
   >
     <span class="bold">Instructions</span>
@@ -105,6 +106,7 @@
       class="card card-small selectable match-summary-card"
       [ngClass]="selectedTeam === team ? 'selected' : ''"
       (click)="onSelectedTeamChanged(team)"
+      (keydown)="onSelectedTeamChanged(team)"
       *ngFor="let team of selectedTournament.teams"
     >
       <span class="bold">{{ team.name }}</span>

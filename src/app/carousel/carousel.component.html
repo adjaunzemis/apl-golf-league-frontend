@@ -1,7 +1,7 @@
 <div class="carousel">
   <div>
-    <div class="leftArrow" (click)="goToPrevious()">❰</div>
-    <div class="rightArrow" (click)="goToNext()">❱</div>
+    <div class="leftArrow" (click)="goToPrevious()" (keydown)="goToPrevious()">❰</div>
+    <div class="rightArrow" (click)="goToNext()" (keydown)="goToNext()">❱</div>
   </div>
   <div class="carouselContents">
     <div
@@ -20,6 +20,7 @@
       *ngFor="let content of contents; let idx = index"
       [ngClass]="idx === currentIndex ? 'currentDot' : 'dot'"
       (click)="goToIndex(idx)"
+      (keydown)="goToIndex(idx)"
     >
       ●
     </div>

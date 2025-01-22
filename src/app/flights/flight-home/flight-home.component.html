@@ -65,6 +65,7 @@
     <div
       class="card card-small selectable"
       (click)="onManageFlight()"
+      (keydown)="onManageFlight()"
       *ngIf="isAuthenticated && currentUser?.is_admin"
     >
       <span class="bold">Manage Flight</span>
@@ -89,6 +90,7 @@
     class="card card-small selectable"
     [ngClass]="showScheduleMatrix ? 'selected' : ''"
     (click)="showScheduleMatrix = !showScheduleMatrix"
+    (keydown)="showScheduleMatrix = !showScheduleMatrix"
     *ngIf="!isPlayoffFlight"
   >
     <span class="bold">Flight Schedule</span>

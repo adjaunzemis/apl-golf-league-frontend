@@ -5,6 +5,7 @@
     [ngClass]="selectedScoreOption === scoreOption ? 'selected' : ''"
     *ngFor="let scoreOption of scoreOptions"
     (click)="toggleScoreOption(scoreOption)"
+    (keydown)="toggleScoreOption(scoreOption)"
   >
     {{ scoreOption }}
   </div>

@@ -4,6 +4,7 @@
     [ngClass]="showScorecard && division === selectedDivision ? 'selected' : ''"
     *ngFor="let division of divisions"
     (click)="onSelectDivision(division)"
+    (keydown)="onSelectDivision(division)"
   >
     <span class="bold"
       >{{ division.name }} - {{ division.primary_tee_name }} ({{
