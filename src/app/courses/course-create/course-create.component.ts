@@ -176,15 +176,13 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         tracks: [],
       };
 
-      for (let trIdx = 0; trIdx < this.courseForm.value.tracks.length; trIdx++) {
-        const trackForm = this.courseForm.value.tracks[trIdx];
+      for (const trackForm of this.courseForm.value.tracks) {
         const track: TrackData = {
           name: trackForm.name,
           tees: [],
         };
 
-        for (let tsIdx = 0; tsIdx < trackForm.tees.length; tsIdx++) {
-          const teeForm = trackForm.tees[tsIdx];
+        for (const teeForm of trackForm.tees) {
           const tee: TeeData = {
             name: teeForm.name,
             color: teeForm.color,
@@ -194,8 +192,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
             holes: [],
           };
 
-          for (let hIdx = 0; hIdx < teeForm.holes.length; hIdx++) {
-            const holeForm = teeForm.holes[hIdx];
+          for (const holeForm of teeForm.holes) {
             const hole: HoleData = {
               number: +holeForm.number,
               par: +holeForm.par,
