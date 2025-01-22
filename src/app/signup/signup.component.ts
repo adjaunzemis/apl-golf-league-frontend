@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Subscription } from 'rxjs';
 
 import { FlightData, FlightInfo } from '../shared/flight.model';
@@ -23,10 +23,10 @@ import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/leag
 import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entry-fees-payment/tournament-entry-fees-payment.component';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css'],
-  standalone: false,
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.css'],
+    standalone: false
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private currentYear: number;
@@ -64,54 +64,43 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   selectedFlightOrTournament: FlightData | TournamentData | undefined;
 
-  constructor(
-    private appConfigService: AppConfigService,
-    private authService: AuthService,
-    private flightsService: FlightsService,
-    private tournamentsService: TournamentsService,
-    private teamsService: TeamsService,
-    private golfersService: GolfersService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog,
-    private route: ActivatedRoute,
-  ) {}
+  constructor(private appConfigService: AppConfigService, private authService: AuthService, private flightsService: FlightsService, private tournamentsService: TournamentsService, private teamsService: TeamsService, private golfersService: GolfersService, private snackBar: MatSnackBar, private dialog: MatDialog, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
 
-    this.userSub = this.authService.user.subscribe((user) => {
+    this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !user ? false : true;
       if (this.isAuthenticated) {
         this.currentUser = user;
       }
     });
 
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      this.flights = result.flights;
-      this.isLoadingFlights = false;
+    this.flightsSub = this.flightsService.getFlightsListUpdateListener()
+      .subscribe(result => {
+        this.flights = result.flights;
+        this.isLoadingFlights = false;
 
-      if (this.initFlightId) {
-        for (const flight of this.flights) {
-          if (flight.id == this.initFlightId) {
-            this.flightControl.setValue(flight);
-            this.getSelectedFlightData(this.initFlightId);
+        if (this.initFlightId) {
+          for (const flight of this.flights) {
+            if (flight.id == this.initFlightId) {
+              this.flightControl.setValue(flight);
+              this.getSelectedFlightData(this.initFlightId);
+            }
           }
         }
-      }
-    });
+      });
 
-    this.selectedFlightSub = this.flightsService.getFlightUpdateListener().subscribe((result) => {
-      this.selectedFlightOrTournament = result;
-      this.isLoadingSelectedFlightOrTournament = false;
+    this.selectedFlightSub = this.flightsService.getFlightUpdateListener()
+      .subscribe(result => {
+        this.selectedFlightOrTournament = result;
+        this.isLoadingSelectedFlightOrTournament = false;
 
-      this.isSelectedSignupWindowOpen =
-        this.selectedFlightOrTournament.signup_start_date <= this.currentDate &&
-        this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
-    });
+        this.isSelectedSignupWindowOpen = this.selectedFlightOrTournament.signup_start_date <= this.currentDate && this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
+      });
 
-    this.tournamentsSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
+    this.tournamentsSub = this.tournamentsService.getTournamentsListUpdateListener()
+      .subscribe(result => {
         this.tournaments = result.tournaments;
         this.isLoadingTournaments = false;
 
@@ -125,34 +114,31 @@ export class SignupComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.selectedTournamentSub = this.tournamentsService
-      .getTournamentUpdateListener()
-      .subscribe((result) => {
+    this.selectedTournamentSub = this.tournamentsService.getTournamentUpdateListener()
+      .subscribe(result => {
         this.selectedFlightOrTournament = result;
         this.isLoadingSelectedFlightOrTournament = false;
 
-        this.isSelectedSignupWindowOpen =
-          this.selectedFlightOrTournament.signup_start_date <= this.currentDate &&
-          this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
+        this.isSelectedSignupWindowOpen = this.selectedFlightOrTournament.signup_start_date <= this.currentDate && this.selectedFlightOrTournament.signup_stop_date >= this.currentDate;
       });
 
-    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
-      this.golfers = result;
-      this.isLoadingGolfers = false;
-    });
+
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
+      .subscribe(result => {
+        this.golfers = result;
+        this.isLoadingGolfers = false;
+      });
 
     this.golfersService.getAllGolfers();
 
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(params => {
       if (params) {
         if (params.type) {
           this.setSelectedTabIdxByType(params.type);
           if (params.id) {
-            if (this.selectedTabIdx === 0) {
-              // flight
+            if (this.selectedTabIdx === 0) { // flight
               this.initFlightId = params.id;
-            } else {
-              // tournament
+            } else { // tournament
               this.initTournamentId = params.id;
             }
           }
@@ -173,7 +159,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   private setSelectedTabIdxByType(type: string): void {
-    if (type.toLowerCase() === 'tournament' || type.toLowerCase() === 'tournaments') {
+    if ((type.toLowerCase() === "tournament") || (type.toLowerCase() === "tournaments")) {
       this.selectedTabIdx = 1;
     } else {
       this.selectedTabIdx = 0;
@@ -182,8 +168,8 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onTabIndexChanged(tabIdx: number): void {
-    this.flightControl.setValue('--');
-    this.tournamentControl.setValue('--');
+    this.flightControl.setValue("--");
+    this.tournamentControl.setValue("--");
     this.selectedFlightOrTournament = undefined;
   }
 
@@ -201,24 +187,11 @@ export class SignupComponent implements OnInit, OnDestroy {
     if (!this.selectedFlightOrTournament) {
       return 0;
     }
-    return Math.floor(
-      (Date.UTC(
-        this.selectedFlightOrTournament.signup_start_date.getFullYear(),
-        this.selectedFlightOrTournament.signup_start_date.getMonth(),
-        this.selectedFlightOrTournament.signup_start_date.getDate(),
-      ) -
-        Date.UTC(
-          this.currentDate.getFullYear(),
-          this.currentDate.getMonth(),
-          this.currentDate.getDate(),
-        )) /
-        (1000 * 60 * 60 * 24),
-    );
+    return Math.floor((Date.UTC(this.selectedFlightOrTournament.signup_start_date.getFullYear(), this.selectedFlightOrTournament.signup_start_date.getMonth(), this.selectedFlightOrTournament.signup_start_date.getDate()) - Date.UTC(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate())) / (1000 * 60 * 60 * 24));
   }
 
   getFlightTeeTimes(): string | undefined {
-    if (this.selectedTabIdx === 0) {
-      // flight
+    if (this.selectedTabIdx === 0) { // flight
       const selectedFlight = this.selectedFlightOrTournament as FlightData;
       return selectedFlight.tee_times;
     }
@@ -226,24 +199,20 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   getFlightStartOrTournamentDate(): Date {
-    if (this.selectedTabIdx === 0) {
-      // flight
+    if (this.selectedTabIdx === 0) { // flight
       const selectedFlight = this.selectedFlightOrTournament as FlightData;
       return selectedFlight.start_date;
-    } else {
-      // tournament
+    } else { // tournament
       const selectedTournament = this.selectedFlightOrTournament as TournamentData;
       return selectedTournament.date;
     }
   }
 
   getFlightStartOrTournamentDateLabel(): string {
-    if (this.selectedTabIdx === 0) {
-      // flight
-      return 'Start Date';
-    } else {
-      // tournament
-      return 'Tournament Date';
+    if (this.selectedTabIdx === 0) { // flight
+      return "Start Date";
+    } else { // tournament
+      return "Tournament Date";
     }
   }
 
@@ -275,24 +244,24 @@ export class SignupComponent implements OnInit, OnDestroy {
         role: golfer.role,
         team_id: teamCreate.id ? teamCreate.id : -1, // TODO: refactor placeholder
         team_name: teamCreate.name,
-        year: -1, // TODO: refactor placeholder
+        year: -1 // TODO: refactor placeholder
       });
     }
     return {
       id: teamCreate.id,
       name: teamCreate.name,
-      golfers: golfers,
+      golfers: golfers
     };
   }
 
   private createOrUpdateTeam(initTeam?: TeamInfo): void {
     if (!this.selectedFlightOrTournament) {
-      return; // TODO: refactor?
+      return // TODO: refactor?
     }
 
     // Modify existing team
     let initTeamId = -1;
-    let initTeamName = '';
+    let initTeamName = "";
     let initTeamGolfers: TeamGolferCreate[] = [];
     if (initTeam) {
       if (initTeam.id) {
@@ -321,17 +290,14 @@ export class SignupComponent implements OnInit, OnDestroy {
           initTeamGolfers.push({
             golfer: golfer,
             role: initTeamGolfer.role,
-            division: division,
+            division: division
           });
         }
       }
     }
 
     // Only allow substitute sign-ups for flight teams and for flight-edit or admin users
-    const allowSubstitutes =
-      this.selectedTabIdx === 0 &&
-      this.isAuthenticated &&
-      (this.currentUser?.edit_flights || this.currentUser?.is_admin);
+    const allowSubstitutes = (this.selectedTabIdx === 0) && this.isAuthenticated && (this.currentUser?.edit_flights || this.currentUser?.is_admin);
 
     const dialogRef = this.dialog.open(TeamCreateComponent, {
       width: '750px',
@@ -340,88 +306,75 @@ export class SignupComponent implements OnInit, OnDestroy {
         teamName: initTeamName,
         teamGolfers: initTeamGolfers,
         divisions: this.selectedFlightOrTournament?.divisions,
-        allowSubstitutes: allowSubstitutes,
-      },
+        allowSubstitutes: allowSubstitutes
+      }
     });
 
     // Submit team signup (create or update)
     dialogRef.afterClosed().subscribe((teamData: TeamCreate) => {
-      if (
-        teamData !== null &&
-        teamData !== undefined &&
-        this.selectedFlightOrTournament !== undefined
-      ) {
-        let flightTournamentStr = '';
-        if (this.selectedTabIdx === 0) {
-          // flight
-          flightTournamentStr = 'flight';
+      if (teamData !== null && teamData !== undefined && this.selectedFlightOrTournament !== undefined) {
+        let flightTournamentStr = "";
+        if (this.selectedTabIdx === 0) { // flight
+          flightTournamentStr = "flight";
           teamData.flight_id = this.selectedFlightOrTournament.id;
-        } else if (this.selectedTabIdx === 1) {
-          // tournament
-          flightTournamentStr = 'tournament';
+        }
+        else if (this.selectedTabIdx === 1) { // tournament
+          flightTournamentStr = "tournament";
           teamData.tournament_id = this.selectedFlightOrTournament.id;
         }
 
         this.isLoadingSelectedFlightOrTournament = true;
-        if (teamData.id) {
-          // update existing team
+        if (teamData.id) { // update existing team
           this.teamsService.updateTeam(teamData).subscribe(
-            (team) => {
-              console.log(
-                `[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
-              );
+            team => {
+              console.log(`[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
               this.snackBar.open(`Updated team '${team.name}'`, undefined, {
                 duration: 5000,
-                panelClass: ['success-snackbar'],
+                panelClass: ['success-snackbar']
               });
 
               if (this.selectedFlightOrTournament) {
                 if (this.selectedTabIdx === 0) {
                   this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
-                } else {
+                }
+                else {
                   this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
                 }
               }
             },
-            (error) => {
-              console.error(
-                `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
-              );
+            error => {
+              console.error(`[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
               this.isLoadingSelectedFlightOrTournament = false;
 
               // Re-open team edit dialog to allow retrying
               this.createOrUpdateTeam(this.convertTeamCreateToTeamInfo(teamData));
-            },
-          );
-        } else {
-          // create new team
+            }
+          )
+        } else { // create new team
           this.teamsService.createTeam(teamData).subscribe(
-            (team) => {
-              console.log(
-                `[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
-              );
+            team => {
+              console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
               this.snackBar.open(`Created team '${team.name}'`, undefined, {
                 duration: 5000,
-                panelClass: ['success-snackbar'],
+                panelClass: ['success-snackbar']
               });
 
               if (this.selectedFlightOrTournament) {
                 if (this.selectedTabIdx === 0) {
                   this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
-                } else {
+                }
+                else {
                   this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
                 }
               }
             },
-            (error) => {
-              console.error(
-                `[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
-              );
+            error => {
+              console.error(`[SignupComponent] Unable to create team '${teamData.name}' for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`);
               this.isLoadingSelectedFlightOrTournament = false;
 
               // Re-open team edit dialog to allow retrying
               this.createOrUpdateTeam(this.convertTeamCreateToTeamInfo(teamData));
-            },
+            }
           );
         }
       }
@@ -431,7 +384,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   onPayDues(): void {
     const dialogRef = this.dialog.open(LeagueDuesPaymentComponent, {
       width: '600px',
-      data: {},
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe((paymentSuccessful) => {
@@ -440,7 +393,8 @@ export class SignupComponent implements OnInit, OnDestroy {
         if (this.selectedFlightOrTournament) {
           if (this.selectedTabIdx === 0) {
             this.getSelectedFlightData(this.selectedFlightOrTournament.id); // refresh flight info to get updated team in list
-          } else {
+          }
+          else {
             this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
           }
         }
@@ -450,12 +404,12 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   onPayEntryFees(): void {
     if (this.selectedTabIdx === 1) {
-      const selectedTournament = this.selectedFlightOrTournament as TournamentData;
+      const selectedTournament = (this.selectedFlightOrTournament as TournamentData);
       const dialogRef = this.dialog.open(TournamentEntryFeesPaymentComponent, {
         width: '600px',
         data: {
-          tournamentId: selectedTournament.id,
-        },
+          tournamentId: selectedTournament.id
+        }
       });
 
       dialogRef.afterClosed().subscribe((paymentSuccessful) => {
@@ -468,4 +422,5 @@ export class SignupComponent implements OnInit, OnDestroy {
       });
     }
   }
+
 }

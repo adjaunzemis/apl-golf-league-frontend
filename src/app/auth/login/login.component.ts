@@ -5,19 +5,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  standalone: false,
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: false
 })
 export class LoginComponent {
-  usernameControl = new UntypedFormControl('', Validators.required);
-  passwordControl = new UntypedFormControl('', [Validators.required]);
+  usernameControl = new UntypedFormControl("", Validators.required);
+  passwordControl = new UntypedFormControl("", [Validators.required]);
 
-  constructor(
-    private authService: AuthService,
-    private snackBar: MatSnackBar,
-  ) {}
+  constructor(private authService: AuthService, private snackBar: MatSnackBar) { }
 
   isLoggedIn(): boolean {
     return !!this.authService.user.value;
@@ -27,37 +24,34 @@ export class LoginComponent {
     if (this.authService.user.value) {
       return this.authService.user.value.username;
     }
-    return 'n/a';
+    return "n/a"
   }
 
   getLoggedInName(): string {
     if (this.authService.user.value && this.authService.user.value.name) {
       return this.authService.user.value.name;
     }
-    return 'n/a';
+    return "n/a"
   }
 
   onLogin(): void {
     if (this.usernameControl.valid && this.passwordControl.valid) {
-      this.authService
-        .login(this.usernameControl.value, this.passwordControl.value)
-        .subscribe((result) => {
-          this.snackBar.open(
-            `Successfully logged in as user '${this.getLoggedInUsername()}'!`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
-          );
+      this.authService.login(this.usernameControl.value, this.passwordControl.value).subscribe(
+        result => {
+          this.snackBar.open(`Successfully logged in as user '${this.getLoggedInUsername()}'!`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
 
           this.usernameControl.reset();
           this.passwordControl.reset();
-        });
+        }
+      );
     }
   }
 
   onLogout(): void {
     this.authService.logout();
   }
+
 }

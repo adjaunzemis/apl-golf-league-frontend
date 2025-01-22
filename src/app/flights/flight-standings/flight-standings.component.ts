@@ -2,26 +2,26 @@ import { FlightData } from 'src/app/shared/flight.model';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-flight-standings',
-  templateUrl: './flight-standings.component.html',
-  styleUrls: ['./flight-standings.component.css'],
-  standalone: false,
+    selector: 'app-flight-standings',
+    templateUrl: './flight-standings.component.html',
+    styleUrls: ['./flight-standings.component.css'],
+    standalone: false
 })
 export class FlightStandingsComponent implements OnInit {
   @Input() flight: FlightData;
 
-  standingsData: { [id: number]: TeamStandingsData } = {};
+  standingsData: { [id : number] : TeamStandingsData } = {};
   orderedTeamIds: number[] = [];
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     if (!this.flight) {
-      console.error('Unable to process flight standings, no flight data!');
+      console.error("Unable to process flight standings, no flight data!");
       return;
     }
     if (!this.flight.matches) {
-      console.error('Unable to process flight standings, no match data!');
+      console.error("Unable to process flight standings, no match data!");
       return;
     }
 
@@ -60,26 +60,23 @@ export class FlightStandingsComponent implements OnInit {
       return this.getTiebreaker(teamId1, teamId2);
     });
 
-    this.standingsData[this.orderedTeamIds[0]].position = '1';
+    this.standingsData[this.orderedTeamIds[0]].position = "1";
     for (let idx = 1; idx < this.orderedTeamIds.length; idx++) {
-      if (
-        this.getAveragePointsWon(this.orderedTeamIds[idx]) <
-        this.getAveragePointsWon(this.orderedTeamIds[idx - 1])
-      ) {
+      if (this.getAveragePointsWon(this.orderedTeamIds[idx]) < this.getAveragePointsWon(this.orderedTeamIds[idx - 1])) {
         this.standingsData[this.orderedTeamIds[idx]].position = (idx + 1).toString();
       } else {
-        this.standingsData[this.orderedTeamIds[idx]].position = '';
+        this.standingsData[this.orderedTeamIds[idx]].position = "";
       }
     }
   }
 
   private getTiebreaker(teamId1: number, teamId2: number): number {
     if (!this.flight) {
-      console.error('Unable to process tie-breakers, no flight data!');
+      console.error("Unable to process tie-breakers, no flight data!");
       return 0;
     }
     if (!this.flight.matches) {
-      console.error('Unable to process tie-breakers, no match data!');
+      console.error("Unable to process tie-breakers, no match data!");
       return 0;
     }
 
@@ -87,10 +84,10 @@ export class FlightStandingsComponent implements OnInit {
     let pointsWonTeam1 = 0;
     let pointsWonTeam2 = 0;
     for (let match of this.flight.matches) {
-      if (match.home_team_id === teamId1 && match.away_team_id === teamId2) {
+      if ((match.home_team_id === teamId1) && (match.away_team_id === teamId2)) {
         pointsWonTeam1 += match.home_score;
         pointsWonTeam2 += match.away_score;
-      } else if (match.home_team_id === teamId2 && match.away_team_id === teamId1) {
+      } else if ((match.home_team_id === teamId2) && (match.away_team_id === teamId1)) {
         pointsWonTeam2 += match.home_score;
         pointsWonTeam1 += match.away_score;
       }
@@ -107,14 +104,14 @@ export class FlightStandingsComponent implements OnInit {
 
   getTeamPosition(id: number): string {
     if (!this.standingsData[id]) {
-      return 'n/a';
+      return "n/a";
     }
     return this.standingsData[id].position;
   }
 
   getTeamName(id: number): string {
     if (!this.standingsData[id]) {
-      return 'n/a';
+      return "n/a";
     }
     return this.standingsData[id].teamName;
   }
@@ -142,11 +139,12 @@ export class FlightStandingsComponent implements OnInit {
     }
     return this.standingsData[id].pointsWon / this.standingsData[id].matchesPlayed;
   }
+
 }
 
 class TeamStandingsData {
   teamName: string;
   matchesPlayed: number = 0;
   pointsWon: number = 0;
-  position: string = '';
+  position: string = "";
 }

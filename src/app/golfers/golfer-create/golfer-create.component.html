@@ -1,13 +1,13 @@
 <div class="content">
+
   <h1 mat-dialog-title>Add New Golfer</h1>
 
   <div mat-dialog-content>
+
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput [formControl]="nameControl" />
-      <mat-error *ngIf="nameControl.hasError('required') || nameControl.hasError('pattern')"
-        >Enter a valid name</mat-error
-      >
+      <input matInput [formControl]="nameControl">
+      <mat-error *ngIf="nameControl.hasError('required') || nameControl.hasError('pattern')">Enter a valid name</mat-error>
       <mat-error *ngIf="nameControl.hasError('minlength')">Name is too short</mat-error>
       <mat-error *ngIf="nameControl.hasError('maxlength')">Name is too long</mat-error>
     </mat-form-field>
@@ -16,29 +16,29 @@
       <mat-label>Affiliation</mat-label>
       <mat-select [formControl]="affiliationControl">
         <mat-option>--</mat-option>
-        <mat-option *ngFor="let option of affiliationOptions" [value]="option">{{
-          option
-        }}</mat-option>
+        <mat-option *ngFor="let option of affiliationOptions" [value]="option">{{ option }}</mat-option>
       </mat-select>
       <mat-error *ngIf="affiliationControl.hasError('required')">Select an affiliation</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput [formControl]="emailControl" />
-      <mat-error *ngIf="emailControl.hasError('required') || emailControl.hasError('email')"
-        >Enter a valid email</mat-error
-      >
+      <input matInput [formControl]="emailControl">
+      <mat-error *ngIf="emailControl.hasError('required') || emailControl.hasError('email')">Enter a valid email</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Phone (optional)</mat-label>
-      <input matInput [formControl]="phoneControl" />
+      <input matInput [formControl]="phoneControl">
     </mat-form-field>
+
   </div>
 
   <div mat-dialog-actions>
+
     <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-button color="primary" (click)="onSubmit()">Submit</button>
+
   </div>
+
 </div>

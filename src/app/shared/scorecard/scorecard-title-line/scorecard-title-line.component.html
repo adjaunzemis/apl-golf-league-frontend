@@ -8,12 +8,7 @@
         </div>
       </td>
       <td class="tee-list">
-        <div
-          class="card card-small tee-card selectable"
-          *ngFor="let tee of tees"
-          (click)="selectTee(tee)"
-          [ngClass]="selectedTee === tee ? 'selected' : ''"
-        >
+        <div class="card card-small tee-card selectable" *ngFor="let tee of tees" (click)="selectTee(tee)" [ngClass]="selectedTee === tee ? 'selected' : ''">
           <span>{{ tee.name }} - {{ tee.gender[0] }}</span>
           <span>{{ tee.rating }} / {{ tee.slope }}</span>
         </div>

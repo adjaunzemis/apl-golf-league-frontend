@@ -18,10 +18,10 @@ import { HoleResultData } from '../../shared/hole-result.model';
 import { TournamentData, TournamentInfo } from '../../shared/tournament.model';
 
 @Component({
-  selector: 'app-tournament-scorecard-create',
-  templateUrl: './tournament-scorecard-create.component.html',
-  styleUrls: ['./tournament-scorecard-create.component.css'],
-  standalone: false,
+    selector: 'app-tournament-scorecard-create',
+    templateUrl: './tournament-scorecard-create.component.html',
+    styleUrls: ['./tournament-scorecard-create.component.css'],
+    standalone: false
 })
 export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -40,7 +40,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   tournamentOptions: TournamentInfo[] = [];
   selectedTournamentInfo: TournamentInfo;
 
-  tournamentSelector = new UntypedFormControl('');
+  tournamentSelector = new UntypedFormControl("");
   private tournamentDataSub: Subscription;
   selectedTournament: TournamentData;
 
@@ -59,67 +59,50 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   editMode = true;
 
-  constructor(
-    private appConfigService: AppConfigService,
-    private tournamentsService: TournamentsService,
-    private coursesService: CoursesService,
-    private route: ActivatedRoute,
-  ) {}
+  constructor(private appConfigService: AppConfigService, private tournamentsService: TournamentsService, private coursesService: CoursesService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentYear = this.appConfigService.currentYear;
 
     // Set up subscriptions
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(params => {
       if (params) {
         if (params.tournament_id) {
-          console.log(
-            `[TournamentScorecardCreateComponent] Processing query parameter: tournament_id=${params.tournament_id}`,
-          );
+          console.log(`[TournamentScorecardCreateComponent] Processing query parameter: tournament_id=${params.tournament_id}`)
           this.paramsTournamentId = params.tournament_id;
         }
       }
     });
 
-    this.tournamentInfoSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
-        console.log(`[TournamentScorecardCreateComponent] Received current tournaments list`);
-        this.tournamentOptions = result.tournaments;
-        this.isLoading = false;
-        if (this.paramsTournamentId) {
-          for (const flightInfo of this.tournamentOptions) {
-            if (flightInfo.id == this.paramsTournamentId) {
-              this.selectedTournamentInfo = flightInfo;
-              this.loadTournamentData();
-              break;
-            }
+    this.tournamentInfoSub = this.tournamentsService.getTournamentsListUpdateListener().subscribe(result => {
+      console.log(`[TournamentScorecardCreateComponent] Received current tournaments list`);
+      this.tournamentOptions = result.tournaments;
+      this.isLoading = false;
+      if (this.paramsTournamentId) {
+        for (const flightInfo of this.tournamentOptions) {
+          if (flightInfo.id == this.paramsTournamentId) {
+            this.selectedTournamentInfo = flightInfo;
+            this.loadTournamentData();
+            break;
           }
         }
-      });
+      }
+    });
 
-    this.tournamentDataSub = this.tournamentsService
-      .getTournamentUpdateListener()
-      .subscribe((result) => {
-        console.log(
-          `[TournamentScorecardCreateComponent] Received data for tournament: ${result.name} (${result.year})`,
-        );
-        this.selectedTournament = result;
-        this.tournamentSelector.setValue(result.name);
-        this.clearSelectedTeamData();
-        this.isLoading = false;
-        this.loadTournamentCourse();
-      });
+    this.tournamentDataSub = this.tournamentsService.getTournamentUpdateListener().subscribe(result => {
+      console.log(`[TournamentScorecardCreateComponent] Received data for tournament: ${result.name} (${result.year})`);
+      this.selectedTournament = result;
+      this.tournamentSelector.setValue(result.name);
+      this.clearSelectedTeamData();
+      this.isLoading = false;
+      this.loadTournamentCourse();
+    });
 
-    this.courseDataSub = this.coursesService
-      .getSelectedCourseUpdateListener()
-      .subscribe((result) => {
-        console.log(
-          `[TournamentScorecardCreateComponent] Received data for course: ${result.name} (${result.year})`,
-        );
-        this.tournamentCourse = result;
-        this.isLoading = false;
-      });
+    this.courseDataSub = this.coursesService.getSelectedCourseUpdateListener().subscribe(result => {
+      console.log(`[TournamentScorecardCreateComponent] Received data for course: ${result.name} (${result.year})`);
+      this.tournamentCourse = result;
+      this.isLoading = false;
+    });
 
     // Gather initial data
     this.getTournamentOptions();
@@ -150,17 +133,13 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   }
 
   private loadTournamentData(): void {
-    console.log(
-      `[TournamentScorecardCreateComponent] Selected tournament: ${this.selectedTournamentInfo.name} (${this.selectedTournamentInfo.year})`,
-    );
+    console.log(`[TournamentScorecardCreateComponent] Selected tournament: ${this.selectedTournamentInfo.name} (${this.selectedTournamentInfo.year})`);
     this.isLoading = true;
     this.tournamentsService.getTournament(this.selectedTournamentInfo.id);
   }
 
   private loadTournamentCourse(): void {
-    console.log(
-      `[TournamentScorecardCreateComponent] Loading course data for tournament: ${this.selectedTournamentInfo.name} (${this.selectedTournamentInfo.year})`,
-    );
+    console.log(`[TournamentScorecardCreateComponent] Loading course data for tournament: ${this.selectedTournamentInfo.name} (${this.selectedTournamentInfo.year})`);
     this.isLoading = true;
     this.coursesService.getCourse(this.selectedTournament.course_id);
   }
@@ -175,61 +154,34 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       // Initialize team round for front track
       const trackFront = this.tournamentCourse.tracks[0]; // TODO: account for other ordering of tracks
       const teesFront = trackFront.tees[0]; // TODO: handle no-match case?
-      this.roundsFront.push(
-        this.createTeamScrambleRound(
-          this.tournamentCourse,
-          trackFront,
-          teesFront,
-          this.selectedTeam,
-        ),
-      );
+      this.roundsFront.push(this.createTeamScrambleRound(this.tournamentCourse, trackFront, teesFront, this.selectedTeam));
 
       // Initialize team round for back track
       const trackBack = this.tournamentCourse.tracks[1]; // TODO: account for other ordering of tracks
       const teesback = trackBack.tees[0]; // TODO: handle no-match case?
-      this.roundsBack.push(
-        this.createTeamScrambleRound(this.tournamentCourse, trackBack, teesback, this.selectedTeam),
-      );
+      this.roundsBack.push(this.createTeamScrambleRound(this.tournamentCourse, trackBack, teesback, this.selectedTeam));
     } else {
       for (const golfer of team.golfers) {
-        const division = this.selectedTournament.divisions.filter(
-          (d) => d.id == golfer.division_id,
-        )[0]; // TODO: handle no-match case?
+        const division = this.selectedTournament.divisions.filter(d => d.id == golfer.division_id)[0]; // TODO: handle no-match case?
 
         // Initialize round played by golfer on front track
         const trackFront = this.tournamentCourse.tracks[0]; // TODO: account for other ordering of tracks
-        const teesFront = trackFront.tees.filter((t) => t.id == division.primary_tee_id)[0]; // TODO: handle no-match case?
-        this.roundsFront.push(
-          this.createGolferRound(
-            this.tournamentCourse,
-            trackFront,
-            teesFront,
-            this.selectedTeam,
-            golfer,
-          ),
-        );
+        const teesFront = trackFront.tees.filter(t => t.id == division.primary_tee_id)[0]; // TODO: handle no-match case?
+        this.roundsFront.push(this.createGolferRound(this.tournamentCourse, trackFront, teesFront, this.selectedTeam, golfer));
 
         // Initialize round played by golfer on back track
         const trackBack = this.tournamentCourse.tracks[1]; // TODO: account for other ordering of tracks
-        const teesBack = trackBack.tees.filter((t) => t.id == division.secondary_tee_id)[0]; // TODO: handle no-match case?
-        this.roundsBack.push(
-          this.createGolferRound(
-            this.tournamentCourse,
-            trackBack,
-            teesBack,
-            this.selectedTeam,
-            golfer,
-          ),
-        );
+        const teesBack = trackBack.tees.filter(t => t.id == division.secondary_tee_id)[0]; // TODO: handle no-match case?
+        this.roundsBack.push(this.createGolferRound(this.tournamentCourse, trackBack, teesBack, this.selectedTeam, golfer));
       }
     }
   }
 
   async printScorecard() {
     this.hideForPrint = true;
-    await new Promise((r) => setTimeout(r, 500)); // wait to register changes to UI
+    await new Promise(r => setTimeout(r, 500)); // wait to register changes to UI
     window.print();
-    await new Promise((r) => setTimeout(r, 500)); // wait to restore full UI
+    await new Promise(r => setTimeout(r, 500)); // wait to restore full UI
     this.hideForPrint = false;
   }
 
@@ -238,12 +190,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   }
 
   getScorecardSubtitle(): string {
-    return new Date(this.selectedTournament.date).toLocaleDateString('en-us', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    return new Date(this.selectedTournament.date).toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "long", day: "numeric"});
   }
 
   getTeamRoundFront(): RoundData {
@@ -252,7 +199,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.selectedTournament.date,
-      round_type: 'Tournament',
+      round_type: "Tournament",
       golfer_id: -1, // TODO: remove placeholder?
       golfer_name: teamFirstRound.team_name ? teamFirstRound.team_name : 'n/a',
       golfer_playing_handicap: undefined,
@@ -266,16 +213,13 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       tee_gender: teamFirstRound.tee_gender,
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
-      tee_par:
-        this.selectedTournament.bestball > 0
-          ? this.selectedTournament.bestball * teamFirstRound.tee_par
-          : teamFirstRound.tee_par,
+      tee_par: this.selectedTournament.bestball > 0 ? this.selectedTournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
-      holes: this.createHoleResultDataForTeam(this.roundsFront, undefined),
-    };
+      holes: this.createHoleResultDataForTeam(this.roundsFront, undefined)
+    }
     return teamRound;
   }
 
@@ -285,7 +229,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
       date_played: this.selectedTournament.date,
-      round_type: 'Tournament',
+      round_type: "Tournament",
       golfer_id: -1, // TODO: remove placeholder?
       golfer_name: teamFirstRound.team_name ? teamFirstRound.team_name : 'n/a',
       golfer_playing_handicap: undefined,
@@ -299,33 +243,25 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       tee_gender: teamFirstRound.tee_gender,
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
-      tee_par:
-        this.selectedTournament.bestball > 0
-          ? this.selectedTournament.bestball * teamFirstRound.tee_par
-          : teamFirstRound.tee_par,
+      tee_par: this.selectedTournament.bestball > 0 ? this.selectedTournament.bestball * teamFirstRound.tee_par : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
-      holes: this.createHoleResultDataForTeam(this.roundsBack, undefined),
-    };
+      holes: this.createHoleResultDataForTeam(this.roundsBack, undefined)
+    }
     return teamRound;
   }
 
-  private createTeamScrambleRound(
-    course: Course,
-    track: Track,
-    tee: Tee,
-    team: TournamentTeamData,
-  ): RoundData {
+  private createTeamScrambleRound(course: Course, track: Track, tee: Tee, team: TournamentTeamData): RoundData {
     const teamHandicap = undefined; // TODO: set default team handicap
     return {
       round_id: -1, // TODO: remove placeholder?
       team_id: team.id,
       date_played: this.selectedTournament.date,
-      round_type: 'Tournament',
+      round_type: "Tournament",
       golfer_id: -1, // TODO: remove placeholder?
-      golfer_name: 'Scramble',
+      golfer_name: "Scramble",
       golfer_playing_handicap: teamHandicap,
       team_name: team.name,
       course_id: course.id,
@@ -342,23 +278,17 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
-      holes: this.createPlaceholderHoleResultDataForRound(tee, teamHandicap),
+      holes: this.createPlaceholderHoleResultDataForRound(tee, teamHandicap)
     };
   }
 
-  private createGolferRound(
-    course: Course,
-    track: Track,
-    tee: Tee,
-    team: TournamentTeamData,
-    golfer: TeamGolferData,
-  ): RoundData {
+  private createGolferRound(course: Course, track: Track, tee: Tee, team: TournamentTeamData, golfer: TeamGolferData): RoundData {
     const playingHandicap = this.computePlayingHandicap(golfer, tee);
     return {
       round_id: -1, // TODO: remove placeholder?
       team_id: team.id,
       date_played: this.selectedTournament.date,
-      round_type: 'Tournament',
+      round_type: "Tournament",
       golfer_id: golfer.golfer_id,
       golfer_name: golfer.golfer_name,
       golfer_playing_handicap: playingHandicap,
@@ -377,21 +307,20 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       gross_score: 0, // TODO: remove placeholder?
       adjusted_gross_score: 0, // TODO: remove placeholder?
       net_score: 0, // TODO: remove placeholder?
-      holes: this.createPlaceholderHoleResultDataForRound(tee, playingHandicap),
+      holes: this.createPlaceholderHoleResultDataForRound(tee, playingHandicap)
     };
   }
 
   getRoundSubtitle(round: RoundData): string {
-    let subtitle = '';
+    let subtitle = "";
     if (this.selectedTournament.scramble) {
-      subtitle += 'Gross';
+      subtitle += "Gross";
     } else {
       subtitle += round.tee_name;
     }
-    subtitle += ' | Hcp:';
+    subtitle += " | Hcp:"
     if (!this.editMode) {
-      subtitle +=
-        ' ' + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--');
+      subtitle += " " + (round.golfer_playing_handicap ? round.golfer_playing_handicap.toFixed(0) : '--')
     }
     return subtitle;
   }
@@ -399,11 +328,11 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   getTeamRoundTitle(): string {
     // TODO: Implement for other modes
     if (this.selectedTournament.scramble) {
-      return 'Scramble';
+      return "Scramble";
     } else if (this.selectedTournament.bestball > 1) {
       return `${this.selectedTournament.bestball} Best Balls`;
     } else {
-      return 'Best Ball';
+      return "Best Ball";
     }
   }
 
@@ -413,9 +342,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     if (golfer.handicap_index === undefined) {
       return undefined;
     }
-    return Math.round(
-      golfer.handicap_index * (tee.slope / 113.0) + (tee.rating - this.computeTeePar(tee)),
-    );
+    return Math.round(golfer.handicap_index * (tee.slope / 113.0) + (tee.rating - this.computeTeePar(tee)));
   }
 
   private computeTeePar(tee: Tee): number {
@@ -426,10 +353,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     return teePar;
   }
 
-  private createPlaceholderHoleResultDataForRound(
-    tee: Tee,
-    playingHandicap: number | undefined,
-  ): HoleResultData[] {
+  private createPlaceholderHoleResultDataForRound(tee: Tee, playingHandicap: number | undefined): HoleResultData[] {
     let holeResultData: HoleResultData[] = [];
     for (const hole of tee.holes) {
       holeResultData.push({
@@ -444,16 +368,13 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
         gross_score: 0, // TODO: remove placeholder?
         adjusted_gross_score: 0, // TODO: remove placeholder?
-        net_score: 0, // TODO: remove placeholder?
+        net_score: 0 // TODO: remove placeholder?
       });
     }
     return holeResultData;
   }
 
-  private createHoleResultDataForTeam(
-    rounds: RoundData[],
-    playingHandicap: number | undefined,
-  ): HoleResultData[] {
+  private createHoleResultDataForTeam(rounds: RoundData[], playingHandicap: number | undefined): HoleResultData[] {
     let holeResultData: HoleResultData[] = [];
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
@@ -466,10 +387,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         let grossScores = [99, 99];
         let netScores = [99, 99];
         for (const round of rounds) {
-          const handicapStrokes = this.computeHandicapStrokes(
-            hole.stroke_index,
-            round.golfer_playing_handicap,
-          );
+          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
           if (round.holes[holeIdx].gross_score < grossScores[1]) {
             if (round.holes[holeIdx].gross_score < grossScores[0]) {
               grossScores[1] = grossScores[0];
@@ -478,8 +396,8 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
               grossScores[1] = round.holes[holeIdx].gross_score;
             }
           }
-          if (round.holes[holeIdx].gross_score - handicapStrokes < netScores[1]) {
-            if (round.holes[holeIdx].gross_score - handicapStrokes < netScores[0]) {
+          if ((round.holes[holeIdx].gross_score - handicapStrokes) < netScores[1]) {
+            if ((round.holes[holeIdx].gross_score - handicapStrokes) < netScores[0]) {
               netScores[1] = netScores[0];
               netScores[0] = round.holes[holeIdx].gross_score - handicapStrokes;
             } else {
@@ -493,10 +411,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         grossScore = 99;
         netScore = 99;
         for (const round of rounds) {
-          const handicapStrokes = this.computeHandicapStrokes(
-            hole.stroke_index,
-            round.golfer_playing_handicap,
-          );
+          const handicapStrokes = this.computeHandicapStrokes(hole.stroke_index, round.golfer_playing_handicap);
           grossScore = Math.min(grossScore, round.holes[holeIdx].gross_score);
           netScore = Math.min(netScore, round.holes[holeIdx].gross_score - handicapStrokes);
         }
@@ -514,7 +429,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
         gross_score: grossScore,
         adjusted_gross_score: 0, // TODO: remove placeholder?
-        net_score: netScore,
+        net_score: netScore
       });
     }
     return holeResultData;
@@ -524,26 +439,16 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     if (playingHandicap === undefined) {
       return 0;
     }
-    if (playingHandicap < 0) {
-      // plus-handicap
-      return -playingHandicap * 2 > 18 - strokeIndex ? -1 : 0;
+    if (playingHandicap < 0) { // plus-handicap
+      return (-playingHandicap * 2) > (18 - strokeIndex) ? -1 : 0;
     }
-    return (
-      Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0)
-    );
+    return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
   }
 
   postRounds(): void {
-    if (
-      this.isTournamentInputDataInvalid() ||
-      !this.selectedTournament ||
-      !this.selectedTeam ||
-      !this.selectedTeamGolfers ||
-      !this.roundsFront ||
-      !this.roundsBack
-    ) {
+    if (this.isTournamentInputDataInvalid() || !this.selectedTournament || !this.selectedTeam || !this.selectedTeamGolfers || !this.roundsFront || !this.roundsBack) {
       // TODO: throw error
-      console.error('Unable to post scores, incomplete or invalid data!');
+      console.error("Unable to post scores, incomplete or invalid data!");
       return;
     }
 
@@ -554,20 +459,12 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     // TODO: Handle other non-individual tournament types as-needed
     if (this.selectedTournament.scramble) {
       for (const golfer of this.selectedTeam.golfers) {
-        const division = this.selectedTournament.divisions.filter(
-          (d) => d.id == golfer.division_id,
-        )[0]; // TODO: handle no-match case?
+        const division = this.selectedTournament.divisions.filter(d => d.id == golfer.division_id)[0]; // TODO: handle no-match case?
 
         // Create round input from placeholder round for front track
         const trackFront = this.tournamentCourse.tracks[0]; // TODO: account for other ordering of tracks
-        const teesFront = trackFront.tees.filter((t) => t.id == division.primary_tee_id)[0]; // TODO: handle no-match case?
-        const roundFrontPlaceholder = this.createGolferRound(
-          this.tournamentCourse,
-          trackFront,
-          teesFront,
-          this.selectedTeam,
-          golfer,
-        );
+        const teesFront = trackFront.tees.filter(t => t.id == division.primary_tee_id)[0]; // TODO: handle no-match case?
+        const roundFrontPlaceholder = this.createGolferRound(this.tournamentCourse, trackFront, teesFront, this.selectedTeam, golfer);
 
         // Set hole scores from team round data
         const roundFront = this.roundsFront[0];
@@ -575,8 +472,8 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         for (const hole of roundFront.holes) {
           const holeResultInput: HoleResultInput = {
             hole_id: hole.hole_id,
-            gross_score: hole.gross_score,
-          };
+            gross_score: hole.gross_score
+          }
           holesFront.push(holeResultInput);
         }
         const roundFrontInput: RoundInput = {
@@ -586,20 +483,14 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
           tee_id: roundFrontPlaceholder.tee_id,
           golfer_id: golfer.golfer_id,
           golfer_playing_handicap: roundFront.golfer_playing_handicap,
-          holes: holesFront,
+          holes: holesFront
         };
         rounds.push(roundFrontInput);
 
         // Create round input from placeholder round for back track
         const trackBack = this.tournamentCourse.tracks[1]; // TODO: account for other ordering of tracks
-        const teesBack = trackBack.tees.filter((t) => t.id == division.secondary_tee_id)[0]; // TODO: handle no-match case?
-        const roundBackPlaceholder = this.createGolferRound(
-          this.tournamentCourse,
-          trackBack,
-          teesBack,
-          this.selectedTeam,
-          golfer,
-        );
+        const teesBack = trackBack.tees.filter(t => t.id == division.secondary_tee_id)[0]; // TODO: handle no-match case?
+        const roundBackPlaceholder = this.createGolferRound(this.tournamentCourse, trackBack, teesBack, this.selectedTeam, golfer);
 
         // Set hole scores from team round data
         const roundBack = this.roundsBack[0];
@@ -607,8 +498,8 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         for (const hole of roundBack.holes) {
           const holeResultInput: HoleResultInput = {
             hole_id: hole.hole_id,
-            gross_score: hole.gross_score,
-          };
+            gross_score: hole.gross_score
+          }
           holesBack.push(holeResultInput);
         }
         const roundBackInput: RoundInput = {
@@ -618,19 +509,18 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
           tee_id: roundBackPlaceholder.tee_id,
           golfer_id: golfer.golfer_id,
           golfer_playing_handicap: roundBack.golfer_playing_handicap,
-          holes: holesBack,
+          holes: holesBack
         };
         rounds.push(roundBackInput);
       }
-    } else {
-      // individual strokeplay scoring
+    } else { // individual strokeplay scoring
       for (const round of [...this.roundsFront, ...this.roundsBack]) {
         let holes: HoleResultInput[] = [];
         for (const hole of round.holes) {
           const holeResultInput: HoleResultInput = {
             hole_id: hole.hole_id,
-            gross_score: hole.gross_score,
-          };
+            gross_score: hole.gross_score
+          }
           holes.push(holeResultInput);
         }
         const roundInput: RoundInput = {
@@ -640,7 +530,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
           tee_id: round.tee_id,
           golfer_id: round.golfer_id,
           golfer_playing_handicap: round.golfer_playing_handicap,
-          holes: holes,
+          holes: holes
         };
         rounds.push(roundInput);
       }
@@ -650,10 +540,10 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     const tournamentInput: TournamentInput = {
       tournament_id: this.selectedTournament.id,
       date_played: this.selectedTournament.date,
-      rounds: rounds,
-    };
+      rounds: rounds
+    }
     this.isSubmittingRounds = true;
-    this.tournamentsService.postRounds(tournamentInput).subscribe((result) => {
+    this.tournamentsService.postRounds(tournamentInput).subscribe(result => {
       console.log(`Submitted ${result.length} new tournament rounds`);
       console.log(result);
       this.isSubmittingRounds = false;
@@ -669,7 +559,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         return true;
       }
       for (const hole of round.holes) {
-        if (hole.gross_score < 1 || hole.gross_score > 2 * hole.par + hole.handicap_strokes) {
+        if (hole.gross_score < 1 || hole.gross_score > (2 * hole.par + hole.handicap_strokes)) {
           return true;
         }
       }
@@ -680,13 +570,14 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         return true;
       }
       for (const hole of round.holes) {
-        if (hole.gross_score < 1 || hole.gross_score > 2 * hole.par + hole.handicap_strokes) {
+        if (hole.gross_score < 1 || hole.gross_score > (2 * hole.par + hole.handicap_strokes)) {
           return true;
         }
       }
     }
 
     // Check other entries for validity
-    return !this.selectedTournament || !this.selectedTeam;
+    return (!this.selectedTournament || !this.selectedTeam);
   }
+
 }

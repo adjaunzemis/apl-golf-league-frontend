@@ -1,41 +1,22 @@
 <div class="content">
+
   <h1>Login</h1>
 
-  <p class="italic">
-    Note: Currently only enabled for flight and tournament secretaries for entering scores
-  </p>
+  <p class="italic">Note: Currently only enabled for flight and tournament secretaries for entering scores</p>
 
   <div class="content" *ngIf="!isLoggedIn(); else loggedIn">
+
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input
-        type="text"
-        matInput
-        required
-        [formControl]="usernameControl"
-        (keydown.enter)="onLogin()"
-      />
+      <input type="text" matInput required [formControl]="usernameControl" (keydown.enter)="onLogin()">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input
-        type="password"
-        matInput
-        required
-        [formControl]="passwordControl"
-        (keydown.enter)="onLogin()"
-      />
+      <input type="password" matInput required [formControl]="passwordControl" (keydown.enter)="onLogin()">
     </mat-form-field>
 
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="!usernameControl.valid || !passwordControl.valid"
-      (click)="onLogin()"
-    >
-      Login
-    </button>
+    <button mat-raised-button color="accent" [disabled]="!usernameControl.valid || !passwordControl.valid" (click)="onLogin()">Login</button>
   </div>
 
   <ng-template #loggedIn>
@@ -43,8 +24,7 @@
       <p>Currently logged in as '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</p>
     </div>
 
-    <button mat-raised-button color="accent" [disabled]="!isLoggedIn()" (click)="onLogout()">
-      Logout
-    </button>
+    <button mat-raised-button color="accent" [disabled]="!isLoggedIn()" (click)="onLogout()">Logout</button>
   </ng-template>
+
 </div>

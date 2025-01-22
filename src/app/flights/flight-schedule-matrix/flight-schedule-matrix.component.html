@@ -16,7 +16,7 @@
         <td class="name">{{ teamName }}</td>
         <td class="number">{{ teamNumbers[teamName] }}</td>
         <td class="week" [ngClass]="week === currentWeek ? 'bold' : ''" *ngFor="let week of weeks">
-          {{ teamOpponents[teamName][week - 1] === '' ? '-' : teamOpponents[teamName][week - 1] }}
+          {{ teamOpponents[teamName][week-1] === "" ? "-" : teamOpponents[teamName][week-1] }}
         </td>
       </tr>
     </tbody>

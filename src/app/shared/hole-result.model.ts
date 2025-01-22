@@ -1,4 +1,4 @@
-import { Hole } from './hole.model';
+import { Hole } from "./hole.model";
 
 export interface HoleResult {
   id: number;

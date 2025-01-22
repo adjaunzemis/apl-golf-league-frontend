@@ -1,15 +1,15 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { CoursesService } from 'src/app/courses/courses.service';
-import { Tee } from '../../shared/tee.model';
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { CoursesService } from "src/app/courses/courses.service";
+import { Tee } from "../../shared/tee.model";
 
-import { DivisionData } from '../../shared/division.model';
+import { DivisionData } from "../../shared/division.model";
 
 @Component({
-  selector: 'app-division-list',
-  templateUrl: './division-list.component.html',
-  styleUrls: ['./division-list.component.css'],
-  standalone: false,
+    selector: 'app-division-list',
+    templateUrl: './division-list.component.html',
+    styleUrls: ['./division-list.component.css'],
+    standalone: false
 })
 export class DivisionListComponent implements OnInit, OnDestroy {
   isLoading = false;
@@ -26,10 +26,10 @@ export class DivisionListComponent implements OnInit, OnDestroy {
 
   showScorecard = false;
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(private coursesService: CoursesService) { }
 
   ngOnInit(): void {
-    this.divisionSub = this.coursesService.getSelectedTeeUpdated().subscribe((tee) => {
+    this.divisionSub = this.coursesService.getSelectedTeeUpdated().subscribe(tee => {
       for (let division of this.divisions) {
         if (division.primary_tee_id === tee.id) {
           this.selectedPrimaryTee = tee;
@@ -64,4 +64,5 @@ export class DivisionListComponent implements OnInit, OnDestroy {
     this.coursesService.getTee(division.primary_tee_id);
     this.coursesService.getTee(division.secondary_tee_id);
   }
+
 }

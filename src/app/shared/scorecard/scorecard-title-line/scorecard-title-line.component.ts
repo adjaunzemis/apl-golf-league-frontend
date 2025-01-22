@@ -1,20 +1,12 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 import { RoundData } from '../../round.model';
 
 @Component({
-  selector: 'app-scorecard-title-line',
-  templateUrl: './scorecard-title-line.component.html',
-  styleUrls: ['./scorecard-title-line.component.css'],
-  standalone: false,
+    selector: 'app-scorecard-title-line',
+    templateUrl: './scorecard-title-line.component.html',
+    styleUrls: ['./scorecard-title-line.component.css'],
+    standalone: false
 })
 export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData | RoundData[];
@@ -32,7 +24,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
   tees: TeeInfo[];
   selectedTee: TeeInfo;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.setRoundInfo();
@@ -60,7 +52,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
     if (this.rounds instanceof Array) {
       for (let rIdx = 0; rIdx < this.rounds.length; rIdx++) {
         const round = this.rounds[rIdx];
-        if (round.tee_name === tee.name && round.tee_gender == tee.gender) {
+        if ((round.tee_name === tee.name) && (round.tee_gender == tee.gender)) {
           roundIdx = rIdx;
           break;
         }
@@ -91,15 +83,13 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
           gender: round.tee_gender,
           rating: round.tee_rating,
           slope: round.tee_slope,
-          color: round.tee_color,
+          color: round.tee_color
         };
-        this.tees.push(tee);
+        this.tees.push(tee)
 
         // Remove duplicate tees
         this.tees = this.tees.reduce((tees: TeeInfo[], current: TeeInfo) => {
-          const teeIdx = tees.find(
-            (item) => item.name === current.name && item.gender === current.gender,
-          );
+          const teeIdx = tees.find(item => (item.name === current.name && item.gender === current.gender));
           if (!teeIdx) {
             return tees.concat([current]);
           }
@@ -108,6 +98,7 @@ export class ScorecardTitleLineComponent implements OnInit, OnChanges {
       }
     }
   }
+
 }
 
 interface TeeInfo {

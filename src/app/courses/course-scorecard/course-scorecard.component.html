@@ -1,13 +1,6 @@
 <div class="scorecard">
-  <app-scorecard-hole-line [holes]="tees[0].holes"></app-scorecard-hole-line>
+  <app-scorecard-hole-line [holes]=tees[0].holes></app-scorecard-hole-line>
   <ng-container *ngFor="let tee of tees">
-    <app-scorecard-tee-info
-      [holes]="tee.holes"
-      [name]="tee.name"
-      [gender]="tee.gender"
-      [rating]="tee.rating"
-      [slope]="tee.slope"
-      [color]="tee.color"
-    ></app-scorecard-tee-info>
+    <app-scorecard-tee-info [holes]="tee.holes" [name]="tee.name" [gender]="tee.gender" [rating]="tee.rating" [slope]="tee.slope" [color]="tee.color"></app-scorecard-tee-info>
   </ng-container>
 </div>

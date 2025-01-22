@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:80/',
-  title: 'APL Golf League - DEVELOPMENT',
-  version: 'DEVELOPMENT',
+  title: "APL Golf League - DEVELOPMENT",
+  version: "DEVELOPMENT"
 };
 
 /*

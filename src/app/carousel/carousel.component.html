@@ -4,24 +4,11 @@
     <div class="rightArrow" (click)="goToNext()">❱</div>
   </div>
   <div class="carouselContents">
-    <div
-      class="image"
-      [ngStyle]="{
-        'background-image': getCurrentImageUrl(),
-        'background-position': getCurrentImagePosition(),
-      }"
-      *ngIf="contents[currentIndex].image_url"
-    ></div>
+    <div class="image" [ngStyle]="{'background-image': getCurrentImageUrl(), 'background-position': getCurrentImagePosition()}" *ngIf="contents[currentIndex].image_url"></div>
     <h2 [ngClass]="getCurrentTextClass()">{{ getCurrentTitle() }}</h2>
     <p [ngClass]="getCurrentTextClass()">{{ getCurrentDescription() }}</p>
   </div>
   <div class="dotsContainer">
-    <div
-      *ngFor="let content of contents; let idx = index"
-      [ngClass]="idx === currentIndex ? 'currentDot' : 'dot'"
-      (click)="goToIndex(idx)"
-    >
-      ●
-    </div>
+    <div *ngFor="let content of contents; let idx = index" [ngClass]="idx === currentIndex ? 'currentDot' : 'dot'" (click)="goToIndex(idx)">●</div>
   </div>
 </div>

@@ -1,17 +1,17 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
-import { HoleResultData } from '../../../shared/hole-result.model';
-import { RoundData } from '../../../shared/round.model';
+import { HoleResultData } from "../../../shared/hole-result.model";
+import { RoundData } from "../../../shared/round.model";
 
 @Component({
-  selector: 'app-average-score-line',
-  templateUrl: './average-score-line.component.html',
-  styleUrls: ['./average-score-line.component.css'],
-  standalone: false,
+    selector: "app-average-score-line",
+    templateUrl: "./average-score-line.component.html",
+    styleUrls: ["./average-score-line.component.css"],
+    standalone: false
 })
 export class AverageScoreLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData[];
-  @Input() scoreMode: string = 'gross';
+  @Input() scoreMode: string = "gross";
 
   @Input() title: string;
 
@@ -39,9 +39,7 @@ export class AverageScoreLineComponent implements OnInit, OnChanges {
         if (roundNum == 1) {
           this.holeScores.push(this.getHoleScore(hole));
         } else {
-          this.holeScores[holeIdx] =
-            this.holeScores[holeIdx] +
-            (this.getHoleScore(hole) - this.holeScores[holeIdx]) / roundNum;
+          this.holeScores[holeIdx] = this.holeScores[holeIdx] + (this.getHoleScore(hole) - this.holeScores[holeIdx]) / roundNum;
         }
       }
     }
@@ -50,9 +48,9 @@ export class AverageScoreLineComponent implements OnInit, OnChanges {
   }
 
   private getHoleScore(hole: HoleResultData): number {
-    if (this.scoreMode === 'adjusted gross') {
+    if (this.scoreMode === "adjusted gross") {
       return hole.adjusted_gross_score;
-    } else if (this.scoreMode === 'net') {
+    } else if (this.scoreMode === "net") {
       return hole.net_score;
     } else {
       return hole.gross_score;
@@ -62,11 +60,12 @@ export class AverageScoreLineComponent implements OnInit, OnChanges {
   getRelativeScoreString(score: number, par: number): string {
     const relativeScore = score - par;
     if (relativeScore > 0) {
-      return '+' + relativeScore.toFixed(1);
+      return "+" + relativeScore.toFixed(1);
     } else if (relativeScore < 0) {
-      return '' + relativeScore.toFixed(1);
+      return "" + relativeScore.toFixed(1);
     } else {
-      return 'E';
+      return "E"
     }
   }
+
 }

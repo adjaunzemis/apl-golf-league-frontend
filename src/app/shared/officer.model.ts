@@ -5,14 +5,14 @@ export enum Committee {
   TOURNAMENT,
   BANQUET_AND_AWARDS,
   PUBLICITY,
-  PLANNING,
+  PLANNING
 }
 
 export interface Officer {
-  name: string;
-  year: number;
-  committee: Committee;
-  role: string;
-  email?: string;
-  phone?: string;
+  name: string
+  year: number
+  committee: Committee
+  role: string
+  email?: string
+  phone?: string
 }

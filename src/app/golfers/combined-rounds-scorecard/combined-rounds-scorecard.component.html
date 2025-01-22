@@ -1,28 +1,7 @@
 <div class="scorecard">
-  <app-scorecard-title-line
-    [rounds]="rounds[0]"
-    [title]="getScorecardTitle(rounds[0])"
-    [subtitle]="getScorecardSubtitle(rounds[0])"
-    [selectedTeeRoundIdx]="0"
-  ></app-scorecard-title-line>
-  <app-scorecard-hole-line
-    [holeResultData]="rounds[0].holes"
-    [(selectedScoreMode)]="scoreMode"
-  ></app-scorecard-hole-line>
-  <app-scorecard-tee-info
-    [holeResultData]="rounds[0].holes"
-    [showDetails]="true"
-  ></app-scorecard-tee-info>
-  <app-scorecard-score-line
-    [round]="round"
-    [scoreMode]="scoreMode"
-    [title]="getRoundTitle(round)"
-    [subtitle]="getRoundSubtitle(round)"
-    *ngFor="let round of rounds"
-  ></app-scorecard-score-line>
-  <app-average-score-line
-    [rounds]="rounds"
-    [scoreMode]="scoreMode"
-    title="Average"
-  ></app-average-score-line>
+  <app-scorecard-title-line [rounds]="rounds[0]" [title]="getScorecardTitle(rounds[0])" [subtitle]="getScorecardSubtitle(rounds[0])" [selectedTeeRoundIdx]="0"></app-scorecard-title-line>
+  <app-scorecard-hole-line [holeResultData]="rounds[0].holes" [(selectedScoreMode)]="scoreMode"></app-scorecard-hole-line>
+  <app-scorecard-tee-info [holeResultData]="rounds[0].holes" [showDetails]="true"></app-scorecard-tee-info>
+  <app-scorecard-score-line [round]="round" [scoreMode]="scoreMode" [title]="getRoundTitle(round)" [subtitle]="getRoundSubtitle(round)" *ngFor="let round of rounds"></app-scorecard-score-line>
+  <app-average-score-line [rounds]="rounds" [scoreMode]="scoreMode" title="Average"></app-average-score-line>
 </div>

@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AppConfigService {
+
   private appConfig: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   loadAppConfig(): Promise<void> {
-    return this.http
-      .get('/assets/config.json')
+    return this.http.get('/assets/config.json')
       .toPromise()
-      .then((data) => {
+      .then(data => {
         this.appConfig = data;
       });
   }
@@ -31,4 +31,5 @@ export class AppConfigService {
     }
     return this.appConfig.currentYear;
   }
+
 }

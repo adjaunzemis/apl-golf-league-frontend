@@ -13,10 +13,10 @@ import { User } from '../../shared/user.model';
 import { TournamentCreateComponent } from '../tournament-create/tournament-create.component';
 
 @Component({
-  selector: 'app-tournament-home',
-  templateUrl: './tournament-home.component.html',
-  styleUrls: ['./tournament-home.component.css'],
-  standalone: false,
+    selector: 'app-tournament-home',
+    templateUrl: './tournament-home.component.html',
+    styleUrls: ['./tournament-home.component.css'],
+    standalone: false
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -36,41 +36,30 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
 
   currentDate = new Date();
 
-  constructor(
-    private tournamentsService: TournamentsService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-  ) {}
+  constructor(private tournamentsService: TournamentsService, private authService: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe((user) => {
+    this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !user ? false : true;
       if (this.isAuthenticated) {
         this.currentUser = user;
       }
     });
 
-    this.tournamentSub = this.tournamentsService
-      .getTournamentUpdateListener()
-      .subscribe((tournamentData) => {
-        console.log(
-          `[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.id}`,
-        );
-        this.tournament = tournamentData;
-        this.compileRoundData();
-        this.isLoading = false;
+    this.tournamentSub = this.tournamentsService.getTournamentUpdateListener()
+      .subscribe(tournamentData => {
+          console.log(`[TournamentHomeComponent] Received data for tournament: name=${tournamentData.name}, year=${tournamentData.year}, id=${tournamentData.id}`);
+          this.tournament = tournamentData;
+          this.compileRoundData();
+          this.isLoading = false;
       });
 
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe(params => {
       if (params) {
-        if (params.id) {
-          console.log(
-            '[TournamentHomeComponent] Processing route with query parameter: id=' + params.id,
-          );
-          this.tournamentsService.getTournament(params.id);
-        }
+          if (params.id) {
+              console.log("[TournamentHomeComponent] Processing route with query parameter: id=" + params.id);
+              this.tournamentsService.getTournament(params.id);
+          }
       }
     });
   }
@@ -81,15 +70,15 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   }
 
   getTournamentEmailList(): string {
-    let emailList = '';
+    let emailList = "";
     if (this.tournament.secretary_email) {
-      emailList += this.tournament.secretary_email + ';';
+      emailList += this.tournament.secretary_email + ";"
     }
     if (this.tournament.teams) {
       for (const team of this.tournament.teams) {
         for (const golfer of team.golfers) {
           if (golfer.golfer_email) {
-            emailList += golfer.golfer_email + ';';
+            emailList += golfer.golfer_email + ";"
           }
         }
       }
@@ -121,27 +110,22 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   onManageTournament(): void {
     const dialogRef = this.dialog.open(TournamentCreateComponent, {
       width: '900px',
-      data: this.tournament as TournamentCreate,
+      data: this.tournament as TournamentCreate
     });
 
-    dialogRef.afterClosed().subscribe((tournamentData) => {
+    dialogRef.afterClosed().subscribe(tournamentData => {
       if (tournamentData !== null && tournamentData !== undefined) {
-        this.tournamentsService.updateTournament(tournamentData).subscribe((result) => {
-          console.log(
-            `[TournamentHomeComponent] Successfully updated tournament: ${result.name} (${result.year})`,
-          );
-          this.snackBar.open(
-            `Successfully updated tournament: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
-          );
+        this.tournamentsService.updateTournament(tournamentData).subscribe(result => {
+          console.log(`[TournamentHomeComponent] Successfully updated tournament: ${result.name} (${result.year})`);
+          this.snackBar.open(`Successfully updated tournament: ${result.name} (${result.year})`, undefined, {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
 
           this.tournamentsService.getTournament(this.tournament.id); // refresh tournament data
         });
       }
     });
   }
+
 }

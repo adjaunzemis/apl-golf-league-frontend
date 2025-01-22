@@ -7,18 +7,18 @@ import { MatchData, MatchSummary } from '../../shared/match.model';
 import { MatchesService } from '../../matches/matches.service';
 
 @Component({
-  selector: 'app-flight-schedule',
-  templateUrl: './flight-schedule.component.html',
-  styleUrls: ['./flight-schedule.component.css'],
-  standalone: false,
+    selector: 'app-flight-schedule',
+    templateUrl: './flight-schedule.component.html',
+    styleUrls: ['./flight-schedule.component.css'],
+    standalone: false
 })
-export class FlightScheduleComponent implements OnInit, OnDestroy {
+export class FlightScheduleComponent implements OnInit, OnDestroy{
   @Input() flight: FlightData;
   isPlayoffFlight: boolean = false;
 
   private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
   selectedWeekOrRound: number = 1;
-  weekOrRoundLabel: string = 'Week';
+  weekOrRoundLabel: string = "Week";
   weekOrRoundOptions: string[] = [];
   selectedWeekOrRoundMatches: MatchSummary[] = [];
 
@@ -27,17 +27,18 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
   private matchDataSub: Subscription;
   selectedMatchData: MatchData | null;
 
-  constructor(private matchesService: MatchesService) {}
+  constructor(private matchesService: MatchesService) { }
 
   ngOnInit(): void {
-    this.isPlayoffFlight = this.flight.name.includes('Playoffs');
-    this.weekOrRoundLabel = this.isPlayoffFlight ? 'Round' : 'Week';
+    this.isPlayoffFlight = this.flight.name.includes("Playoffs");
+    this.weekOrRoundLabel = this.isPlayoffFlight ? "Round" : "Week";
 
-    this.matchDataSub = this.matchesService.getMatchUpdateListener().subscribe((result) => {
-      console.log(`[FlightScheduleComponent] Received data for match: id=${result.match_id}`);
-      this.selectedMatchData = result;
-      this.isLoadingSelectedMatchData = false;
-    });
+    this.matchDataSub = this.matchesService.getMatchUpdateListener()
+      .subscribe(result => {
+        console.log(`[FlightScheduleComponent] Received data for match: id=${result.match_id}`)
+        this.selectedMatchData = result;
+        this.isLoadingSelectedMatchData = false;
+      });
 
     this.setWeekOrRoundOptions();
     this.selectedWeekOrRound = this.determineCurrentWeekOrRound();
@@ -55,7 +56,7 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
 
   onSelectMatch(matchSummary: MatchSummary): void {
     if (matchSummary.home_score && matchSummary.away_score) {
-      if (this.selectedMatchData && this.selectedMatchData.match_id === matchSummary.match_id) {
+      if ((this.selectedMatchData) && (this.selectedMatchData.match_id === matchSummary.match_id)) {
         this.showScorecard = !this.showScorecard;
       } else {
         this.showScorecard = true;
@@ -89,29 +90,19 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
         let nextWeekStartDate = new Date(weekStartDate);
         nextWeekStartDate.setDate(nextWeekStartDate.getDate() + 6);
 
-        this.weekOrRoundOptions.push(
-          week +
-            ': ' +
-            weekStartDate.toLocaleString('default', { month: 'short' }) +
-            ' ' +
-            weekStartDate.getDate() +
-            ' - ' +
-            nextWeekStartDate.toLocaleString('default', { month: 'short' }) +
-            ' ' +
-            nextWeekStartDate.getDate(),
-        );
+        this.weekOrRoundOptions.push(week + ": " + weekStartDate.toLocaleString('default', { month: 'short' }) + " " + weekStartDate.getDate() + " - " + nextWeekStartDate.toLocaleString('default', { month: 'short' }) + " " + nextWeekStartDate.getDate());
       } else {
         let roundName: string;
         if (week === this.flight.weeks) {
-          roundName = 'Finals';
+          roundName = "Finals";
         } else if (week === this.flight.weeks - 1) {
-          roundName = 'Semi-Finals';
+          roundName = "Semi-Finals";
         } else if (week === this.flight.weeks - 2) {
-          roundName = 'Quarter-Finals';
+          roundName = "Quarter-Finals";
         } else {
           roundName = `Round of ${Math.pow(2, this.flight.weeks - week + 1)}`;
         }
-        this.weekOrRoundOptions.push(week + ': ' + roundName);
+        this.weekOrRoundOptions.push(week + ": " + roundName);
       }
     }
   }
@@ -129,4 +120,5 @@ export class FlightScheduleComponent implements OnInit, OnDestroy {
       }
     }
   }
+
 }

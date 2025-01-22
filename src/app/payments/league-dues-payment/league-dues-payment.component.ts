@@ -1,33 +1,23 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, Subscription } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { Observable, Subscription  } from "rxjs";
+import { map, startWith } from "rxjs/operators";
 
-import { PaymentsService } from '../payments.service';
-import { AppConfigService } from '../../app-config.service';
-import {
-  LeagueDuesPaymentInfo,
-  LeagueDuesPaypalTransaction,
-  LeagueDuesPaypalTransactionItem,
-} from '../../shared/payment.model';
-import { GolfersService } from '../../golfers/golfers.service';
-import { Golfer } from '../../shared/golfer.model';
+import { PaymentsService } from "../payments.service";
+import { AppConfigService } from "../../app-config.service";
+import { LeagueDuesPaymentInfo, LeagueDuesPaypalTransaction, LeagueDuesPaypalTransactionItem } from "../../shared/payment.model";
+import { GolfersService } from "../../golfers/golfers.service";
+import { Golfer } from "../../shared/golfer.model";
 
 declare var paypal: any;
 
 @Component({
-  selector: 'app-league-dues-payment',
-  templateUrl: './league-dues-payment.component.html',
-  styleUrls: ['./league-dues-payment.component.css'],
-  standalone: false,
+    selector: 'app-league-dues-payment',
+    templateUrl: './league-dues-payment.component.html',
+    styleUrls: ['./league-dues-payment.component.css'],
+    standalone: false
 })
 export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
@@ -52,21 +42,13 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   isLoadingLeagueDuesList: boolean = true;
   isLoadingLeagueDuesPaymentInfoList: boolean = true;
 
-  constructor(
-    public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {},
-    private formBuilder: UntypedFormBuilder,
-    private snackBar: MatSnackBar,
-    private appConfigService: AppConfigService,
-    private paymentsService: PaymentsService,
-    private golfersService: GolfersService,
-  ) {}
+  constructor(public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>, @Inject(MAT_DIALOG_DATA) public data: {}, private formBuilder: UntypedFormBuilder, private snackBar: MatSnackBar, private appConfigService: AppConfigService, private paymentsService: PaymentsService, private golfersService: GolfersService) {}
 
   ngOnInit(): void {
     this.year = this.appConfigService.currentYear;
 
     // Initialize golfer info subscriptions
-    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((golfers) => {
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe(golfers => {
       this.golferOptions = golfers;
       this.golferNameOptions = [];
       for (const golfer of golfers) {
@@ -76,32 +58,29 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     this.golfersService.getAllGolfers();
 
     // Initialize payments info subscriptions
-    this.leagueDuesListSub = this.paymentsService
-      .getLeagueDuesListUpdateListener()
-      .subscribe((leagueDues) => {
-        for (const dues of leagueDues) {
-          if (dues.type == 'Flight Dues') {
-            this.leagueDuesFlight = dues.amount;
-          } else if (dues.type == 'Tournament-Only Dues') {
-            this.leagueDuesTournamentOnly = dues.amount;
-          }
+    this.leagueDuesListSub = this.paymentsService.getLeagueDuesListUpdateListener().subscribe(leagueDues => {
+      for (const dues of leagueDues) {
+        if (dues.type == "Flight Dues") {
+          this.leagueDuesFlight = dues.amount;
         }
-        this.isLoadingLeagueDuesList = false;
-      });
+        else if (dues.type == "Tournament-Only Dues") {
+          this.leagueDuesTournamentOnly = dues.amount;
+        }
+      }
+      this.isLoadingLeagueDuesList = false;
+    });
     this.paymentsService.getLeagueDuesList(this.year);
 
-    this.leagueDuesPaymentInfoListSub = this.paymentsService
-      .getLeagueDuesPaymentInfoListUpdateListener()
-      .subscribe((paymentInfoList) => {
-        this.leagueDuesPaymentInfoList = paymentInfoList;
+    this.leagueDuesPaymentInfoListSub = this.paymentsService.getLeagueDuesPaymentInfoListUpdateListener().subscribe(paymentInfoList => {
+      this.leagueDuesPaymentInfoList = paymentInfoList;
 
-        this.isLoadingLeagueDuesPaymentInfoList = false;
-      });
+      this.isLoadingLeagueDuesPaymentInfoList = false;
+    });
     this.paymentsService.getLeagueDuesPaymentInfoList(this.year);
 
     // Initialize golfer payments form
     this.golferPaymentsForm = this.formBuilder.group({
-      golferPayments: this.formBuilder.array([]),
+      golferPayments: this.formBuilder.array([])
     });
     this.addNewGolferPaymentForm();
 
@@ -110,9 +89,9 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
       .Buttons({
         onClick: () => {
           if (!this.golferPaymentsForm.valid) {
-            this.snackBar.open('Must complete form before submitting payment!', undefined, {
+            this.snackBar.open("Must complete form before submitting payment!", undefined, {
               duration: 5000,
-              panelClass: ['error-snackbar'],
+              panelClass: ["error-snackbar"]
             });
             return false;
           }
@@ -120,30 +99,24 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
         },
         createOrder: (data: any, actions: any) => {
           return actions.order.create({
-            purchase_units: [
-              {
-                description: this.getPaymentDescription(),
-                amount: {
-                  currency_code: 'USD',
-                  value: this.getPaymentTotalAmount(),
-                },
-              },
-            ],
+            purchase_units: [{
+              description: this.getPaymentDescription(),
+              amount: {
+                currency_code: 'USD',
+                value: this.getPaymentTotalAmount()
+              }
+            }]
           });
         },
         onApprove: async (data: any, actions: any) => {
           const order = await actions.order.capture();
 
           // Check for completed status
-          if (order.status !== 'COMPLETED') {
-            this.snackBar.open(
-              "ERROR: Payment was not 'COMPLETED' - please contact treasurer or webmaster!",
-              undefined,
-              {
-                duration: 10000,
-                panelClass: ['error-snackbar'],
-              },
-            );
+          if (order.status !== "COMPLETED") {
+            this.snackBar.open("ERROR: Payment was not 'COMPLETED' - please contact treasurer or webmaster!", undefined, {
+              duration: 10000,
+              panelClass: ['error-snackbar']
+            });
             return; // leave dialog box open
           }
 
@@ -151,24 +124,21 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
           try {
             let transactionItems: LeagueDuesPaypalTransactionItem[] = [];
             for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
-              const golferControl = golferPaymentForm.get('golfer');
-              const golferName = golferControl ? golferControl.value : 'unknown';
+              const golferControl = golferPaymentForm.get("golfer");
+              const golferName = golferControl ? golferControl.value : "unknown";
 
-              const typeControl = golferPaymentForm.get('type');
-              const typeName = typeControl ? typeControl.value : 'unknown';
+              const typeControl = golferPaymentForm.get("type");
+              const typeName = typeControl ? typeControl.value : "unknown";
 
               let golferPaymentInfoMatched = false;
               for (const paymentInfo of this.leagueDuesPaymentInfoList) {
-                if (
-                  paymentInfo.golfer_name.toLowerCase() === golferName.toLowerCase() &&
-                  paymentInfo.type.toLowerCase() === typeName.toLowerCase()
-                ) {
+                if ((paymentInfo.golfer_name.toLowerCase() === golferName.toLowerCase()) && (paymentInfo.type.toLowerCase() === typeName.toLowerCase())) {
                   golferPaymentInfoMatched = true;
 
                   transactionItems.push({
                     id: paymentInfo.id,
                     golfer_id: paymentInfo.golfer_id,
-                    type: paymentInfo.type,
+                    type: paymentInfo.type
                   });
 
                   break;
@@ -184,21 +154,19 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
                   }
                 }
                 if (paymentGolferId === -1) {
-                  console.error(
-                    `Unable to match golfer option for '${golferName}' - omitting from transaction!`,
-                  );
+                  console.error(`Unable to match golfer option for '${golferName}' - omitting from transaction!`);
                 } else {
                   transactionItems.push({
                     golfer_id: paymentGolferId,
-                    type: typeName,
+                    type: typeName
                   });
                 }
               }
             }
 
-            const payerGivenName = order.payer?.name?.given_name ? order.payer.name.given_name : '';
-            const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : '';
-            const payerEmail = order.payer?.email_address ? order.payer.email_address : '';
+            const payerGivenName = order.payer?.name?.given_name ? order.payer.name.given_name : "";
+            const payerSurname = order.payer?.name?.surname ? order.payer.name.surname : "";
+            const payerEmail = order.payer?.email_address ? order.payer.email_address : "";
 
             let transaction: LeagueDuesPaypalTransaction = {
               year: this.year,
@@ -208,24 +176,20 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
               resource_id: order.id,
               update_time: order.update_time,
               payer_name: `${payerGivenName} ${payerSurname}`,
-              payer_email: payerEmail,
-            };
+              payer_email: payerEmail
+            }
 
             this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe(() => {
-              this.snackBar.open('Payment successful!', undefined, {
+              this.snackBar.open("Payment successful!", undefined, {
                 duration: 5000,
-                panelClass: ['success-snackbar'],
+                panelClass: ['success-snackbar']
               });
             });
-          } catch (err) {
-            this.snackBar.open(
-              'ERROR: Payment was successful, but not recorded in our database - please contact treasurer or webmaster!',
-              undefined,
-              {
-                duration: 10000,
-                panelClass: ['error-snackbar'],
-              },
-            );
+          } catch(err) {
+            this.snackBar.open("ERROR: Payment was successful, but not recorded in our database - please contact treasurer or webmaster!", undefined, {
+              duration: 10000,
+              panelClass: ['error-snackbar']
+            });
             console.log(err);
           }
 
@@ -233,22 +197,18 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
           this.dialogRef.close(true); // true to indicate payment was successful
         },
         onCancel: (data: any) => {
-          this.snackBar.open('Payment cancelled!', undefined, {
+          this.snackBar.open("Payment cancelled!", undefined, {
             duration: 5000,
-            panelClass: ['warning-snackbar'],
+            panelClass: ['warning-snackbar']
           });
         },
         onError: (err: any) => {
-          this.snackBar.open(
-            'Error processing PayPal payment - please contact treasurer or webmaster!',
-            undefined,
-            {
-              duration: 10000,
-              panelClass: ['error-snackbar'],
-            },
-          );
+          this.snackBar.open("Error processing PayPal payment - please contact treasurer or webmaster!", undefined, {
+            duration: 10000,
+            panelClass: ['error-snackbar']
+          });
           console.error(err);
-        },
+        }
       })
       .render(this.paypalElement.nativeElement);
   }
@@ -260,7 +220,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   }
 
   private getPaymentDescription(): string {
-    let description = `APL Golf League Dues (${this.year}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? 'golfers' : 'golfer'}`;
+    let description = `APL Golf League Dues (${this.year}), ${this.getGolferPaymentsArray().controls.length} ${this.getGolferPaymentsArray().controls.length > 1 ? "golfers" : "golfer"}`
 
     // TODO: Re-enable more verbose description with character limit?
     // let description = `APL Golf League Dues (${this.year}) for `
@@ -275,15 +235,15 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     // }
     // description = description.substring(0, description.length - 2);
 
-    return description;
+    return description
   }
 
   getPaymentTotalAmount(): number {
     let total = 0;
     for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
-      if (golferPaymentForm.get('type')?.value === 'Flight Dues') {
+      if (golferPaymentForm.get("type")?.value === "Flight Dues") {
         total += this.leagueDuesFlight;
-      } else if (golferPaymentForm.get('type')?.value === 'Tournament-Only Dues') {
+      } else if (golferPaymentForm.get("type")?.value === "Tournament-Only Dues") {
         total += this.leagueDuesTournamentOnly;
       }
     }
@@ -296,19 +256,17 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   addNewGolferPaymentForm(): void {
     const newGolferPaymentForm = this.formBuilder.group({
-      golfer: new UntypedFormControl('', [Validators.required, this.checkGolferName.bind(this)]),
-      type: new UntypedFormControl('', [Validators.required]),
+      golfer: new UntypedFormControl("", [Validators.required, this.checkGolferName.bind(this)]),
+      type: new UntypedFormControl("", [Validators.required])
     });
     // }, { validators: this.golferPaymentTypeValidator.bind(this) }); // TODO: re-enable or remove this validation
 
-    this.filteredGolferNameOptionsArray.push(
-      newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
-        startWith(''),
-        map((value) => {
-          return this._filter(value);
-        }),
-      ),
-    );
+    this.filteredGolferNameOptionsArray.push(newGolferPaymentForm.controls['golfer'].valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        return this._filter(value);
+      }),
+    ));
 
     this.getGolferPaymentsArray().push(newGolferPaymentForm);
   }
@@ -320,12 +278,12 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.golferNameOptions.filter((option) => option.toLowerCase().includes(filterValue));
+    return this.golferNameOptions.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
-      return { golferNameInvalid: true };
+      return { 'golferNameInvalid': true };
     }
     return null;
   }
@@ -339,16 +297,14 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
     let golferPaymentTypeInvalid = true;
     for (const paymentInfo of this.leagueDuesPaymentInfoList) {
-      if (
-        paymentInfo.golfer_name.toLowerCase() === golferName &&
-        paymentInfo.type.toLowerCase() === typeName
-      ) {
+      if ((paymentInfo.golfer_name.toLowerCase() === golferName) && (paymentInfo.type.toLowerCase() === typeName)) {
         golferPaymentTypeInvalid = false;
         break;
       }
     }
     if (golferPaymentTypeInvalid) {
-      typeControl.setErrors({ golferPaymentTypeInvalid: true });
+      typeControl.setErrors({ 'golferPaymentTypeInvalid': true });
     }
   }
+
 }

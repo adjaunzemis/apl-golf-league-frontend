@@ -9,7 +9,16 @@ import { UserManageComponent } from './user-manage/user-manage.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 
 @NgModule({
-  declarations: [LoginComponent, UserManageComponent, UserHomeComponent],
-  imports: [CommonModule, RouterModule, AngularMaterialModule, ErrorModule],
+  declarations: [
+    LoginComponent,
+    UserManageComponent,
+    UserHomeComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    AngularMaterialModule,
+    ErrorModule
+  ]
 })
-export class AuthModule {}
+export class AuthModule { }

@@ -1,47 +1,47 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable, Subject } from "rxjs";
 
 import { environment } from './../../environments/environment';
-import { Course, CourseData } from '../shared/course.model';
-import { Tee } from '../shared/tee.model';
+import { Course, CourseData } from "../shared/course.model"
+import { Tee } from "../shared/tee.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class CoursesService {
   private courses: Course[] = [];
-  private coursesUpdated = new Subject<{ courses: Course[]; courseCount: number }>();
+  private coursesUpdated = new Subject<{ courses: Course[], courseCount: number }>();
 
   private selectedCourse: Course;
   private selectedCourseUpdated = new Subject<Course>();
 
-  private selectedTee: Tee;
+  private selectedTee: Tee
   private selectedTeeUpdated = new Subject<Tee>();
 
   constructor(private http: HttpClient) {}
 
   getCourses(include_inactive = false): void {
-    this.http
-      .get<Course[]>(environment.apiUrl + `courses/?include_inactive=${include_inactive}`)
-      .subscribe((coursesData) => {
+    this.http.get<Course[]>(environment.apiUrl + `courses/?include_inactive=${include_inactive}`)
+      .subscribe(coursesData => {
         this.courses = coursesData;
         this.coursesUpdated.next({
           courses: [...this.courses],
-          courseCount: this.courses.length,
+          courseCount: this.courses.length
         });
       });
   }
 
-  getCoursesUpdateListener(): Observable<{ courses: Course[]; courseCount: number }> {
+  getCoursesUpdateListener() : Observable<{ courses: Course[], courseCount: number }> {
     return this.coursesUpdated.asObservable();
   }
 
   getCourse(id: number): void {
-    this.http.get<Course>(environment.apiUrl + 'courses/' + id).subscribe((courseData) => {
-      this.selectedCourse = courseData;
-      this.selectedCourseUpdated.next(courseData);
-    });
+    this.http.get<Course>(environment.apiUrl + "courses/" + id)
+      .subscribe(courseData => {
+        this.selectedCourse = courseData;
+        this.selectedCourseUpdated.next(courseData);
+      })
   }
 
   getSelectedCourseUpdateListener(): Observable<Course> {
@@ -49,7 +49,7 @@ export class CoursesService {
   }
 
   createCourse(courseData: CourseData): Observable<Course> {
-    return this.http.post<Course>(environment.apiUrl + 'courses/', courseData);
+    return this.http.post<Course>(environment.apiUrl + "courses/", courseData);
   }
 
   updateCourse(courseData: CourseData): Observable<Course> {
@@ -57,7 +57,7 @@ export class CoursesService {
   }
 
   getTee(id: number): void {
-    this.http.get<Tee>(environment.apiUrl + `courses/tees/${id}`).subscribe((teeData) => {
+    this.http.get<Tee>(environment.apiUrl + `courses/tees/${id}`).subscribe(teeData => {
       this.selectedTee = teeData;
       this.selectedTeeUpdated.next(teeData);
     });
@@ -66,4 +66,5 @@ export class CoursesService {
   getSelectedTeeUpdated(): Observable<Tee> {
     return this.selectedTeeUpdated.asObservable();
   }
+
 }

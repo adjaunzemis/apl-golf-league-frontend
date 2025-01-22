@@ -1,19 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
-import { HoleResultData } from '../../hole-result.model';
-import { RoundData } from '../../round.model';
+import { HoleResultData } from "../../hole-result.model";
+import { RoundData } from "../../round.model";
 
 @Component({
-  selector: 'app-scorecard-score-line',
-  templateUrl: './scorecard-score-line.component.html',
-  styleUrls: ['./scorecard-score-line.component.css'],
-  standalone: false,
+    selector: "app-scorecard-score-line",
+    templateUrl: "./scorecard-score-line.component.html",
+    styleUrls: ["./scorecard-score-line.component.css"],
+    standalone: false
 })
 export class ScorecardScoreLineComponent {
   @Input() round: RoundData;
   @Output() roundChange = new EventEmitter<RoundData>();
 
-  @Input() scoreMode: string = 'gross';
+  @Input() scoreMode: string = "gross";
 
   @Input() title: string;
   @Input() subtitle: string;
@@ -30,30 +30,25 @@ export class ScorecardScoreLineComponent {
 
   onGolferHandicapChanged(): void {
     for (let hole of this.round.holes) {
-      hole.handicap_strokes = this.computeHandicapStrokes(
-        hole.stroke_index,
-        this.round.golfer_playing_handicap,
-      );
+      hole.handicap_strokes = this.computeHandicapStrokes(hole.stroke_index, this.round.golfer_playing_handicap);
     }
     this.roundChange.emit(this.round);
   }
 
   getRoundScore(): number {
-    if (this.scoreMode === 'adjusted gross') {
-      return this.round.holes
-        .map((hole) => hole.adjusted_gross_score)
-        .reduce((prev, next) => prev + next);
-    } else if (this.scoreMode === 'net') {
-      return this.round.holes.map((hole) => hole.net_score).reduce((prev, next) => prev + next);
+    if (this.scoreMode === "adjusted gross") {
+      return this.round.holes.map(hole => hole.adjusted_gross_score).reduce((prev, next) => prev + next);
+    } else if (this.scoreMode === "net") {
+      return this.round.holes.map(hole => hole.net_score).reduce((prev, next) => prev + next);
     } else {
-      return this.round.holes.map((hole) => hole.gross_score).reduce((prev, next) => prev + next);
+      return this.round.holes.map(hole => hole.gross_score).reduce((prev, next) => prev + next);
     }
   }
 
   getHoleScore(hole: HoleResultData): number {
-    if (this.scoreMode === 'adjusted gross') {
+    if (this.scoreMode === "adjusted gross") {
       return hole.adjusted_gross_score;
-    } else if (this.scoreMode === 'net') {
+    } else if (this.scoreMode === "net") {
       return hole.net_score;
     } else {
       return hole.gross_score;
@@ -67,11 +62,11 @@ export class ScorecardScoreLineComponent {
   getRelativeScoreString(): string {
     const relativeScore = this.getRoundScore() - this.round.tee_par;
     if (relativeScore > 0) {
-      return '+' + relativeScore;
+      return "+" + relativeScore;
     } else if (relativeScore < 0) {
-      return '' + relativeScore;
+      return "" + relativeScore;
     } else {
-      return 'E';
+      return "E"
     }
   }
 
@@ -83,12 +78,10 @@ export class ScorecardScoreLineComponent {
     if (playingHandicap === undefined) {
       return 0;
     }
-    if (playingHandicap < 0) {
-      // plus-handicap
-      return -playingHandicap * 2 > 18 - strokeIndex ? -1 : 0;
+    if (playingHandicap < 0) { // plus-handicap
+      return (-playingHandicap * 2) > (18 - strokeIndex) ? -1 : 0;
     }
-    return (
-      Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0)
-    );
+    return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
   }
+
 }
