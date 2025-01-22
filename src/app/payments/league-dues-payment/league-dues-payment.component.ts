@@ -54,7 +54,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {},
+    @Inject(MAT_DIALOG_DATA) public data: object,
     private formBuilder: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private appConfigService: AppConfigService,
