@@ -1,13 +1,13 @@
-import { Component, Input, OnChanges, OnInit } from "@angular/core";
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
-import { MatchData } from "src/app/shared/match.model";
-import { RoundData } from "src/app/shared/round.model";
+import { MatchData } from 'src/app/shared/match.model';
+import { RoundData } from 'src/app/shared/round.model';
 
 @Component({
-    selector: "app-match-scorecard-score-line",
-    templateUrl: "./match-scorecard-score-line.component.html",
-    styleUrls: ["./match-scorecard-score-line.component.css"],
-    standalone: false
+  selector: 'app-match-scorecard-score-line',
+  templateUrl: './match-scorecard-score-line.component.html',
+  styleUrls: ['./match-scorecard-score-line.component.css'],
+  standalone: false,
 })
 export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
   @Input() match: MatchData;
@@ -84,13 +84,15 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
     const teamHandicapDiff = topTeamHandicap - bottomTeamHandicap;
     const teamHandicapRem = Math.abs(teamHandicapDiff) % 9;
 
-    const baseHandicapStrokes = Math.sign(teamHandicapDiff) * Math.floor(Math.abs(teamHandicapDiff / 9.0));
+    const baseHandicapStrokes =
+      Math.sign(teamHandicapDiff) * Math.floor(Math.abs(teamHandicapDiff / 9.0));
 
     // Determine hole winners
     // Compare team gross scores, accounting for team handicap stroke adjustment
     for (let holeIdx = 0; holeIdx < this.match.rounds[0].holes.length; holeIdx++) {
       let holeStrokeIndex = this.match.rounds[0].holes[holeIdx].stroke_index;
-      if (holeStrokeIndex % 2 === 1) { // odd stroke index holes
+      if (holeStrokeIndex % 2 === 1) {
+        // odd stroke index holes
         holeStrokeIndex += 1; // make even, will divide by 2
       }
       holeStrokeIndex /= 2; // effective stroke index for 9-hole handicapping
@@ -121,12 +123,23 @@ export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
   }
 
   private setWinningTeamId(): void {
-    let topTeamTotalNetScore = this.topTeamHoleNetScores.reduce(function(prev: number, cur: number) {
+    let topTeamTotalNetScore = this.topTeamHoleNetScores.reduce(function (
+      prev: number,
+      cur: number,
+    ) {
       return prev + cur;
     }, 0);
-    let bottomTeamTotalNetScore = this.bottomTeamHoleNetScores.reduce(function(prev: number, cur: number) {
+    let bottomTeamTotalNetScore = this.bottomTeamHoleNetScores.reduce(function (
+      prev: number,
+      cur: number,
+    ) {
       return prev + cur;
     }, 0);
-    this.winningTeamId = topTeamTotalNetScore < bottomTeamTotalNetScore ? this.topTeamId : bottomTeamTotalNetScore < topTeamTotalNetScore ? this.bottomTeamId : -1;
+    this.winningTeamId =
+      topTeamTotalNetScore < bottomTeamTotalNetScore
+        ? this.topTeamId
+        : bottomTeamTotalNetScore < topTeamTotalNetScore
+          ? this.bottomTeamId
+          : -1;
   }
 }

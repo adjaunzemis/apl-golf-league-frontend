@@ -40,7 +40,7 @@
 .styled-table .total {
   width: 12.5%;
   font-weight: bold;
-  text-overflow: ellipsis;;
+  text-overflow: ellipsis;
 }
 
 .styled-table .hole {
@@ -73,7 +73,7 @@
 
 .handicap-entry-field {
   width: 12px;
-  font-size: 1.0em;
+  font-size: 1em;
   font-weight: bold;
   text-align: center;
   margin-left: -3px;
@@ -145,11 +145,11 @@ a:hover {
 .crosshatch {
   background-image: linear-gradient(
     -45deg,
-    rgba(0,0,0,0.2) 25%,
+    rgba(0, 0, 0, 0.2) 25%,
     transparent 25%,
     transparent 50%,
-    rgba(0,0,0,0.2) 50%,
-    rgba(0,0,0,0.2) 75%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2) 75%,
     transparent 75%,
     transparent
   );

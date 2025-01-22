@@ -1,27 +1,37 @@
-import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { TeamCreate, TeamGolferCreate } from "../shared/team.model";
+import { TeamCreate, TeamGolferCreate } from '../shared/team.model';
 import { DivisionData } from './../shared/division.model';
-import { Golfer, GolferAffiliation } from "../shared/golfer.model";
-import { GolfersService } from "../golfers/golfers.service";
-import { GolferCreateComponent } from "../golfers/golfer-create/golfer-create.component";
+import { Golfer, GolferAffiliation } from '../shared/golfer.model';
+import { GolfersService } from '../golfers/golfers.service';
+import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
 
 @Component({
-    templateUrl: './team-create.component.html',
-    styleUrls: ['./team-create.component.css'],
-    standalone: false
+  templateUrl: './team-create.component.html',
+  styleUrls: ['./team-create.component.css'],
+  standalone: false,
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
-
   updateMode: boolean = false;
 
-  teamNameControl: UntypedFormControl = new UntypedFormControl(this.data.teamName, [Validators.required, Validators.minLength(3), Validators.maxLength(25), Validators.pattern("^[a-zA-Z' ]*$")]);
-  newTeamForm: UntypedFormGroup
+  teamNameControl: UntypedFormControl = new UntypedFormControl(this.data.teamName, [
+    Validators.required,
+    Validators.minLength(3),
+    Validators.maxLength(25),
+    Validators.pattern("^[a-zA-Z' ]*$"),
+  ]);
+  newTeamForm: UntypedFormGroup;
 
   private golfersSub: Subscription;
   golferOptions: Golfer[] = [];
@@ -31,11 +41,25 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   divisions: DivisionData[] = [];
 
-  constructor(public dialogRef: MatDialogRef<TeamCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: {teamId: number, teamName: string, teamGolfers: TeamGolferCreate[], divisions: DivisionData[], allowSubstitutes: boolean}, private formBuilder: UntypedFormBuilder, private dialog: MatDialog, private snackBar: MatSnackBar, private golfersService: GolfersService) { }
+  constructor(
+    public dialogRef: MatDialogRef<TeamCreateComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      teamId: number;
+      teamName: string;
+      teamGolfers: TeamGolferCreate[];
+      divisions: DivisionData[];
+      allowSubstitutes: boolean;
+    },
+    private formBuilder: UntypedFormBuilder,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private golfersService: GolfersService,
+  ) {}
 
   ngOnInit(): void {
     if (this.data.allowSubstitutes) {
-      this.roleOptions.push("Substitute");
+      this.roleOptions.push('Substitute');
     }
 
     if (this.data.teamId > 0 && this.data.teamName.length > 0 && this.data.teamGolfers.length > 0) {
@@ -45,28 +69,27 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     this.teamNameControl.setValue(this.data.teamName);
     this.divisions = this.data.divisions;
 
-    this.golfersSub = this.golfersService.getAllGolfersUpdateListener()
-      .subscribe(result => {
-        this.golferOptions = result.sort((a: Golfer, b: Golfer) => {
-          if (a.name < b.name) {
-            return -1;
-          }
-          if (a.name > b.name) {
-            return 1;
-          }
-          return 0;
-        });
-        this.golferNameOptions = result.map(golfer => golfer.name);
-        for (const newTeamGolferForm of this.getTeamGolfersArray().controls) {
-          newTeamGolferForm.get("golfer")?.updateValueAndValidity();
-          newTeamGolferForm.get("division")?.updateValueAndValidity();
-          newTeamGolferForm.get("role")?.updateValueAndValidity();
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
+      this.golferOptions = result.sort((a: Golfer, b: Golfer) => {
+        if (a.name < b.name) {
+          return -1;
         }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
       });
+      this.golferNameOptions = result.map((golfer) => golfer.name);
+      for (const newTeamGolferForm of this.getTeamGolfersArray().controls) {
+        newTeamGolferForm.get('golfer')?.updateValueAndValidity();
+        newTeamGolferForm.get('division')?.updateValueAndValidity();
+        newTeamGolferForm.get('role')?.updateValueAndValidity();
+      }
+    });
 
     this.golfersService.getAllGolfers();
     this.newTeamForm = this.formBuilder.group({
-      teamGolfers: this.formBuilder.array([])
+      teamGolfers: this.formBuilder.array([]),
     });
 
     if (this.data.teamGolfers.length > 0) {
@@ -78,7 +101,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
         newTeamGolferForm.setValue({
           golfer: teamGolfer.golfer.name,
           division: teamGolfer.division,
-          role: teamGolfer.role
+          role: teamGolfer.role,
         });
       }
     } else {
@@ -93,7 +116,11 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     // Extract new team signup info from form
     let teamName: string = this.teamNameControl.value;
-    teamName = teamName.split(' ').map(namePart => (namePart.charAt(0).toUpperCase() + namePart.slice(1))).join(' ').trim();
+    teamName = teamName
+      .split(' ')
+      .map((namePart) => namePart.charAt(0).toUpperCase() + namePart.slice(1))
+      .join(' ')
+      .trim();
 
     let teamGolfers: TeamGolferCreate[] = [];
     for (let idx = 0; idx < this.getTeamGolfersArray().length; idx++) {
@@ -105,7 +132,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       if (golferMatches.length !== 1) {
         this.snackBar.open(`Invalid golfer name: ${golferName}`, undefined, {
           duration: 5000,
-          panelClass: ['error-snackbar']
+          panelClass: ['error-snackbar'],
         });
         return;
       }
@@ -114,13 +141,13 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       teamGolfers.push({
         golfer: golfer,
         role: newTeamGolferForm.value.role as string,
-        division: newTeamGolferForm.value.division as DivisionData
+        division: newTeamGolferForm.value.division as DivisionData,
       });
     }
 
     const teamData: TeamCreate = {
       name: teamName,
-      golfers: teamGolfers
+      golfers: teamGolfers,
     };
 
     if (this.data.teamId > 0) {
@@ -140,21 +167,23 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   addNewTeamGolferForm(): void {
     const newTeamGolferForm = this.formBuilder.group({
-      golfer: new UntypedFormControl("", [Validators.required, this.checkGolferName.bind(this)]),
-      role: new UntypedFormControl("", Validators.required),
-      division: new UntypedFormControl("", Validators.required)
+      golfer: new UntypedFormControl('', [Validators.required, this.checkGolferName.bind(this)]),
+      role: new UntypedFormControl('', Validators.required),
+      division: new UntypedFormControl('', Validators.required),
     });
 
-    this.filteredGolferOptionsArray.push(newTeamGolferForm.controls['golfer'].valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        if (this.isGolfer(value)) {
-          return this._filter(value.name);
-        } else {
-          return this._filter(value);
-        }
-      }),
-    ));
+    this.filteredGolferOptionsArray.push(
+      newTeamGolferForm.controls['golfer'].valueChanges.pipe(
+        startWith(''),
+        map((value) => {
+          if (this.isGolfer(value)) {
+            return this._filter(value.name);
+          } else {
+            return this._filter(value);
+          }
+        }),
+      ),
+    );
 
     this.getTeamGolfersArray().push(newTeamGolferForm);
   }
@@ -165,17 +194,17 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   }
 
   private isGolfer(object: any): object is Golfer {
-    return (<Golfer> object).name !== undefined;
+    return (<Golfer>object).name !== undefined;
   }
 
   private _filter(value: string): Golfer[] {
     const filterValue = value.toLowerCase();
-    return this.golferOptions.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.golferOptions.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
 
   private checkGolferName(control: UntypedFormControl): { [s: string]: boolean } | null {
     if (this.golferNameOptions.indexOf(control.value) === -1) {
-      return { 'golferNameInvalid': true };
+      return { golferNameInvalid: true };
     }
     return null;
   }
@@ -188,32 +217,38 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
         name: '',
         affiliation: GolferAffiliation.APL_EMPLOYEE,
         email: '',
-        phone: ''
-      }
+        phone: '',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(golferData => {
+    dialogRef.afterClosed().subscribe((golferData) => {
       if (golferData !== null && golferData !== undefined) {
         const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
         if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
           this.snackBar.open(`Golfer with name '${golferData.name}' already exists!`, undefined, {
             duration: 5000,
-            panelClass: ['error-snackbar']
+            panelClass: ['error-snackbar'],
           });
           return;
         }
 
-        this.golfersService.createGolfer(golferData.name, golferData.affiliation, golferData.email !== '' ? golferData.email : null, golferData.phone !== '' ? golferData.phone : null).subscribe(result => {
-          console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);
-          this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
+        this.golfersService
+          .createGolfer(
+            golferData.name,
+            golferData.affiliation,
+            golferData.email !== '' ? golferData.email : null,
+            golferData.phone !== '' ? golferData.phone : null,
+          )
+          .subscribe((result) => {
+            console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);
+            this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            });
 
-          this.golfersService.getAllGolfers(); // refresh golfer name options
-        });
+            this.golfersService.getAllGolfers(); // refresh golfer name options
+          });
       }
     });
   }
-
 }

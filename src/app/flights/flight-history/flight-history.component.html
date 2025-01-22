@@ -1,27 +1,39 @@
 <div class="content">
-
   <h1>Historical Flights</h1>
 
   <mat-spinner *ngIf="isLoading"></mat-spinner>
 
   <div *ngIf="!isLoading">
     <div *ngFor="let year of sortedYears">
-
       <h2 class="year-title">{{ year }}</h2>
 
       <div class="card-container">
-        <a class="card selectable" routerLink="/flight" [queryParams]="{id: flight.id}" *ngFor="let flight of getFlightsForYear(year)">
-          <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="50" *ngIf="flight.logo_url">
+        <a
+          class="card selectable"
+          routerLink="/flight"
+          [queryParams]="{ id: flight.id }"
+          *ngFor="let flight of getFlightsForYear(year)"
+        >
+          <img
+            src="assets/{{ flight.logo_url }}"
+            alt="{{ flight.name }}"
+            height="50"
+            *ngIf="flight.logo_url"
+          />
 
           <span class="bold">{{ flight.name }} ({{ flight.year }})</span>
 
-          <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          <svg
+            class="material-icons"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
           </svg>
         </a>
       </div>
-
     </div>
   </div>
-
 </div>

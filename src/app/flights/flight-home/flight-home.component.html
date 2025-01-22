@@ -1,18 +1,36 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div class="content" *ngIf="!isLoading">
-  <img src="assets/{{ flight.logo_url }}" alt="{{ flight.name }}" height="100" *ngIf="flight.logo_url">
+  <img
+    src="assets/{{ flight.logo_url }}"
+    alt="{{ flight.name }}"
+    height="100"
+    *ngIf="flight.logo_url"
+  />
 
   <h1>{{ flight.name }} ({{ flight.year }})</h1>
 
-  <a class="card announcements-card card-small" routerLink="/signup" [queryParams]="{ type: 'flight', id: flight.id }" *ngIf="flight.signup_stop_date >= currentDate">
+  <a
+    class="card announcements-card card-small"
+    routerLink="/signup"
+    [queryParams]="{ type: 'flight', id: flight.id }"
+    *ngIf="flight.signup_stop_date >= currentDate"
+  >
     <span class="bold">Sign-Ups</span>
-    <span>{{ flight.signup_start_date | date:'longDate' }} - {{ flight.signup_stop_date | date:'longDate' }}</span>
+    <span
+      >{{ flight.signup_start_date | date: 'longDate' }} -
+      {{ flight.signup_stop_date | date: 'longDate' }}</span
+    >
     <span class="italic">Click to go to sign-up page</span>
   </a>
 
   <div class="card-container">
-    <a class="card card-small" href="mailto:{{ flight.secretary_email }}" [ngClass]="flight.secretary_email ? 'selectable' : ''" *ngIf="flight.secretary">
+    <a
+      class="card card-small"
+      href="mailto:{{ flight.secretary_email }}"
+      [ngClass]="flight.secretary_email ? 'selectable' : ''"
+      *ngIf="flight.secretary"
+    >
       <span class="bold">Flight Secretary</span>
       <span>{{ flight.secretary }}</span>
     </a>
@@ -24,7 +42,7 @@
 
     <div class="card card-small" *ngIf="flight.course">
       <span class="bold">Start Date</span>
-      <span>{{ flight.start_date | date:'longDate' }}</span>
+      <span>{{ flight.start_date | date: 'longDate' }}</span>
     </div>
 
     <div class="card card-small" *ngIf="flight.tee_times">
@@ -32,7 +50,11 @@
       <span>{{ flight.tee_times }}</span>
     </div>
 
-    <a class="card card-small selectable" routerLink="/flight/match/scorecard" [queryParams]="{flight_id: flight.id}">
+    <a
+      class="card card-small selectable"
+      routerLink="/flight/match/scorecard"
+      [queryParams]="{ flight_id: flight.id }"
+    >
       <span class="bold">Match Scorecard</span>
     </a>
 
@@ -40,14 +62,21 @@
       <span class="bold">Contact Participants</span>
     </a>
 
-    <div class="card card-small selectable" (click)="onManageFlight()" *ngIf="isAuthenticated && currentUser?.is_admin">
+    <div
+      class="card card-small selectable"
+      (click)="onManageFlight()"
+      *ngIf="isAuthenticated && currentUser?.is_admin"
+    >
       <span class="bold">Manage Flight</span>
       <mat-icon>settings</mat-icon>
     </div>
   </div>
 
   <h2 *ngIf="flight.divisions && flight.divisions.length > 0">Divisions</h2>
-  <app-division-list [divisions]="flight.divisions" *ngIf="flight.divisions && flight.divisions.length > 0"></app-division-list>
+  <app-division-list
+    [divisions]="flight.divisions"
+    *ngIf="flight.divisions && flight.divisions.length > 0"
+  ></app-division-list>
 
   <h2 *ngIf="!isPlayoffFlight">Standings</h2>
   <app-flight-standings [flight]="flight" *ngIf="!isPlayoffFlight"></app-flight-standings>
@@ -56,18 +85,34 @@
   <app-playoff-bracket *ngIf="isPlayoffFlight"></app-playoff-bracket> -->
 
   <h2>Schedule</h2>
-  <div class="card card-small selectable" [ngClass]="showScheduleMatrix ? 'selected' : ''" (click)="showScheduleMatrix = !showScheduleMatrix" *ngIf="!isPlayoffFlight">
+  <div
+    class="card card-small selectable"
+    [ngClass]="showScheduleMatrix ? 'selected' : ''"
+    (click)="showScheduleMatrix = !showScheduleMatrix"
+    *ngIf="!isPlayoffFlight"
+  >
     <span class="bold">Flight Schedule</span>
   </div>
-  <app-flight-schedule-matrix class="full-width" [flight]="flight" *ngIf="!isPlayoffFlight && showScheduleMatrix"></app-flight-schedule-matrix>
+  <app-flight-schedule-matrix
+    class="full-width"
+    [flight]="flight"
+    *ngIf="!isPlayoffFlight && showScheduleMatrix"
+  ></app-flight-schedule-matrix>
 
   <h3 *ngIf="!isPlayoffFlight">Week-by-Week Schedule</h3>
   <app-flight-schedule class="full-width" [flight]="flight"></app-flight-schedule>
 
   <h2>Teams</h2>
-  <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0">No team data to show</span>
+  <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0"
+    >No team data to show</span
+  >
   <div class="card-container team-list">
-    <a class="card team-card selectable" routerLink="team" [queryParams]="{ id: team.id }" *ngFor="let team of flight.teams">
+    <a
+      class="card team-card selectable"
+      routerLink="team"
+      [queryParams]="{ id: team.id }"
+      *ngFor="let team of flight.teams"
+    >
       <span class="bold">{{ team.name }}</span>
       <span *ngFor="let golfer of team.golfers">{{ golfer.golfer_name }}</span>
     </a>
@@ -79,5 +124,4 @@
       <span class="bold">Coming soon...</span>
     </div>
   </div> -->
-
 </div>

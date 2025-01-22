@@ -1,17 +1,29 @@
 export class User {
-  id: number
-  username: string
-  email?: string
-  name?: string
-  disabled?: boolean
-  is_admin?: boolean
-  edit_flights?: boolean
-  edit_tournaments?: boolean
-  edit_payments?: boolean
-  private _token: string
-  private _tokenExpirationDate: Date
+  id: number;
+  username: string;
+  email?: string;
+  name?: string;
+  disabled?: boolean;
+  is_admin?: boolean;
+  edit_flights?: boolean;
+  edit_tournaments?: boolean;
+  edit_payments?: boolean;
+  private _token: string;
+  private _tokenExpirationDate: Date;
 
-  constructor(id: number, username: string, email: string, name: string, disabled: boolean, is_admin: boolean, edit_flights: boolean, edit_tournaments: boolean, edit_payments: boolean, token: string, tokenExpirationDate: Date) {
+  constructor(
+    id: number,
+    username: string,
+    email: string,
+    name: string,
+    disabled: boolean,
+    is_admin: boolean,
+    edit_flights: boolean,
+    edit_tournaments: boolean,
+    edit_payments: boolean,
+    token: string,
+    tokenExpirationDate: Date,
+  ) {
     this.id = id;
     this.username = username;
     this.email = email;
@@ -26,7 +38,7 @@ export class User {
   }
 
   get token() {
-    if (!this._tokenExpirationDate || (new Date() > this._tokenExpirationDate)) {
+    if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
       return null;
     }
     return this._token;
@@ -34,13 +46,13 @@ export class User {
 }
 
 export interface UserInfo {
-  id: number
-  username: string
-  email?: string
-  name?: string
-  disabled?: boolean
-  is_admin?: boolean
-  edit_flights?: boolean
-  edit_tournaments?: boolean
-  edit_payments?: boolean
+  id: number;
+  username: string;
+  email?: string;
+  name?: string;
+  disabled?: boolean;
+  is_admin?: boolean;
+  edit_flights?: boolean;
+  edit_tournaments?: boolean;
+  edit_payments?: boolean;
 }

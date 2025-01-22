@@ -1,32 +1,63 @@
 <div class="content">
-
   <h1>Manage User</h1>
 
   <div class="content" *ngIf="isLoggedIn(); else notLoggedIn">
-
-    <p style="margin-bottom: 16px;">Currently logged in as: '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</p>
+    <p style="margin-bottom: 16px">
+      Currently logged in as: '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})
+    </p>
 
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input type="text" matInput required [formControl]="usernameControl" (keydown.enter)="onSubmit()">
+      <input
+        type="text"
+        matInput
+        required
+        [formControl]="usernameControl"
+        (keydown.enter)="onSubmit()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Old Password</mat-label>
-      <input type="password" matInput required [formControl]="oldPasswordControl" (keydown.enter)="onSubmit()">
+      <input
+        type="password"
+        matInput
+        required
+        [formControl]="oldPasswordControl"
+        (keydown.enter)="onSubmit()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>New Password</mat-label>
-      <input type="password" matInput required [formControl]="newPasswordControl" (keydown.enter)="onSubmit()">
+      <input
+        type="password"
+        matInput
+        required
+        [formControl]="newPasswordControl"
+        (keydown.enter)="onSubmit()"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Repeat New Password</mat-label>
-      <input type="password" matInput required [formControl]="newPasswordRepeatControl" (keydown.enter)="onSubmit()">
+      <input
+        type="password"
+        matInput
+        required
+        [formControl]="newPasswordRepeatControl"
+        (keydown.enter)="onSubmit()"
+      />
     </mat-form-field>
 
-    <button mat-raised-button color="accent" [disabled]="!checkControlValues()" (click)="onSubmit()">Change Password</button>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!checkControlValues()"
+      (click)="onSubmit()"
+    >
+      Change Password
+    </button>
   </div>
 
   <ng-template #notLoggedIn>
@@ -34,5 +65,4 @@
       <p>Must be logged in to manage user!</p>
     </div>
   </ng-template>
-
 </div>

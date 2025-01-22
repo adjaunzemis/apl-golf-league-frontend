@@ -1,6 +1,13 @@
 <p class="subtitle italic" *ngIf="!selectedScoreOption">Select a scoring type to show results</p>
 <div class="card-container">
-  <div class="card card-small score-option-card selectable" [ngClass]="selectedScoreOption === scoreOption ? 'selected' : ''" *ngFor="let scoreOption of scoreOptions" (click)="toggleScoreOption(scoreOption)">{{ scoreOption }}</div>
+  <div
+    class="card card-small score-option-card selectable"
+    [ngClass]="selectedScoreOption === scoreOption ? 'selected' : ''"
+    *ngFor="let scoreOption of scoreOptions"
+    (click)="toggleScoreOption(scoreOption)"
+  >
+    {{ scoreOption }}
+  </div>
 </div>
 <div class="card standings-card" *ngIf="selectedScoreOption">
   <div>
@@ -9,25 +16,45 @@
         <th>Pos</th>
         <th>Name</th>
         <th>Gross</th>
-        <th *ngIf="selectedScoreOption === 'Individual Gross' || selectedScoreOption === 'Individual Net'">Hcp</th>
+        <th
+          *ngIf="
+            selectedScoreOption === 'Individual Gross' || selectedScoreOption === 'Individual Net'
+          "
+        >
+          Hcp
+        </th>
         <th>Net</th>
       </tr>
-      <tbody *ngIf="selectedScoreOption === 'Individual Gross' || selectedScoreOption === 'Individual Net'">
+      <tbody
+        *ngIf="
+          selectedScoreOption === 'Individual Gross' || selectedScoreOption === 'Individual Net'
+        "
+      >
         <tr *ngFor="let data of individualStandingsData">
           <td>{{ data.position }}</td>
           <td>{{ data.name }}</td>
-          <td [ngClass]="selectedScoreOption === 'Individual Gross' ? 'bold' : ''">{{ data.grossScore | number : '1.0-0' }}</td>
-          <td *ngIf="data.playingHandicap || data.playingHandicap === 0">{{ data.playingHandicap | number : '1.0-0' }}</td>
+          <td [ngClass]="selectedScoreOption === 'Individual Gross' ? 'bold' : ''">
+            {{ data.grossScore | number: '1.0-0' }}
+          </td>
+          <td *ngIf="data.playingHandicap || data.playingHandicap === 0">
+            {{ data.playingHandicap | number: '1.0-0' }}
+          </td>
           <td *ngIf="!data.playingHandicap && data.playingHandicap !== 0">--</td>
-          <td [ngClass]="selectedScoreOption === 'Individual Net' ? 'bold' : ''">{{ data.netScore | number : '1.0-0' }}</td>
+          <td [ngClass]="selectedScoreOption === 'Individual Net' ? 'bold' : ''">
+            {{ data.netScore | number: '1.0-0' }}
+          </td>
         </tr>
       </tbody>
       <tbody *ngIf="selectedScoreOption === 'Team Gross' || selectedScoreOption === 'Team Net'">
         <tr *ngFor="let data of teamStandingsData">
           <td>{{ data.position }}</td>
           <td>{{ data.name }}</td>
-          <td [ngClass]="selectedScoreOption === 'Team Gross' ? 'bold' : ''">{{ data.grossScore | number : '1.0-0' }}</td>
-          <td [ngClass]="selectedScoreOption === 'Team Net' ? 'bold' : ''">{{ data.netScore | number : '1.0-0' }}</td>
+          <td [ngClass]="selectedScoreOption === 'Team Gross' ? 'bold' : ''">
+            {{ data.grossScore | number: '1.0-0' }}
+          </td>
+          <td [ngClass]="selectedScoreOption === 'Team Net' ? 'bold' : ''">
+            {{ data.netScore | number: '1.0-0' }}
+          </td>
         </tr>
       </tbody>
     </table>
