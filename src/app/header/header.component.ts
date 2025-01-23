@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
-import { AppConfigService } from '../app-config.service';
 import { AuthService } from '../auth/auth.service';
 import { FlightCreateComponent } from '../flights/flight-create/flight-create.component';
 import { FlightsService } from '../flights/flights.service';
@@ -17,6 +16,8 @@ import { TournamentCreateComponent } from '../tournaments/tournament-create/tour
 import { TournamentsService } from '../tournaments/tournaments.service';
 import { TournamentInfo } from '../shared/tournament.model';
 import { environment } from 'src/environments/environment';
+import { SeasonsService } from '../seasons/seasons.service';
+import { Season } from '../shared/season.model';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +33,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   currentUser: User | null = null;
 
+  activeSeason: Season;
+  private seasonsSub: Subscription;
+
   golferNameOptions: string[] = [];
   private golfersSub: Subscription;
 
@@ -43,9 +47,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private appConfigService: AppConfigService,
     private golfersService: GolfersService,
     private flightsService: FlightsService,
+    private seasonsService: SeasonsService,
     private tournamentsService: TournamentsService,
     private signupComponent: SignupComponent,
     private dialog: MatDialog,
@@ -73,13 +77,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.golferNameOptions = golferOptions.map((golfer) => golfer.name);
     });
 
-    this.golfersService.getAllGolfers();
-
     this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
       this.flights = result.flights;
     });
-
-    this.flightsService.getFlightsList(this.appConfigService.currentYear);
 
     this.tournamentsSub = this.tournamentsService
       .getTournamentsListUpdateListener()
@@ -87,13 +87,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.tournaments = result.tournaments;
       });
 
-    this.tournamentsService.getTournamentsList(this.appConfigService.currentYear);
+    this.golfersService.getAllGolfers();
+
+    this.seasonsSub = this.seasonsService.getActiveSeasonUpdateListener().subscribe((result) => {
+      console.log(`[HeaderComponent] Received active season: ${result}`);
+      this.activeSeason = result;
+      this.flightsService.getFlightsList(this.activeSeason.year);
+      this.tournamentsService.getTournamentsList(this.activeSeason.year);
+    });
   }
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
     this.golfersSub.unsubscribe();
     this.flightsSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
   }
 
@@ -160,7 +168,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(FlightCreateComponent, {
       width: '900px',
       data: {
-        year: this.appConfigService.currentYear,
+        year: this.activeSeason.year,
         weeks: 18, // typical season length
         divisions: [
           {
@@ -214,7 +222,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             },
           );
 
-          this.flightsService.getFlightsList(this.appConfigService.currentYear); // refresh flights list
+          this.flightsService.getFlightsList(this.activeSeason.year); // refresh flights list
         });
       }
     });
@@ -225,7 +233,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(TournamentCreateComponent, {
       width: '900px',
       data: {
-        year: this.appConfigService.currentYear,
+        year: this.activeSeason.year,
         bestball: 0,
         shotgun: 0,
         strokeplay: 0,
@@ -286,7 +294,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             },
           );
 
-          this.tournamentsService.getTournamentsList(this.appConfigService.currentYear); // refresh tournaments list
+          this.tournamentsService.getTournamentsList(this.activeSeason.year); // refresh tournaments list
         });
       }
     });

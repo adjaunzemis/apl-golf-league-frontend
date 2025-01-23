@@ -16,13 +16,13 @@ export class SeasonsService {
 
   getActiveSeason(): void {
     this.http.get<Season>(environment.apiUrl + 'seasons/active/').subscribe((result) => {
+      console.log(`[SeasonsService] Received active season: ${result}`);
       this.activeSeason = result;
       this.activeSeasonUpdated.next(this.activeSeason);
     });
   }
 
-  getActiveSeasonListener(): Observable<Season> {
+  getActiveSeasonUpdateListener(): Observable<Season> {
     return this.activeSeasonUpdated.asObservable();
   }
-
 }

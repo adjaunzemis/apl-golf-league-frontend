@@ -1,3 +1,3 @@
 export interface Season {
-    year: number
+  year: number;
 }
