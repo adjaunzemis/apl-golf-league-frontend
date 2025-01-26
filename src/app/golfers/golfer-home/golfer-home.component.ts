@@ -90,7 +90,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.isLoadingTeamData = false;
     });
 
-    this.seasonsService.getActiveSeason().subscribe((result) => {
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received active season: year=${result.year}`);
       this.year = result.year;
 
