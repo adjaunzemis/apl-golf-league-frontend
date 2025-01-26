@@ -19,8 +19,11 @@ export class SeasonsService {
       return of(this.activeSeason);
     }
 
-    return this.http
-      .get<Season>(environment.apiUrl + 'seasons/active/')
-      .pipe(tap((result) => (this.activeSeason = result)));
+    return this.http.get<Season>(environment.apiUrl + 'seasons/active/').pipe(
+      tap((result) => {
+        console.log(`[SeasonsService] Set active season: year=${result.year}`);
+        this.activeSeason = result;
+      }),
+    );
   }
 }

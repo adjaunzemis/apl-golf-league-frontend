@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { AppConfigService } from '../app-config.service';
 import { FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
 import { Officer } from './../shared/officer.model';
 import { OfficersService } from '../officers/officers.service';
+import { SeasonsService } from '../seasons/seasons.service';
 
 @Component({
   selector: 'app-league-home',
@@ -17,6 +17,7 @@ import { OfficersService } from '../officers/officers.service';
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
   private currentYear: number;
+  private seasonsSub: Subscription;
 
   isLoadingFlights = true;
   currentFlights: FlightInfo[] = [];
@@ -32,15 +33,13 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   private officersSub: Subscription;
 
   constructor(
-    private appConfigService: AppConfigService,
     private flightsService: FlightsService,
+    private seasonsService: SeasonsService,
     private tournamentsService: TournamentsService,
     private officersService: OfficersService,
   ) {}
 
   ngOnInit(): void {
-    this.currentYear = this.appConfigService.currentYear;
-
     this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
       console.log(`[LeagueHomeComponent] Received flights list`);
       this.currentFlights = result.flights;
@@ -66,13 +65,18 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
       this.isLoadingOfficers = false;
     });
 
-    this.flightsService.getFlightsList(this.currentYear);
-    this.tournamentsService.getTournamentsList(this.currentYear);
-    this.officersService.getOfficersList(this.currentYear);
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.currentYear = result.year;
+
+      this.flightsService.getFlightsList(this.currentYear);
+      this.tournamentsService.getTournamentsList(this.currentYear);
+      this.officersService.getOfficersList(this.currentYear);
+    });
   }
 
   ngOnDestroy(): void {
     this.flightsSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
     this.officersSub.unsubscribe();
   }
