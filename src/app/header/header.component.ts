@@ -89,14 +89,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.golfersService.getAllGolfers();
 
-    this.seasonsSub = this.seasonsService.getActiveSeasonUpdateListener().subscribe((result) => {
-      console.log(`[HeaderComponent] Received active season: ${result}`);
+    this.seasonsService.getActiveSeason().subscribe((result) => {
+      console.log(`[HeaderComponent] Received active season: year=${result.year}`);
       this.activeSeason = result;
       this.flightsService.getFlightsList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
     });
-
-    this.seasonsService.getActiveSeason();
   }
 
   ngOnDestroy(): void {
