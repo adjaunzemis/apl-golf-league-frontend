@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { AppConfigService } from '../../app-config.service';
 import { GolfersService } from '../golfers.service';
 import { RoundsService } from '../../rounds/rounds.service';
 import { GolferData, TeamGolferData } from '../../shared/golfer.model';
 import { RoundData } from '../../shared/round.model';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 @Component({
   selector: 'app-golfer-home',
@@ -23,8 +23,10 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   yearControl = new UntypedFormControl('', Validators.required);
 
   golferId: number;
+
   year: number;
   yearOptions: number[];
+  seasonsSub: Subscription;
 
   golfer: GolferData;
   golferSub: Subscription;
@@ -41,16 +43,22 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   showHandicapData = false;
 
   constructor(
-    private appConfigService: AppConfigService,
     private golfersService: GolfersService,
     private roundsService: RoundsService,
+    private seasonsService: SeasonsService,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.year = this.appConfigService.currentYear;
-    this.yearOptions = [this.year];
-    this.yearControl.setValue(this.year);
+    this.seasonsService.getActiveSeason().subscribe((result) => {
+      console.log(`[GolferHomeComponent] Received active season: year=${result.year}`);
+      this.year = result.year;
+
+      this.yearOptions = [this.year];
+      this.yearControl.setValue(this.year);
+
+      this.getGolferData();
+    });
 
     this.golferSub = this.golfersService
       .getGolferUpdateListener()
@@ -60,7 +68,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         if (result.member_since) {
           const oldestYear = result.member_since;
           this.yearOptions = Array.from(
-            { length: this.appConfigService.currentYear - oldestYear + 1 },
+            { length: this.year - oldestYear + 1 },
             (v, k) => k + oldestYear,
           );
           this.yearOptions.sort((a, b) => b - a); // descending order
@@ -97,8 +105,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         }
       }
     });
-
-    this.getGolferData();
   }
 
   ngOnDestroy(): void {

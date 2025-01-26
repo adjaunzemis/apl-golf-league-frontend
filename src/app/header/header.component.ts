@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.golfersService.getAllGolfers();
 
-    this.seasonsService.getActiveSeason().subscribe((result) => {
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[HeaderComponent] Received active season: year=${result.year}`);
       this.activeSeason = result;
       this.flightsService.getFlightsList(this.activeSeason.year);
