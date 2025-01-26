@@ -16,11 +16,11 @@ import { GolfersService } from '../golfers/golfers.service';
 import { TeamInfo } from '../shared/team.model';
 import { TeamCreate, TeamGolferCreate } from './../shared/team.model';
 import { TeamCreateComponent } from './team-create.component';
-import { AppConfigService } from '../app-config.service';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../shared/user.model';
 import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
 import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entry-fees-payment/tournament-entry-fees-payment.component';
+import { SeasonsService } from '../seasons/seasons.service';
 
 @Component({
   selector: 'app-signup',
@@ -30,6 +30,8 @@ import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entr
 })
 export class SignupComponent implements OnInit, OnDestroy {
   private currentYear: number;
+  private seasonsSub: Subscription;
+
   currentDate = new Date();
 
   isAuthenticated = false;
@@ -65,19 +67,34 @@ export class SignupComponent implements OnInit, OnDestroy {
   selectedFlightOrTournament: FlightData | TournamentData | undefined;
 
   constructor(
-    private appConfigService: AppConfigService,
     private authService: AuthService,
     private flightsService: FlightsService,
     private tournamentsService: TournamentsService,
     private teamsService: TeamsService,
     private golfersService: GolfersService,
+    private seasonsService: SeasonsService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.currentYear = this.appConfigService.currentYear;
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        if (params.type) {
+          this.setSelectedTabIdxByType(params.type);
+          if (params.id) {
+            if (this.selectedTabIdx === 0) {
+              // flight
+              this.initFlightId = params.id;
+            } else {
+              // tournament
+              this.initTournamentId = params.id;
+            }
+          }
+        }
+      }
+    });
 
     this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !user ? false : true;
@@ -143,21 +160,9 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     this.golfersService.getAllGolfers();
 
-    this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.type) {
-          this.setSelectedTabIdxByType(params.type);
-          if (params.id) {
-            if (this.selectedTabIdx === 0) {
-              // flight
-              this.initFlightId = params.id;
-            } else {
-              // tournament
-              this.initTournamentId = params.id;
-            }
-          }
-        }
-      }
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.currentYear = result.year;
+
       this.flightsService.getFlightsList(this.currentYear);
       this.tournamentsService.getTournamentsList(this.currentYear);
     });
@@ -170,6 +175,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.selectedFlightSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
     this.selectedTournamentSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   private setSelectedTabIdxByType(type: string): void {
