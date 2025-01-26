@@ -50,15 +50,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.seasonsService.getActiveSeason().subscribe((result) => {
-      console.log(`[GolferHomeComponent] Received active season: year=${result.year}`);
-      this.year = result.year;
-
-      this.yearOptions = [this.year];
-      this.yearControl.setValue(this.year);
-
-      this.getGolferData();
-    });
+    this.golferId = Number(this.route.snapshot.queryParamMap.get('id'));
 
     this.golferSub = this.golfersService
       .getGolferUpdateListener()
@@ -98,12 +90,14 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.isLoadingTeamData = false;
     });
 
-    this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.id) {
-          this.golferId = params.id;
-        }
-      }
+    this.seasonsService.getActiveSeason().subscribe((result) => {
+      console.log(`[GolferHomeComponent] Received active season: year=${result.year}`);
+      this.year = result.year;
+
+      this.yearOptions = [this.year];
+      this.yearControl.setValue(this.year);
+
+      this.getGolferData();
     });
   }
 
@@ -111,6 +105,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.golferSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.roundsSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   onSeasonSelected(year: number): void {
