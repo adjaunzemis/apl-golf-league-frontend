@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { AppConfigService } from '../app-config.service';
 import { Officer } from './../shared/officer.model';
 import { OfficersService } from '../officers/officers.service';
+import { SeasonsService } from '../seasons/seasons.service';
 
 @Component({
   selector: 'app-rules',
@@ -11,8 +11,9 @@ import { OfficersService } from '../officers/officers.service';
   styleUrls: ['./rules.component.css'],
   standalone: false,
 })
-export class RulesComponent implements OnInit {
+export class RulesComponent implements OnInit, OnDestroy {
   private currentYear: number;
+  private seasonsSub: Subscription;
 
   isLoading = true;
 
@@ -20,12 +21,15 @@ export class RulesComponent implements OnInit {
   private officersSub: Subscription;
 
   constructor(
-    private appConfigService: AppConfigService,
+    private seasonsService: SeasonsService,
     private officersService: OfficersService,
   ) {}
 
   ngOnInit(): void {
-    this.currentYear = this.appConfigService.currentYear;
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.currentYear = result.year;
+      this.officersService.getOfficersList(this.currentYear);
+    });
 
     this.officersSub = this.officersService.getOfficersListUpdateListener().subscribe((result) => {
       console.log(`[RulesComponent] Received officers list`);
@@ -34,8 +38,11 @@ export class RulesComponent implements OnInit {
       });
       this.isLoading = false;
     });
+  }
 
-    this.officersService.getOfficersList(this.currentYear);
+  ngOnDestroy(): void {
+    this.seasonsSub.unsubscribe();
+    this.officersSub.unsubscribe();
   }
 
   getCommitteeEmailList(): string {
