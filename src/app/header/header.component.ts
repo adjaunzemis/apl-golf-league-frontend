@@ -95,6 +95,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.flightsService.getFlightsList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
     });
+
+    this.seasonsService.getActiveSeason();
   }
 
   ngOnDestroy(): void {
