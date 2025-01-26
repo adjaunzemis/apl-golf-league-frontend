@@ -118,7 +118,6 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
       this.getTournamentOptions();
     });
-
   }
 
   ngOnDestroy(): void {
