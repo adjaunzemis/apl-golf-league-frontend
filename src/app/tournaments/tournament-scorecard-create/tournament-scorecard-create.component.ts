@@ -4,7 +4,6 @@ import { MatSelectChange } from '@angular/material/select';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { AppConfigService } from '../../app-config.service';
 import { TournamentsService } from '../tournaments.service';
 import { CoursesService } from '../../courses/courses.service';
 import { TournamentTeamData } from '../../shared/team.model';
@@ -16,6 +15,7 @@ import { Track } from '../../shared/track.model';
 import { Tee } from '../../shared/tee.model';
 import { HoleResultData } from '../../shared/hole-result.model';
 import { TournamentData, TournamentInfo } from '../../shared/tournament.model';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 @Component({
   selector: 'app-tournament-scorecard-create',
@@ -32,10 +32,11 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   handicapAllowance = 1.0;
 
   private currentYear: number;
+  private seasonsSub: Subscription;
 
   showInstructions = false;
 
-  private paramsTournamentId: number;
+  private tournamentId: number;
   private tournamentInfoSub: Subscription;
   tournamentOptions: TournamentInfo[] = [];
   selectedTournamentInfo: TournamentInfo;
@@ -60,26 +61,17 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   editMode = true;
 
   constructor(
-    private appConfigService: AppConfigService,
     private tournamentsService: TournamentsService,
     private coursesService: CoursesService,
+    private seasonsService: SeasonsService,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.currentYear = this.appConfigService.currentYear;
-
-    // Set up subscriptions
-    this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.tournament_id) {
-          console.log(
-            `[TournamentScorecardCreateComponent] Processing query parameter: tournament_id=${params.tournament_id}`,
-          );
-          this.paramsTournamentId = params.tournament_id;
-        }
-      }
-    });
+    const paramsTournamentId = this.route.snapshot.queryParamMap.get('tournament_id');
+    if (paramsTournamentId) {
+      this.tournamentId = Number(paramsTournamentId);
+    }
 
     this.tournamentInfoSub = this.tournamentsService
       .getTournamentsListUpdateListener()
@@ -87,9 +79,9 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         console.log(`[TournamentScorecardCreateComponent] Received current tournaments list`);
         this.tournamentOptions = result.tournaments;
         this.isLoading = false;
-        if (this.paramsTournamentId) {
+        if (this.tournamentId) {
           for (const flightInfo of this.tournamentOptions) {
-            if (flightInfo.id == this.paramsTournamentId) {
+            if (flightInfo.id == this.tournamentId) {
               this.selectedTournamentInfo = flightInfo;
               this.loadTournamentData();
               break;
@@ -121,14 +113,18 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       });
 
-    // Gather initial data
-    this.getTournamentOptions();
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.currentYear = result.year;
+
+      this.getTournamentOptions();
+    });
   }
 
   ngOnDestroy(): void {
     this.tournamentInfoSub.unsubscribe();
     this.tournamentDataSub.unsubscribe();
     this.courseDataSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   private getTournamentOptions(): void {

@@ -1,4 +1,4 @@
-import { NgModule, inject, provideAppInitializer } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -20,7 +20,6 @@ import { TournamentsModule } from './tournaments/tournaments.module';
 import { DivisionsModule } from './divisions/divisions.module';
 import { AuthModule } from './auth/auth.module';
 import { ErrorInterceptor } from './shared/error/error-interceptor';
-import { AppConfigService } from './app-config.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
 import { CarouselComponent } from './carousel/carousel.component';
@@ -56,14 +55,6 @@ import { TeamCreateComponent } from './signup/team-create.component'; // TODO: M
     PaymentsModule,
   ],
   providers: [
-    provideAppInitializer(() => {
-      const initializerFn = ((appConfigService: AppConfigService) => {
-        return () => {
-          return appConfigService.loadAppConfig();
-        };
-      })(inject(AppConfigService));
-      return initializerFn();
-    }),
     {
       provide: HTTP_INTERCEPTORS,
       multi: true,

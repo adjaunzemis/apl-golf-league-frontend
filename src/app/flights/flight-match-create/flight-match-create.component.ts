@@ -5,7 +5,6 @@ import { MatSelectChange } from '@angular/material/select';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import { AppConfigService } from '../../app-config.service';
 import { FlightsService } from '../flights.service';
 import { CoursesService } from '../../courses/courses.service';
 import { FlightData, FlightInfo } from '../../shared/flight.model';
@@ -24,6 +23,7 @@ import { Track } from '../../shared/track.model';
 import { Tee } from '../../shared/tee.model';
 import { HoleResultData } from '../../shared/hole-result.model';
 import { MatchesService } from '../../matches/matches.service';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 @Component({
   selector: 'app-flight-match-create',
@@ -38,12 +38,13 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   hideForPrint = false;
 
   private currentYear: number;
+  private seasonsSub: Subscription;
 
   showInstructions = false;
 
   selectedDate: Date = new Date();
 
-  private paramsFlightId: number;
+  private flightId: number | null;
   private flightInfoSub: Subscription;
   flightOptions: FlightInfo[] = [];
   selectedFlightInfo: FlightInfo;
@@ -89,27 +90,18 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   editMode = true;
 
   constructor(
-    private appConfigService: AppConfigService,
     private flightsService: FlightsService,
     private coursesService: CoursesService,
     private matchesService: MatchesService,
+    private seasonsService: SeasonsService,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.currentYear = this.appConfigService.currentYear;
-
-    // Set up subscriptions
-    this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.flight_id) {
-          console.log(
-            `[FlightMatchCreateComponent] Processing query parameter: flight_id=${params.flight_id}`,
-          );
-          this.paramsFlightId = params.flight_id;
-        }
-      }
-    });
+    const paramsFlightId = this.route.snapshot.queryParamMap.get('flight_id');
+    if (paramsFlightId) {
+      this.flightId = Number(paramsFlightId);
+    }
 
     this.courseInfoSub = this.coursesService.getCoursesUpdateListener().subscribe((result) => {
       console.log(
@@ -146,9 +138,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       console.log(`[FlightMatchCreateComponent] Received current flights list`);
       this.flightOptions = result.flights;
       this.isLoading = false;
-      if (this.paramsFlightId) {
+      if (this.flightId) {
         for (const flightInfo of this.flightOptions) {
-          if (flightInfo.id == this.paramsFlightId) {
+          if (flightInfo.id == this.flightId) {
             this.selectedFlightInfo = flightInfo;
             this.loadFlightData();
             break;
@@ -183,9 +175,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       this.clearSelectedTeam(2);
     });
 
-    // Gather initial data
-    this.getCourseOptions();
-    this.getFlightOptions();
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.currentYear = result.year;
+
+      this.getCourseOptions();
+      this.getFlightOptions();
+    });
   }
 
   ngOnDestroy(): void {
@@ -193,6 +188,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     this.flightDataSub.unsubscribe();
     this.courseInfoSub.unsubscribe();
     this.courseDataSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   private getCourseOptions(): void {

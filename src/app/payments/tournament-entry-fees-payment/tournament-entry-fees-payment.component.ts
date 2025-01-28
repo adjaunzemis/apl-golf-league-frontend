@@ -13,7 +13,6 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { PaymentsService } from '../payments.service';
-import { AppConfigService } from '../../app-config.service';
 import {
   TournamentEntryFeePaymentInfo,
   TournamentEntryFeePaypalTransaction,
@@ -23,6 +22,7 @@ import { GolfersService } from '../../golfers/golfers.service';
 import { Golfer } from '../../shared/golfer.model';
 import { TournamentsService } from '../../tournaments/tournaments.service';
 import { TournamentData } from '../../shared/tournament.model';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 declare let paypal: any;
 
@@ -36,6 +36,8 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
   year = 0;
+  private seasonsSub: Subscription;
+
   tournamentId = -1;
 
   private tournamentEntryFeePaymentInfoListSub: Subscription;
@@ -61,14 +63,16 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { tournamentId: number },
     private formBuilder: UntypedFormBuilder,
     private snackBar: MatSnackBar,
-    private appConfigService: AppConfigService,
     private paymentsService: PaymentsService,
     private tournamentsService: TournamentsService,
     private golfersService: GolfersService,
+    private seasonsService: SeasonsService,
   ) {}
 
   ngOnInit(): void {
-    this.year = this.appConfigService.currentYear;
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.year = result.year;
+    });
     this.tournamentId = this.data.tournamentId;
 
     // Initialize golfer info subscriptions
