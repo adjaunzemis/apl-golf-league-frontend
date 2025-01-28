@@ -7,7 +7,7 @@ import { PaymentsService } from '../payments.service';
 import { TournamentsService } from '../../tournaments/tournaments.service';
 import { TournamentData } from '../../shared/tournament.model';
 import { TournamentEntryFeePaymentData } from '../../shared/payment.model';
-import { AppConfigService } from '../../app-config.service';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 @Component({
   selector: 'app-tournament-entry-fee-payments-list',
@@ -19,6 +19,8 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
   isLoading = true;
 
   selectedYear = 0;
+  private seasonsSub: Subscription;
+
   tournamentId = -1;
 
   paymentsSub: Subscription;
@@ -51,12 +53,14 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
   constructor(
     private paymentsService: PaymentsService,
     private tournamentsService: TournamentsService,
-    private appConfigService: AppConfigService,
+    private seasonsService: SeasonsService,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.selectedYear = this.appConfigService.currentYear;
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.selectedYear = result.year;
+    });
 
     this.tournamentSub = this.tournamentsService
       .getTournamentUpdateListener()
@@ -86,6 +90,7 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
   ngOnDestroy(): void {
     this.tournamentSub.unsubscribe();
     this.paymentsSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   editPaymentInfo(payment: TournamentEntryFeePaymentData): void {
