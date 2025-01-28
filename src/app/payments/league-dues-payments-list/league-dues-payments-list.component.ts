@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { PaymentsService } from '../payments.service';
 import { LeagueDuesPaymentData } from '../../shared/payment.model';
-import { AppConfigService } from '../../app-config.service';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 @Component({
   selector: 'app-league-dues-payments-list',
@@ -16,6 +16,7 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   selectedYear = 0;
+  private seasonsSub: Subscription;
 
   leagueDuesSub: Subscription;
 
@@ -42,11 +43,15 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private paymentsService: PaymentsService,
-    private appConfigService: AppConfigService,
+    private seasonsService: SeasonsService,
   ) {}
 
   ngOnInit(): void {
-    this.selectedYear = this.appConfigService.currentYear;
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.selectedYear = result.year;
+
+      this.paymentsService.getLeagueDuesPaymentDataList(this.selectedYear);
+    });
 
     this.leagueDuesSub = this.paymentsService
       .getLeagueDuesPaymentDataListUpdateListener()
@@ -55,12 +60,11 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
         this.sortedData = this.leagueDuesPayments;
         this.isLoading = false;
       });
-
-    this.paymentsService.getLeagueDuesPaymentDataList(this.selectedYear);
   }
 
   ngOnDestroy(): void {
     this.leagueDuesSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   editPaymentInfo(payment: LeagueDuesPaymentData): void {

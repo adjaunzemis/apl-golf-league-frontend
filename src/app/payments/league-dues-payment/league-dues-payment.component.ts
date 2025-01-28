@@ -13,7 +13,6 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { PaymentsService } from '../payments.service';
-import { AppConfigService } from '../../app-config.service';
 import {
   LeagueDuesPaymentInfo,
   LeagueDuesPaypalTransaction,
@@ -21,6 +20,7 @@ import {
 } from '../../shared/payment.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { Golfer } from '../../shared/golfer.model';
+import { SeasonsService } from 'src/app/seasons/seasons.service';
 
 declare let paypal: any;
 
@@ -34,6 +34,8 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
   @ViewChild('paypal', { static: true }) paypalElement: ElementRef;
 
   year = 0;
+  private seasonsSub: Subscription;
+
   leagueDuesFlight = 0;
   leagueDuesTournamentOnly = 0;
 
@@ -58,15 +60,12 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: object,
     private formBuilder: UntypedFormBuilder,
     private snackBar: MatSnackBar,
-    private appConfigService: AppConfigService,
     private paymentsService: PaymentsService,
     private golfersService: GolfersService,
+    private seasonsService: SeasonsService,
   ) {}
 
   ngOnInit(): void {
-    this.year = this.appConfigService.currentYear;
-
-    // Initialize golfer info subscriptions
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((golfers) => {
       this.golferOptions = golfers;
       this.golferNameOptions = [];
@@ -76,7 +75,6 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     });
     this.golfersService.getAllGolfers();
 
-    // Initialize payments info subscriptions
     this.leagueDuesListSub = this.paymentsService
       .getLeagueDuesListUpdateListener()
       .subscribe((leagueDues) => {
@@ -89,7 +87,6 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
         }
         this.isLoadingLeagueDuesList = false;
       });
-    this.paymentsService.getLeagueDuesList(this.year);
 
     this.leagueDuesPaymentInfoListSub = this.paymentsService
       .getLeagueDuesPaymentInfoListUpdateListener()
@@ -98,13 +95,18 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
         this.isLoadingLeagueDuesPaymentInfoList = false;
       });
-    this.paymentsService.getLeagueDuesPaymentInfoList(this.year);
 
-    // Initialize golfer payments form
     this.golferPaymentsForm = this.formBuilder.group({
       golferPayments: this.formBuilder.array([]),
     });
     this.addNewGolferPaymentForm();
+
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.year = result.year;
+
+      this.paymentsService.getLeagueDuesList(this.year);
+      this.paymentsService.getLeagueDuesPaymentInfoList(this.year);
+    });
 
     // Configure PayPal buttons
     paypal
@@ -258,6 +260,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
     this.leagueDuesListSub.unsubscribe();
     this.leagueDuesPaymentInfoListSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 
   private getPaymentDescription(): string {
