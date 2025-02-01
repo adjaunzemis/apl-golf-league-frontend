@@ -5,17 +5,39 @@ updates:
     schedule:
       interval: 'weekly'
     commit-message:
-      prefix: 'deps'
+      prefix: '[Dependabot]'
     labels:
       - 'dependencies'
       - 'npm'
     reviewers:
       - 'adjaunzemis'
+    groups:
+      angular:
+        applies-to: version-updates
+        patterns:
+          - "@angular*"
+        update-types:
+          - "minor"
+          - "patch"
+      minor-and-patch:
+        applies-to: security-updates
+        patterns:
+          - "@angular*"
+        update-types:
+          - "patch"
+          - "minor"
+    ignore:
+      - dependency-name: "@angular*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'weekly'
+    commit-message:
+      prefix: '[Dependabot]'
     labels:
       - 'dependencies'
       - 'actions'
+    reviewers:
+      - 'adjaunzemis'
