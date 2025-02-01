@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TuiRoot } from '@taiga-ui/core';
 
+import { AngularMaterialModule } from './angular-material.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LeagueHomeComponent } from './league-home/league-home.component';
@@ -42,8 +43,9 @@ import { TeamCreateComponent } from './signup/team-create.component'; // TODO: M
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     AngularMaterialModule,
+    TuiRoot,
+    AppRoutingModule,
     CoursesModule,
     RoundsModule,
     FlightsModule,
