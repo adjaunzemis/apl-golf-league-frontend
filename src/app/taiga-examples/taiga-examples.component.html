@@ -21,3 +21,25 @@
     <button appearance="secondary" size="m" tuiButton type="button">Label</button>
   </footer>
 </div>
+
+<div tuiAppearance="floating" tuiCardLarge>
+  <tui-axes class="axes" axisYName="Handicap Index" [horizontalLines]="2" [verticalLines]="4">
+    <tui-line-chart
+      [filled]="true"
+      [height]="200"
+      [smoothingFactor]="50"
+      [tuiHintContent]="hint"
+      [dots]="true"
+      [value]="value"
+      [width]="400"
+      [x]="0"
+      [y]="0"
+    />
+  </tui-axes>
+
+  <ng-template #hintContent let-index="index" let-value>
+    <div>Vertical: {{ value[0] }}</div>
+    <div>Horizontal: {{ value[1] }}</div>
+    <div>index: {{ index }}</div>
+  </ng-template>
+</div>
