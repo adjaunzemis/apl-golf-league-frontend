@@ -17,3 +17,14 @@ section {
   inline-size: 25rem;
   color: #bc71c9;
 }
+
+[tuiTh],
+[tuiTd] {
+  border-inline-start: none;
+  border-inline-end: none;
+}
+
+[tuiTable][data-size='s'] [tuiTitle] {
+  flex-direction: row;
+  gap: 0.375rem;
+}
