@@ -25,6 +25,7 @@ import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments
 import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
 import { BylawsComponent } from './bylaws/bylaws.component';
 import { AddQualifyingScoreComponent } from './golfers/add-qualifying-score/add-qualifying-score.component';
+import { TaigaExamplesComponent } from './taiga-examples/taiga-examples.component';
 
 const routes: Routes = [
   { path: '', component: LeagueHomeComponent },
@@ -78,6 +79,7 @@ const routes: Routes = [
   { path: 'rules', component: RulesComponent },
   { path: 'handicaps', component: HandicapsComponent },
   { path: 'bylaws', component: BylawsComponent },
+  { path: 'taiga-examples', component: TaigaExamplesComponent },
 ];
 
 @NgModule({
