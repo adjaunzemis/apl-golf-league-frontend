@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
@@ -15,9 +15,7 @@ import { AccordionModule } from 'primeng/accordion';
   styleUrls: ['./primeng-example.component.css']
 })
 export class PrimeNGExampleComponent {
-
-  constructor(private cd: ChangeDetectorRef) {}
-
+  
   standings = [
     { name: 'Tiger Woods', handicap: -5, wins: 3 },
     { name: 'Phil Mickelson', handicap: 1, wins: 2 },
@@ -52,7 +50,7 @@ export class PrimeNGExampleComponent {
     { name: 'Tiger Woods', handicap: -5, wins: 3, image: 'assets/tiger.jpg' },
     { name: 'Phil Mickelson', handicap: 1, wins: 2, image: 'assets/phil.jpg' }
   ];
-
+  
   polarData = {
     datasets: [
       {
@@ -70,5 +68,30 @@ export class PrimeNGExampleComponent {
     labels: ['Pink', 'Gray', 'Orange', 'Purple', 'Cyan']
   };
   polarOptions = {};
+  
+  radarData = {
+    labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+    datasets: [
+      {
+        label: 'My First dataset',
+        borderColor: "gray",
+        pointBackgroundColor: "gray",
+        pointBorderColor: "gray",
+        pointHoverBackgroundColor: "black",
+        pointHoverBorderColor: "gray",
+        data: [65, 59, 90, 81, 56, 55, 40]
+      },
+      {
+        label: 'My Second dataset',
+        borderColor: "cyan",
+        pointBackgroundColor: "cyan",
+        pointBorderColor: "cyan",
+        pointHoverBackgroundColor: "black",
+        pointHoverBorderColor: "cyan",
+        data: [28, 48, 40, 19, 96, 27, 100]
+      }
+    ]
+  };
+  radarOptions = {};
   
 }
