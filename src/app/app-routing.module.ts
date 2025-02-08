@@ -79,7 +79,7 @@ const routes: Routes = [
   { path: 'rules', component: RulesComponent },
   { path: 'handicaps', component: HandicapsComponent },
   { path: 'bylaws', component: BylawsComponent },
-  { path: 'primeng-example', component: PrimeNGExampleComponent }
+  { path: 'primeng-example', component: PrimeNGExampleComponent },
 ];
 
 @NgModule({

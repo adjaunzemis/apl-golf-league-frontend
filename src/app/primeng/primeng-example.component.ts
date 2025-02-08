@@ -6,92 +6,93 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 
-
 @Component({
   selector: 'app-example',
   standalone: true,
   imports: [CommonModule, TableModule, ChartModule, ButtonModule, CardModule, AccordionModule],
   templateUrl: './primeng-example.component.html',
-  styleUrls: ['./primeng-example.component.css']
+  styleUrls: ['./primeng-example.component.css'],
 })
 export class PrimeNGExampleComponent {
-  
   standings = [
     { name: 'Tiger Woods', handicap: -5, wins: 3 },
     { name: 'Phil Mickelson', handicap: 1, wins: 2 },
-    { name: 'Rory McIlroy', handicap: -3, wins: 4 }
+    { name: 'Rory McIlroy', handicap: -3, wins: 4 },
   ];
-  
+
   leaderboard = [
     { rank: 1, name: 'Tiger Woods', points: 500 },
     { rank: 2, name: 'Rory McIlroy', points: 450 },
-    { rank: 3, name: 'Phil Mickelson', points: 400 }
+    { rank: 3, name: 'Phil Mickelson', points: 400 },
   ];
-  
+
   chartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     datasets: [
       { label: 'Tiger Woods', data: [-5, -4, -6, -5, -7], borderColor: '#42A5F5' },
-      { label: 'Phil Mickelson', data: [1, 2, 0, 1, -1], borderColor: '#FFA726' }
-    ]
+      { label: 'Phil Mickelson', data: [1, 2, 0, 1, -1], borderColor: '#FFA726' },
+    ],
   };
-  
+
   matches = [
     { player1: 'Tiger Woods', player2: 'Phil Mickelson' },
-    { player1: 'Rory McIlroy', player2: 'Dustin Johnson' }
+    { player1: 'Rory McIlroy', player2: 'Dustin Johnson' },
   ];
-  
+
   matchHistory = [
-    { date: '2025-01-10', player1: 'Tiger Woods', player2: 'Phil Mickelson', winner: 'Tiger Woods' },
-    { date: '2025-01-15', player1: 'Rory McIlroy', player2: 'Dustin Johnson', winner: 'Rory McIlroy' }
+    {
+      date: '2025-01-10',
+      player1: 'Tiger Woods',
+      player2: 'Phil Mickelson',
+      winner: 'Tiger Woods',
+    },
+    {
+      date: '2025-01-15',
+      player1: 'Rory McIlroy',
+      player2: 'Dustin Johnson',
+      winner: 'Rory McIlroy',
+    },
   ];
-  
+
   playerProfiles = [
     { name: 'Tiger Woods', handicap: -5, wins: 3, image: 'assets/tiger.jpg' },
-    { name: 'Phil Mickelson', handicap: 1, wins: 2, image: 'assets/phil.jpg' }
+    { name: 'Phil Mickelson', handicap: 1, wins: 2, image: 'assets/phil.jpg' },
   ];
-  
+
   polarData = {
     datasets: [
       {
         data: [11, 16, 7, 3, 14],
-        backgroundColor: [
-          "pink",
-          "gray",
-          "orange",
-          "purple",
-          "cyan"
-        ],
-        label: 'My dataset'
-      }
+        backgroundColor: ['pink', 'gray', 'orange', 'purple', 'cyan'],
+        label: 'My dataset',
+      },
     ],
-    labels: ['Pink', 'Gray', 'Orange', 'Purple', 'Cyan']
+    labels: ['Pink', 'Gray', 'Orange', 'Purple', 'Cyan'],
   };
   polarOptions = {};
-  
+
   radarData = {
     labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
     datasets: [
       {
         label: 'My First dataset',
-        borderColor: "gray",
-        pointBackgroundColor: "gray",
-        pointBorderColor: "gray",
-        pointHoverBackgroundColor: "black",
-        pointHoverBorderColor: "gray",
-        data: [65, 59, 90, 81, 56, 55, 40]
+        borderColor: 'gray',
+        pointBackgroundColor: 'gray',
+        pointBorderColor: 'gray',
+        pointHoverBackgroundColor: 'black',
+        pointHoverBorderColor: 'gray',
+        data: [65, 59, 90, 81, 56, 55, 40],
       },
       {
         label: 'My Second dataset',
-        borderColor: "cyan",
-        pointBackgroundColor: "cyan",
-        pointBorderColor: "cyan",
-        pointHoverBackgroundColor: "black",
-        pointHoverBorderColor: "cyan",
-        data: [28, 48, 40, 19, 96, 27, 100]
-      }
-    ]
+        borderColor: 'cyan',
+        pointBackgroundColor: 'cyan',
+        pointBorderColor: 'cyan',
+        pointHoverBackgroundColor: 'black',
+        pointHoverBorderColor: 'cyan',
+        data: [28, 48, 40, 19, 96, 27, 100],
+      },
+    ],
   };
   radarOptions = {};
-  
 }
