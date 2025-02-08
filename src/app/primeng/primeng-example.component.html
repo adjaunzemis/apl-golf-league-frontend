@@ -1,0 +1,68 @@
+// Sample Table for Standings
+<p-table [value]="standings" class="shadow-lg border border-gray-300 rounded-lg">
+  <ng-template pTemplate="header">
+    <tr class="bg-gray-100 text-gray-600 text-sm">
+      <th class="py-3 px-6">Player</th>
+      <th class="py-3 px-6">Handicap</th>
+      <th class="py-3 px-6">Wins</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-player>
+    <tr class="border-b border-gray-200 hover:bg-gray-100">
+      <td class="py-3 px-6">{{ player.name }}</td>
+      <td class="py-3 px-6">{{ player.handicap }}</td>
+      <td class="py-3 px-6">{{ player.wins }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+// Sample Chart for Handicap Changes
+<p-chart type="line" [data]="chartData"></p-chart>
+
+// Leaderboard Example
+<div class="p-4 bg-white rounded-lg shadow-md">
+  <h2 class="text-lg font-semibold text-gray-700">Leaderboard</h2>
+  <ul>
+    <li *ngFor="let player of leaderboard" class="py-2 border-b">
+      {{ player.rank }}. {{ player.name }} - {{ player.points }} pts
+    </li>
+  </ul>
+</div>
+
+// Sample Tournament Bracket Structure
+<div class="p-4 bg-gray-100 rounded-lg shadow-md">
+  <h2 class="text-lg font-semibold text-gray-700">Tournament Bracket</h2>
+  <div class="grid grid-cols-4 gap-4">
+    <div class="p-2 bg-white rounded shadow" *ngFor="let match of matches">
+      {{ match.player1 }} vs {{ match.player2 }}
+    </div>
+  </div>
+</div>
+
+// Match History
+<p-accordion>
+  <p-accordionTab header="Match History">
+    <ul>
+      <li *ngFor="let match of matchHistory" class="py-2 border-b">
+        {{ match.date }}: {{ match.player1 }} vs {{ match.player2 }} - Winner: {{ match.winner }}
+      </li>
+    </ul>
+  </p-accordionTab>
+</p-accordion>
+
+// Player Profiles
+<div class="p-4 bg-white rounded-lg shadow-md">
+  <h2 class="text-lg font-semibold text-gray-700">Player Profiles</h2>
+  <div class="grid grid-cols-2 gap-4">
+    <p-card *ngFor="let player of playerProfiles">
+      <ng-template pTemplate="header">
+        <img src="{{ player.image }}" alt="{{ player.name }}" class="w-full h-32 object-cover rounded-t-lg">
+      </ng-template>
+      <ng-template pTemplate="title">{{ player.name }}</ng-template>
+      <ng-template pTemplate="content">
+        <p>Handicap: {{ player.handicap }}</p>
+        <p>Wins: {{ player.wins }}</p>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

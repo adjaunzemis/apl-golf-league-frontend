@@ -25,6 +25,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { CarouselComponent } from './carousel/carousel.component';
 import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
 import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
+import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { TeamCreateComponent } from './signup/team-create.component'; // TODO: M
     DivisionsModule,
     AuthModule,
     PaymentsModule,
+    PrimeNGExampleComponent,
   ],
   providers: [
     {
