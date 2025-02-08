@@ -29,10 +29,11 @@ export class PrimeNGExampleComponent {
   chartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     datasets: [
-      { label: 'Tiger Woods', data: [-5, -4, -6, -5, -7], borderColor: '#42A5F5' },
-      { label: 'Phil Mickelson', data: [1, 2, 0, 1, -1], borderColor: '#FFA726' },
+      { label: 'Tiger Woods', data: [-5, -4, -6, -5, -7], borderColor: '#42A5F5', tension: 0.4 },
+      { label: 'Phil Mickelson', data: [1, 2, 0, 1, -1], borderColor: '#FFA726', tension: 0.4 },
     ],
   };
+  chartOptions = {};
 
   matches = [
     { player1: 'Tiger Woods', player2: 'Phil Mickelson' },
