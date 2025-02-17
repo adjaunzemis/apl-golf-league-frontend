@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { providePrimeNG } from 'primeng/config';
+import Material from '@primeng/themes/material';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +28,7 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
 import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
+import { PrimeNGModule } from './primeng.module';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,7 @@ import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
     AuthModule,
     PaymentsModule,
     PrimeNGExampleComponent,
+    PrimeNGModule,
   ],
   providers: [
     {
@@ -68,6 +72,16 @@ import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
       useClass: ErrorInterceptor,
     },
     provideHttpClient(withInterceptorsFromDi()),
+    providePrimeNG({
+      theme: {
+        preset: Material,
+        options: {
+          prefix: 'p',
+          darkModeSelector: false,
+        }
+      },
+      ripple: true,
+    }),
   ],
 })
 export class AppModule {}

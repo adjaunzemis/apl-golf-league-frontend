@@ -1,9 +1,14 @@
 <div class="content">
+  <div class="bg-blue-500 text-white p-4 rounded-lg">Tailwind is working!</div>
+  <div class="bg-blue-50">Test</div>
+  
+  <p-button label="Profile" icon="pi pi-user" />
+
   <!-- <app-carousel></app-carousel> -->
-  <img src="assets/apl_golf_logo.png" alt="APL Golf League" height="150px" />
+  <p-image src="assets/apl_golf_logo.png" alt="APL Golf League" width="150px" />
 
   <div class="card-container">
-    <a class="card card-small selectable" routerLink="/rules">
+    <p-button class="bg-white-100" routerLink="/rules">
       <span class="bold">League Rules</span>
 
       <svg
@@ -15,7 +20,7 @@
       >
         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
       </svg>
-    </a>
+    </p-button>
 
     <a class="card card-small selectable" routerLink="/bylaws">
       <span class="bold">League Bylaws</span>
