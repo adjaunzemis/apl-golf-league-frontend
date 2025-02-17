@@ -80,9 +80,9 @@ import { PrimeNGModule } from './primeng.module';
           darkModeSelector: false,
           cssLayer: {
             name: 'primeng',
-            order: 'tailwind-base, primeng, tailwind-utilities'
-          }
-        }
+            order: 'tailwind-base, primeng, tailwind-utilities',
+          },
+        },
       },
       ripple: true,
     }),
