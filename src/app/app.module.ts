@@ -78,6 +78,10 @@ import { PrimeNGModule } from './primeng.module';
         options: {
           prefix: 'p',
           darkModeSelector: false,
+          cssLayer: {
+            name: 'primeng',
+            order: 'tailwind-base, primeng, tailwind-utilities'
+          }
         }
       },
       ripple: true,
