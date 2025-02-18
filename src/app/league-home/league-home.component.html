@@ -1,9 +1,10 @@
 <div class="content">
+
   <!-- <app-carousel></app-carousel> -->
 
   <p-image src="assets/apl_golf_logo.png" alt="APL Golf League" width="150px" />
 
-  <div class="card-container">
+  <div class="py-4">
     <p-button label="League Rules" routerLink="/rules" />
     <p-button label="League Bylaws" routerLink="/bylaws" />
     <!-- <p-button label="Handicapping" routerLink="/handicaps" /> -->
@@ -15,7 +16,7 @@
     </a>
   </div>
 
-  <h2>Flights</h2>
+  <span class="font-bold">Flights</span>
 
   <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
 
@@ -54,20 +55,14 @@
     </a>
   </div>
 
-  <div class="card-container">
-    <a class="card card-small selectable" routerLink="/flight/history">
-      <span class="bold">Historical Flights</span>
-    </a>
-
-    <a
-      class="card card-small selectable"
-      href="mailto:{{ getCurrentFlightSecretariesEmailList() }}"
-    >
-      <span class="bold">Contact Flight Secretaries</span>
+  <div class="py-8">
+    <p-button label="Historical Flights" routerLink="/flight/history" />
+    <a class="p-button" href="mailto:{{ getCurrentFlightSecretariesEmailList() }}">
+      Contact Flight Secretaries
     </a>
   </div>
 
-  <h2>Tournaments</h2>
+  <span class="font-bold">Tournaments</span>
 
   <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
 
@@ -112,20 +107,14 @@
     </a>
   </div>
 
-  <div class="card-container">
-    <a class="card card-small selectable" routerLink="/tournament/history">
-      <span class="bold">Historical Tournaments</span>
-    </a>
-
-    <a
-      class="card card-small selectable"
-      href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}"
-    >
-      <span class="bold">Contact Organizers</span>
+  <div class="py-8">
+    <p-button label="Historical Tournaments" routerLink="/tournament/history" />
+    <a class="p-button" href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}">
+      Contact Organizers
     </a>
   </div>
 
-  <h2>Officers</h2>
+  <span class="font-bold">Officers</span>
 
   <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
 
@@ -140,7 +129,10 @@
     </a>
   </div>
 
-  <a class="card card-small selectable" href="mailto:{{ getLeagueOfficersEmailList() }}">
-    <span class="bold">Contact League Officers</span>
-  </a>
+  <div class="py-8">
+    <a class="p-button" href="mailto:{{ getLeagueOfficersEmailList() }}">
+      Contact League Officers
+    </a>
+  </div>
+
 </div>
