@@ -13,6 +13,10 @@
   @apply text-blue-600 shadow-xl hover:-translate-y-1;
 }
 
+span.section-header {
+  @apply text-black font-bold text-lg py-4
+}
+
 html,
 body {
   height: 100%;

@@ -16,7 +16,7 @@
     </a>
   </div>
 
-  <span class="font-bold">Flights</span>
+  <span class="section-header">Flights</span>
 
   <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
 
@@ -55,14 +55,14 @@
     </a>
   </div>
 
-  <div class="py-8">
+  <div class="py-4">
     <p-button label="Historical Flights" routerLink="/flight/history" />
     <a class="p-button" href="mailto:{{ getCurrentFlightSecretariesEmailList() }}">
       Contact Flight Secretaries
     </a>
   </div>
 
-  <span class="font-bold">Tournaments</span>
+  <span class="section-header">Tournaments</span>
 
   <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
 
@@ -107,14 +107,14 @@
     </a>
   </div>
 
-  <div class="py-8">
+  <div class="py-4">
     <p-button label="Historical Tournaments" routerLink="/tournament/history" />
     <a class="p-button" href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}">
       Contact Organizers
     </a>
   </div>
 
-  <span class="font-bold">Officers</span>
+  <span class="section-header">Officers</span>
 
   <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
 
@@ -129,7 +129,7 @@
     </a>
   </div>
 
-  <div class="py-8">
+  <div class="py-4">
     <a class="p-button" href="mailto:{{ getLeagueOfficersEmailList() }}">
       Contact League Officers
     </a>
