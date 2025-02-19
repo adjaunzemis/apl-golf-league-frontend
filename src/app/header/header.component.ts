@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { MenuItem } from 'primeng/api';
 
 import { AuthService } from '../auth/auth.service';
 import { FlightCreateComponent } from '../flights/flight-create/flight-create.component';
@@ -45,6 +46,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   tournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
+  items: MenuItem[] | undefined;
+
   constructor(
     private authService: AuthService,
     private golfersService: GolfersService,
@@ -57,6 +60,159 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+
+    this.items = [
+      {
+        label: 'Home',
+        icon: 'pi pi-home',
+        route: '/'
+      },
+      {
+        label: 'User',
+        icon: 'pi pi-user',
+        items: [
+          {
+            label: 'Login',
+            icon: 'pi pi-sign-in',
+            route: '/auth/login'
+          },
+          {
+            label: 'Profile',
+            icon: 'pi pi-user',
+            route: '/auth/user'
+          },
+          {
+            label: 'Logout',
+            icon: 'pi pi-sign-out',
+            action: 'onLogout()'
+          }
+        ]
+      },
+      {
+        label: 'Sign-Ups',
+        icon: 'pi pi-user-plus',
+        route: '/signup'
+      },
+      {
+        label: 'Pay Dues',
+        icon: 'pi pi-dollar',
+        action: 'onPayDues()'
+      },
+      {
+        label: 'Search',
+        icon: 'pi pi-search',
+        items: [
+          {
+            label: 'Golfers',
+            icon: 'pi pi-users',
+            route: '/golfer/search'
+          },
+          {
+            label: 'Courses',
+            icon: 'pi pi-home',
+            route: '/courses'
+          },
+        ]
+      },
+      {
+        label: 'Post Scores',
+        icon: 'pi pi-pen-to-square',
+        items: [
+          {
+            label: 'Flight Match',
+            icon: 'pi pi-venus',
+            route: '/flight-match/edit'
+          },
+          {
+            label: 'Tournament Scores',
+            icon: 'pi pi-trophy',
+            route: '/tournament/scores'
+          }
+        ]
+      },
+      {
+        label: 'Rules',
+        icon: 'pi pi-clipboard',
+        items: [
+          {
+            label: 'League Rules',
+            icon: 'pi pi-file-edit',
+            route: '/rules'
+          },
+          {
+            label: 'League By-Laws',
+            icon: 'pi pi-exclamation-triangle',
+            route: '/bylaws'
+          },
+          {
+            label: 'Participation Agreement',
+            icon: 'pi pi-download',
+            route: '/rules'
+          }
+        ]
+      },
+      {
+        label: 'Admin',
+        icon: 'pi pi-cog',
+        items: [
+          {
+            label: 'Add Golfer',
+            icon: 'pi pi-user-plus',
+            action: 'onAddNewGolfer()'
+          },
+          {
+            label: 'Qualifying Scores',
+            icon: 'pi pi-venus',
+            route: '/golfer/qualifying'
+          },
+          {
+            label: 'Add Course',
+            icon: 'pi pi-home',
+            route: '/courses/edit'
+          },
+          {
+            label: 'Add Flight',
+            icon: 'pi pi-plus',
+            action: 'onAddNewFlight()'
+          },
+          {
+            label: 'Add Tournament',
+            icon: 'pi pi-plus',
+            action: 'onAddNewTournament()'
+          },
+          {
+            label: 'Treasury',
+            icon: 'pi pi-dollar',
+            items: [
+              {
+                label: 'League Dues',
+                route: '/dues-payments'
+              },
+              {
+                label: 'Tournaments',
+                items: [
+                  {
+                    label: 'TODO',
+                    route: '/'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'Manage Users',
+            icon: 'pi pi-users',
+            route: '/auth/manage'
+          }
+        ]
+      },
+      {
+        label: 'Legacy Website',
+        icon: 'pi pi-history',
+        url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl'
+      }
+    ];
+
     this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !user ? false : true;
       if (this.isAuthenticated) {
