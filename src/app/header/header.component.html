@@ -1,10 +1,9 @@
 <p-menubar [model]="items">
-
   <ng-template #start>
     <p-image class="mx-2 my-1" src="assets/apl_golf_logo.png" alt="APL Golf League" width="60px" />
   </ng-template>
 
-  <ng-template  #item let-item>
+  <ng-template #item let-item>
     <ng-container *ngIf="item.route; else urlRef">
       <a [routerLink]="item.route" class="p-menubar-item-link">
         <span [class]="item.icon" class="ml-2"></span>
@@ -17,7 +16,8 @@
         <span class="mx-2">{{ item.label }}</span>
       </a>
     </ng-template>
-    <ng-template #action> <!-- TODO: Impelement action-type items -->
+    <ng-template #action>
+      <!-- TODO: Impelement action-type items -->
       <button *ngIf="item.action; else noLink" click="item.action" class="p-menubar-item-link">
         <span [class]="item.icon" class="ml-2"></span>
         <span class="mx-2">{{ item.label }}</span>
@@ -31,5 +31,4 @@
       </div>
     </ng-template>
   </ng-template>
-
 </p-menubar>

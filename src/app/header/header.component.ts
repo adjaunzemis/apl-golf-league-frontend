@@ -60,12 +60,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-
     this.items = [
       {
         label: 'Home',
         icon: 'pi pi-home',
-        route: '/'
+        route: '/',
       },
       {
         label: 'User',
@@ -74,29 +73,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Login',
             icon: 'pi pi-sign-in',
-            route: '/auth/login'
+            route: '/auth/login',
           },
           {
             label: 'Profile',
             icon: 'pi pi-user',
-            route: '/auth/user'
+            route: '/auth/user',
           },
           {
             label: 'Logout',
             icon: 'pi pi-sign-out',
-            action: 'onLogout()'
-          }
-        ]
+            action: 'onLogout()',
+          },
+        ],
       },
       {
         label: 'Sign-Ups',
         icon: 'pi pi-user-plus',
-        route: '/signup'
+        route: '/signup',
       },
       {
         label: 'Pay Dues',
         icon: 'pi pi-dollar',
-        action: 'onPayDues()'
+        action: 'onPayDues()',
       },
       {
         label: 'Search',
@@ -105,14 +104,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Golfers',
             icon: 'pi pi-users',
-            route: '/golfer/search'
+            route: '/golfer/search',
           },
           {
             label: 'Courses',
             icon: 'pi pi-home',
-            route: '/courses'
+            route: '/courses',
           },
-        ]
+        ],
       },
       {
         label: 'Post Scores',
@@ -121,14 +120,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Flight Match',
             icon: 'pi pi-venus',
-            route: '/flight-match/edit'
+            route: '/flight-match/edit',
           },
           {
             label: 'Tournament Scores',
             icon: 'pi pi-trophy',
-            route: '/tournament/scores'
-          }
-        ]
+            route: '/tournament/scores',
+          },
+        ],
       },
       {
         label: 'Rules',
@@ -137,19 +136,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'League Rules',
             icon: 'pi pi-file-edit',
-            route: '/rules'
+            route: '/rules',
           },
           {
             label: 'League By-Laws',
             icon: 'pi pi-exclamation-triangle',
-            route: '/bylaws'
+            route: '/bylaws',
           },
           {
             label: 'Participation Agreement',
             icon: 'pi pi-download',
-            route: '/rules'
-          }
-        ]
+            route: '/rules',
+          },
+        ],
       },
       {
         label: 'Admin',
@@ -158,27 +157,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Add Golfer',
             icon: 'pi pi-user-plus',
-            action: 'onAddNewGolfer()'
+            action: 'onAddNewGolfer()',
           },
           {
             label: 'Qualifying Scores',
             icon: 'pi pi-venus',
-            route: '/golfer/qualifying'
+            route: '/golfer/qualifying',
           },
           {
             label: 'Add Course',
             icon: 'pi pi-home',
-            route: '/courses/edit'
+            route: '/courses/edit',
           },
           {
             label: 'Add Flight',
             icon: 'pi pi-plus',
-            action: 'onAddNewFlight()'
+            action: 'onAddNewFlight()',
           },
           {
             label: 'Add Tournament',
             icon: 'pi pi-plus',
-            action: 'onAddNewTournament()'
+            action: 'onAddNewTournament()',
           },
           {
             label: 'Treasury',
@@ -186,31 +185,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
             items: [
               {
                 label: 'League Dues',
-                route: '/dues-payments'
+                route: '/dues-payments',
               },
               {
                 label: 'Tournaments',
                 items: [
                   {
                     label: 'TODO',
-                    route: '/'
-                  }
-                ]
-              }
-            ]
+                    route: '/',
+                  },
+                ],
+              },
+            ],
           },
           {
             label: 'Manage Users',
             icon: 'pi pi-users',
-            route: '/auth/manage'
-          }
-        ]
+            route: '/auth/manage',
+          },
+        ],
       },
       {
         label: 'Legacy Website',
         icon: 'pi pi-history',
-        url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl'
-      }
+        url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl',
+      },
     ];
 
     this.userSub = this.authService.user.subscribe((user) => {

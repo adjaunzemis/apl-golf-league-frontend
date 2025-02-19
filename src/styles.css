@@ -14,19 +14,19 @@
 }
 
 span.section-header {
-  @apply text-black font-bold text-lg py-4
+  @apply text-black font-bold text-lg py-4;
 }
 
 .p-menubar {
-  @apply bg-gray-50 ring-1 ring-gray-200 text-black
+  @apply bg-gray-50 ring-1 ring-gray-200 text-black;
 }
 
 .p-menubar span {
-  @apply text-black
+  @apply text-black;
 }
 
 .p-menubar-item-link {
-  @apply py-1
+  @apply py-1;
 }
 
 html,

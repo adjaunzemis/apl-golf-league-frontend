@@ -8,6 +8,14 @@ import { BadgeModule } from 'primeng/badge';
 import { DrawerModule } from 'primeng/drawer';
 
 @NgModule({
-  exports: [ButtonModule, ImageModule, CardModule, DialogModule, MenubarModule, BadgeModule, DrawerModule],
+  exports: [
+    ButtonModule,
+    ImageModule,
+    CardModule,
+    DialogModule,
+    MenubarModule,
+    BadgeModule,
+    DrawerModule,
+  ],
 })
 export class PrimeNGModule {}
