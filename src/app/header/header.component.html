@@ -1,33 +1,36 @@
 <p-menubar [model]="items">
   <ng-template #start>
-    <p-image class="mx-2 my-1" src="assets/apl_golf_logo.png" alt="APL Golf League" width="60px" />
+    <p-image src="assets/apl_golf_logo.png" alt="APL Golf League" routerLink="/" />
   </ng-template>
 
   <ng-template #item let-item>
     <ng-container *ngIf="item.route; else urlRef">
       <a [routerLink]="item.route" class="p-menubar-item-link">
-        <span [class]="item.icon" class="ml-2"></span>
-        <span class="mx-2">{{ item.label }}</span>
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
       </a>
     </ng-container>
     <ng-template #urlRef>
-      <a *ngIf="item.url; else action" [href]="item.url" class="p-menubar-item-link">
-        <span [class]="item.icon" class="ml-2"></span>
-        <span class="mx-2">{{ item.label }}</span>
+      <a *ngIf="item.url; else callback" [href]="item.url" class="p-menubar-item-link">
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
       </a>
     </ng-template>
-    <ng-template #action>
-      <!-- TODO: Impelement action-type items -->
-      <button *ngIf="item.action; else noLink" click="item.action" class="p-menubar-item-link">
-        <span [class]="item.icon" class="ml-2"></span>
-        <span class="mx-2">{{ item.label }}</span>
+    <ng-template #callback>
+      <button
+        *ngIf="item.callback; else noLink"
+        (click)="item.callback()"
+        class="p-menubar-item-link"
+      >
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
       </button>
     </ng-template>
     <ng-template #noLink>
       <div class="p-menubar-item-link">
-        <span [class]="item.icon" class="ml-2"></span>
-        <span class="ml-2">{{ item.label }}</span>
-        <span class="pi pi-fw pi-angle-down mx-2"></span>
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
+        <span class="pi pi-fw pi-angle-down"></span>
       </div>
     </ng-template>
   </ng-template>

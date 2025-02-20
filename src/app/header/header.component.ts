@@ -62,11 +62,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Home',
-        icon: 'pi pi-home',
-        route: '/',
-      },
-      {
         label: 'User',
         icon: 'pi pi-user',
         items: [
@@ -83,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Logout',
             icon: 'pi pi-sign-out',
-            action: 'onLogout()',
+            callback: () => this.onLogout(),
           },
         ],
       },
@@ -95,7 +90,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Pay Dues',
         icon: 'pi pi-dollar',
-        action: 'onPayDues()',
+        callback: () => this.onPayDues(),
       },
       {
         label: 'Search',
@@ -157,7 +152,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Add Golfer',
             icon: 'pi pi-user-plus',
-            action: 'onAddNewGolfer()',
+            callback: () => this.onAddNewGolfer(),
           },
           {
             label: 'Qualifying Scores',
@@ -172,12 +167,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Add Flight',
             icon: 'pi pi-plus',
-            action: 'onAddNewFlight()',
+            callback: () => this.onAddNewFlight(),
           },
           {
             label: 'Add Tournament',
             icon: 'pi pi-plus',
-            action: 'onAddNewTournament()',
+            callback: () => this.onAddNewTournament(),
           },
           {
             label: 'Treasury',

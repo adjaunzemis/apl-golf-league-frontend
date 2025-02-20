@@ -21,10 +21,6 @@ span.section-header {
   @apply bg-gray-50 ring-1 ring-gray-200 text-black;
 }
 
-.p-menubar span {
-  @apply text-black;
-}
-
 .p-menubar-item-link {
   @apply py-1;
 }
