@@ -1,13 +1,25 @@
-svg.material-icons {
-  height: 24px;
-  width: auto;
-  margin-left: 16px;
+@import 'tailwindcss';
+
+.card {
+  @apply p-4 mb-4;
 }
 
-svg.material-icons path {
-  fill: #888;
+.card.selectable {
+  cursor: pointer;
 }
 
-.card-container .card:not(.highlight-card):hover .material-icons path {
-  fill: rgb(105, 103, 103);
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.header-image {
+  width: 100px;
+  @apply my-2;
+}
+
+span {
+  @apply p-4;
 }

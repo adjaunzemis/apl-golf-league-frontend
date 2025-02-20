@@ -1,51 +1,50 @@
-<div class="content">
-  <!-- <app-carousel></app-carousel> -->
+<div class="grid grid-cols-12 gap-8">
+  <p-card class="card col-span-6">
+    <ng-template #title>
+      <span>Flights</span>
+    </ng-template>
 
-  <span class="section-header">Flights</span>
-
-  <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
-
-  <div class="card-container" *ngIf="!isLoadingFlights">
-    <a
-      class="card selectable"
-      routerLink="/flight"
-      [queryParams]="{ id: flight.id }"
-      *ngFor="let flight of currentFlights"
-    >
-      <img
-        src="assets/{{ flight.logo_url }}"
-        alt="{{ flight.name }}"
-        width="50"
-        *ngIf="flight.logo_url"
-      />
-
-      <div style="width: 70%; text-align: center">
-        <div class="bold">
-          <span>{{ flight.name }} ({{ flight.year }})</span>
-        </div>
-        <div>
-          <span>{{ flight.course }}</span>
-        </div>
-      </div>
-
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
+    <div class="grid grid-cols-3">
+      <p-card
+        class="card selectable col-span-1"
+        routerLink="/flight"
+        [queryParams]="{ id: flight.id }"
+        *ngFor="let flight of currentFlights"
       >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-  </div>
+        <ng-template #header>
+          <div class="centered">
+            <p-image
+              class="header-image"
+              src="assets/{{ flight.logo_url }}"
+              alt="{{ flight.name }}"
+              *ngIf="flight.logo_url"
+            />
+          </div>
+        </ng-template>
+        <ng-template #title>
+          <span>{{ flight.name }} ({{ flight.year }})</span>
+        </ng-template>
+        <ng-template #subtitle>
+          <span>{{ flight.course }}</span>
+        </ng-template>
+      </p-card>
+    </div>
 
-  <div class="py-4">
-    <p-button label="Historical Flights" routerLink="/flight/history" />
-    <a class="p-button" href="mailto:{{ getCurrentFlightSecretariesEmailList() }}">
-      Contact Flight Secretaries
-    </a>
-  </div>
+    <ng-template #footer>
+      <div class="my-4">
+        <p-button label="Historical Flights" routerLink="/flight/history" />
+        <a class="p-button" href="mailto:{{ getCurrentFlightSecretariesEmailList() }}">
+          Contact Flight Secretaries
+        </a>
+      </div>
+    </ng-template>
+
+    <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
+
+    <div class="card-container" *ngIf="!isLoadingFlights"></div>
+
+    <div class="py-4"></div>
+  </p-card>
 
   <span class="section-header">Tournaments</span>
 
@@ -58,13 +57,6 @@
       [queryParams]="{ id: tournament.id }"
       *ngFor="let tournament of currentTournaments"
     >
-      <img
-        src="assets/{{ tournament.logo_url }}"
-        alt="{{ tournament.name }}"
-        width="50"
-        *ngIf="tournament.logo_url"
-      />
-
       <div style="width: 70%; text-align: center">
         <div class="bold">
           <span>{{ tournament.name }} ({{ tournament.year }})</span>
