@@ -20,7 +20,7 @@ p-image {
 
 .end-menu {
   @apply text-pink-500;
-  margin-left: auto;  /* Pushes it to the right */
+  margin-left: auto; /* Pushes it to the right */
   display: flex;
   align-items: center; /* Ensures proper vertical alignment */
 }

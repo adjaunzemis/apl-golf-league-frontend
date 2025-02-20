@@ -11,7 +11,11 @@
       </a>
     </ng-container>
     <ng-template #urlRef>
-      <a *ngIf="item.visible && item.url; else callback" [href]="item.url" class="p-menubar-item-link">
+      <a
+        *ngIf="item.visible && item.url; else callback"
+        [href]="item.url"
+        class="p-menubar-item-link"
+      >
         <span [class]="item.icon"></span>
         <span>{{ item.label }}</span>
       </a>

@@ -147,13 +147,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
             icon: 'pi pi-venus',
             visible: true,
             callback: () => this.onPayDues(),
-          }
-        ]
+          },
+        ],
       },
       {
         label: 'Post Scores',
         icon: 'pi pi-pen-to-square',
-        visible: this.currentUser?.is_admin || this.currentUser?.edit_flights || this.currentUser?.edit_tournaments,
+        visible:
+          this.currentUser?.is_admin ||
+          this.currentUser?.edit_flights ||
+          this.currentUser?.edit_tournaments,
         items: [
           {
             label: 'Flight Match',
@@ -203,7 +206,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Admin',
         icon: 'pi pi-cog',
-        visible: this.currentUser?.is_admin || this.currentUser?.edit_flights || this.currentUser?.edit_tournaments || this.currentUser?.edit_payments,
+        visible:
+          this.currentUser?.is_admin ||
+          this.currentUser?.edit_flights ||
+          this.currentUser?.edit_tournaments ||
+          this.currentUser?.edit_payments,
         items: [
           {
             label: 'Add Golfer',
@@ -266,7 +273,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             route: '/auth/manage',
           },
         ],
-      }
+      },
     ];
   }
 

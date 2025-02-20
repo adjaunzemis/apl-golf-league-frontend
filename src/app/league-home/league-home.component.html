@@ -1,20 +1,6 @@
 <div class="content">
   <!-- <app-carousel></app-carousel> -->
 
-  <p-image src="assets/apl_golf_logo.png" alt="APL Golf League" width="150px" />
-
-  <div class="py-4">
-    <p-button label="League Rules" routerLink="/rules" />
-    <p-button label="League Bylaws" routerLink="/bylaws" />
-    <!-- <p-button label="Handicapping" routerLink="/handicaps" /> -->
-    <a class="p-button" href="assets/apl_blank_participation_agreement.pdf">
-      Participation Agreement
-    </a>
-    <a class="p-button" href="http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl">
-      Legacy APL Golf Website
-    </a>
-  </div>
-
   <span class="section-header">Flights</span>
 
   <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
