@@ -60,152 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.items = [
-      {
-        label: 'User',
-        icon: 'pi pi-user',
-        items: [
-          {
-            label: 'Login',
-            icon: 'pi pi-sign-in',
-            route: '/auth/login',
-          },
-          {
-            label: 'Profile',
-            icon: 'pi pi-user',
-            route: '/auth/user',
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-            callback: () => this.onLogout(),
-          },
-        ],
-      },
-      {
-        label: 'Sign-Ups',
-        icon: 'pi pi-user-plus',
-        route: '/signup',
-      },
-      {
-        label: 'Pay Dues',
-        icon: 'pi pi-dollar',
-        callback: () => this.onPayDues(),
-      },
-      {
-        label: 'Search',
-        icon: 'pi pi-search',
-        items: [
-          {
-            label: 'Golfers',
-            icon: 'pi pi-users',
-            route: '/golfer/search',
-          },
-          {
-            label: 'Courses',
-            icon: 'pi pi-home',
-            route: '/courses',
-          },
-        ],
-      },
-      {
-        label: 'Post Scores',
-        icon: 'pi pi-pen-to-square',
-        items: [
-          {
-            label: 'Flight Match',
-            icon: 'pi pi-venus',
-            route: '/flight-match/edit',
-          },
-          {
-            label: 'Tournament Scores',
-            icon: 'pi pi-trophy',
-            route: '/tournament/scores',
-          },
-        ],
-      },
-      {
-        label: 'Rules',
-        icon: 'pi pi-clipboard',
-        items: [
-          {
-            label: 'League Rules',
-            icon: 'pi pi-file-edit',
-            route: '/rules',
-          },
-          {
-            label: 'League By-Laws',
-            icon: 'pi pi-exclamation-triangle',
-            route: '/bylaws',
-          },
-          {
-            label: 'Participation Agreement',
-            icon: 'pi pi-download',
-            route: '/rules',
-          },
-        ],
-      },
-      {
-        label: 'Admin',
-        icon: 'pi pi-cog',
-        items: [
-          {
-            label: 'Add Golfer',
-            icon: 'pi pi-user-plus',
-            callback: () => this.onAddNewGolfer(),
-          },
-          {
-            label: 'Qualifying Scores',
-            icon: 'pi pi-venus',
-            route: '/golfer/qualifying',
-          },
-          {
-            label: 'Add Course',
-            icon: 'pi pi-home',
-            route: '/courses/edit',
-          },
-          {
-            label: 'Add Flight',
-            icon: 'pi pi-plus',
-            callback: () => this.onAddNewFlight(),
-          },
-          {
-            label: 'Add Tournament',
-            icon: 'pi pi-plus',
-            callback: () => this.onAddNewTournament(),
-          },
-          {
-            label: 'Treasury',
-            icon: 'pi pi-dollar',
-            items: [
-              {
-                label: 'League Dues',
-                route: '/dues-payments',
-              },
-              {
-                label: 'Tournaments',
-                items: [
-                  {
-                    label: 'TODO',
-                    route: '/',
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            label: 'Manage Users',
-            icon: 'pi pi-users',
-            route: '/auth/manage',
-          },
-        ],
-      },
-      {
-        label: 'Legacy Website',
-        icon: 'pi pi-history',
-        url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl',
-      },
-    ];
+    this.updateMenuItems();
 
     this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !user ? false : true;
@@ -253,6 +108,166 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.flightsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
+  }
+
+  updateMenuItems(): void {
+    this.items = [
+      {
+        label: 'Search',
+        icon: 'pi pi-search',
+        visible: true,
+        items: [
+          {
+            label: 'Golfers',
+            icon: 'pi pi-users',
+            visible: true,
+            route: '/golfer/search',
+          },
+          {
+            label: 'Courses',
+            icon: 'pi pi-home',
+            visible: this.currentUser?.is_admin,
+            route: '/courses',
+          },
+        ],
+      },
+      {
+        label: 'Sign-Ups',
+        icon: 'pi pi-clipboard',
+        visible: true,
+        route: '/signup',
+      },
+      {
+        label: 'Payments',
+        icon: 'pi pi-dollar',
+        visible: true,
+        items: [
+          {
+            label: 'League Dues',
+            icon: 'pi pi-venus',
+            visible: true,
+            callback: () => this.onPayDues(),
+          }
+        ]
+      },
+      {
+        label: 'Post Scores',
+        icon: 'pi pi-pen-to-square',
+        visible: this.currentUser?.is_admin || this.currentUser?.edit_flights || this.currentUser?.edit_tournaments,
+        items: [
+          {
+            label: 'Flight Match',
+            icon: 'pi pi-venus',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
+            route: '/flight-match/edit',
+          },
+          {
+            label: 'Tournament Scores',
+            icon: 'pi pi-trophy',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
+            route: '/tournament/scores',
+          },
+        ],
+      },
+      {
+        label: 'Rules',
+        icon: 'pi pi-clipboard',
+        visible: true,
+        items: [
+          {
+            label: 'League Rules',
+            icon: 'pi pi-file-edit',
+            visible: true,
+            route: '/rules',
+          },
+          {
+            label: 'League By-Laws',
+            icon: 'pi pi-exclamation-triangle',
+            visible: true,
+            route: '/bylaws',
+          },
+          {
+            label: 'Participation Agreement',
+            icon: 'pi pi-download',
+            visible: true,
+            route: '/rules',
+          },
+        ],
+      },
+      {
+        label: 'Legacy Website',
+        icon: 'pi pi-history',
+        visible: true,
+        url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl',
+      },
+      {
+        label: 'Admin',
+        icon: 'pi pi-cog',
+        visible: this.currentUser?.is_admin || this.currentUser?.edit_flights || this.currentUser?.edit_tournaments || this.currentUser?.edit_payments,
+        items: [
+          {
+            label: 'Add Golfer',
+            icon: 'pi pi-user-plus',
+            visible: this.currentUser?.is_admin,
+            callback: () => this.onAddNewGolfer(),
+          },
+          {
+            label: 'Qualifying Scores',
+            icon: 'pi pi-venus',
+            visible: this.currentUser?.is_admin,
+            route: '/golfer/qualifying',
+          },
+          {
+            label: 'Add Course',
+            icon: 'pi pi-plus',
+            visible: this.currentUser?.is_admin,
+            route: '/courses/edit',
+          },
+          {
+            label: 'Add Flight',
+            icon: 'pi pi-plus',
+            visible: this.currentUser?.is_admin,
+            callback: () => this.onAddNewFlight(),
+          },
+          {
+            label: 'Add Tournament',
+            icon: 'pi pi-plus',
+            visible: this.currentUser?.is_admin,
+            callback: () => this.onAddNewTournament(),
+          },
+          {
+            label: 'Treasury',
+            icon: 'pi pi-dollar',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+            items: [
+              {
+                label: 'League Dues',
+                icon: 'pi pi-venus',
+                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+                route: '/dues-payments',
+              },
+              {
+                label: 'Tournaments',
+                icon: 'pi pi-trophy',
+                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+                items: [
+                  {
+                    label: 'TODO',
+                    route: '/',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            label: 'Manage Users',
+            icon: 'pi pi-users',
+            visible: this.currentUser?.is_admin,
+            route: '/auth/manage',
+          },
+        ],
+      }
+    ];
   }
 
   onLogout(): void {
