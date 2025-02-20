@@ -67,6 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (this.isAuthenticated) {
         this.currentUser = user;
       }
+      this.updateMenuItems();
     });
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
@@ -280,6 +281,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout(): void {
     this.authService.logout();
     this.currentUser = null;
+    this.updateMenuItems();
   }
 
   onPayDues(): void {
