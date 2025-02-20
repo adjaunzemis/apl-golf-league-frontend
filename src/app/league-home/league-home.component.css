@@ -1,10 +1,6 @@
 @import 'tailwindcss';
 
-.card {
-  @apply p-4 mb-4;
-}
-
-.card.selectable {
+.selectable {
   cursor: pointer;
 }
 

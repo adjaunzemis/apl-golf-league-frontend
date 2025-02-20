@@ -1,12 +1,14 @@
 <div class="grid grid-cols-12 gap-8">
-  <p-card class="card col-span-6">
+  <p-card class="col-span-6 m-4">
     <ng-template #title>
       <span>Flights</span>
     </ng-template>
 
-    <div class="grid grid-cols-3">
+    <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
+
+    <div class="grid grid-cols-3 gap-4 mx-4">
       <p-card
-        class="card selectable col-span-1"
+        class="selectable col-span-1"
         routerLink="/flight"
         [queryParams]="{ id: flight.id }"
         *ngFor="let flight of currentFlights"
@@ -38,77 +40,84 @@
         </a>
       </div>
     </ng-template>
-
-    <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
-
-    <div class="card-container" *ngIf="!isLoadingFlights"></div>
-
-    <div class="py-4"></div>
   </p-card>
 
-  <span class="section-header">Tournaments</span>
+  <p-card class="col-span-6 m-4">
+    <ng-template #title>
+      <span>Tournaments</span>
+    </ng-template>
 
-  <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
+    <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
 
-  <div class="card-container" *ngIf="!isLoadingTournaments">
-    <a
-      class="card selectable"
-      routerLink="/tournament"
-      [queryParams]="{ id: tournament.id }"
-      *ngFor="let tournament of currentTournaments"
-    >
-      <div style="width: 70%; text-align: center">
-        <div class="bold">
-          <span>{{ tournament.name }} ({{ tournament.year }})</span>
-        </div>
-        <div>
-          <span
-            >{{ tournament.date | date: 'mediumDate' }}
-            {{ tournament.date | date: 'shortTime' }}</span
-          >
-        </div>
-        <div>
-          <span>{{ tournament.course }}</span>
-        </div>
-      </div>
-
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
+    <div class="grid grid-cols-3 gap-4 mx-4">
+      <p-card
+        class="selectable col-span-1"
+        routerLink="/tournament"
+        [queryParams]="{ id: tournament.id }"
+        *ngFor="let tournament of currentTournaments"
       >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-  </div>
+        <ng-template #header>
+          <div class="centered">
+            <p-image
+              class="header-image"
+              src="assets/{{ tournament.logo_url }}"
+              alt="{{ tournament.name }}"
+              *ngIf="tournament.logo_url"
+            />
+          </div>
+        </ng-template>
 
-  <div class="py-4">
-    <p-button label="Historical Tournaments" routerLink="/tournament/history" />
-    <a class="p-button" href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}">
-      Contact Organizers
-    </a>
-  </div>
+        <ng-template #title>
+          <span>{{ tournament.name }} ({{ tournament.year }})</span>
+        </ng-template>
 
-  <span class="section-header">Officers</span>
+        <ng-template #subtitle>
+          <span>{{ tournament.course }}</span>
+        </ng-template>
 
-  <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
+        <ng-template #footer>
+          <span>
+            {{ tournament.date | date: 'mediumDate' }}
+            {{ tournament.date | date: 'shortTime' }}
+          </span>
+        </ng-template>
+      </p-card>
+    </div>
 
-  <div class="card-container" *ngIf="!isLoadingOfficers">
-    <a
-      class="card card-small selectable"
-      href="mailto:{{ officer.email }}"
-      *ngFor="let officer of leagueOfficers"
-    >
-      <span class="bold">{{ officer.role }}</span>
-      <span>{{ officer.name }}</span>
-    </a>
-  </div>
+    <ng-template #footer>
+      <div class="my-4">
+        <p-button label="Historical Tournaments" routerLink="/tournament/history" />
+        <a class="p-button" href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}">
+          Contact Organizers
+        </a>
+      </div>
+    </ng-template>
+  </p-card>
 
-  <div class="py-4">
-    <a class="p-button" href="mailto:{{ getLeagueOfficersEmailList() }}">
-      Contact League Officers
-    </a>
-  </div>
+  <p-card class="col-span-6 m-4">
+    <ng-template #title>
+      <span>Officers</span>
+    </ng-template>
+
+    <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
+
+    <div class="grid grid-cols-3 gap-4 mx-4">
+      <a
+        class="p-button col-span-1"
+        href="mailto:{{ officer.email }}"
+        *ngFor="let officer of leagueOfficers"
+      >
+        <div class="bold">{{ officer.role }}</div>
+        <div>{{ officer.name }}</div>
+      </a>
+    </div>
+
+    <ng-template #footer>
+      <div class="my-4">
+        <a class="p-button" href="mailto:{{ getLeagueOfficersEmailList() }}">
+          Contact League Officers
+        </a>
+      </div>
+    </ng-template>
+  </p-card>
 </div>

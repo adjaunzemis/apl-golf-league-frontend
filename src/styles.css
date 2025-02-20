@@ -5,6 +5,10 @@
   --primary-hover: #1d4ed8; /* Tailwind Blue-700 */
 }
 
+body {
+  @apply bg-gray-100;
+}
+
 .p-button {
   @apply bg-gray-50 ring-1 ring-gray-200 text-gray-800 text-sm py-2 px-4 mx-2 rounded-md shadow-md transition;
 }
