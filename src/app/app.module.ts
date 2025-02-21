@@ -29,6 +29,7 @@ import { SignupComponent } from './signup/signup.component'; // TODO: Move to si
 import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { PrimeNGModule } from './primeng.module';
+import { FlightsDashboardComponent } from './flights-dashboard/flights-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { PrimeNGModule } from './primeng.module';
     PaymentsModule,
     PrimeNGExampleComponent,
     PrimeNGModule,
+    FlightsDashboardComponent,
   ],
   providers: [
     {

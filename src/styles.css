@@ -17,10 +17,6 @@ body {
   @apply text-blue-600 shadow-xl hover:-translate-y-1;
 }
 
-span.section-header {
-  @apply text-black font-bold text-lg py-4;
-}
-
 .p-menubar {
   @apply bg-gray-50 ring-1 ring-gray-200 text-black;
 }
