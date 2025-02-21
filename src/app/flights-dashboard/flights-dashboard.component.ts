@@ -1,4 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
@@ -7,7 +8,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightsService } from '../flights/flights.service';
 import { FlightInfo } from '../shared/flight.model';
-import { CommonModule } from '@angular/common';
+import { SeasonsService } from '../seasons/seasons.service';
 
 @Component({
   selector: 'app-flights-dashboard',
@@ -19,9 +20,13 @@ import { CommonModule } from '@angular/common';
 })
 export class FlightsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
+
+  private currentYear: number | undefined;
+  private seasonsSub: Subscription;
+  private seasonsService = inject(SeasonsService);
+
   flights = signal<FlightInfo[]>([]);
   private flightsSub: Subscription;
-
   private flightsService = inject(FlightsService);
 
   ngOnInit(): void {
@@ -30,10 +35,15 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
       this.flights.set([...result.flights]);
       this.isLoading = false;
     });
-    this.flightsService.getFlightsList();
+
+    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+      this.currentYear = result.year;
+      this.flightsService.getFlightsList(this.currentYear);
+    });
   }
 
   ngOnDestroy(): void {
     this.flightsSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 }
