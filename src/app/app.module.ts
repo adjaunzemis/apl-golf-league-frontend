@@ -30,6 +30,7 @@ import { TeamCreateComponent } from './signup/team-create.component'; // TODO: M
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { PrimeNGModule } from './primeng.module';
 import { FlightsDashboardComponent } from './flights-dashboard/flights-dashboard.component';
+import { TournamentsDashboardComponent } from './tournaments-dashboard/tournaments-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { FlightsDashboardComponent } from './flights-dashboard/flights-dashboard
     PrimeNGExampleComponent,
     PrimeNGModule,
     FlightsDashboardComponent,
+    TournamentsDashboardComponent,
   ],
   providers: [
     {
