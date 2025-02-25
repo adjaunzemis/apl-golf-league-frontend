@@ -6,9 +6,9 @@ import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { FlightsService } from '../flights/flights.service';
-import { FlightInfo } from '../shared/flight.model';
-import { SeasonsService } from '../seasons/seasons.service';
+import { FlightsService } from '../flights.service';
+import { FlightInfo } from '../../shared/flight.model';
+import { SeasonsService } from '../../seasons/seasons.service';
 
 @Component({
   selector: 'app-flights-dashboard',

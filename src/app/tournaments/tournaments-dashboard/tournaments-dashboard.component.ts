@@ -6,9 +6,9 @@ import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { SeasonsService } from '../seasons/seasons.service';
-import { TournamentInfo } from '../shared/tournament.model';
-import { TournamentsService } from '../tournaments/tournaments.service';
+import { SeasonsService } from '../../seasons/seasons.service';
+import { TournamentInfo } from '../../shared/tournament.model';
+import { TournamentsService } from '../tournaments.service';
 
 @Component({
   selector: 'app-tournaments-dashboard',

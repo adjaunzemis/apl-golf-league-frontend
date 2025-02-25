@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CardModule } from 'primeng/card';
 
-import { FlightsDashboardComponent } from '../flights-dashboard/flights-dashboard.component';
-import { TournamentsDashboardComponent } from '../tournaments-dashboard/tournaments-dashboard.component';
+import { FlightsDashboardComponent } from '../flights/flights-dashboard/flights-dashboard.component';
+import { TournamentsDashboardComponent } from '../tournaments/tournaments-dashboard/tournaments-dashboard.component';
 import { OfficersDashboardComponent } from '../officers/officers-dashboard/officers-dashboard.component';
 
 @Component({

@@ -29,8 +29,8 @@ import { SignupComponent } from './signup/signup.component'; // TODO: Move to si
 import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { PrimeNGModule } from './primeng.module';
-import { FlightsDashboardComponent } from './flights-dashboard/flights-dashboard.component';
-import { TournamentsDashboardComponent } from './tournaments-dashboard/tournaments-dashboard.component';
+import { FlightsDashboardComponent } from './flights/flights-dashboard/flights-dashboard.component';
+import { TournamentsDashboardComponent } from './tournaments/tournaments-dashboard/tournaments-dashboard.component';
 import { OfficersDashboardComponent } from './officers/officers-dashboard/officers-dashboard.component';
 
 @NgModule({
