@@ -32,6 +32,7 @@ import { FlightsDashboardComponent } from './flights/flights-dashboard/flights-d
 import { TournamentsDashboardComponent } from './tournaments/tournaments-dashboard/tournaments-dashboard.component';
 import { OfficersDashboardComponent } from './officers/officers-dashboard/officers-dashboard.component';
 import { RulesDashboardComponent } from './rules-dashboard/rules-dashboard.component';
+import { AnnouncementsDashboardComponent } from './announcements-dashboard/announcements-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { RulesDashboardComponent } from './rules-dashboard/rules-dashboard.compo
     TournamentsDashboardComponent,
     OfficersDashboardComponent,
     RulesDashboardComponent,
+    AnnouncementsDashboardComponent,
   ],
   providers: [
     {
