@@ -1,6 +1,10 @@
 <p-card>
   <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
-    <span class="text-2xl font-semibold">Tournaments</span>
+    <span class="text-2xl font-semibold">Officers</span>
+    <div class="mx-auto"></div>
+    <a class="p-button" href="mailto:{{ getLeagueOfficersEmailList() }}">
+      Contact
+    </a>
   </div>
 
   <div class="flex flex-col items-center py-4" *ngIf="isLoading">
@@ -12,38 +16,25 @@
     />
   </div>
 
-  <p-dataview #dv [value]="tournaments()" *ngIf="!isLoading">
+  <p-dataview #dv [value]="officers()" *ngIf="!isLoading">
     <ng-template #list let-items>
-      <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
+      <div class="grid grid-cols-12 gap-0 p-4">
         <div
-          class="col-span-12 listItem"
+          class="col-span-3 listItem"
           *ngFor="let item of items; let first = first"
-          routerLink="/tournament"
+          routerLink="/flight"
           [queryParams]="{ id: item.id }"
         >
           <div
             class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
-            [ngClass]="{ 'border-t border-gray-300': !first }"
           >
-            <div class="md:w-20 relative ml-4">
-              <img
-                class="block xl:block mx-auto rounded-border"
-                [src]="'assets/' + item.logo_url"
-                [alt]="item.name"
-                width="75px"
-              />
-            </div>
             <div
               class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
             >
               <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                 <div>
-                  <div class="hidden md:block font-medium text-gray-600 text-sm">{{ item.course }}</div>
-                  <div class="hidden md:block text-sm font-medium text-gray-600">
-                    {{ item.date | date: 'mediumDate' }}
-                    {{ item.date | date: 'shortTime':'ET' }}
-                  </div>
                   <div class="text-lg font-semibold text-gray-700 mt-1">{{ item.name }}</div>
+                  <div class="text-sm font-medium text-gray-600">{{ item.role }}</div>
                 </div>
               </div>
             </div>

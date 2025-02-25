@@ -5,8 +5,6 @@ import { FlightInfo } from '../shared/flight.model';
 import { FlightsService } from '../flights/flights.service';
 import { TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
-import { Officer } from './../shared/officer.model';
-import { OfficersService } from '../officers/officers.service';
 import { SeasonsService } from '../seasons/seasons.service';
 
 @Component({
@@ -27,16 +25,10 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   currentTournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
-  isLoadingOfficers = true;
-  officers: Officer[] = [];
-  leagueOfficers: Officer[] = [];
-  private officersSub: Subscription;
-
   constructor(
     private flightsService: FlightsService,
     private seasonsService: SeasonsService,
     private tournamentsService: TournamentsService,
-    private officersService: OfficersService,
   ) {}
 
   ngOnInit(): void {
@@ -56,21 +48,11 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
         this.isLoadingTournaments = false;
       });
 
-    this.officersSub = this.officersService.getOfficersListUpdateListener().subscribe((result) => {
-      console.log(`[LeagueHomeComponent] Received officers list`);
-      this.officers = result;
-      this.leagueOfficers = result.filter((officer) => {
-        return officer.committee.toString() === 'LEAGUE';
-      });
-      this.isLoadingOfficers = false;
-    });
-
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.currentYear = result.year;
 
       this.flightsService.getFlightsList(this.currentYear);
       this.tournamentsService.getTournamentsList(this.currentYear);
-      this.officersService.getOfficersList(this.currentYear);
     });
   }
 
@@ -78,15 +60,6 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     this.flightsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
-    this.officersSub.unsubscribe();
-  }
-
-  getLeagueOfficersEmailList(): string {
-    let emailList = '';
-    for (const officer of this.leagueOfficers) {
-      emailList += officer.email + ';';
-    }
-    return emailList.substring(0, emailList.length - 1);
   }
 
   getCurrentFlightSecretariesEmailList(): string {

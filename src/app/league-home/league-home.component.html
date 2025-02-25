@@ -1,7 +1,35 @@
-<div class="grid grid-cols-12 gap-2">
-  <app-flights-dashboard class="col-span-4 m-4" />
-  <app-tournaments-dashboard class="col-span-4 m-4" />
-  <p-card class="col-span-6 m-4">
+<div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
+
+  <!-- Row 1 -->
+  <div class="col-span-3"></div>
+  <div class="col-span-6 p-4 h-60 bg-blue-400">
+    <p-card class="test h-full w-full">
+      <div class="w-full">
+        <p class="m-auto">ANNOUNCEMENTS</p>
+      </div>
+    </p-card>
+  </div>
+  <div class="col-span-3"></div>
+
+  <!-- Row 2 -->
+  <div class="col-span-2"></div>
+  <app-flights-dashboard class="col-span-4" />
+  <app-tournaments-dashboard class="col-span-4" />
+  <div class="col-span-2"></div>
+
+  <!-- Row 3 -->
+  <div class="col-span-3"></div>
+  <div class="col-span-6 bg-amber-400 h-60"></div>
+  <div class="col-span-3"></div>
+
+  <!-- Row 4 -->
+  <div class="col-span-3"></div>
+  <app-officers-dashboard class="col-span-6" />
+  <div class="col-span-3"></div>
+
+<!-- 
+
+  <p-card class="col-span-6 p-4">
     <ng-template #title>
       <span>Flights</span>
     </ng-template>
@@ -96,30 +124,5 @@
     </ng-template>
   </p-card>
 
-  <p-card class="col-span-6 m-4">
-    <ng-template #title>
-      <span>Officers</span>
-    </ng-template>
-
-    <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
-
-    <div class="grid grid-cols-3 gap-4 mx-4">
-      <a
-        class="p-button col-span-1"
-        href="mailto:{{ officer.email }}"
-        *ngFor="let officer of leagueOfficers"
-      >
-        <div class="bold">{{ officer.role }}</div>
-        <div>{{ officer.name }}</div>
-      </a>
-    </div>
-
-    <ng-template #footer>
-      <div class="my-4">
-        <a class="p-button" href="mailto:{{ getLeagueOfficersEmailList() }}">
-          Contact League Officers
-        </a>
-      </div>
-    </ng-template>
-  </p-card>
+  -->
 </div>

@@ -31,6 +31,7 @@ import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { PrimeNGModule } from './primeng.module';
 import { FlightsDashboardComponent } from './flights-dashboard/flights-dashboard.component';
 import { TournamentsDashboardComponent } from './tournaments-dashboard/tournaments-dashboard.component';
+import { OfficersDashboardComponent } from './officers/officers-dashboard/officers-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { TournamentsDashboardComponent } from './tournaments-dashboard/tournamen
     PrimeNGModule,
     FlightsDashboardComponent,
     TournamentsDashboardComponent,
+    OfficersDashboardComponent,
   ],
   providers: [
     {
