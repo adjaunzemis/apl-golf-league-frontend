@@ -18,12 +18,10 @@ import { TournamentHistoryComponent } from './tournaments/tournament-history/tou
 import { LoginComponent } from './auth/login/login.component';
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
 import { UserHomeComponent } from './auth/user-home/user-home.component';
-import { RulesComponent } from './rules/rules.component';
 import { HandicapsComponent } from './handicaps/handicaps.component';
 import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.component';
 import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments-list/league-dues-payments-list.component';
 import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
-import { BylawsComponent } from './bylaws/bylaws.component';
 import { AddQualifyingScoreComponent } from './golfers/add-qualifying-score/add-qualifying-score.component';
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 
@@ -76,9 +74,7 @@ const routes: Routes = [
     component: UserHomeComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'rules', component: RulesComponent },
   { path: 'handicaps', component: HandicapsComponent },
-  { path: 'bylaws', component: BylawsComponent },
   { path: 'primeng-example', component: PrimeNGExampleComponent },
 ];
 

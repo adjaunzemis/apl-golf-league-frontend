@@ -11,7 +11,6 @@ import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LeagueHomeComponent } from './league-home/league-home.component';
-import { RulesComponent } from './rules/rules.component';
 import { HandicapsComponent } from './handicaps/handicaps.component';
 import { CoursesModule } from './courses/courses.module';
 import { RoundsModule } from './rounds/rounds.module';
@@ -39,7 +38,6 @@ import { RulesDashboardComponent } from './rules-dashboard/rules-dashboard.compo
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    RulesComponent,
     HandicapsComponent,
     CarouselComponent,
     SignupComponent,
