@@ -174,31 +174,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         ],
       },
       {
-        label: 'Rules',
-        icon: 'pi pi-file-edit',
-        visible: true,
-        items: [
-          {
-            label: 'League Rules',
-            icon: 'pi pi-volume-up',
-            visible: true,
-            route: '/rules',
-          },
-          {
-            label: 'League By-Laws',
-            icon: 'pi pi-exclamation-triangle',
-            visible: true,
-            route: '/bylaws',
-          },
-          {
-            label: 'Participation Agreement',
-            icon: 'pi pi-download',
-            visible: true,
-            route: '/rules',
-          },
-        ],
-      },
-      {
         label: 'Legacy Website',
         icon: 'pi pi-history',
         visible: true,
