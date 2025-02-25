@@ -2,7 +2,10 @@
   <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
     <span class="text-2xl font-semibold">Tournaments</span>
     <div class="mx-auto"></div>
-    <a class="p-button" href="mailto:{{ getOrganizersEmailList() }}"> Contact Organizers </a>
+    <a class="p-button" href="mailto:{{ getOrganizersEmailList() }}">
+      <span class="pi pi-send pr-2"></span>
+      <span>Organizers</span>
+    </a>
   </div>
 
   <div class="flex flex-col items-center py-4" *ngIf="isLoading">
