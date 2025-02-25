@@ -1,84 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
+import { CardModule } from 'primeng/card';
 
-import { FlightInfo } from '../shared/flight.model';
-import { FlightsService } from '../flights/flights.service';
-import { TournamentInfo } from '../shared/tournament.model';
-import { TournamentsService } from '../tournaments/tournaments.service';
-import { SeasonsService } from '../seasons/seasons.service';
+import { FlightsDashboardComponent } from '../flights-dashboard/flights-dashboard.component';
+import { TournamentsDashboardComponent } from '../tournaments-dashboard/tournaments-dashboard.component';
+import { OfficersDashboardComponent } from '../officers/officers-dashboard/officers-dashboard.component';
 
 @Component({
   selector: 'app-league-home',
   templateUrl: './league-home.component.html',
   styleUrls: ['./league-home.component.css'],
-  standalone: false,
+  imports: [
+    CardModule,
+    FlightsDashboardComponent,
+    TournamentsDashboardComponent,
+    OfficersDashboardComponent,
+  ],
 })
-export class LeagueHomeComponent implements OnInit, OnDestroy {
-  private currentYear: number;
-  private seasonsSub: Subscription;
-
-  isLoadingFlights = true;
-  currentFlights: FlightInfo[] = [];
-  private flightsSub: Subscription;
-
-  isLoadingTournaments = true;
-  currentTournaments: TournamentInfo[] = [];
-  private tournamentsSub: Subscription;
-
-  constructor(
-    private flightsService: FlightsService,
-    private seasonsService: SeasonsService,
-    private tournamentsService: TournamentsService,
-  ) {}
-
-  ngOnInit(): void {
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      console.log(`[LeagueHomeComponent] Received flights list`);
-      this.currentFlights = result.flights;
-      this.isLoadingFlights = false;
-    });
-
-    this.tournamentsSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
-        console.log(`[LeagueHomeComponent] Received tournaments list`);
-        this.currentTournaments = result.tournaments
-          .filter((tournament) => tournament.year === this.currentYear)
-          .sort((tournA, tournB) => tournA.date.getTime() - tournB.date.getTime());
-        this.isLoadingTournaments = false;
-      });
-
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-
-      this.flightsService.getFlightsList(this.currentYear);
-      this.tournamentsService.getTournamentsList(this.currentYear);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.flightsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
-    this.tournamentsSub.unsubscribe();
-  }
-
-  getCurrentFlightSecretariesEmailList(): string {
-    let emailList = '';
-    for (const flight of this.currentFlights) {
-      if (flight.secretary_email) {
-        emailList += flight.secretary_email + ';';
-      }
-    }
-    return emailList.substring(0, emailList.length - 1);
-  }
-
-  getCurrentTournamentOrganizersEmailList(): string {
-    let emailList = '';
-    for (const tournament of this.currentTournaments) {
-      if (tournament.secretary_email) {
-        emailList += tournament.secretary_email + ';';
-      }
-    }
-    return emailList.substring(0, emailList.length - 1);
-  }
-}
+export class LeagueHomeComponent {}

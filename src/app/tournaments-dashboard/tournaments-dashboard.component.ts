@@ -6,7 +6,6 @@ import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { FlightsService } from '../flights/flights.service';
 import { SeasonsService } from '../seasons/seasons.service';
 import { TournamentInfo } from '../shared/tournament.model';
 import { TournamentsService } from '../tournaments/tournaments.service';
@@ -15,9 +14,7 @@ import { TournamentsService } from '../tournaments/tournaments.service';
   selector: 'app-tournaments-dashboard',
   templateUrl: './tournaments-dashboard.component.html',
   styleUrls: ['./tournaments-dashboard.component.css'],
-  standalone: true,
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
-  providers: [FlightsService],
 })
 export class TournamentsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -50,5 +47,16 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tournamentsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+  }
+
+  getOrganizersEmailList(): string {
+    // TODO: Deduplicate emails
+    let emailList = '';
+    for (const tournament of this.tournaments()) {
+      if (tournament.secretary_email) {
+        emailList += tournament.secretary_email + ';';
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
   }
 }

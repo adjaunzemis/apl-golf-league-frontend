@@ -14,7 +14,6 @@ import { SeasonsService } from '../../seasons/seasons.service';
   selector: 'app-officers-dashboard',
   templateUrl: './officers-dashboard.component.html',
   styleUrls: ['./officers-dashboard.component.css'],
-  standalone: true,
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
 })
 export class OfficersDashboardComponent implements OnInit, OnDestroy {
@@ -30,7 +29,7 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.officersSub = this.officersService.getOfficersListUpdateListener().subscribe((result) => {
-      console.log(`[OfficersDashboardComponent] Received list of ${result.length} flights`);
+      console.log(`[OfficersDashboardComponent] Received list of ${result.length} officers`);
       this.officers.set([...result]);
       this.isLoading = false;
     });
@@ -45,7 +44,7 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
     this.officersSub.unsubscribe();
     this.seasonsSub.unsubscribe();
   }
-  
+
   getLeagueOfficersEmailList(): string {
     let emailList = '';
     for (const officer of this.officers()) {
@@ -55,5 +54,4 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
     }
     return emailList.substring(0, emailList.length - 1);
   }
-
 }

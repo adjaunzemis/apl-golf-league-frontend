@@ -14,9 +14,7 @@ import { SeasonsService } from '../seasons/seasons.service';
   selector: 'app-flights-dashboard',
   templateUrl: './flights-dashboard.component.html',
   styleUrls: ['./flights-dashboard.component.css'],
-  standalone: true,
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
-  providers: [FlightsService],
 })
 export class FlightsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -45,5 +43,16 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.flightsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+  }
+
+  getSecretariesEmailList(): string {
+    // TODO: Deduplicate emails
+    let emailList = '';
+    for (const flight of this.flights()) {
+      if (flight.secretary_email) {
+        emailList += flight.secretary_email + ';';
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
   }
 }
