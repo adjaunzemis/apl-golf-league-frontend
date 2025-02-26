@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   styleUrl: './announcements-dashboard.component.css',
   imports: [],
 })
-export class AnnouncementsDashboardComponent {
-
-}
+export class AnnouncementsDashboardComponent {}
