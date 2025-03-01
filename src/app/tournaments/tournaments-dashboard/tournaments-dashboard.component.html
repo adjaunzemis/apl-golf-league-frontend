@@ -43,14 +43,14 @@
             >
               <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                 <div>
+                  <div class="text-lg font-semibold text-gray-700 mt-1">{{ item.name }}</div>
                   <div class="hidden md:block font-medium text-gray-600 text-sm">
                     {{ item.course }}
                   </div>
-                  <div class="hidden md:block text-sm font-medium text-gray-600">
+                  <div class="hidden lg:block text-sm font-medium text-gray-600">
                     {{ item.date | date: 'mediumDate' }}
                     {{ item.date | date: 'shortTime' : 'ET' }}
                   </div>
-                  <div class="text-lg font-semibold text-gray-700 mt-1">{{ item.name }}</div>
                 </div>
               </div>
             </div>

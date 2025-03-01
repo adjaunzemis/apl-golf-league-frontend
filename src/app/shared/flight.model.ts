@@ -36,6 +36,7 @@ export interface FlightInfo {
   start_date: Date;
   weeks: number;
   tee_times?: string;
+  num_teams?: number;
 }
 
 export interface FlightCreate {
