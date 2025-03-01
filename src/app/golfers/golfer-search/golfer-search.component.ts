@@ -1,6 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { UntypedFormControl } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { GolfersService } from '../golfers.service';
 import { Golfer } from '../../shared/golfer.model';
@@ -10,10 +14,12 @@ import { map, startWith } from 'rxjs/operators';
   selector: 'app-golfer-search',
   templateUrl: './golfer-search.component.html',
   styleUrls: ['./golfer-search.component.css'],
-  standalone: false,
+  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule]
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;
+
+  golfers!: Golfer[];
 
   golferControl = new UntypedFormControl('');
 
@@ -22,10 +28,12 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
   golferNameOptions: string[] = [];
   filteredGolferOptions: Observable<Golfer[]>;
 
-  constructor(private golfersService: GolfersService) {}
+  private golfersService = inject(GolfersService);
 
   ngOnInit(): void {
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
+      this.golfers = result;
+
       this.golferOptions = result.sort((a: Golfer, b: Golfer) => {
         if (a.name < b.name) {
           return -1;
@@ -66,4 +74,5 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
     const filterValue = value.toLowerCase();
     return this.golferOptions.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
+  
 }

@@ -1,4 +1,4 @@
-<div class="content">
+<!-- <div class="content">
   <h1>Golfers</h1>
 </div>
 
@@ -25,4 +25,43 @@
       <span class="bold">{{ golfer.name }}</span>
     </a>
   </div>
-</div>
+</div> -->
+
+<p-card class="flex flex-col items-center p-4">
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-2xl font-semibold">Golfers</span>
+  </div>
+
+  <div class="flex flex-col items-center py-4" *ngIf="isLoading">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ width: '100px', height: '100px' }"
+    />
+  </div>
+    
+  <p-table [value]="golfers" stripedRows sortMode="multiple" [tableStyle]="{ 'min-width': '50rem' }" *ngIf="!isLoading">
+    <ng-template #header>
+        <tr class="py-2">
+            <th pSortableColumn="name">
+              Name <p-sortIcon field="name" />
+            </th>
+            <th pSortableColumn="affiliation">
+              Affiliation <p-sortIcon field="affiliation" />
+            </th>
+            <th pSortableColumn="handicap_index">
+              Handicap Index <p-sortIcon field="handicap_index" />
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template #body let-golfer>
+        <tr class="py-2">
+            <td>{{ golfer.name }}</td>
+            <td>{{ golfer.affiliation }}</td>
+            <td>{{ golfer.handicap_index }}</td>
+        </tr>
+    </ng-template>
+  </p-table>
+
+</p-card>
