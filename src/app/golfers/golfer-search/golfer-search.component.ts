@@ -6,12 +6,7 @@ import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
-import { InputTextModule } from 'primeng/inputtext';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
 
 import { GolfersService } from '../golfers.service';
 import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
@@ -20,19 +15,7 @@ import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
   selector: 'app-golfer-search',
   templateUrl: './golfer-search.component.html',
   styleUrls: ['./golfer-search.component.css'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    CardModule,
-    TableModule,
-    SelectModule,
-    TagModule,
-    ProgressSpinnerModule,
-    InputTextModule,
-    MultiSelectModule,
-    IconFieldModule,
-    InputIconModule,
-  ],
+  imports: [CommonModule, FormsModule, CardModule, TableModule, TagModule, ProgressSpinnerModule],
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;
