@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
+import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
@@ -42,6 +43,7 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
   affiliations!: GolferAffiliation[];
 
   private golfersService = inject(GolfersService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.affiliations = [
@@ -78,5 +80,13 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
 
   getTarget(target: EventTarget | null): HTMLInputElement {
     return target as HTMLInputElement;
+  }
+
+  onRowSelect(event: TableRowSelectEvent): void {
+    const selectedGolfer = event.data as Golfer;
+    console.log(`[GolferSearchComponent] Selected golfer: ${selectedGolfer.name}`);
+
+    const queryParams = { id: selectedGolfer.id };
+    this.router.navigate([`/golfer`], { queryParams });
   }
 }
