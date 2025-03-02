@@ -3,10 +3,10 @@
     <span class="text-2xl font-semibold">Golfers</span>
     <div class="mx-auto"></div>
     <input
-        pInputText
-        type="text"
-        (input)="dt.filterGlobal(getTarget($event.target).value, 'contains')"
-        placeholder="Search by name"
+      pInputText
+      type="text"
+      (input)="dt.filterGlobal(getTarget($event.target).value, 'contains')"
+      placeholder="Search by name"
     />
   </div>
 
@@ -23,16 +23,17 @@
     [tableStyle]="{ 'min-width': '50rem' }"
     [loading]="isLoading"
   >
-    <ng-template #caption>
-    </ng-template>
+    <ng-template #caption> </ng-template>
     <ng-template #header>
       <tr>
-        <th pSortableColumn="name" style="width:40%">Name <p-sortIcon field="name" /></th>
-        <th pSortableColumn="affiliation" style="width:30%">Affiliation <p-sortIcon field="affiliation" /></th>
-        <th pSortableColumn="handicap_index" style="width:20%">
+        <th pSortableColumn="name" style="width: 40%">Name <p-sortIcon field="name" /></th>
+        <th pSortableColumn="affiliation" style="width: 30%">
+          Affiliation <p-sortIcon field="affiliation" />
+        </th>
+        <th pSortableColumn="handicap_index" style="width: 20%">
           Handicap <p-sortIcon field="handicap_index" />
         </th>
-        <th style="width:10%"></th>
+        <th style="width: 10%"></th>
       </tr>
       <!-- <tr>
         <th>
@@ -66,7 +67,11 @@
       <tr class="py-2">
         <td>{{ golfer.name }}</td>
         <td>
-          <p-tag [value]="golfer.affiliation" [severity]="getAffiliationColor(golfer.affiliation)" *ngIf="golfer.affiliation" />
+          <p-tag
+            [value]="golfer.affiliation"
+            [severity]="getAffiliationColor(golfer.affiliation)"
+            *ngIf="golfer.affiliation"
+          />
         </td>
         <td>{{ golfer.handicap_index }}</td>
         <td>

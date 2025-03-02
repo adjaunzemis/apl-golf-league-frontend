@@ -122,7 +122,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             label: 'Golfers',
             icon: 'pi pi-users',
             visible: true,
-            route: '/golfer/search',
+            route: '/golfer-search',
           },
           {
             label: 'Courses',

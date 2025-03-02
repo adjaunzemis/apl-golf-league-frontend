@@ -19,7 +19,19 @@ import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
   selector: 'app-golfer-search',
   templateUrl: './golfer-search.component.html',
   styleUrls: ['./golfer-search.component.css'],
-  imports: [CommonModule, FormsModule, CardModule, TableModule, SelectModule, TagModule, ProgressSpinnerModule, InputTextModule, MultiSelectModule, IconFieldModule, InputIconModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CardModule,
+    TableModule,
+    SelectModule,
+    TagModule,
+    ProgressSpinnerModule,
+    InputTextModule,
+    MultiSelectModule,
+    IconFieldModule,
+    InputIconModule,
+  ],
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -50,22 +62,21 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.golfersSub.unsubscribe();
   }
-  
+
   getAffiliationColor(affiliation: GolferAffiliation) {
     switch (affiliation) {
       case GolferAffiliation.APL_EMPLOYEE:
-          return 'info';
+        return 'info';
       case GolferAffiliation.APL_RETIREE:
-          return 'success';
+        return 'success';
       case GolferAffiliation.APL_FAMILY:
-          return 'warn';
+        return 'warn';
       case GolferAffiliation.NON_APL_EMPLOYEE:
-          return 'danger';
+        return 'danger';
     }
   }
 
   getTarget(target: EventTarget | null): HTMLInputElement {
     return target as HTMLInputElement;
   }
-  
 }

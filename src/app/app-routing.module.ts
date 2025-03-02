@@ -55,7 +55,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'golfer', component: GolferHomeComponent },
-  { path: 'golfer/search', component: GolferSearchComponent },
+  { path: 'golfer-search', component: GolferSearchComponent },
   {
     path: 'golfer/qualifying',
     component: AddQualifyingScoreComponent,
