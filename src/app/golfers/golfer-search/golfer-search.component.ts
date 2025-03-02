@@ -1,63 +1,48 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UntypedFormControl } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { SelectModule } from 'primeng/select';
+import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 import { GolfersService } from '../golfers.service';
-import { Golfer } from '../../shared/golfer.model';
-import { map, startWith } from 'rxjs/operators';
+import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
 
 @Component({
   selector: 'app-golfer-search',
   templateUrl: './golfer-search.component.html',
   styleUrls: ['./golfer-search.component.css'],
-  imports: [CommonModule, CardModule, TableModule, ProgressSpinnerModule]
+  imports: [CommonModule, FormsModule, CardModule, TableModule, SelectModule, TagModule, ProgressSpinnerModule, InputTextModule, MultiSelectModule, IconFieldModule, InputIconModule],
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   golfers!: Golfer[];
-
-  golferControl = new UntypedFormControl('');
-
   private golfersSub: Subscription;
-  golferOptions: Golfer[] = [];
-  golferNameOptions: string[] = [];
-  filteredGolferOptions: Observable<Golfer[]>;
+
+  affiliations!: GolferAffiliation[];
 
   private golfersService = inject(GolfersService);
 
   ngOnInit(): void {
+    this.affiliations = [
+      GolferAffiliation.APL_EMPLOYEE,
+      GolferAffiliation.APL_RETIREE,
+      GolferAffiliation.APL_FAMILY,
+      GolferAffiliation.NON_APL_EMPLOYEE,
+    ];
+
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
-      this.golfers = result;
-
-      this.golferOptions = result.sort((a: Golfer, b: Golfer) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      this.golferNameOptions = result.map((golfer) => golfer.name);
-
+      this.golfers = [...result];
       this.isLoading = false;
     });
-
-    this.filteredGolferOptions = this.golferControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => {
-        if (this.isGolfer(value)) {
-          return this._filter(value.name);
-        } else {
-          return this._filter(value);
-        }
-      }),
-    );
 
     this.golfersService.getAllGolfers();
   }
@@ -65,14 +50,22 @@ export class GolferSearchComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.golfersSub.unsubscribe();
   }
-
-  private isGolfer(object: unknown): object is Golfer {
-    return (object as Golfer).name !== undefined;
+  
+  getAffiliationColor(affiliation: GolferAffiliation) {
+    switch (affiliation) {
+      case GolferAffiliation.APL_EMPLOYEE:
+          return 'info';
+      case GolferAffiliation.APL_RETIREE:
+          return 'success';
+      case GolferAffiliation.APL_FAMILY:
+          return 'warn';
+      case GolferAffiliation.NON_APL_EMPLOYEE:
+          return 'danger';
+    }
   }
 
-  private _filter(value: string): Golfer[] {
-    const filterValue = value.toLowerCase();
-    return this.golferOptions.filter((option) => option.name.toLowerCase().includes(filterValue));
+  getTarget(target: EventTarget | null): HTMLInputElement {
+    return target as HTMLInputElement;
   }
   
 }

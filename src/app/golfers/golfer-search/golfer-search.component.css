@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+th, td, tr {
+    @apply px-2 py-1;
+}
+
+::ng-deep .p-datatable-column-filter-button {
+    @apply mx-1 max-h-8 max-w-9;
+}
+
+::ng-deep .p-datatable-filter-constraint {
+    @apply px-2 py-1;
+}
+
+.p-tag {
+    @apply px-2 py-0.5;
+}
