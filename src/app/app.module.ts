@@ -23,7 +23,6 @@ import { AuthModule } from './auth/auth.module';
 import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
-import { CarouselComponent } from './carousel/carousel.component';
 import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
 import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
@@ -41,7 +40,6 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
     HeaderComponent,
     FooterComponent,
     HandicapsComponent,
-    CarouselComponent,
     SignupComponent,
     TeamCreateComponent,
   ],
