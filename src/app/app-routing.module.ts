@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { LeagueHomeComponent } from './league-home/league-home.component';
 import { SignupComponent } from './signup/signup.component';
-import { FlightHomeComponent } from './flights/flight-home/flight-home.component';
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from './flights/team-home/team-home.component';
 import { FlightMatchScorecardComponent } from './flights/flight-match-create/flight-match-scorecard.component';
@@ -24,11 +23,12 @@ import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments
 import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
 import { AddQualifyingScoreComponent } from './golfers/add-qualifying-score/add-qualifying-score.component';
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
+import { FlightHomepageComponent } from './flights/flight-homepage/flight-homepage.component';
 
 const routes: Routes = [
   { path: '', component: LeagueHomeComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'flight', component: FlightHomeComponent },
+  { path: 'flight', component: FlightHomepageComponent },
   { path: 'flight/team', component: TeamHomeComponent },
   { path: 'flight/history', component: FlightHistoryComponent },
   { path: 'flight/match/scorecard', component: FlightMatchScorecardComponent },

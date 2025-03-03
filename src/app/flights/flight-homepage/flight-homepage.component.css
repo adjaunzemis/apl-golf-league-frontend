@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+.contactButton {
+    @apply m-0 py-1 px-2;
+}
