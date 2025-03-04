@@ -1,0 +1,39 @@
+<p-card>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-2xl font-semibold">Standings</span>
+  </div>
+
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-1">
+    <span class="text-sm italic">Positioning is determined by average points.</span>
+  </div>
+
+  <p-table
+    #dt
+    [value]="standings"
+    dataKey="id"
+    sortField="avgPoints"
+    [sortOrder]="-1"
+    stripedRows
+    selectionMode="single"
+  >
+    <ng-template #caption> </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>Pos</th>
+        <th pSortableColumn="teamName">Team <p-sortIcon field="teamName" /></th>
+        <th pSortableColumn="pointsWon">Points <p-sortIcon field="pointsWon" /></th>
+        <th pSortableColumn="matchesPlayed">Matches <p-sortIcon field="matchesPlayed" /></th>
+        <th pSortableColumn="avgPoints">Avg. Points <p-sortIcon field="avgPoints" /></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-team>
+      <tr [pSelectableRow]="team">
+        <td>{{ team.position }}</td>
+        <td>{{ team.teamName }}</td>
+        <td>{{ team.pointsWon }}</td>
+        <td>{{ team.matchesPlayed }}</td>
+        <td>{{ team.avgPoints | number: '1.2-2' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

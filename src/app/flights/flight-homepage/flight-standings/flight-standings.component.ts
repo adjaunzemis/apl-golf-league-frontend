@@ -1,11 +1,15 @@
-import { FlightData } from 'src/app/shared/flight.model';
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+
+import { FlightData } from 'src/app/shared/flight.model';
 
 @Component({
   selector: 'app-flight-standings',
   templateUrl: './flight-standings.component.html',
   styleUrls: ['./flight-standings.component.css'],
-  standalone: false,
+  imports: [CommonModule, CardModule, TableModule],
 })
 export class FlightStandingsComponent implements OnInit {
   @Input() flight: FlightData;
@@ -13,11 +17,11 @@ export class FlightStandingsComponent implements OnInit {
   standingsData: Record<number, TeamStandingsData> = {};
   orderedTeamIds: number[] = [];
 
+  standings: TeamStandingsData[] = [];
+
   ngOnInit(): void {
-    if (!this.flight) {
-      console.error('Unable to process flight standings, no flight data!');
-      return;
-    }
+    // TODO: Move this processing to the backend
+
     if (!this.flight.matches) {
       console.error('Unable to process flight standings, no match data!');
       return;
@@ -44,15 +48,18 @@ export class FlightStandingsComponent implements OnInit {
     }
 
     for (const teamId in this.standingsData) {
+      this.standingsData[teamId].avgPoints =
+        this.standingsData[teamId].pointsWon / this.standingsData[teamId].matchesPlayed;
+    }
+
+    for (const teamId in this.standingsData) {
       this.orderedTeamIds.push(parseInt(teamId));
     }
 
     this.orderedTeamIds.sort((teamId1: number, teamId2: number) => {
-      const avgPtsWon1 = this.getAveragePointsWon(teamId1);
-      const avgPtsWon2 = this.getAveragePointsWon(teamId2);
-      if (avgPtsWon1 > avgPtsWon2) {
+      if (this.standingsData[teamId1].avgPoints > this.standingsData[teamId2].avgPoints) {
         return -1;
-      } else if (avgPtsWon1 < avgPtsWon2) {
+      } else if (this.standingsData[teamId1].avgPoints < this.standingsData[teamId2].avgPoints) {
         return 1;
       }
       return this.getTiebreaker(teamId1, teamId2);
@@ -61,13 +68,17 @@ export class FlightStandingsComponent implements OnInit {
     this.standingsData[this.orderedTeamIds[0]].position = '1';
     for (let idx = 1; idx < this.orderedTeamIds.length; idx++) {
       if (
-        this.getAveragePointsWon(this.orderedTeamIds[idx]) <
-        this.getAveragePointsWon(this.orderedTeamIds[idx - 1])
+        this.standingsData[this.orderedTeamIds[idx]].avgPoints <
+        this.standingsData[this.orderedTeamIds[idx - 1]].avgPoints
       ) {
         this.standingsData[this.orderedTeamIds[idx]].position = (idx + 1).toString();
       } else {
         this.standingsData[this.orderedTeamIds[idx]].position = '';
       }
+    }
+
+    for (const teamId of this.orderedTeamIds) {
+      this.standings.push(this.standingsData[teamId]);
     }
   }
 
@@ -102,49 +113,12 @@ export class FlightStandingsComponent implements OnInit {
 
     // TODO: Implement further tie-breakers if needed.
   }
-
-  getTeamPosition(id: number): string {
-    if (!this.standingsData[id]) {
-      return 'n/a';
-    }
-    return this.standingsData[id].position;
-  }
-
-  getTeamName(id: number): string {
-    if (!this.standingsData[id]) {
-      return 'n/a';
-    }
-    return this.standingsData[id].teamName;
-  }
-
-  getMatchesPlayed(id: number): number {
-    if (!this.standingsData[id]) {
-      return -1;
-    }
-    return this.standingsData[id].matchesPlayed;
-  }
-
-  getPointsWon(id: number): number {
-    if (!this.standingsData[id]) {
-      return -1;
-    }
-    return this.standingsData[id].pointsWon;
-  }
-
-  getAveragePointsWon(id: number): number {
-    if (!this.standingsData[id]) {
-      return -1;
-    }
-    if (this.standingsData[id].matchesPlayed === 0) {
-      return 0;
-    }
-    return this.standingsData[id].pointsWon / this.standingsData[id].matchesPlayed;
-  }
 }
 
 class TeamStandingsData {
+  position: string;
   teamName: string;
   matchesPlayed = 0;
   pointsWon = 0;
-  position = '';
+  avgPoints: number;
 }

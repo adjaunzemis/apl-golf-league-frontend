@@ -6,12 +6,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightsService } from '../flights.service';
 import { FlightData } from 'src/app/shared/flight.model';
 import { FlightInfoComponent } from './flight-info/flight-info.component';
+import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 
 @Component({
   selector: 'app-flight-homepage',
   templateUrl: './flight-homepage.component.html',
   styleUrl: './flight-homepage.component.css',
-  imports: [CommonModule, ProgressSpinnerModule, FlightInfoComponent],
+  imports: [CommonModule, ProgressSpinnerModule, FlightInfoComponent, FlightStandingsComponent],
 })
 export class FlightHomepageComponent implements OnInit {
   flight!: FlightData;
