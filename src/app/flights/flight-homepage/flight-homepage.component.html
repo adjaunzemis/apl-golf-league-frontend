@@ -1,7 +1,7 @@
 <div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
   <div class="col-span-1 bg-gray-500"></div>
   <div class="col-span-3">
-    <div class="flex flex-col items-center py-4" *ngIf="isLoading">
+    <div class="flex flex-col items-center py-4" *ngIf="!flight">
       <p-progress-spinner
         strokeWidth="4"
         fill="transparent"
@@ -10,70 +10,7 @@
       />
     </div>
 
-    <p-card>
-      <div class="flex flex-col justify-center p-4" *ngIf="!isLoading">
-        <div class="flex flex-row flex-1 items-center ml-4">
-          <div class="w-30">
-            <img
-              class="block xl:block mx-auto rounded-border"
-              [src]="'assets/' + flight.logo_url"
-              [alt]="flight.name"
-            />
-          </div>
-
-          <div class="flex flex-row flex-2 justify-between items-center ml-4">
-            <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
-              <div class="flex flex-col justify-stretch items-center w-full">
-                <div class="text-lg font-semibold text-gray-700">
-                  {{ flight.name }} ({{ flight.year }})
-                </div>
-                <div class="font-medium text-gray-600 text-sm">
-                  {{ flight.course }}
-                </div>
-              </div>
-              <div class="flex flex-col justify-stretch items-center w-full">
-                <div class="text-sm font-medium text-gray-600">
-                  <div *ngIf="flight.secretary_email">
-                    <span>Flight Secretary: </span>
-                    <a
-                      class="p-button contactButton"
-                      href="mailto:{{ flight.secretary_email | lowercase }}"
-                      *ngIf="flight.secretary_email"
-                    >
-                      <span class="text-sm pi pi-send pr-2"></span>
-                      <span>{{ flight.secretary }}</span>
-                    </a>
-                  </div>
-                  <span *ngIf="!flight.secretary_email"
-                    >Flight Secretary: {{ flight.secretary }}</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="flex flex-row flex-1 justify-center items-center text-sm font-medium text-gray-600 pt-4 w-full"
-          *ngIf="flight.tee_times"
-        >
-          <span>Tee Times: {{ flight.tee_times }}</span>
-        </div>
-
-        <div
-          class="flex flex-row flex-1 items-center gap-8 text-sm font-medium text-gray-600 pt-4 w-full"
-        >
-          <div class="flex flex-col flex-2 justify-between items-center pl-4">
-            <span>Sign-Ups: {{ flight.signup_start_date | date: 'longDate' : 'ET' }}</span>
-            <span>Start Date: {{ flight.start_date | date: 'longDate' : 'ET' }}</span>
-          </div>
-          <div class="flex flex-col flex-2 justify-between items-center">
-            <span>Weeks: {{ flight.weeks }}</span>
-            <span>Teams: {{ flight.teams?.length }}</span>
-          </div>
-        </div>
-      </div>
-    </p-card>
+    <app-flight-info [flight]="flight" />
   </div>
 
   <div class="col-span-4 row-span-2 bg-blue-500"></div>

@@ -1,21 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightsService } from '../flights.service';
 import { FlightData } from 'src/app/shared/flight.model';
+import { FlightInfoComponent } from './flight-info/flight-info.component';
 
 @Component({
   selector: 'app-flight-homepage',
   templateUrl: './flight-homepage.component.html',
   styleUrl: './flight-homepage.component.css',
-  imports: [CommonModule, CardModule, ProgressSpinnerModule],
+  imports: [CommonModule, ProgressSpinnerModule, FlightInfoComponent],
 })
 export class FlightHomepageComponent implements OnInit {
-  isLoading = true;
-
   flight!: FlightData;
 
   private route = inject(ActivatedRoute);
@@ -35,7 +33,6 @@ export class FlightHomepageComponent implements OnInit {
 
     this.flightsService.getFlightUpdateListener().subscribe((result) => {
       this.flight = result;
-      this.isLoading = false;
     });
   }
 }
