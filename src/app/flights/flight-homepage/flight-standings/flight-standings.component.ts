@@ -30,11 +30,13 @@ export class FlightStandingsComponent implements OnInit {
     for (const match of this.flight.matches) {
       if (!this.standingsData[match.home_team_id]) {
         this.standingsData[match.home_team_id] = new TeamStandingsData();
+        this.standingsData[match.home_team_id].teamId = match.home_team_id;
         this.standingsData[match.home_team_id].teamName = match.home_team_name;
       }
 
       if (!this.standingsData[match.away_team_id]) {
         this.standingsData[match.away_team_id] = new TeamStandingsData();
+        this.standingsData[match.away_team_id].teamId = match.away_team_id;
         this.standingsData[match.away_team_id].teamName = match.away_team_name;
       }
 
@@ -116,8 +118,9 @@ export class FlightStandingsComponent implements OnInit {
 }
 
 class TeamStandingsData {
-  position: string;
+  teamId: number;
   teamName: string;
+  position: string;
   matchesPlayed = 0;
   pointsWon = 0;
   avgPoints: number;
