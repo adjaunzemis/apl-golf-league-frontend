@@ -7,7 +7,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightsService } from '../flights.service';
 import { FlightData } from 'src/app/shared/flight.model';
 
-
 @Component({
   selector: 'app-flight-homepage',
   templateUrl: './flight-homepage.component.html',
@@ -15,7 +14,6 @@ import { FlightData } from 'src/app/shared/flight.model';
   imports: [CommonModule, CardModule, ProgressSpinnerModule],
 })
 export class FlightHomepageComponent implements OnInit {
-
   isLoading = true;
 
   flight!: FlightData;
@@ -35,10 +33,9 @@ export class FlightHomepageComponent implements OnInit {
       }
     });
 
-    this.flightsService.getFlightUpdateListener().subscribe(result => {
+    this.flightsService.getFlightUpdateListener().subscribe((result) => {
       this.flight = result;
       this.isLoading = false;
     });
   }
-
 }
