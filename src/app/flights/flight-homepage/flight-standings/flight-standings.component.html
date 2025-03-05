@@ -9,31 +9,32 @@
 
   <p-table
     #dt
-    [value]="standings"
+    [value]="standings.teams"
     dataKey="id"
-    sortField="avgPoints"
+    sortField="avg_points"
     [sortOrder]="-1"
     stripedRows
     selectionMode="single"
     dataKey="teamId"
+    *ngIf="standings"
   >
     <ng-template #caption> </ng-template>
     <ng-template #header>
       <tr>
         <th>Pos</th>
-        <th pSortableColumn="teamName">Team <p-sortIcon field="teamName" /></th>
-        <th pSortableColumn="pointsWon">Points <p-sortIcon field="pointsWon" /></th>
-        <th pSortableColumn="matchesPlayed">Matches <p-sortIcon field="matchesPlayed" /></th>
-        <th pSortableColumn="avgPoints">Avg. Points <p-sortIcon field="avgPoints" /></th>
+        <th pSortableColumn="team_name">Team <p-sortIcon field="team_name" /></th>
+        <th pSortableColumn="points_won">Points <p-sortIcon field="points_won" /></th>
+        <th pSortableColumn="matches_played">Matches <p-sortIcon field="matches_played" /></th>
+        <th pSortableColumn="avg_points">Avg. Points <p-sortIcon field="avg_points" /></th>
       </tr>
     </ng-template>
     <ng-template #body let-team>
       <tr [pSelectableRow]="team">
         <td>{{ team.position }}</td>
-        <td>{{ team.teamName }}</td>
-        <td>{{ team.pointsWon }}</td>
-        <td>{{ team.matchesPlayed }}</td>
-        <td>{{ team.avgPoints | number: '1.2-2' }}</td>
+        <td>{{ team.team_name }}</td>
+        <td>{{ team.points_won }}</td>
+        <td>{{ team.matches_played }}</td>
+        <td>{{ team.avg_points | number: '1.2-2' }}</td>
       </tr>
     </ng-template>
   </p-table>

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
-import { FlightData, FlightInfo, FlightCreate } from '../shared/flight.model';
+import { FlightData, FlightInfo, FlightCreate, FlightStandings } from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
 
@@ -13,6 +13,9 @@ import { environment } from './../../environments/environment';
 export class FlightsService {
   private flightsList: FlightInfo[] = [];
   private flightsListUpdated = new Subject<{ numFlights: number; flights: FlightInfo[] }>();
+
+  private flightStandings: FlightStandings;
+  private flightStandingsUpdated = new Subject<FlightStandings>();
 
   private flightData: FlightData;
   private flightDataUpdated = new Subject<FlightData>();
@@ -85,6 +88,19 @@ export class FlightsService {
 
   updateFlight(flight: FlightCreate): Observable<FlightInfo> {
     return this.http.put<FlightInfo>(environment.apiUrl + `flights/${flight.id}`, flight);
+  }
+
+  getFlightStandings(id: number): void {
+    this.http
+      .get<FlightStandings>(environment.apiUrl + `flights/standings/?flight_id=${id}`)
+      .subscribe((result) => {
+        this.flightStandings = result;
+        this.flightStandingsUpdated.next(result);
+      });
+  }
+
+  getFlightStandingsUpdateListener(): Observable<FlightStandings> {
+    return this.flightStandingsUpdated.asObservable();
   }
 
   // TODO: Move team routes to own service

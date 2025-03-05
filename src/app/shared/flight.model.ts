@@ -56,3 +56,17 @@ export interface FlightCreate {
   locked?: boolean;
   divisions: DivisionCreate[];
 }
+
+export interface FlightStandingsTeam {
+  team_id: number;
+  team_name: string;
+  points_won: number;
+  matches_played: number;
+  avg_points: number;
+  position: string;
+}
+
+export interface FlightStandings {
+  flight_id: number;
+  teams: FlightStandingsTeam[];
+}
