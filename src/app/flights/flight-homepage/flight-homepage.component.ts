@@ -5,12 +5,19 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightInfoComponent } from './flight-info/flight-info.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
+import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
 
 @Component({
   selector: 'app-flight-homepage',
   templateUrl: './flight-homepage.component.html',
   styleUrl: './flight-homepage.component.css',
-  imports: [CommonModule, ProgressSpinnerModule, FlightInfoComponent, FlightStandingsComponent],
+  imports: [
+    CommonModule,
+    ProgressSpinnerModule,
+    FlightInfoComponent,
+    FlightStandingsComponent,
+    FlightTeamsComponent,
+  ],
 })
 export class FlightHomepageComponent implements OnInit {
   flightId: number;

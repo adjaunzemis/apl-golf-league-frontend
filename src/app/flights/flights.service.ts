@@ -3,7 +3,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
-import { FlightData, FlightInfo, FlightCreate, FlightStandings } from '../shared/flight.model';
+import {
+  FlightData,
+  FlightInfo,
+  FlightCreate,
+  FlightStandings,
+  FlightTeam,
+} from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
 
@@ -16,6 +22,9 @@ export class FlightsService {
 
   private flightInfo: FlightInfo;
   private flightInfoUpdated = new Subject<FlightInfo>();
+
+  private flightTeams: FlightTeam[];
+  private flightTeamsUpdated = new Subject<FlightTeam[]>();
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
@@ -96,6 +105,17 @@ export class FlightsService {
 
   getFlightInfoUpdateListener(): Observable<FlightInfo> {
     return this.flightInfoUpdated.asObservable();
+  }
+
+  getFlightTeams(id: number): void {
+    this.http.get<FlightTeam[]>(environment.apiUrl + `flights/teams/${id}`).subscribe((result) => {
+      this.flightTeams = result;
+      this.flightTeamsUpdated.next(result);
+    });
+  }
+
+  getFlightTeamsUpdateListener(): Observable<FlightTeam[]> {
+    return this.flightTeamsUpdated.asObservable();
   }
 
   getFlightStandings(id: number): void {

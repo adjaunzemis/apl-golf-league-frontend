@@ -57,6 +57,20 @@ export interface FlightCreate {
   divisions: DivisionCreate[];
 }
 
+export interface FlightTeamGolfer {
+  golfer_id: number;
+  name: string;
+  role: string;
+  division: string;
+}
+
+export interface FlightTeam {
+  flight_id: number;
+  team_id: number;
+  name: string;
+  golfers: FlightTeamGolfer[];
+}
+
 export interface FlightStandingsTeam {
   team_id: number;
   team_name: string;

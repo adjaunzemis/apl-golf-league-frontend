@@ -1,5 +1,6 @@
 <div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
   <div class="col-span-1 bg-gray-500"></div>
+
   <div class="col-span-3 row-span-1">
     <div class="flex flex-col items-center py-4" *ngIf="!flightId">
       <p-progress-spinner
@@ -30,7 +31,19 @@
   <div class="col-span-1 bg-gray-500"></div>
 
   <div class="col-span-1 bg-gray-500 h-100"></div>
-  <div class="col-span-3 row-span-2 bg-purple-500"></div>
+
+  <div class="col-span-3 row-span-2">
+    <div class="flex flex-col items-center py-4" *ngIf="!flightId">
+      <p-progress-spinner
+        strokeWidth="4"
+        fill="transparent"
+        animationDuration="2s"
+        [style]="{ width: '100px', height: '100px' }"
+      />
+    </div>
+
+    <app-flight-teams [flightId]="flightId" *ngIf="flightId" />
+  </div>
   <div class="col-span-3 row-span-2 bg-yellow-500"></div>
   <div class="col-span-1 bg-gray-500"></div>
 
