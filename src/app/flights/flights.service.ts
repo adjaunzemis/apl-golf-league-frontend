@@ -12,7 +12,10 @@ import { environment } from './../../environments/environment';
 })
 export class FlightsService {
   private flightsList: FlightInfo[] = [];
-  private flightsListUpdated = new Subject<{ numFlights: number; flights: FlightInfo[] }>();
+  private flightsListUpdated = new Subject<FlightInfo[]>();
+
+  private flightInfo: FlightInfo;
+  private flightInfoUpdated = new Subject<FlightInfo>();
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
@@ -34,12 +37,9 @@ export class FlightsService {
       queryParams = `?year=${year}&`;
     }
     this.http
-      .get<{
-        num_flights: number;
-        flights: FlightInfo[];
-      }>(environment.apiUrl + 'flights/' + queryParams)
+      .get<FlightInfo[]>(environment.apiUrl + 'flights/' + queryParams)
       .subscribe((result) => {
-        this.flightsList = result.flights;
+        this.flightsList = result;
         this.flightsList.map((flight) => {
           if (flight.signup_start_date) {
             flight.signup_start_date = new Date(flight.signup_start_date);
@@ -51,14 +51,11 @@ export class FlightsService {
             flight.start_date = new Date(flight.start_date);
           }
         });
-        this.flightsListUpdated.next({
-          numFlights: result.num_flights,
-          flights: [...this.flightsList],
-        });
+        this.flightsListUpdated.next([...this.flightsList]);
       });
   }
 
-  getFlightsListUpdateListener(): Observable<{ flights: FlightInfo[]; numFlights: number }> {
+  getFlightsListUpdateListener(): Observable<FlightInfo[]> {
     return this.flightsListUpdated.asObservable();
   }
 
@@ -90,9 +87,20 @@ export class FlightsService {
     return this.http.put<FlightInfo>(environment.apiUrl + `flights/${flight.id}`, flight);
   }
 
+  getFlightInfo(id: number): void {
+    this.http.get<FlightInfo>(environment.apiUrl + `flights/info/${id}`).subscribe((result) => {
+      this.flightInfo = result;
+      this.flightInfoUpdated.next(result);
+    });
+  }
+
+  getFlightInfoUpdateListener(): Observable<FlightInfo> {
+    return this.flightInfoUpdated.asObservable();
+  }
+
   getFlightStandings(id: number): void {
     this.http
-      .get<FlightStandings>(environment.apiUrl + `flights/standings/?flight_id=${id}`)
+      .get<FlightStandings>(environment.apiUrl + `flights/standings/${id}`)
       .subscribe((result) => {
         this.flightStandings = result;
         this.flightStandingsUpdated.next(result);

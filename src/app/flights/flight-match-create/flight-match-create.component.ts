@@ -136,7 +136,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
     this.flightInfoSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
       console.log(`[FlightMatchCreateComponent] Received current flights list`);
-      this.flightOptions = result.flights;
+      this.flightOptions = result;
       this.isLoading = false;
       if (this.flightId) {
         for (const flightInfo of this.flightOptions) {

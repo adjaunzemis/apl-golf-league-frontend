@@ -23,7 +23,7 @@ export class FlightHistoryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
       console.log(`[LeagueHomeComponent] Received flights list`);
-      this.flights = result.flights;
+      this.flights = result;
       this.sortFlightsByYear();
       this.isLoading = false;
     });

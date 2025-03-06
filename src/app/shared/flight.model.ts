@@ -26,9 +26,9 @@ export interface FlightInfo {
   id: number;
   name: string;
   year: number;
-  course: string;
+  course?: string;
   logo_url?: string;
-  secretary?: string;
+  secretary: string;
   secretary_email?: string;
   secretary_phone?: string;
   signup_start_date: Date;
@@ -36,7 +36,7 @@ export interface FlightInfo {
   start_date: Date;
   weeks: number;
   tee_times?: string;
-  num_teams?: number;
+  num_teams: number;
 }
 
 export interface FlightCreate {

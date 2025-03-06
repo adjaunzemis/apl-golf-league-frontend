@@ -1,4 +1,4 @@
-<p-card>
+<p-card *ngIf="standings">
   <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
     <span class="text-2xl font-semibold">Standings</span>
   </div>
@@ -16,7 +16,6 @@
     stripedRows
     selectionMode="single"
     dataKey="team_id"
-    *ngIf="standings"
   >
     <ng-template #caption> </ng-template>
     <ng-template #header>

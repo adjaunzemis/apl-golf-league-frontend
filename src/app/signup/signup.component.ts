@@ -104,7 +104,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     });
 
     this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      this.flights = result.flights;
+      this.flights = result;
       this.isLoadingFlights = false;
 
       if (this.initFlightId) {

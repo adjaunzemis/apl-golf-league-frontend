@@ -29,8 +29,8 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      console.log(`[FlightsDashboardComponent] Received list of ${result.numFlights} flights`);
-      this.flights.set([...result.flights]);
+      console.log(`[FlightsDashboardComponent] Received list of ${result.length} flights`);
+      this.flights.set([...result]);
       this.isLoading = false;
     });
 
