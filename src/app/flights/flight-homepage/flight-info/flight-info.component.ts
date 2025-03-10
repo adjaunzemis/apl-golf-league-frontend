@@ -23,4 +23,18 @@ export class FlightInfoComponent implements OnInit {
 
     this.flightsService.getFlightInfo(this.flightId);
   }
+
+  getAddressLine1(): string {
+    if (!this.info.address) {
+      return '';
+    }
+    return this.info.address.split(',')[0];
+  }
+
+  getAddressLine2(): string {
+    if (!this.info.address) {
+      return '';
+    }
+    return this.info.address.split(',').slice(1).join(', ');
+  }
 }

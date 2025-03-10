@@ -16,21 +16,15 @@
             <div class="font-medium text-gray-600 text-sm">
               {{ info.course }}
             </div>
-          </div>
-          <div class="flex flex-col justify-stretch items-center w-full">
-            <div class="text-sm font-medium text-gray-600">
-              <div *ngIf="info.secretary_email">
-                <span>Flight Secretary: </span>
-                <a
-                  class="p-button contactButton"
-                  href="mailto:{{ info.secretary_email | lowercase }}"
-                  *ngIf="info.secretary_email"
-                >
-                  <span class="text-sm pi pi-send pr-2"></span>
-                  <span>{{ info.secretary }}</span>
-                </a>
-              </div>
-              <span *ngIf="!info.secretary_email">Flight Secretary: {{ info.secretary }}</span>
+            <div class="font-medium text-gray-600 text-sm" *ngIf="info.address">
+              {{ getAddressLine1() }}
+            </div>
+            <div class="font-medium text-gray-600 text-sm" *ngIf="info.address">
+              {{ getAddressLine2() }}
+            </div>
+            <div class="font-medium text-gray-600 text-sm" *ngIf="info.phone">
+              <span class="pi pi-phone text-xs pr-1"></span>
+              {{ info.phone }}
             </div>
           </div>
         </div>
@@ -54,6 +48,22 @@
       <div class="flex flex-col flex-2 justify-between items-center">
         <span>Weeks: {{ info.weeks }}</span>
         <span>Teams: {{ info.num_teams }}</span>
+      </div>
+    </div>
+    <div class="flex flex-col justify-stretch items-center w-full pt-4">
+      <div class="text-sm font-medium text-gray-600">
+        <div *ngIf="info.secretary_email">
+          <span>Flight Secretary: </span>
+          <a
+            class="p-button contactButton"
+            href="mailto:{{ info.secretary_email | lowercase }}"
+            *ngIf="info.secretary_email"
+          >
+            <span class="text-sm pi pi-send pr-2"></span>
+            <span>{{ info.secretary }}</span>
+          </a>
+        </div>
+        <span *ngIf="!info.secretary_email">Flight Secretary: {{ info.secretary }}</span>
       </div>
     </div>
   </div>

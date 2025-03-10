@@ -27,6 +27,8 @@ export interface FlightInfo {
   name: string;
   year: number;
   course?: string;
+  address?: string;
+  phone?: string;
   logo_url?: string;
   secretary: string;
   secretary_email?: string;
