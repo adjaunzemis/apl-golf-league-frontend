@@ -6,10 +6,14 @@
   <p-accordion [multiple]="true">
     <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
       <p-accordion-header class="px-4 py-2">{{ team.name }}</p-accordion-header>
-      <p-accordion-content>
-        <div class="px-4" *ngFor="let golfer of team.golfers">
-          <span>{{ golfer.name }} - {{ golfer.role }} - {{ golfer.division }}</span>
-        </div>
+      <p-accordion-content class="mx-auto">
+        <table>
+          <tr class="text-center" *ngFor="let golfer of team.golfers">
+            <td>{{ golfer.name }}</td>
+            <td class="px-2">{{ golfer.role }}</td>
+            <td>{{ golfer.division }}</td>
+          </tr>
+        </table>
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>
