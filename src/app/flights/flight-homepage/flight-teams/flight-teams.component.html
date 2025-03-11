@@ -6,11 +6,11 @@
   <p-accordion [multiple]="true">
     <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
       <p-accordion-header class="px-4 py-2">{{ team.name }}</p-accordion-header>
-      <p-accordion-content class="mx-auto">
+      <p-accordion-content class="pl-8">
         <table>
-          <tr class="text-center" *ngFor="let golfer of team.golfers">
+          <tr class="text-left" *ngFor="let golfer of team.golfers">
             <td>{{ golfer.name }}</td>
-            <td class="px-2">{{ golfer.role }}</td>
+            <td class="px-6">{{ golfer.role }}</td>
             <td>{{ golfer.division }}</td>
           </tr>
         </table>
