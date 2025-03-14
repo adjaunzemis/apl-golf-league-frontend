@@ -31,7 +31,7 @@ export class FlightScheduleMatrixComponent implements OnInit {
   private flightsService = inject(FlightsService);
 
   ngOnInit(): void {
-    this.flightsService.getFlightInfoUpdateListener().subscribe(result => {
+    this.flightsService.getFlightInfoUpdateListener().subscribe((result) => {
       this.flightInfo = result;
 
       this.weeks = [];
@@ -43,7 +43,7 @@ export class FlightScheduleMatrixComponent implements OnInit {
       this.flightsService.getFlightMatches(this.flightId);
     });
 
-    this.flightsService.getFlightMatchesUpdateListener().subscribe(result => {
+    this.flightsService.getFlightMatchesUpdateListener().subscribe((result) => {
       this.matches = result;
 
       this.teamNames = [];
@@ -84,8 +84,14 @@ export class FlightScheduleMatrixComponent implements OnInit {
 
       this.teamNames = Object.keys(this.teamNumbers);
     });
-    
+
     this.flightsService.getFlightInfo(this.flightId);
+  }
+
+  getWeekStartDate(week: number): string {
+    const d = new Date(this.flightInfo.start_date);
+    d.setDate(d.getDate() + 7 * week);
+    return `${d.getMonth()}/${d.getDate()}`;
   }
 
   private determineCurrentWeek(): number {

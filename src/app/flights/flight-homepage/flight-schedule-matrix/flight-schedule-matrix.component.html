@@ -6,6 +6,10 @@
         <td [attr.colspan]="flightInfo.weeks">Weeks</td>
       </tr>
       <tr class="bold">
+        <td colspan="2"></td>
+        <td class="w-12" *ngFor="let week of weeks">{{ getWeekStartDate(week) }}</td>
+      </tr>
+      <tr class="bold">
         <td>Team Name</td>
         <td>#</td>
         <td class="w-6" *ngFor="let week of weeks">{{ week }}</td>
