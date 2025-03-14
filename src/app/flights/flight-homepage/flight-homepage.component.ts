@@ -6,6 +6,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightInfoComponent } from './flight-info/flight-info.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
+import { FlightScheduleMatrixComponent } from './flight-schedule-matrix/flight-schedule-matrix.component';
 
 @Component({
   selector: 'app-flight-homepage',
@@ -17,6 +18,7 @@ import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
     FlightInfoComponent,
     FlightStandingsComponent,
     FlightTeamsComponent,
+    FlightScheduleMatrixComponent,
   ],
 })
 export class FlightHomepageComponent implements OnInit {

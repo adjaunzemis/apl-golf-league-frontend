@@ -11,7 +11,6 @@ import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
 import { ErrorModule } from '../shared/error/error.module';
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
-import { FlightScheduleMatrixComponent } from './flight-schedule-matrix/flight-schedule-matrix.component';
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
 import { FlightMatchScorecardComponent } from './flight-match-create/flight-match-scorecard.component';
 import { DivisionsModule } from '../divisions/divisions.module';
@@ -28,7 +27,6 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
     FlightHomeComponent,
     FlightHistoryComponent,
     FlightScheduleComponent,
-    FlightScheduleMatrixComponent,
     FlightMatchScorecardComponent,
     FlightMatchCreateComponent,
     PlayoffBracketComponent,

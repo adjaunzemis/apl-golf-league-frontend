@@ -1,0 +1,24 @@
+<p-card>
+  <table class="text-center w-full">
+    <thead>
+      <tr class="bold">
+        <td colspan="2"></td>
+        <td [attr.colspan]="flightInfo.weeks">Weeks</td>
+      </tr>
+      <tr class="bold">
+        <td>Team Name</td>
+        <td>#</td>
+        <td class="w-6" *ngFor="let week of weeks">{{ week }}</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teamName of teamNames">
+        <td>{{ teamName }}</td>
+        <td>{{ teamNumbers[teamName] }}</td>
+        <td [ngClass]="week === currentWeek ? 'bold' : ''" *ngFor="let week of weeks">
+          {{ teamOpponents[teamName][week - 1] === '' ? '-' : teamOpponents[teamName][week - 1] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</p-card>

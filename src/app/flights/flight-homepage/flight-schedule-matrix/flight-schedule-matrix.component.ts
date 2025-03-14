@@ -1,15 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
 
-import { FlightData } from '../../shared/flight.model';
+import { FlightsService } from '../../flights.service';
+import { MatchSummary } from 'src/app/shared/match.model';
+import { FlightInfo } from 'src/app/shared/flight.model';
 
 @Component({
   selector: 'app-flight-schedule-matrix',
   templateUrl: './flight-schedule-matrix.component.html',
   styleUrls: ['./flight-schedule-matrix.component.css'],
-  standalone: false,
+  imports: [CommonModule, CardModule],
 })
 export class FlightScheduleMatrixComponent implements OnInit {
-  @Input() flight: FlightData;
+  @Input() flightId: number;
+
+  flightInfo!: FlightInfo;
+
+  matches!: MatchSummary[];
 
   private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
   currentWeek = 1;
@@ -20,15 +28,29 @@ export class FlightScheduleMatrixComponent implements OnInit {
 
   weeks: number[] = [];
 
+  private flightsService = inject(FlightsService);
+
   ngOnInit(): void {
-    this.currentWeek = this.determineCurrentWeek();
+    this.flightsService.getFlightInfoUpdateListener().subscribe(result => {
+      this.flightInfo = result;
 
-    for (let week = 1; week <= this.flight.weeks; week++) {
-      this.weeks.push(week);
-    }
+      this.weeks = [];
+      for (let week = 1; week <= this.flightInfo.weeks; week++) {
+        this.weeks.push(week);
+      }
+      this.currentWeek = this.determineCurrentWeek();
 
-    if (this.flight.matches) {
-      for (const match of this.flight.matches) {
+      this.flightsService.getFlightMatches(this.flightId);
+    });
+
+    this.flightsService.getFlightMatchesUpdateListener().subscribe(result => {
+      this.matches = result;
+
+      this.teamNames = [];
+      this.teamNumbers = {};
+      this.teamOpponents = {};
+
+      for (const match of this.matches) {
         if (!Object.keys(this.teamNumbers).includes(match.home_team_name)) {
           this.teamNumbers[match.home_team_name] = Object.keys(this.teamNumbers).length + 1;
         }
@@ -38,7 +60,7 @@ export class FlightScheduleMatrixComponent implements OnInit {
         }
 
         if (!Object.keys(this.teamOpponents).includes(match.home_team_name)) {
-          this.teamOpponents[match.home_team_name] = Array(this.flight.weeks).fill('');
+          this.teamOpponents[match.home_team_name] = Array(this.flightInfo.weeks).fill('');
         }
         if (this.teamOpponents[match.home_team_name][match.week - 1] === '') {
           this.teamOpponents[match.home_team_name][match.week - 1] =
@@ -49,7 +71,7 @@ export class FlightScheduleMatrixComponent implements OnInit {
         }
 
         if (!Object.keys(this.teamOpponents).includes(match.away_team_name)) {
-          this.teamOpponents[match.away_team_name] = Array(this.flight.weeks).fill('');
+          this.teamOpponents[match.away_team_name] = Array(this.flightInfo.weeks).fill('');
         }
         if (this.teamOpponents[match.away_team_name][match.week - 1] === '') {
           this.teamOpponents[match.away_team_name][match.week - 1] =
@@ -59,16 +81,19 @@ export class FlightScheduleMatrixComponent implements OnInit {
             ' & ' + this.teamNumbers[match.home_team_name];
         }
       }
-    }
-    this.teamNames = Object.keys(this.teamNumbers);
+
+      this.teamNames = Object.keys(this.teamNumbers);
+    });
+    
+    this.flightsService.getFlightInfo(this.flightId);
   }
 
   private determineCurrentWeek(): number {
-    if (this.currentDate < this.flight.start_date) {
+    if (this.currentDate < this.flightInfo.start_date) {
       return 1;
     } else {
-      for (let week = this.flight.weeks; week > 1; week--) {
-        const weekStartDate = new Date(this.flight.start_date);
+      for (let week = this.flightInfo.weeks; week > 1; week--) {
+        const weekStartDate = new Date(this.flightInfo.start_date);
         weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
         if (this.currentDate >= weekStartDate) {
           return week;

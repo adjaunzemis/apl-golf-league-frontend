@@ -12,6 +12,7 @@ import {
 } from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
+import { MatchSummary } from '../shared/match.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,9 @@ export class FlightsService {
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
+
+  private flightMatches: MatchSummary[];
+  private flightMatchesUpdated = new Subject<MatchSummary[]>();
 
   private flightData: FlightData;
   private flightDataUpdated = new Subject<FlightData>();
@@ -129,6 +133,19 @@ export class FlightsService {
 
   getFlightStandingsUpdateListener(): Observable<FlightStandings> {
     return this.flightStandingsUpdated.asObservable();
+  }
+
+  getFlightMatches(id: number): void {
+    this.http
+      .get<MatchSummary[]>(environment.apiUrl + `flights/matches/${id}`)
+      .subscribe((result) => {
+        this.flightMatches = result;
+        this.flightMatchesUpdated.next(result);
+      });
+  }
+
+  getFlightMatchesUpdateListener(): Observable<MatchSummary[]> {
+    return this.flightMatchesUpdated.asObservable();
   }
 
   // TODO: Move team routes to own service
