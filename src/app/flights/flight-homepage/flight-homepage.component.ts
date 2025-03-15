@@ -6,7 +6,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightInfoComponent } from './flight-info/flight-info.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
-import { FlightScheduleMatrixComponent } from './flight-schedule-matrix/flight-schedule-matrix.component';
+import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightsService } from '../flights.service';
 import { FlightInfo, FlightStandings, FlightTeam } from 'src/app/shared/flight.model';
 import { MatchSummary } from 'src/app/shared/match.model';
@@ -21,7 +21,7 @@ import { MatchSummary } from 'src/app/shared/match.model';
     FlightInfoComponent,
     FlightStandingsComponent,
     FlightTeamsComponent,
-    FlightScheduleMatrixComponent,
+    FlightScheduleComponent,
   ],
 })
 export class FlightHomepageComponent implements OnInit {
@@ -43,9 +43,7 @@ export class FlightHomepageComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       if (params && params.id) {
-        console.log(
-          '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
-        );
+        console.log('[FlightHomeComponent] Processing route with query parameter: id=' + params.id);
         const flightId = params.id;
 
         this.flightsService.getInfo(flightId);

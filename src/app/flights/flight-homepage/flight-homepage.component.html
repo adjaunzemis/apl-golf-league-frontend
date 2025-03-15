@@ -1,64 +1,36 @@
-<div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
+<div
+  class="grid grid-cols-12 place-items-stretch gap-4 p-4"
+  *ngIf="info && teams && standings && matches; else loading"
+>
   <div class="col-span-1 bg-gray-500"></div>
-
-  <div class="col-span-3 row-span-1">
-    <div class="flex flex-col items-center py-4" *ngIf="!info">
-      <p-progress-spinner
-        strokeWidth="4"
-        fill="transparent"
-        animationDuration="2s"
-        [style]="{ width: '100px', height: '100px' }"
-      />
-    </div>
-
-    <app-flight-info [info]="info" *ngIf="info" />
-  </div>
-
-  <div class="col-span-4 row-span-1">
-    <div class="flex flex-col items-center py-4" *ngIf="!standings">
-      <p-progress-spinner
-        strokeWidth="4"
-        fill="transparent"
-        animationDuration="2s"
-        [style]="{ width: '100px', height: '100px' }"
-      />
-    </div>
-
-    <app-flight-standings [standings]="standings" *ngIf="standings" />
-  </div>
-
+  <app-flight-info class="col-span-3 row-span-1" [info]="info" *ngIf="info" />
+  <app-flight-standings class="col-span-4 row-span-1" [standings]="standings" *ngIf="standings" />
   <div class="col-span-3 bg-green-500"></div>
   <div class="col-span-1 bg-gray-500"></div>
 
-  <div class="col-span-1 bg-gray-500 h-100"></div>
+  <div class="col-span-2 bg-gray-500"></div>
+  <app-flight-schedule
+    class="col-span-8"
+    [info]="info"
+    [matches]="matches"
+    *ngIf="matches && info"
+  />
+  <div class="col-span-2 bg-gray-500"></div>
 
-  <div class="col-span-3 row-span-2">
-    <div class="flex flex-col items-center py-4" *ngIf="!teams">
-      <p-progress-spinner
-        strokeWidth="4"
-        fill="transparent"
-        animationDuration="2s"
-        [style]="{ width: '100px', height: '100px' }"
-      />
-    </div>
-
-    <app-flight-teams [teams]="teams" *ngIf="teams" />
-  </div>
-  <div class="col-span-7">
-    <div class="flex flex-col items-center py-4" *ngIf="!matches || !info">
-      <p-progress-spinner
-        strokeWidth="4"
-        fill="transparent"
-        animationDuration="2s"
-        [style]="{ width: '100px', height: '100px' }"
-      />
-    </div>
-
-    <app-flight-schedule-matrix [info]="info" [matches]="matches" *ngIf="matches && info" />
-  </div>
   <div class="col-span-1 bg-gray-500"></div>
-
-  <div class="col-span-1 bg-gray-500 h-100"></div>
+  <app-flight-teams class="col-span-3" [teams]="teams" *ngIf="teams" />
   <div class="col-span-4 bg-green-500"></div>
+  <div class="col-span-3 bg-green-500"></div>
   <div class="col-span-1 bg-gray-500"></div>
 </div>
+
+<ng-template #loading>
+  <div class="flex flex-col items-center w-full p-10">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ widthcs: '100px', height: '100px' }"
+    />
+  </div>
+</ng-template>
