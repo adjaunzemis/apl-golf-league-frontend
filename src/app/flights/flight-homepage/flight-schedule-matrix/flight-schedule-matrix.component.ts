@@ -90,8 +90,8 @@ export class FlightScheduleMatrixComponent implements OnInit {
 
   getWeekStartDate(week: number): string {
     const d = new Date(this.flightInfo.start_date);
-    d.setDate(d.getDate() + 7 * week);
-    return `${d.getMonth()}/${d.getDate()}`;
+    d.setDate(d.getDate() + 7 * (week - 1));
+    return d.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
   }
 
   private determineCurrentWeek(): number {

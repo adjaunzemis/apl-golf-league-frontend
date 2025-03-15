@@ -1,28 +1,27 @@
-<p-card>
-  <table class="text-center w-full">
-    <thead>
-      <tr class="bold">
-        <td colspan="2"></td>
-        <td [attr.colspan]="flightInfo.weeks">Weeks</td>
-      </tr>
-      <tr class="bold">
-        <td colspan="2"></td>
-        <td class="w-12" *ngFor="let week of weeks">{{ getWeekStartDate(week) }}</td>
-      </tr>
-      <tr class="bold">
-        <td>Team Name</td>
-        <td>#</td>
-        <td class="w-6" *ngFor="let week of weeks">{{ week }}</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let teamName of teamNames">
-        <td>{{ teamName }}</td>
-        <td>{{ teamNumbers[teamName] }}</td>
-        <td [ngClass]="week === currentWeek ? 'bold' : ''" *ngFor="let week of weeks">
-          {{ teamOpponents[teamName][week - 1] === '' ? '-' : teamOpponents[teamName][week - 1] }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<p-card class="items-center">
+  <div class="m-auto p-4">
+    <table class="text-center">
+      <thead>
+        <tr class="font-semibold">
+          <td></td>
+          <td class="w-12 border-r-1"></td>
+          <td class="w-12" *ngFor="let week of weeks">{{ week }}</td>
+        </tr>
+        <tr class="font-semibold">
+          <td></td>
+          <td class="w-12 border-r-1"></td>
+          <td class="w-12 border-b-1" *ngFor="let week of weeks">{{ getWeekStartDate(week) }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teamName of teamNames">
+          <td class="text-right">{{ teamName }}</td>
+          <td class="border-r-1">{{ teamNumbers[teamName] }}</td>
+          <td [ngClass]="week === currentWeek ? 'font-semibold' : ''" *ngFor="let week of weeks">
+            {{ teamOpponents[teamName][week - 1] === '' ? '-' : teamOpponents[teamName][week - 1] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </p-card>
