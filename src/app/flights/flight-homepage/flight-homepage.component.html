@@ -2,7 +2,7 @@
   <div class="col-span-1 bg-gray-500"></div>
 
   <div class="col-span-3 row-span-1">
-    <div class="flex flex-col items-center py-4" *ngIf="!flightId">
+    <div class="flex flex-col items-center py-4" *ngIf="!info">
       <p-progress-spinner
         strokeWidth="4"
         fill="transparent"
@@ -11,11 +11,11 @@
       />
     </div>
 
-    <app-flight-info [flightId]="flightId" *ngIf="flightId" />
+    <app-flight-info [info]="info" *ngIf="info" />
   </div>
 
   <div class="col-span-4 row-span-1">
-    <div class="flex flex-col items-center py-4" *ngIf="!flightId">
+    <div class="flex flex-col items-center py-4" *ngIf="!standings">
       <p-progress-spinner
         strokeWidth="4"
         fill="transparent"
@@ -24,7 +24,7 @@
       />
     </div>
 
-    <app-flight-standings [flightId]="flightId" *ngIf="flightId" />
+    <app-flight-standings [standings]="standings" *ngIf="standings" />
   </div>
 
   <div class="col-span-3 bg-green-500"></div>
@@ -33,7 +33,7 @@
   <div class="col-span-1 bg-gray-500 h-100"></div>
 
   <div class="col-span-3 row-span-2">
-    <div class="flex flex-col items-center py-4" *ngIf="!flightId">
+    <div class="flex flex-col items-center py-4" *ngIf="!teams">
       <p-progress-spinner
         strokeWidth="4"
         fill="transparent"
@@ -42,10 +42,10 @@
       />
     </div>
 
-    <app-flight-teams [flightId]="flightId" *ngIf="flightId" />
+    <app-flight-teams [teams]="teams" *ngIf="teams" />
   </div>
   <div class="col-span-7">
-    <div class="flex flex-col items-center py-4" *ngIf="!flightId">
+    <div class="flex flex-col items-center py-4" *ngIf="!matches || !info">
       <p-progress-spinner
         strokeWidth="4"
         fill="transparent"
@@ -54,7 +54,7 @@
       />
     </div>
 
-    <app-flight-schedule-matrix [flightId]="flightId" *ngIf="flightId" />
+    <app-flight-schedule-matrix [info]="info" [matches]="matches" *ngIf="matches && info" />
   </div>
   <div class="col-span-1 bg-gray-500"></div>
 

@@ -7,6 +7,9 @@ import { FlightInfoComponent } from './flight-info/flight-info.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
 import { FlightScheduleMatrixComponent } from './flight-schedule-matrix/flight-schedule-matrix.component';
+import { FlightsService } from '../flights.service';
+import { FlightInfo, FlightStandings, FlightTeam } from 'src/app/shared/flight.model';
+import { MatchSummary } from 'src/app/shared/match.model';
 
 @Component({
   selector: 'app-flight-homepage',
@@ -22,18 +25,36 @@ import { FlightScheduleMatrixComponent } from './flight-schedule-matrix/flight-s
   ],
 })
 export class FlightHomepageComponent implements OnInit {
-  flightId: number;
+  info: FlightInfo | undefined;
+  teams: FlightTeam[] | undefined;
+  standings: FlightStandings | undefined;
+  matches: MatchSummary[] | undefined;
 
   private route = inject(ActivatedRoute);
+  private flightsService = inject(FlightsService);
 
   ngOnInit(): void {
+    this.flightsService.getFlightInfoUpdateListener().subscribe((result) => (this.info = result));
+    this.flightsService.getFlightTeamsUpdateListener().subscribe((result) => (this.teams = result));
+    this.flightsService
+      .getFlightStandingsUpdateListener()
+      .subscribe((result) => (this.standings = result));
+    this.flightsService
+      .getFlightMatchesUpdateListener()
+      .subscribe((result) => (this.matches = result));
+
     this.route.queryParams.subscribe((params) => {
       if (params) {
         if (params.id) {
           console.log(
             '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
           );
-          this.flightId = params.id;
+          const flightId = params.id;
+
+          this.flightsService.getFlightInfo(flightId);
+          this.flightsService.getFlightTeams(flightId);
+          this.flightsService.getFlightStandings(flightId);
+          this.flightsService.getFlightMatches(flightId);
         }
       }
     });
