@@ -29,6 +29,14 @@ body {
   @apply px-4 py-4;
 }
 
+.p-carousel-indicator-button {
+  @apply bg-gray-200 rounded-4xl shadow-none;
+}
+
+.p-carousel-indicator-button:hover {
+  @apply bg-blue-400;
+}
+
 /* 
 .content {
   display: flex;

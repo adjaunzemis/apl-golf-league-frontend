@@ -1,5 +1,21 @@
 <p-card>
-  <div class="m-auto p-4">
-    <app-flight-schedule-matrix [info]="info" [matches]="matches" />
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
+    <span class="text-2xl font-semibold">Schedule</span>
   </div>
+
+  <p-tabs class="pt-2" value="0">
+    <p-tablist>
+      <p-tab class="px-8 py-2" value="0">Week-by-Week</p-tab>
+      <p-tab class="px-8 py-2" value="1">Matrix</p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <app-flight-schedule-weekly [info]="info" [matches]="matches" />
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <app-flight-schedule-matrix [info]="info" [matches]="matches" />
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 </p-card>

@@ -8,14 +8,14 @@
   <div class="col-span-3 bg-green-500"></div>
   <div class="col-span-1 bg-gray-500"></div>
 
-  <div class="col-span-2 bg-gray-500"></div>
+  <div class="col-span-1 bg-gray-500"></div>
   <app-flight-schedule
-    class="col-span-8"
+    class="col-span-10"
     [info]="info"
     [matches]="matches"
     *ngIf="matches && info"
   />
-  <div class="col-span-2 bg-gray-500"></div>
+  <div class="col-span-1 bg-gray-500"></div>
 
   <div class="col-span-1 bg-gray-500"></div>
   <app-flight-teams class="col-span-3" [teams]="teams" *ngIf="teams" />
