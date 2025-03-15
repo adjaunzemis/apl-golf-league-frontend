@@ -44,7 +44,7 @@ export class FlightsService {
     private router: Router,
   ) {}
 
-  getFlightsList(year?: number): void {
+  getList(year?: number): void {
     let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
@@ -53,26 +53,15 @@ export class FlightsService {
       .get<FlightInfo[]>(environment.apiUrl + 'flights/' + queryParams)
       .subscribe((result) => {
         this.flightsList = result;
-        this.flightsList.map((flight) => {
-          if (flight.signup_start_date) {
-            flight.signup_start_date = new Date(flight.signup_start_date);
-          }
-          if (flight.signup_stop_date) {
-            flight.signup_stop_date = new Date(flight.signup_stop_date);
-          }
-          if (flight.start_date) {
-            flight.start_date = new Date(flight.start_date);
-          }
-        });
         this.flightsListUpdated.next([...this.flightsList]);
       });
   }
 
-  getFlightsListUpdateListener(): Observable<FlightInfo[]> {
+  getListUpdateListener(): Observable<FlightInfo[]> {
     return this.flightsListUpdated.asObservable();
   }
 
-  getFlight(id: number): void {
+  getData(id: number): void {
     this.http.get<FlightData>(environment.apiUrl + `flights/${id}`).subscribe((result) => {
       this.flightData = result;
       if (this.flightData.signup_start_date) {
@@ -88,7 +77,7 @@ export class FlightsService {
     });
   }
 
-  getFlightUpdateListener(): Observable<FlightData> {
+  getDataUpdateListener(): Observable<FlightData> {
     return this.flightDataUpdated.asObservable();
   }
 
@@ -100,29 +89,29 @@ export class FlightsService {
     return this.http.put<FlightInfo>(environment.apiUrl + `flights/${flight.id}`, flight);
   }
 
-  getFlightInfo(id: number): void {
+  getInfo(id: number): void {
     this.http.get<FlightInfo>(environment.apiUrl + `flights/info/${id}`).subscribe((result) => {
       this.flightInfo = result;
       this.flightInfoUpdated.next(result);
     });
   }
 
-  getFlightInfoUpdateListener(): Observable<FlightInfo> {
+  getInfoUpdateListener(): Observable<FlightInfo> {
     return this.flightInfoUpdated.asObservable();
   }
 
-  getFlightTeams(id: number): void {
+  getTeams(id: number): void {
     this.http.get<FlightTeam[]>(environment.apiUrl + `flights/teams/${id}`).subscribe((result) => {
       this.flightTeams = result;
       this.flightTeamsUpdated.next(result);
     });
   }
 
-  getFlightTeamsUpdateListener(): Observable<FlightTeam[]> {
+  getTeamsUpdateListener(): Observable<FlightTeam[]> {
     return this.flightTeamsUpdated.asObservable();
   }
 
-  getFlightStandings(id: number): void {
+  getStandings(id: number): void {
     this.http
       .get<FlightStandings>(environment.apiUrl + `flights/standings/${id}`)
       .subscribe((result) => {
@@ -131,11 +120,11 @@ export class FlightsService {
       });
   }
 
-  getFlightStandingsUpdateListener(): Observable<FlightStandings> {
+  getStandingsUpdateListener(): Observable<FlightStandings> {
     return this.flightStandingsUpdated.asObservable();
   }
 
-  getFlightMatches(id: number): void {
+  getMatches(id: number): void {
     this.http
       .get<MatchSummary[]>(environment.apiUrl + `flights/matches/${id}`)
       .subscribe((result) => {
@@ -144,19 +133,19 @@ export class FlightsService {
       });
   }
 
-  getFlightMatchesUpdateListener(): Observable<MatchSummary[]> {
+  getMatchesUpdateListener(): Observable<MatchSummary[]> {
     return this.flightMatchesUpdated.asObservable();
   }
 
   // TODO: Move team routes to own service
-  getTeam(id: number): void {
+  getTeamData(id: number): void {
     this.http.get<TeamDataWithMatches>(environment.apiUrl + `teams/${id}`).subscribe((result) => {
       this.teamData = result;
       this.teamDataUpdated.next(result);
     });
   }
 
-  getTeamUpdateListener(): Observable<TeamDataWithMatches> {
+  getTeamDataUpdateListener(): Observable<TeamDataWithMatches> {
     return this.teamDataUpdated.asObservable();
   }
 }

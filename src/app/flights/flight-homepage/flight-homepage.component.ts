@@ -34,28 +34,24 @@ export class FlightHomepageComponent implements OnInit {
   private flightsService = inject(FlightsService);
 
   ngOnInit(): void {
-    this.flightsService.getFlightInfoUpdateListener().subscribe((result) => (this.info = result));
-    this.flightsService.getFlightTeamsUpdateListener().subscribe((result) => (this.teams = result));
+    this.flightsService.getInfoUpdateListener().subscribe((result) => (this.info = result));
+    this.flightsService.getTeamsUpdateListener().subscribe((result) => (this.teams = result));
     this.flightsService
-      .getFlightStandingsUpdateListener()
+      .getStandingsUpdateListener()
       .subscribe((result) => (this.standings = result));
-    this.flightsService
-      .getFlightMatchesUpdateListener()
-      .subscribe((result) => (this.matches = result));
+    this.flightsService.getMatchesUpdateListener().subscribe((result) => (this.matches = result));
 
     this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.id) {
-          console.log(
-            '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
-          );
-          const flightId = params.id;
+      if (params && params.id) {
+        console.log(
+          '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
+        );
+        const flightId = params.id;
 
-          this.flightsService.getFlightInfo(flightId);
-          this.flightsService.getFlightTeams(flightId);
-          this.flightsService.getFlightStandings(flightId);
-          this.flightsService.getFlightMatches(flightId);
-        }
+        this.flightsService.getInfo(flightId);
+        this.flightsService.getTeams(flightId);
+        this.flightsService.getStandings(flightId);
+        this.flightsService.getMatches(flightId);
       }
     });
   }

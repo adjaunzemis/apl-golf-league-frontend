@@ -134,7 +134,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.flightInfoSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
+    this.flightInfoSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       console.log(`[FlightMatchCreateComponent] Received current flights list`);
       this.flightOptions = result;
       this.isLoading = false;
@@ -149,7 +149,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.flightDataSub = this.flightsService.getFlightUpdateListener().subscribe((result) => {
+    this.flightDataSub = this.flightsService.getDataUpdateListener().subscribe((result) => {
       console.log(
         `[FlightMatchCreateComponent] Received data for flight: ${result.name} (${result.year})`,
       );
@@ -248,7 +248,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   private getFlightOptions(): void {
     this.isLoading = true;
-    this.flightsService.getFlightsList(this.currentYear);
+    this.flightsService.getList(this.currentYear);
   }
 
   onSelectedFlightChanged(selection: MatSelectChange): void {
@@ -262,7 +262,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       `[FlightMatchCreateComponent] Selected flight: ${this.selectedFlightInfo.name} (${this.selectedFlightInfo.year})`,
     );
     this.isLoading = true;
-    this.flightsService.getFlight(this.selectedFlightInfo.id);
+    this.flightsService.getData(this.selectedFlightInfo.id);
   }
 
   onSelectedWeekChanged(selectedWeekChange: MatSelectChange): void {

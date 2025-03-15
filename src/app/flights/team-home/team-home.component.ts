@@ -30,7 +30,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.teamSub = this.flightsService
-      .getTeamUpdateListener()
+      .getTeamDataUpdateListener()
       .subscribe((result: TeamDataWithMatches) => {
         console.log(`[TeamHomeComponent] Received team data`);
         this.isLoading = false;
@@ -54,7 +54,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   }
 
   private getTeamData(): void {
-    this.flightsService.getTeam(this.teamId);
+    this.flightsService.getTeamData(this.teamId);
   }
 
   focusMatch(match: MatchData): void {

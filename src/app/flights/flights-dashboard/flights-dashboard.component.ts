@@ -28,7 +28,7 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
   private flightsService = inject(FlightsService);
 
   ngOnInit(): void {
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
+    this.flightsSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       console.log(`[FlightsDashboardComponent] Received list of ${result.length} flights`);
       this.flights.set([...result]);
       this.isLoading = false;
@@ -36,7 +36,7 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
 
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.currentYear = result.year;
-      this.flightsService.getFlightsList(this.currentYear);
+      this.flightsService.getList(this.currentYear);
     });
   }
 

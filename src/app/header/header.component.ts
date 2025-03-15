@@ -83,7 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.golferNameOptions = golferOptions.map((golfer) => golfer.name);
     });
 
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
+    this.flightsSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       this.flights = result;
     });
 
@@ -98,7 +98,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[HeaderComponent] Received active season: year=${result.year}`);
       this.activeSeason = result;
-      this.flightsService.getFlightsList(this.activeSeason.year);
+      this.flightsService.getList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
     });
   }
@@ -371,7 +371,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             },
           );
 
-          this.flightsService.getFlightsList(this.activeSeason.year); // refresh flights list
+          this.flightsService.getList(this.activeSeason.year); // refresh flights list
         });
       }
     });
