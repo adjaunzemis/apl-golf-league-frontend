@@ -1,197 +1,22 @@
-<div class="content">
-  <!-- <app-carousel></app-carousel> -->
-  <img src="assets/apl_golf_logo.png" alt="APL Golf League" height="150px" />
+<div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
+  <!-- Row 1 -->
+  <div class="col-span-3"></div>
+  <app-announcements-dashboard class="col-span-6" />
+  <div class="col-span-3"></div>
 
-  <div class="card-container">
-    <a class="card card-small selectable" routerLink="/rules">
-      <span class="bold">League Rules</span>
+  <!-- Row 2 -->
+  <div class="hidden md:block md:col-span-1 xl:col-span-2"></div>
+  <app-flights-dashboard class="col-span-12 md:col-span-5 xl:col-span-4" />
+  <app-tournaments-dashboard class="col-span-12 md:col-span-5 xl:col-span-4" />
+  <div class="hidden md:block md:col-span-1 xl:col-span-2"></div>
 
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
+  <!-- Row 3 -->
+  <div class="col-span-3"></div>
+  <app-rules-dashboard class="col-span-6" />
+  <div class="col-span-3"></div>
 
-    <a class="card card-small selectable" routerLink="/bylaws">
-      <span class="bold">League Bylaws</span>
-
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-
-    <!-- Re-enable when handicapping page is ready -->
-    <!-- <a class="card card-small selectable" routerLink="/handicaps">
-      <span class="bold">Handicapping</span>
-
-      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-      </svg>
-    </a> -->
-
-    <a
-      class="card card-small selectable"
-      href="assets/apl_blank_participation_agreement.pdf"
-      title="Download APL participation agreement form"
-    >
-      <span class="bold">Participation Agreement</span>
-    </a>
-
-    <a
-      class="card card-small selectable"
-      href="http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl"
-    >
-      <span class="bold">Legacy APL Golf Website</span>
-
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-  </div>
-
-  <h2>Flights</h2>
-
-  <mat-spinner *ngIf="isLoadingFlights"></mat-spinner>
-
-  <div class="card-container" *ngIf="!isLoadingFlights">
-    <a
-      class="card selectable"
-      routerLink="/flight"
-      [queryParams]="{ id: flight.id }"
-      *ngFor="let flight of currentFlights"
-    >
-      <img
-        src="assets/{{ flight.logo_url }}"
-        alt="{{ flight.name }}"
-        height="50"
-        *ngIf="flight.logo_url"
-      />
-
-      <div style="width: 70%; text-align: center">
-        <div class="bold">
-          <span>{{ flight.name }} ({{ flight.year }})</span>
-        </div>
-        <div>
-          <span>{{ flight.course }}</span>
-        </div>
-      </div>
-
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-  </div>
-
-  <div class="card-container">
-    <a class="card card-small selectable" routerLink="/flight/history">
-      <span class="bold">Historical Flights</span>
-    </a>
-
-    <a
-      class="card card-small selectable"
-      href="mailto:{{ getCurrentFlightSecretariesEmailList() }}"
-    >
-      <span class="bold">Contact Flight Secretaries</span>
-    </a>
-  </div>
-
-  <h2>Tournaments</h2>
-
-  <mat-spinner *ngIf="isLoadingTournaments"></mat-spinner>
-
-  <div class="card-container" *ngIf="!isLoadingTournaments">
-    <a
-      class="card selectable"
-      routerLink="/tournament"
-      [queryParams]="{ id: tournament.id }"
-      *ngFor="let tournament of currentTournaments"
-    >
-      <img
-        src="assets/{{ tournament.logo_url }}"
-        alt="{{ tournament.name }}"
-        height="50"
-        *ngIf="tournament.logo_url"
-      />
-
-      <div style="width: 70%; text-align: center">
-        <div class="bold">
-          <span>{{ tournament.name }} ({{ tournament.year }})</span>
-        </div>
-        <div>
-          <span
-            >{{ tournament.date | date: 'mediumDate' }}
-            {{ tournament.date | date: 'shortTime' }}</span
-          >
-        </div>
-        <div>
-          <span>{{ tournament.course }}</span>
-        </div>
-      </div>
-
-      <svg
-        class="material-icons"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </a>
-  </div>
-
-  <div class="card-container">
-    <a class="card card-small selectable" routerLink="/tournament/history">
-      <span class="bold">Historical Tournaments</span>
-    </a>
-
-    <a
-      class="card card-small selectable"
-      href="mailto:{{ getCurrentTournamentOrganizersEmailList() }}"
-    >
-      <span class="bold">Contact Organizers</span>
-    </a>
-  </div>
-
-  <h2>Officers</h2>
-
-  <mat-spinner *ngIf="isLoadingOfficers"></mat-spinner>
-
-  <div class="card-container" *ngIf="!isLoadingOfficers">
-    <a
-      class="card card-small selectable"
-      href="mailto:{{ officer.email }}"
-      *ngFor="let officer of leagueOfficers"
-    >
-      <span class="bold">{{ officer.role }}</span>
-      <span>{{ officer.name }}</span>
-    </a>
-  </div>
-
-  <a class="card card-small selectable" href="mailto:{{ getLeagueOfficersEmailList() }}">
-    <span class="bold">Contact League Officers</span>
-  </a>
+  <!-- Row 4 -->
+  <div class="col-span-3"></div>
+  <app-officers-dashboard class="col-span-6" />
+  <div class="col-span-3"></div>
 </div>

@@ -48,7 +48,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.flightSub = this.flightsService.getFlightUpdateListener().subscribe((flightData) => {
+    this.flightSub = this.flightsService.getDataUpdateListener().subscribe((flightData) => {
       console.log(
         `[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`,
       );
@@ -67,7 +67,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
           console.log(
             '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
           );
-          this.flightsService.getFlight(params.id);
+          this.flightsService.getData(params.id);
         }
       }
     });
@@ -118,7 +118,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
             },
           );
 
-          this.flightsService.getFlight(this.flight.id); // refresh flight data
+          this.flightsService.getData(this.flight.id); // refresh flight data
         });
       }
     });

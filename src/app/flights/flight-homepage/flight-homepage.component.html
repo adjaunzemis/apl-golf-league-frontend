@@ -1,0 +1,36 @@
+<div
+  class="grid grid-cols-12 place-items-stretch gap-4 p-4"
+  *ngIf="info && teams && standings && matches; else loading"
+>
+  <div class="col-span-1 bg-gray-500"></div>
+  <app-flight-info class="col-span-3 row-span-1" [info]="info" *ngIf="info" />
+  <app-flight-standings class="col-span-4 row-span-1" [standings]="standings" *ngIf="standings" />
+  <div class="col-span-3 bg-green-500"></div>
+  <div class="col-span-1 bg-gray-500"></div>
+
+  <div class="col-span-1 bg-gray-500"></div>
+  <app-flight-schedule
+    class="col-span-10"
+    [info]="info"
+    [matches]="matches"
+    *ngIf="matches && info"
+  />
+  <div class="col-span-1 bg-gray-500"></div>
+
+  <div class="col-span-1 bg-gray-500"></div>
+  <app-flight-teams class="col-span-3" [teams]="teams" *ngIf="teams" />
+  <div class="col-span-4 bg-green-500"></div>
+  <div class="col-span-3 bg-green-500"></div>
+  <div class="col-span-1 bg-gray-500"></div>
+</div>
+
+<ng-template #loading>
+  <div class="flex flex-col items-center w-full p-10">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ widthcs: '100px', height: '100px' }"
+    />
+  </div>
+</ng-template>

@@ -1,25 +1,26 @@
-.title {
-  padding-left: 16px;
+@import 'tailwindcss';
+
+p-image {
+  cursor: pointer;
+  width: 60px;
+  @apply mx-2 my-1;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.p-menubar-item-link {
+  @apply py-2.5;
+}
+
+.p-menubar-item-link span:first-of-type {
+  @apply ml-2;
+}
+
+.p-menubar-item-link span:last-of-type {
+  @apply mr-2;
+}
+
+.end-menu {
+  @apply text-pink-500;
+  margin-left: auto; /* Pushes it to the right */
   display: flex;
-}
-
-a {
-  text-decoration: none;
-  color: white;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-@media print {
-  :host {
-    display: none;
-  }
+  align-items: center; /* Ensures proper vertical alignment */
 }

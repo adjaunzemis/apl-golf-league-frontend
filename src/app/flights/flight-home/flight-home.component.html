@@ -81,7 +81,6 @@
   ></app-division-list>
 
   <h2 *ngIf="!isPlayoffFlight">Standings</h2>
-  <app-flight-standings [flight]="flight" *ngIf="!isPlayoffFlight"></app-flight-standings>
 
   <!-- <h2 *ngIf="isPlayoffFlight">Bracket</h2>
   <app-playoff-bracket *ngIf="isPlayoffFlight"></app-playoff-bracket> -->
@@ -97,11 +96,6 @@
   >
     <span class="bold">Flight Schedule</span>
   </div>
-  <app-flight-schedule-matrix
-    class="full-width"
-    [flight]="flight"
-    *ngIf="!isPlayoffFlight && showScheduleMatrix"
-  ></app-flight-schedule-matrix>
 
   <h3 *ngIf="!isPlayoffFlight">Week-by-Week Schedule</h3>
   <app-flight-schedule class="full-width" [flight]="flight"></app-flight-schedule>

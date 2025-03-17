@@ -1,0 +1,20 @@
+<p-card>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
+    <span class="text-2xl font-semibold">Teams</span>
+  </div>
+
+  <p-accordion [multiple]="true">
+    <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
+      <p-accordion-header class="font-semibold px-4 py-2">{{ team.name }}</p-accordion-header>
+      <p-accordion-content class="pl-8">
+        <table>
+          <tr class="text-left" *ngFor="let golfer of team.golfers">
+            <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+            <td class="text-gray-700 px-6">{{ golfer.role }}</td>
+            <td class="text-gray-700">{{ golfer.division }}</td>
+          </tr>
+        </table>
+      </p-accordion-content>
+    </p-accordion-panel>
+  </p-accordion>
+</p-card>

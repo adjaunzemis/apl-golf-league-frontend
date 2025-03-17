@@ -1,0 +1,127 @@
+<div class="content">
+  <p-table [value]="standings" class="shadow-lg border border-gray-300 rounded-lg overflow-hidden">
+    <ng-template pTemplate="header">
+      <tr class="bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm">
+        <th class="py-4 px-6 text-left">Player</th>
+        <th class="py-4 px-6 text-left">Handicap</th>
+        <th class="py-4 px-6 text-left">Wins</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-player>
+      <tr class="border-b border-gray-200 hover:bg-blue-50 transition duration-200">
+        <td class="py-3 px-6 font-medium">{{ player.name }}</td>
+        <td class="py-3 px-6">{{ player.handicap }}</td>
+        <td class="py-3 px-6 font-bold text-green-500">{{ player.wins }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div class="p-6 bg-white shadow-md rounded-lg border border-gray-200">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Handicap Changes</h2>
+    <p-chart type="line" [data]="chartData" [options]="chartOptions" class="w-full"></p-chart>
+  </div>
+
+  <div class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">🏆 Leaderboard</h2>
+    <ul>
+      <li
+        *ngFor="let player of leaderboard"
+        class="flex justify-between items-center py-3 border-b hover:bg-gray-100 transition"
+      >
+        <span class="font-medium">{{ player.rank }}. {{ player.name }}</span>
+        <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">
+          {{ player.points }} pts
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="p-6 bg-gray-100 rounded-lg shadow-md">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">🏌️‍♂️ Tournament Bracket</h2>
+    <div class="grid md:grid-cols-4 gap-4">
+      <div
+        class="p-4 bg-white rounded-lg shadow-md text-center font-medium"
+        *ngFor="let match of matches"
+      >
+        {{ match.player1 }} <span class="text-gray-400">vs</span> {{ match.player2 }}
+      </div>
+    </div>
+  </div>
+
+  <p-accordion class="shadow-md rounded-lg overflow-hidden">
+    <p-accordionTab header="📜 Match History">
+      <ul class="divide-y divide-gray-300">
+        <li
+          *ngFor="let match of matchHistory"
+          class="py-3 px-4 flex justify-between hover:bg-gray-100 transition"
+        >
+          <span class="text-gray-700"
+            >{{ match.date }}: {{ match.player1 }} vs {{ match.player2 }}</span
+          >
+          <span class="font-semibold text-green-600">Winner: {{ match.winner }}</span>
+        </li>
+      </ul>
+    </p-accordionTab>
+  </p-accordion>
+
+  <div class="grid md:grid-cols-2 gap-6">
+    <p-card *ngFor="let player of playerProfiles" class="shadow-lg rounded-lg overflow-hidden">
+      <ng-template pTemplate="header">
+        <img src="{{ player.image }}" alt="{{ player.name }}" class="w-full h-36 object-cover" />
+      </ng-template>
+      <ng-template pTemplate="title">
+        <span class="font-semibold text-lg">{{ player.name }}</span>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <p class="text-gray-600">
+          Handicap: <span class="font-semibold">{{ player.handicap }}</span>
+        </p>
+        <p class="text-gray-600">
+          Wins: <span class="font-semibold text-green-500">{{ player.wins }}</span>
+        </p>
+      </ng-template>
+    </p-card>
+  </div>
+
+  <p-chart
+    type="polarArea"
+    [data]="polarData"
+    [options]="polarOptions"
+    class="w-full md:w-[30rem]"
+  />
+
+  <p-chart type="radar" [data]="radarData" [options]="radarOptions" class="w-full md:w-[30rem]" />
+
+  <p-table
+    [value]="products"
+    sortField="price"
+    [sortOrder]="-1"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [tableStyle]="{ 'min-width': '60rem' }"
+  >
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="code" style="width: 20%">Code <p-sortIcon field="code" /></th>
+        <th pSortableColumn="name" style="width: 20%">Name <p-sortIcon field="name" /></th>
+        <th pSortableColumn="price" style="width: 20%">Price <p-sortIcon field="price" /></th>
+        <th pSortableColumn="category" style="width: 20%">
+          Category <p-sortIcon field="category" />
+        </th>
+        <th pSortableColumn="quantity" style="width: 20%">
+          Quantity <p-sortIcon field="quantity" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td>{{ product.code }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency: 'USD' }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.quantity }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

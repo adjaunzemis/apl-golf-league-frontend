@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { MenuItem } from 'primeng/api';
 
 import { AuthService } from '../auth/auth.service';
 import { FlightCreateComponent } from '../flights/flight-create/flight-create.component';
@@ -28,6 +29,7 @@ import { Season } from '../shared/season.model';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   title = environment.title;
+  maintenance = environment.maintenance;
 
   isAuthenticated = false;
   private userSub: Subscription;
@@ -45,6 +47,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   tournaments: TournamentInfo[] = [];
   private tournamentsSub: Subscription;
 
+  items: MenuItem[] | undefined;
+
   constructor(
     private authService: AuthService,
     private golfersService: GolfersService,
@@ -57,11 +61,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    if (this.maintenance) {
+      return;
+    }
+
+    this.updateMenuItems();
+
     this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !user ? false : true;
       if (this.isAuthenticated) {
         this.currentUser = user;
       }
+      this.updateMenuItems();
     });
 
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
@@ -77,8 +88,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.golferNameOptions = golferOptions.map((golfer) => golfer.name);
     });
 
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      this.flights = result.flights;
+    this.flightsSub = this.flightsService.getListUpdateListener().subscribe((result) => {
+      this.flights = result;
     });
 
     this.tournamentsSub = this.tournamentsService
@@ -92,7 +103,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[HeaderComponent] Received active season: year=${result.year}`);
       this.activeSeason = result;
-      this.flightsService.getFlightsList(this.activeSeason.year);
+      this.flightsService.getList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
     });
   }
@@ -105,9 +116,152 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tournamentsSub.unsubscribe();
   }
 
+  updateMenuItems(): void {
+    this.items = [
+      {
+        label: 'Search',
+        icon: 'pi pi-search',
+        visible: true,
+        items: [
+          {
+            label: 'Golfers',
+            icon: 'pi pi-users',
+            visible: true,
+            route: '/golfer-search',
+          },
+          {
+            label: 'Courses',
+            icon: 'pi pi-home',
+            visible: this.currentUser?.is_admin,
+            route: '/courses',
+          },
+        ],
+      },
+      {
+        label: 'Sign-Ups',
+        icon: 'pi pi-clipboard',
+        visible: true,
+        route: '/signup',
+      },
+      {
+        label: 'Payments',
+        icon: 'pi pi-dollar',
+        visible: true,
+        items: [
+          {
+            label: 'League Dues',
+            icon: 'pi pi-venus',
+            visible: true,
+            callback: () => this.onPayDues(),
+          },
+        ],
+      },
+      {
+        label: 'Post Scores',
+        icon: 'pi pi-pen-to-square',
+        visible:
+          this.currentUser?.is_admin ||
+          this.currentUser?.edit_flights ||
+          this.currentUser?.edit_tournaments,
+        items: [
+          {
+            label: 'Flight Match',
+            icon: 'pi pi-venus',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
+            route: '/flight-match/edit',
+          },
+          {
+            label: 'Tournament Scores',
+            icon: 'pi pi-trophy',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
+            route: '/tournament/scores',
+          },
+        ],
+      },
+      {
+        label: 'Legacy Website',
+        icon: 'pi pi-history',
+        visible: true,
+        url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl',
+      },
+      {
+        label: 'Admin',
+        icon: 'pi pi-cog',
+        visible:
+          this.currentUser?.is_admin ||
+          this.currentUser?.edit_flights ||
+          this.currentUser?.edit_tournaments ||
+          this.currentUser?.edit_payments,
+        items: [
+          {
+            label: 'Add Golfer',
+            icon: 'pi pi-user-plus',
+            visible: this.currentUser?.is_admin,
+            callback: () => this.onAddNewGolfer(),
+          },
+          {
+            label: 'Qualifying Scores',
+            icon: 'pi pi-venus',
+            visible: this.currentUser?.is_admin,
+            route: '/golfer/qualifying',
+          },
+          {
+            label: 'Add Course',
+            icon: 'pi pi-plus',
+            visible: this.currentUser?.is_admin,
+            route: '/courses/edit',
+          },
+          {
+            label: 'Add Flight',
+            icon: 'pi pi-plus',
+            visible: this.currentUser?.is_admin,
+            callback: () => this.onAddNewFlight(),
+          },
+          {
+            label: 'Add Tournament',
+            icon: 'pi pi-plus',
+            visible: this.currentUser?.is_admin,
+            callback: () => this.onAddNewTournament(),
+          },
+          {
+            label: 'Treasury',
+            icon: 'pi pi-dollar',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+            items: [
+              {
+                label: 'League Dues',
+                icon: 'pi pi-venus',
+                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+                route: '/dues-payments',
+              },
+              {
+                label: 'Tournaments',
+                icon: 'pi pi-trophy',
+                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+                items: [
+                  {
+                    label: 'TODO',
+                    route: '/',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            label: 'Manage Users',
+            icon: 'pi pi-users',
+            visible: this.currentUser?.is_admin,
+            route: '/auth/manage',
+          },
+        ],
+      },
+    ];
+  }
+
   onLogout(): void {
     this.authService.logout();
     this.currentUser = null;
+    this.updateMenuItems();
   }
 
   onPayDues(): void {
@@ -222,7 +376,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             },
           );
 
-          this.flightsService.getFlightsList(this.activeSeason.year); // refresh flights list
+          this.flightsService.getList(this.activeSeason.year); // refresh flights list
         });
       }
     });

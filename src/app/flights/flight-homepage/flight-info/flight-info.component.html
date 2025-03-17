@@ -1,0 +1,70 @@
+<p-card *ngIf="info">
+  <div class="flex flex-col justify-center p-4">
+    <div class="flex flex-row flex-1 items-center ml-2">
+      <div class="w-30">
+        <img
+          class="block xl:block mx-auto rounded-border"
+          [src]="'assets/' + info.logo_url"
+          [alt]="info.name"
+        />
+      </div>
+
+      <div class="flex flex-row flex-2 justify-between items-center ml-4">
+        <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
+          <div class="flex flex-col justify-stretch items-center w-full">
+            <div class="text-lg font-semibold text-black">{{ info.name }} ({{ info.year }})</div>
+            <div class="font-medium text-gray-600 text-sm">
+              {{ info.course }}
+            </div>
+            <div class="font-medium text-gray-600 text-sm" *ngIf="info.address">
+              {{ getAddressLine1() }}
+            </div>
+            <div class="font-medium text-gray-600 text-sm" *ngIf="info.address">
+              {{ getAddressLine2() }}
+            </div>
+            <div class="font-medium text-gray-600 text-sm" *ngIf="info.phone">
+              <span class="pi pi-phone text-xs pr-1"></span>
+              {{ info.phone }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-row flex-1 justify-center items-center text-sm font-medium text-gray-600 pt-4 w-full"
+      *ngIf="info.tee_times"
+    >
+      <span>Tee Times: {{ info.tee_times }}</span>
+    </div>
+
+    <div
+      class="flex flex-row flex-1 items-center gap-8 text-sm font-medium text-gray-600 pt-4 w-full"
+    >
+      <div class="flex flex-col flex-2 justify-between items-center pl-4">
+        <span>Sign-Ups: {{ info.signup_start_date | date: 'longDate' : 'ET' }}</span>
+        <span>Start Date: {{ info.start_date | date: 'longDate' : 'ET' }}</span>
+      </div>
+      <div class="flex flex-col flex-2 justify-between items-center">
+        <span>Weeks: {{ info.weeks }}</span>
+        <span>Teams: {{ info.num_teams }}</span>
+      </div>
+    </div>
+    <div class="flex flex-col justify-stretch items-center w-full pt-4">
+      <div class="text-sm font-medium text-gray-600">
+        <div *ngIf="info.secretary_email">
+          <span>Flight Secretary: </span>
+          <a
+            class="p-button contactButton"
+            href="mailto:{{ info.secretary_email | lowercase }}"
+            *ngIf="info.secretary_email"
+          >
+            <span class="text-sm pi pi-send pr-2"></span>
+            <span>{{ info.secretary }}</span>
+          </a>
+        </div>
+        <span *ngIf="!info.secretary_email">Flight Secretary: {{ info.secretary }}</span>
+      </div>
+    </div>
+  </div>
+</p-card>

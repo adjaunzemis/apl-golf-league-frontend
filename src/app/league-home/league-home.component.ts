@@ -1,111 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 
-import { FlightInfo } from '../shared/flight.model';
-import { FlightsService } from '../flights/flights.service';
-import { TournamentInfo } from '../shared/tournament.model';
-import { TournamentsService } from '../tournaments/tournaments.service';
-import { Officer } from './../shared/officer.model';
-import { OfficersService } from '../officers/officers.service';
-import { SeasonsService } from '../seasons/seasons.service';
+import { FlightsDashboardComponent } from '../flights/flights-dashboard/flights-dashboard.component';
+import { TournamentsDashboardComponent } from '../tournaments/tournaments-dashboard/tournaments-dashboard.component';
+import { OfficersDashboardComponent } from '../officers/officers-dashboard/officers-dashboard.component';
+import { RulesDashboardComponent } from '../rules-dashboard/rules-dashboard.component';
+import { AnnouncementsDashboardComponent } from '../announcements-dashboard/announcements-dashboard.component';
 
 @Component({
   selector: 'app-league-home',
   templateUrl: './league-home.component.html',
   styleUrls: ['./league-home.component.css'],
-  standalone: false,
+  imports: [
+    FlightsDashboardComponent,
+    TournamentsDashboardComponent,
+    OfficersDashboardComponent,
+    RulesDashboardComponent,
+    AnnouncementsDashboardComponent,
+  ],
 })
-export class LeagueHomeComponent implements OnInit, OnDestroy {
-  private currentYear: number;
-  private seasonsSub: Subscription;
-
-  isLoadingFlights = true;
-  currentFlights: FlightInfo[] = [];
-  private flightsSub: Subscription;
-
-  isLoadingTournaments = true;
-  currentTournaments: TournamentInfo[] = [];
-  private tournamentsSub: Subscription;
-
-  isLoadingOfficers = true;
-  officers: Officer[] = [];
-  leagueOfficers: Officer[] = [];
-  private officersSub: Subscription;
-
-  constructor(
-    private flightsService: FlightsService,
-    private seasonsService: SeasonsService,
-    private tournamentsService: TournamentsService,
-    private officersService: OfficersService,
-  ) {}
-
-  ngOnInit(): void {
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      console.log(`[LeagueHomeComponent] Received flights list`);
-      this.currentFlights = result.flights;
-      this.isLoadingFlights = false;
-    });
-
-    this.tournamentsSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
-        console.log(`[LeagueHomeComponent] Received tournaments list`);
-        this.currentTournaments = result.tournaments
-          .filter((tournament) => tournament.year === this.currentYear)
-          .sort((tournA, tournB) => tournA.date.getTime() - tournB.date.getTime());
-        this.isLoadingTournaments = false;
-      });
-
-    this.officersSub = this.officersService.getOfficersListUpdateListener().subscribe((result) => {
-      console.log(`[LeagueHomeComponent] Received officers list`);
-      this.officers = result;
-      this.leagueOfficers = result.filter((officer) => {
-        return officer.committee.toString() === 'LEAGUE';
-      });
-      this.isLoadingOfficers = false;
-    });
-
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-
-      this.flightsService.getFlightsList(this.currentYear);
-      this.tournamentsService.getTournamentsList(this.currentYear);
-      this.officersService.getOfficersList(this.currentYear);
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.flightsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
-    this.tournamentsSub.unsubscribe();
-    this.officersSub.unsubscribe();
-  }
-
-  getLeagueOfficersEmailList(): string {
-    let emailList = '';
-    for (const officer of this.leagueOfficers) {
-      emailList += officer.email + ';';
-    }
-    return emailList.substring(0, emailList.length - 1);
-  }
-
-  getCurrentFlightSecretariesEmailList(): string {
-    let emailList = '';
-    for (const flight of this.currentFlights) {
-      if (flight.secretary_email) {
-        emailList += flight.secretary_email + ';';
-      }
-    }
-    return emailList.substring(0, emailList.length - 1);
-  }
-
-  getCurrentTournamentOrganizersEmailList(): string {
-    let emailList = '';
-    for (const tournament of this.currentTournaments) {
-      if (tournament.secretary_email) {
-        emailList += tournament.secretary_email + ';';
-      }
-    }
-    return emailList.substring(0, emailList.length - 1);
-  }
-}
+export class LeagueHomeComponent {}

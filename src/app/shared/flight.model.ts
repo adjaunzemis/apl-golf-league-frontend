@@ -26,9 +26,11 @@ export interface FlightInfo {
   id: number;
   name: string;
   year: number;
-  course: string;
+  course?: string;
+  address?: string;
+  phone?: string;
   logo_url?: string;
-  secretary?: string;
+  secretary: string;
   secretary_email?: string;
   secretary_phone?: string;
   signup_start_date: Date;
@@ -36,6 +38,7 @@ export interface FlightInfo {
   start_date: Date;
   weeks: number;
   tee_times?: string;
+  num_teams: number;
 }
 
 export interface FlightCreate {
@@ -54,4 +57,32 @@ export interface FlightCreate {
   tee_times?: string;
   locked?: boolean;
   divisions: DivisionCreate[];
+}
+
+export interface FlightTeamGolfer {
+  golfer_id: number;
+  name: string;
+  role: string;
+  division: string;
+}
+
+export interface FlightTeam {
+  flight_id: number;
+  team_id: number;
+  name: string;
+  golfers: FlightTeamGolfer[];
+}
+
+export interface FlightStandingsTeam {
+  team_id: number;
+  team_name: string;
+  points_won: number;
+  matches_played: number;
+  avg_points: number;
+  position: string;
+}
+
+export interface FlightStandings {
+  flight_id: number;
+  teams: FlightStandingsTeam[];
 }

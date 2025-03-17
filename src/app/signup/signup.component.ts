@@ -103,8 +103,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.flightsSub = this.flightsService.getFlightsListUpdateListener().subscribe((result) => {
-      this.flights = result.flights;
+    this.flightsSub = this.flightsService.getListUpdateListener().subscribe((result) => {
+      this.flights = result;
       this.isLoadingFlights = false;
 
       if (this.initFlightId) {
@@ -117,7 +117,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.selectedFlightSub = this.flightsService.getFlightUpdateListener().subscribe((result) => {
+    this.selectedFlightSub = this.flightsService.getDataUpdateListener().subscribe((result) => {
       this.selectedFlightOrTournament = result;
       this.isLoadingSelectedFlightOrTournament = false;
 
@@ -163,7 +163,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.currentYear = result.year;
 
-      this.flightsService.getFlightsList(this.currentYear);
+      this.flightsService.getList(this.currentYear);
       this.tournamentsService.getTournamentsList(this.currentYear);
     });
   }
@@ -195,7 +195,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   getSelectedFlightData(id: number): void {
     this.isLoadingSelectedFlightOrTournament = true;
-    this.flightsService.getFlight(id);
+    this.flightsService.getData(id);
   }
 
   getSelectedTournamentData(id: number): void {
