@@ -39,7 +39,7 @@
     </ng-template>
   </ng-template>
 
-  <ng-template #end>
+  <ng-template *ngIf="!maintenance" #end>
     <ng-container *ngIf="isAuthenticated; else loginRef">
       <!-- TODO: Add profile page here? Routerlink: /auth/user -->
 

@@ -29,6 +29,7 @@ import { Season } from '../shared/season.model';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   title = environment.title;
+  maintenance = environment.maintenance;
 
   isAuthenticated = false;
   private userSub: Subscription;
@@ -60,6 +61,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    if (this.maintenance) {
+      return;
+    }
+
     this.updateMenuItems();
 
     this.userSub = this.authService.user.subscribe((user) => {
