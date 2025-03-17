@@ -7,7 +7,7 @@ export const environment = {
   apiUrl: 'https://localhost/',
   title: 'APL Golf League - DEVELOPMENT',
   version: 'DEVELOPMENT',
-  maintenance: true,
+  maintenance: false,
 };
 
 /*
