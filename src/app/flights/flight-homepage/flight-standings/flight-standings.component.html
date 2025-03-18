@@ -6,12 +6,11 @@
   <p-table
     #dt
     [value]="standings.teams"
-    dataKey="id"
+    dataKey="team_id"
     sortField="avg_points"
     [sortOrder]="-1"
     stripedRows
     selectionMode="single"
-    dataKey="team_id"
   >
     <ng-template #header>
       <tr>
