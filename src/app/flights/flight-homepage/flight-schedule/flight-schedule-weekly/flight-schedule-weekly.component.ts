@@ -1,16 +1,18 @@
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
 import { CarouselModule } from 'primeng/carousel';
 import { TableModule } from 'primeng/table';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightInfo } from 'src/app/shared/flight.model';
-import { MatchSummary } from 'src/app/shared/match.model';
+import { MatchData, MatchSummary } from 'src/app/shared/match.model';
+import { MatchesService } from 'src/app/matches/matches.service';
 
 @Component({
   selector: 'app-flight-schedule-weekly',
   templateUrl: './flight-schedule-weekly.component.html',
   styleUrl: './flight-schedule-weekly.component.css',
-  imports: [CommonModule, CarouselModule, TableModule],
+  imports: [CommonModule, CarouselModule, TableModule, ProgressSpinnerModule],
 })
 export class FlightScheduleWeeklyComponent implements OnInit {
   @Input() info: FlightInfo;
@@ -20,7 +22,17 @@ export class FlightScheduleWeeklyComponent implements OnInit {
   matchesPerWeek: Record<string, MatchSummary[]> = {};
   weeklyMatches: MatchWeekData[] = [];
 
+  selectedMatch: MatchSummary | undefined;
+  selectedMatchData: MatchData | undefined;
+
+  private matchesService = inject(MatchesService);
+
   ngOnInit(): void {
+    this.matchesService.getMatchUpdateListener().subscribe((result) => {
+      this.selectedMatchData = result;
+      console.log(result);
+    });
+
     for (let week = 1; week <= this.info.weeks; week++) {
       this.matchesPerWeek[week.toString()] = [];
     }
@@ -77,6 +89,16 @@ export class FlightScheduleWeeklyComponent implements OnInit {
       return this.info.weeks - 3;
     }
     return this.currentWeek - 2;
+  }
+
+  onMatchSelected(): void {
+    if (!this.selectedMatch) {
+      return; // no match to load
+    }
+    if (this.selectedMatchData && this.selectedMatch.match_id == this.selectedMatchData.match_id) {
+      return; // this match is already loaded
+    }
+    this.matchesService.getMatch(this.selectedMatch.match_id);
   }
 }
 
