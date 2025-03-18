@@ -68,6 +68,16 @@ export class FlightScheduleWeeklyComponent implements OnInit {
       d2.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })
     );
   }
+
+  getPageForCurrentWeek(): number {
+    if (this.currentWeek <= 2) {
+      return 0;
+    }
+    if (this.currentWeek >= this.info.weeks - 1) {
+      return this.info.weeks - 3;
+    }
+    return this.currentWeek - 2;
+  }
 }
 
 interface MatchWeekData {

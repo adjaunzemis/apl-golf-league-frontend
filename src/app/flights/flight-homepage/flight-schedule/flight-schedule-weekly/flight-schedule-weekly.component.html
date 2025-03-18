@@ -1,5 +1,11 @@
 <div class="p-4">
-  <p-carousel [value]="weeklyMatches" [numVisible]="3" [numScroll]="1" [circular]="false">
+  <p-carousel
+    [value]="weeklyMatches"
+    [numVisible]="3"
+    [numScroll]="1"
+    [circular]="false"
+    [page]="getPageForCurrentWeek()"
+  >
     <ng-template let-weekMatchData #item>
       <div class="border border-surface rounded-border border-gray-300 rounded-xl m-2 p-4">
         <p-table

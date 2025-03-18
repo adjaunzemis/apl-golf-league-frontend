@@ -20,8 +20,7 @@ export class FlightScheduleComponent implements OnInit {
   currentWeek = 1;
 
   ngOnInit(): void {
-    const currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
-    this.currentWeek = this.getWeekForDate(currentDate);
+    this.currentWeek = this.getWeekForDate(new Date());
   }
 
   private getWeekForDate(date: Date): number {
