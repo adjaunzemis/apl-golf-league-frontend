@@ -14,9 +14,7 @@ import { FlightInfo } from 'src/app/shared/flight.model';
 export class FlightScheduleMatrixComponent implements OnInit {
   @Input() info: FlightInfo;
   @Input() matches: MatchSummary[];
-
-  private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
-  currentWeek = 1;
+  @Input() currentWeek: number;
 
   teamNames: string[] = [];
   teamNumbers: Record<string, number> = {};
@@ -28,7 +26,6 @@ export class FlightScheduleMatrixComponent implements OnInit {
     for (let week = 1; week <= this.info.weeks; week++) {
       this.weeks.push(week);
     }
-    this.currentWeek = this.determineCurrentWeek();
 
     this.teamNames = [];
     this.teamNumbers = {};
@@ -73,20 +70,5 @@ export class FlightScheduleMatrixComponent implements OnInit {
     const d = new Date(this.info.start_date);
     d.setDate(d.getDate() + 7 * (week - 1));
     return d.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
-  }
-
-  private determineCurrentWeek(): number {
-    if (this.currentDate < this.info.start_date) {
-      return 1;
-    } else {
-      for (let week = this.info.weeks; week > 1; week--) {
-        const weekStartDate = new Date(this.info.start_date);
-        weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
-        if (this.currentDate >= weekStartDate) {
-          return week;
-        }
-      }
-    }
-    return 1; // fall-through case, shouldn't be reachable
   }
 }

@@ -11,10 +11,10 @@
 
     <p-tabpanels>
       <p-tabpanel value="0">
-        <app-flight-schedule-weekly [info]="info" [matches]="matches" />
+        <app-flight-schedule-weekly [info]="info" [matches]="matches" [currentWeek]="currentWeek" />
       </p-tabpanel>
       <p-tabpanel value="1">
-        <app-flight-schedule-matrix [info]="info" [matches]="matches" />
+        <app-flight-schedule-matrix [info]="info" [matches]="matches" [currentWeek]="currentWeek" />
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>

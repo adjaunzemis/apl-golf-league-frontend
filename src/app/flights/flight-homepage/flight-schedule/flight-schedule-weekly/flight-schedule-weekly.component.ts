@@ -15,16 +15,12 @@ import { MatchSummary } from 'src/app/shared/match.model';
 export class FlightScheduleWeeklyComponent implements OnInit {
   @Input() info: FlightInfo;
   @Input() matches: MatchSummary[];
+  @Input() currentWeek: number;
 
   matchesPerWeek: Record<string, MatchSummary[]> = {};
   weeklyMatches: MatchWeekData[] = [];
 
-  private currentDate = new Date(); // new Date("2022-04-28T00:00:00-04:00"); // <-- test value
-  currentWeek = 1;
-
   ngOnInit(): void {
-    this.currentWeek = this.determineCurrentWeek();
-
     for (let week = 1; week <= this.info.weeks; week++) {
       this.matchesPerWeek[week.toString()] = [];
     }
@@ -71,21 +67,6 @@ export class FlightScheduleWeeklyComponent implements OnInit {
       ' - ' +
       d2.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })
     );
-  }
-
-  private determineCurrentWeek(): number {
-    if (this.currentDate < this.info.start_date) {
-      return 1;
-    } else {
-      for (let week = this.info.weeks; week > 1; week--) {
-        const weekStartDate = new Date(this.info.start_date);
-        weekStartDate.setDate(weekStartDate.getDate() + (week - 1) * 7);
-        if (this.currentDate >= weekStartDate) {
-          return week;
-        }
-      }
-    }
-    return 1; // fall-through case, shouldn't be reachable
   }
 }
 

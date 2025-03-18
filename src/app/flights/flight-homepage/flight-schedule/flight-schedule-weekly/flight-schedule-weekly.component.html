@@ -13,24 +13,36 @@
               <td colspan="5" class="text-center font-semibold">Week {{ weekMatchData.week }}</td>
             </tr>
             <tr>
-              <td colspan="5" class="text-center font-normal italic text-sm text-gray-700">
+              <td colspan="5" class="text-center font-normal italic text-sm text-gray-700 pb-2">
                 {{ getWeekSpan(weekMatchData.week) }}
               </td>
             </tr>
           </ng-template>
           <ng-template #body let-match *ngIf="weekMatchData.matches.length > 0; else noMatches">
             <tr [pSelectableRow]="match">
-              <td class="text-center text-gray-700 w-1/15" [ngClass]="{ 'winner': isWinnerHome(match) }">
+              <td
+                class="text-center text-gray-700 w-1/15"
+                [ngClass]="{ winner: isWinnerHome(match) }"
+              >
                 {{ match.home_score }}
               </td>
-              <td class="text-center text-gray-700 w-2/5" [ngClass]="{ 'winner': isWinnerHome(match) }">
+              <td
+                class="text-center text-gray-700 w-2/5"
+                [ngClass]="{ winner: isWinnerHome(match) }"
+              >
                 {{ match.home_team_name }}
               </td>
               <td class="text-center text-gray-700 w-1/15">vs</td>
-              <td class="text-center text-gray-700 w-2/5" [ngClass]="{ 'winner': isWinnerAway(match) }">
+              <td
+                class="text-center text-gray-700 w-2/5"
+                [ngClass]="{ winner: isWinnerAway(match) }"
+              >
                 {{ match.away_team_name }}
               </td>
-              <td class="text-center text-gray-700 w-1/15" [ngClass]="{ 'winner': isWinnerAway(match) }">
+              <td
+                class="text-center text-gray-700 w-1/15"
+                [ngClass]="{ winner: isWinnerAway(match) }"
+              >
                 {{ match.away_score }}
               </td>
             </tr>
