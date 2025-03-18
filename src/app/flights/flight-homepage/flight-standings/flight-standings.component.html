@@ -23,11 +23,11 @@
     </ng-template>
     <ng-template #body let-team>
       <tr [pSelectableRow]="team">
-        <td>{{ team.position }}</td>
-        <td>{{ team.team_name }}</td>
-        <td>{{ team.points_won }}</td>
-        <td>{{ team.matches_played }}</td>
-        <td>{{ team.avg_points | number: '1.2-2' }}</td>
+        <td class="text-gray-800">{{ team.position }}</td>
+        <td class="text-gray-800">{{ team.team_name }}</td>
+        <td class="text-gray-800">{{ team.points_won }}</td>
+        <td class="text-gray-800">{{ team.matches_played }}</td>
+        <td class="text-gray-800">{{ team.avg_points | number: '1.2-2' }}</td>
       </tr>
     </ng-template>
   </p-table>
