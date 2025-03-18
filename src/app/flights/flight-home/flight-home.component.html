@@ -85,21 +85,6 @@
   <!-- <h2 *ngIf="isPlayoffFlight">Bracket</h2>
   <app-playoff-bracket *ngIf="isPlayoffFlight"></app-playoff-bracket> -->
 
-  <h2>Schedule</h2>
-  <div
-    aria-hidden="true"
-    class="card card-small selectable"
-    [ngClass]="showScheduleMatrix ? 'selected' : ''"
-    (click)="showScheduleMatrix = !showScheduleMatrix"
-    (keydown)="showScheduleMatrix = !showScheduleMatrix"
-    *ngIf="!isPlayoffFlight"
-  >
-    <span class="bold">Flight Schedule</span>
-  </div>
-
-  <h3 *ngIf="!isPlayoffFlight">Week-by-Week Schedule</h3>
-  <app-flight-schedule class="full-width" [flight]="flight"></app-flight-schedule>
-
   <h2>Teams</h2>
   <span class="italic" *ngIf="!flight.teams || flight.teams.length === 0"
     >No team data to show</span
