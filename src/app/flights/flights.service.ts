@@ -10,6 +10,7 @@ import {
   FlightCreate,
   FlightStandings,
   FlightTeam,
+  FlightStatistics,
 } from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
@@ -33,6 +34,9 @@ export class FlightsService {
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
+
+  private flightStatistics: FlightStatistics;
+  private flightStatisticsUpdated = new Subject<FlightStatistics>();
 
   private flightMatches: MatchSummary[];
   private flightMatchesUpdated = new Subject<MatchSummary[]>();
@@ -139,6 +143,19 @@ export class FlightsService {
 
   getStandingsUpdateListener(): Observable<FlightStandings> {
     return this.flightStandingsUpdated.asObservable();
+  }
+
+  getStatistics(id: number): void {
+    this.http
+      .get<FlightStatistics>(environment.apiUrl + `flights/statistics/${id}`)
+      .subscribe((result) => {
+        this.flightStatistics = result;
+        this.flightStatisticsUpdated.next(result);
+      });
+  }
+
+  getStatisticsUpdateListener(): Observable<FlightStatistics> {
+    return this.flightStatisticsUpdated.asObservable();
   }
 
   getMatches(id: number): void {

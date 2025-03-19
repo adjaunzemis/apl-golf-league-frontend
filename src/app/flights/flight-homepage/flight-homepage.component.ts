@@ -14,9 +14,11 @@ import {
   FlightDivision,
   FlightInfo,
   FlightStandings,
+  FlightStatistics,
   FlightTeam,
 } from 'src/app/shared/flight.model';
 import { MatchSummary } from 'src/app/shared/match.model';
+import { FlightStatisticsComponent } from './flight-statistics/flight-statistics.component';
 
 @Component({
   selector: 'app-flight-homepage',
@@ -28,6 +30,7 @@ import { MatchSummary } from 'src/app/shared/match.model';
     FlightInfoComponent,
     FlightDivisionsComponent,
     FlightStandingsComponent,
+    FlightStatisticsComponent,
     FlightTeamsComponent,
     FlightScheduleComponent,
   ],
@@ -37,6 +40,7 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
   divisions: FlightDivision[] | undefined;
   teams: FlightTeam[] | undefined;
   standings: FlightStandings | undefined;
+  statistics: FlightStatistics | undefined;
   matches: MatchSummary[] | undefined;
 
   private route = inject(ActivatedRoute);
@@ -45,6 +49,7 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
   private infoSub: Subscription;
   private teamsSub: Subscription;
   private standingsSub: Subscription;
+  private statisticsSub: Subscription;
   private matchesSub: Subscription;
   private divisionsSub: Subscription;
 
@@ -61,6 +66,9 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
     this.standingsSub = this.flightsService
       .getStandingsUpdateListener()
       .subscribe((result) => (this.standings = result));
+    this.statisticsSub = this.flightsService
+      .getStatisticsUpdateListener()
+      .subscribe((result) => (this.statistics = result));
     this.matchesSub = this.flightsService
       .getMatchesUpdateListener()
       .subscribe((result) => (this.matches = result));
@@ -74,6 +82,7 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
         this.flightsService.getDivisions(flightId);
         this.flightsService.getTeams(flightId);
         this.flightsService.getStandings(flightId);
+        this.flightsService.getStatistics(flightId);
         this.flightsService.getMatches(flightId);
       }
     });
@@ -84,6 +93,7 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
     this.divisionsSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.standingsSub.unsubscribe();
+    this.statisticsSub.unsubscribe();
     this.matchesSub.unsubscribe();
   }
 }

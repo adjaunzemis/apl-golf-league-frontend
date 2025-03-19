@@ -107,3 +107,41 @@ export interface FlightStandings {
   flight_id: number;
   teams: FlightStandingsTeam[];
 }
+
+export interface FlightStatisticsGolfer {
+  golfer_id: number;
+  golfer_name: string;
+  golfer_team_id: number;
+  golfer_team_role: string;
+  num_matches: number;
+  num_rounds: number;
+  points_won: number;
+  avg_points_won: number;
+  avg_gross: number;
+  avg_gross_to_par: number;
+  avg_net: number;
+  avg_net_to_par: number;
+  num_holes: number;
+  num_par_3_holes: number;
+  num_par_4_holes: number;
+  num_par_5_holes: number;
+  avg_par_3_gross: number;
+  avg_par_3_net: number;
+  avg_par_4_gross: number;
+  avg_par_4_net: number;
+  avg_par_5_gross: number;
+  avg_par_5_net: number;
+  num_aces: number;
+  num_albatrosses: number;
+  num_eagles: number;
+  num_birdies: number;
+  num_pars: number;
+  num_bogeys: number;
+  num_double_bogeys: number;
+  num_others: number;
+}
+
+export interface FlightStatistics {
+  flight_id: number;
+  golfers: FlightStatisticsGolfer[];
+}
