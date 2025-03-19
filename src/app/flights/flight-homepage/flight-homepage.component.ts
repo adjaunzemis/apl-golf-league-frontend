@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightInfoComponent } from './flight-info/flight-info.component';
@@ -24,7 +25,7 @@ import { MatchSummary } from 'src/app/shared/match.model';
     FlightScheduleComponent,
   ],
 })
-export class FlightHomepageComponent implements OnInit {
+export class FlightHomepageComponent implements OnInit, OnDestroy {
   info: FlightInfo | undefined;
   teams: FlightTeam[] | undefined;
   standings: FlightStandings | undefined;
@@ -32,14 +33,24 @@ export class FlightHomepageComponent implements OnInit {
 
   private route = inject(ActivatedRoute);
   private flightsService = inject(FlightsService);
+  private infoSub: Subscription;
+  private teamsSub: Subscription;
+  private standingsSub: Subscription;
+  private matchesSub: Subscription;
 
   ngOnInit(): void {
-    this.flightsService.getInfoUpdateListener().subscribe((result) => (this.info = result));
-    this.flightsService.getTeamsUpdateListener().subscribe((result) => (this.teams = result));
-    this.flightsService
+    this.infoSub = this.flightsService
+      .getInfoUpdateListener()
+      .subscribe((result) => (this.info = result));
+    this.teamsSub = this.flightsService
+      .getTeamsUpdateListener()
+      .subscribe((result) => (this.teams = result));
+    this.standingsSub = this.flightsService
       .getStandingsUpdateListener()
       .subscribe((result) => (this.standings = result));
-    this.flightsService.getMatchesUpdateListener().subscribe((result) => (this.matches = result));
+    this.matchesSub = this.flightsService
+      .getMatchesUpdateListener()
+      .subscribe((result) => (this.matches = result));
 
     this.route.queryParams.subscribe((params) => {
       if (params && params.id) {
@@ -52,5 +63,12 @@ export class FlightHomepageComponent implements OnInit {
         this.flightsService.getMatches(flightId);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.infoSub.unsubscribe();
+    this.teamsSub.unsubscribe();
+    this.standingsSub.unsubscribe();
+    this.matchesSub.unsubscribe();
   }
 }

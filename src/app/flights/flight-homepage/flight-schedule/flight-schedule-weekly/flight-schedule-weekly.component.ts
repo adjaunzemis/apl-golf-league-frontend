@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
 import { TableModule } from 'primeng/table';
@@ -7,6 +7,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightInfo } from 'src/app/shared/flight.model';
 import { MatchData, MatchSummary } from 'src/app/shared/match.model';
 import { MatchesService } from 'src/app/matches/matches.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-flight-schedule-weekly',
@@ -14,7 +15,7 @@ import { MatchesService } from 'src/app/matches/matches.service';
   styleUrl: './flight-schedule-weekly.component.css',
   imports: [CommonModule, CarouselModule, TableModule, ProgressSpinnerModule],
 })
-export class FlightScheduleWeeklyComponent implements OnInit {
+export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
   @Input() info: FlightInfo;
   @Input() matches: MatchSummary[];
   @Input() currentWeek: number;
@@ -26,11 +27,11 @@ export class FlightScheduleWeeklyComponent implements OnInit {
   selectedMatchData: MatchData | undefined;
 
   private matchesService = inject(MatchesService);
+  private matchSub: Subscription;
 
   ngOnInit(): void {
-    this.matchesService.getMatchUpdateListener().subscribe((result) => {
+    this.matchSub = this.matchesService.getMatchUpdateListener().subscribe((result) => {
       this.selectedMatchData = result;
-      console.log(result);
     });
 
     for (let week = 1; week <= this.info.weeks; week++) {
@@ -47,6 +48,10 @@ export class FlightScheduleWeeklyComponent implements OnInit {
         matches: this.matchesPerWeek[week.toString()],
       };
     }
+  }
+
+  ngOnDestroy(): void {
+    this.matchSub.unsubscribe();
   }
 
   isMatchPlayed(match: MatchSummary): boolean {
