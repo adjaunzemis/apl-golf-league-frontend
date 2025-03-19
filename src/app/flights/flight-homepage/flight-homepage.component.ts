@@ -5,11 +5,17 @@ import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightInfoComponent } from './flight-info/flight-info.component';
+import { FlightDivisionsComponent } from './flight-divisions/flight-divisions.component';
 import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
 import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
 import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightsService } from '../flights.service';
-import { FlightInfo, FlightStandings, FlightTeam } from 'src/app/shared/flight.model';
+import {
+  FlightDivision,
+  FlightInfo,
+  FlightStandings,
+  FlightTeam,
+} from 'src/app/shared/flight.model';
 import { MatchSummary } from 'src/app/shared/match.model';
 
 @Component({
@@ -20,6 +26,7 @@ import { MatchSummary } from 'src/app/shared/match.model';
     CommonModule,
     ProgressSpinnerModule,
     FlightInfoComponent,
+    FlightDivisionsComponent,
     FlightStandingsComponent,
     FlightTeamsComponent,
     FlightScheduleComponent,
@@ -27,21 +34,27 @@ import { MatchSummary } from 'src/app/shared/match.model';
 })
 export class FlightHomepageComponent implements OnInit, OnDestroy {
   info: FlightInfo | undefined;
+  divisions: FlightDivision[] | undefined;
   teams: FlightTeam[] | undefined;
   standings: FlightStandings | undefined;
   matches: MatchSummary[] | undefined;
 
   private route = inject(ActivatedRoute);
+
   private flightsService = inject(FlightsService);
   private infoSub: Subscription;
   private teamsSub: Subscription;
   private standingsSub: Subscription;
   private matchesSub: Subscription;
+  private divisionsSub: Subscription;
 
   ngOnInit(): void {
     this.infoSub = this.flightsService
       .getInfoUpdateListener()
       .subscribe((result) => (this.info = result));
+    this.divisionsSub = this.flightsService
+      .getDivisionsUpdateListener()
+      .subscribe((result) => (this.divisions = result));
     this.teamsSub = this.flightsService
       .getTeamsUpdateListener()
       .subscribe((result) => (this.teams = result));
@@ -58,6 +71,7 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
         const flightId = params.id;
 
         this.flightsService.getInfo(flightId);
+        this.flightsService.getDivisions(flightId);
         this.flightsService.getTeams(flightId);
         this.flightsService.getStandings(flightId);
         this.flightsService.getMatches(flightId);
@@ -67,6 +81,7 @@ export class FlightHomepageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.infoSub.unsubscribe();
+    this.divisionsSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.standingsSub.unsubscribe();
     this.matchesSub.unsubscribe();

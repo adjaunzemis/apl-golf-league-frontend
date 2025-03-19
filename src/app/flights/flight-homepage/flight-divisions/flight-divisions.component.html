@@ -1,0 +1,39 @@
+<p-card>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-2xl font-semibold">Divisions</span>
+  </div>
+
+  <p-table #dt [value]="divisions" dataKey="id" stripedRows>
+    <ng-template #header>
+      <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Track</th>
+        <th>Tee</th>
+        <th>Par</th>
+        <th>Rating</th>
+        <th>Slope</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-division>
+      <tr>
+        <td class="text-gray-800">{{ division.name }}</td>
+        <td class="text-gray-800">{{ division.gender }}</td>
+        <td class="text-gray-800">{{ division.primary_track_name }}</td>
+        <td class="text-gray-800">{{ division.primary_tee_name }}</td>
+        <td class="text-gray-800">{{ division.primary_tee_par | number: '1.0-0' }}</td>
+        <td class="text-gray-800">{{ division.primary_tee_rating | number: '1.1-1' }}</td>
+        <td class="text-gray-800">{{ division.primary_tee_slope | number: '1.0-0' }}</td>
+      </tr>
+      <tr>
+        <td class="text-gray-800">{{ division.name }}</td>
+        <td class="text-gray-800">{{ division.gender }}</td>
+        <td class="text-gray-800">{{ division.secondary_track_name }}</td>
+        <td class="text-gray-800">{{ division.secondary_tee_name }}</td>
+        <td class="text-gray-800">{{ division.secondary_tee_par | number: '1.0-0' }}</td>
+        <td class="text-gray-800">{{ division.secondary_tee_rating | number: '1.1-1' }}</td>
+        <td class="text-gray-800">{{ division.secondary_tee_slope | number: '1.0-0' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

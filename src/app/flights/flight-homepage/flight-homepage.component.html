@@ -3,9 +3,9 @@
   *ngIf="info && teams && standings && matches; else loading"
 >
   <div class="col-span-1 bg-transparent"></div>
-  <app-flight-info class="col-span-3 row-span-1" [info]="info" *ngIf="info" />
-  <app-flight-standings class="col-span-4 row-span-1" [standings]="standings" *ngIf="standings" />
-  <div class="col-span-3 bg-green-500"></div>
+  <app-flight-info class="col-span-3" [info]="info" *ngIf="info" />
+  <app-flight-standings class="col-span-4" [standings]="standings" *ngIf="standings" />
+  <app-flight-divisions class="col-span-3" [divisions]="divisions" *ngIf="divisions" />
   <div class="col-span-1 bg-transparent"></div>
 
   <div class="col-span-1 bg-transparent"></div>

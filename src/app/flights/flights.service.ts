@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import {
   FlightData,
   FlightInfo,
+  FlightDivision,
   FlightCreate,
   FlightStandings,
   FlightTeam,
@@ -23,6 +24,9 @@ export class FlightsService {
 
   private flightInfo: FlightInfo;
   private flightInfoUpdated = new Subject<FlightInfo>();
+
+  private flightDivisions: FlightDivision[];
+  private flightDivisionsUpdated = new Subject<FlightDivision[]>();
 
   private flightTeams: FlightTeam[];
   private flightTeamsUpdated = new Subject<FlightTeam[]>();
@@ -98,6 +102,19 @@ export class FlightsService {
 
   getInfoUpdateListener(): Observable<FlightInfo> {
     return this.flightInfoUpdated.asObservable();
+  }
+
+  getDivisions(id: number): void {
+    this.http
+      .get<FlightDivision[]>(environment.apiUrl + `flights/divisions/${id}`)
+      .subscribe((result) => {
+        this.flightDivisions = result;
+        this.flightDivisionsUpdated.next([...this.flightDivisions]);
+      });
+  }
+
+  getDivisionsUpdateListener(): Observable<FlightDivision[]> {
+    return this.flightDivisionsUpdated.asObservable();
   }
 
   getTeams(id: number): void {
