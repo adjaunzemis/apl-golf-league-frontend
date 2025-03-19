@@ -117,7 +117,7 @@ export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
     const awayScore = match.away_score;
 
     if (homeScore === null || awayScore === null) {
-      return `${homeTeam} vs ${awayTeam} - Not complete`;
+      return `${homeTeam} vs ${awayTeam} - To Be Played`;
     }
 
     let title: string;
