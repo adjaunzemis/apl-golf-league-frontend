@@ -12,7 +12,7 @@
       <div class="flex flex-row flex-2 justify-between items-center ml-4">
         <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
           <div class="flex flex-col justify-stretch items-center w-full">
-            <div class="text-lg font-semibold text-black">{{ info.name }} ({{ info.year }})</div>
+            <div class="text-xl font-semibold text-black">{{ info.name }} ({{ info.year }})</div>
             <div class="font-medium text-gray-700 text-sm">
               {{ info.course }}
             </div>
@@ -39,7 +39,7 @@
     </div>
 
     <div
-      class="flex flex-row flex-1 items-center gap-8 text-sm font-medium text-gray-700 pt-4 w-full"
+      class="flex flex-row flex-1 items-center gap-6 text-sm font-medium text-gray-700 pt-4 w-full"
     >
       <div class="flex flex-col flex-2 justify-between items-center pl-4">
         <span>Sign-Ups: {{ info.signup_start_date | date: 'longDate' : 'ET' }}</span>
