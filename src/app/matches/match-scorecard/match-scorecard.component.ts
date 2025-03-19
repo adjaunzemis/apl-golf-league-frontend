@@ -1,13 +1,16 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { MatchData } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
+import { ScorecardModule } from 'src/app/shared/scorecard/scorecard.module';
+import { MatchScorecardScoreLineComponent } from './match-scorecard-score-line/match-scorecard-score-line.component';
 
 @Component({
   selector: 'app-match-scorecard',
   templateUrl: './match-scorecard.component.html',
   styleUrls: ['./match-scorecard.component.css'],
-  standalone: false,
+  imports: [CommonModule, ScorecardModule, MatchScorecardScoreLineComponent],
 })
 export class MatchScorecardComponent implements OnInit, OnChanges {
   @Input() match: MatchData;

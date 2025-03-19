@@ -64,12 +64,24 @@
     </ng-template>
   </p-carousel>
   <div *ngIf="selectedMatch">
-    <div class="flex flex-col items-center w-full p-10">
-      <span>Showing Match id: {{ selectedMatch.match_id }}</span>
+    <div class="flex flex-col items-center w-full pt-4 pb-2">
+      <span class="font-semibold"
+        >Week {{ selectedMatch.week }} - {{ getMatchTitle(selectedMatch, selectedMatchData) }}</span
+      >
+      <span
+        class="font-normal text-sm"
+        *ngIf="selectedMatchData && selectedMatchData.rounds.length > 0"
+        >Played {{ selectedMatchData.rounds[0].date_played | date: 'longDate' }}</span
+      >
     </div>
 
-    <div *ngIf="selectedMatchData; else loadingMatch">
-      <!-- <app-match-scorecard [match]="selectedMatchData" [topTeamId]="selectedMatchData.home_team_id" /> -->
+    <div class="flex flex-col items-center" *ngIf="selectedMatchData; else loadingMatch">
+      <app-match-scorecard
+        class="w-250"
+        [match]="selectedMatchData"
+        [topTeamId]="selectedMatchData.home_team_id"
+        *ngIf="isMatchPlayed(selectedMatchData)"
+      />
     </div>
 
     <ng-template #loadingMatch>

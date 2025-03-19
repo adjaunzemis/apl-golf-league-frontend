@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AngularMaterialModule } from '../angular-material.module';
-import { MatchesModule } from '../matches/matches.module';
 import { TeamHomeComponent } from './team-home/team-home.component';
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
@@ -34,7 +33,6 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
     CommonModule,
     RouterModule,
     AngularMaterialModule,
-    MatchesModule,
     ScorecardModule,
     ErrorModule,
     DivisionsModule,

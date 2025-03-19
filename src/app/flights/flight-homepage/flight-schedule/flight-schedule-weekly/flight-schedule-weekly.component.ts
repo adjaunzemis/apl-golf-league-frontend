@@ -8,12 +8,19 @@ import { FlightInfo } from 'src/app/shared/flight.model';
 import { MatchData, MatchSummary } from 'src/app/shared/match.model';
 import { MatchesService } from 'src/app/matches/matches.service';
 import { Subscription } from 'rxjs';
+import { MatchScorecardComponent } from 'src/app/matches/match-scorecard/match-scorecard.component';
 
 @Component({
   selector: 'app-flight-schedule-weekly',
   templateUrl: './flight-schedule-weekly.component.html',
   styleUrl: './flight-schedule-weekly.component.css',
-  imports: [CommonModule, CarouselModule, TableModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    CarouselModule,
+    TableModule,
+    ProgressSpinnerModule,
+    MatchScorecardComponent,
+  ],
 })
 export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
   @Input() info: FlightInfo;
@@ -54,19 +61,15 @@ export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
     this.matchSub.unsubscribe();
   }
 
-  isMatchPlayed(match: MatchSummary): boolean {
-    return match.home_score > 0 && match.away_score > 0;
-  }
-
   isWinnerHome(match: MatchSummary): boolean {
-    if (!this.isMatchPlayed(match)) {
+    if (match.home_score === null || match.away_score === null) {
       return false;
     }
     return match.home_score >= match.away_score;
   }
 
   isWinnerAway(match: MatchSummary): boolean {
-    if (!this.isMatchPlayed(match)) {
+    if (match.home_score === null || match.away_score === null) {
       return false;
     }
     return match.away_score >= match.home_score;
@@ -103,7 +106,38 @@ export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
     if (this.selectedMatchData && this.selectedMatch.match_id == this.selectedMatchData.match_id) {
       return; // this match is already loaded
     }
+    this.selectedMatchData = undefined;
     this.matchesService.getMatch(this.selectedMatch.match_id);
+  }
+
+  getMatchTitle(match: MatchSummary, matchData?: MatchData): string {
+    const homeTeam = match.home_team_name;
+    const homeScore = match.home_score;
+    const awayTeam = match.away_team_name;
+    const awayScore = match.away_score;
+
+    if (homeScore === null || awayScore === null) {
+      return `${homeTeam} vs ${awayTeam} - Not complete`;
+    }
+
+    let title: string;
+    if (homeScore > awayScore) {
+      title = `${homeTeam} (${homeScore}) def. ${awayTeam} (${awayScore})`;
+    } else if (awayScore > homeScore) {
+      title = `${awayTeam} (${awayScore}) def. ${homeTeam} (${homeScore})`;
+    } else {
+      title = `${homeTeam} (${homeScore}) tied ${awayTeam} (${awayScore})`;
+    }
+
+    if (matchData?.rounds.length == 0) {
+      title += ' by forfeit';
+    }
+
+    return title;
+  }
+
+  isMatchPlayed(matchData?: MatchData): boolean {
+    return matchData !== undefined && matchData.rounds.length > 0;
   }
 }
 

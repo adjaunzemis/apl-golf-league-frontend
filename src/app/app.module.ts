@@ -16,7 +16,6 @@ import { CoursesModule } from './courses/courses.module';
 import { RoundsModule } from './rounds/rounds.module';
 import { FlightsModule } from './flights/flights.module';
 import { GolfersModule } from './golfers/golfers.module';
-import { MatchesModule } from './matches/matches.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
 import { DivisionsModule } from './divisions/divisions.module';
 import { AuthModule } from './auth/auth.module';
@@ -53,7 +52,6 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
     RoundsModule,
     FlightsModule,
     GolfersModule,
-    MatchesModule,
     TournamentsModule,
     DivisionsModule,
     AuthModule,

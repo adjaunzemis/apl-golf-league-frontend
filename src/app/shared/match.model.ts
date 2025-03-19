@@ -8,8 +8,8 @@ export interface MatchSummary {
   away_team_name: string;
   flight_name: string;
   week: number;
-  home_score: number;
-  away_score: number;
+  home_score: number | null;
+  away_score: number | null;
 }
 
 export interface MatchData {

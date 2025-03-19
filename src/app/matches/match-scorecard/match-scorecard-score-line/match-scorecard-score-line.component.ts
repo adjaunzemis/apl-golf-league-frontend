@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { MatchData } from 'src/app/shared/match.model';
 import { RoundData } from 'src/app/shared/round.model';
@@ -7,7 +8,7 @@ import { RoundData } from 'src/app/shared/round.model';
   selector: 'app-match-scorecard-score-line',
   templateUrl: './match-scorecard-score-line.component.html',
   styleUrls: ['./match-scorecard-score-line.component.css'],
-  standalone: false,
+  imports: [CommonModule],
 })
 export class MatchScorecardScoreLineComponent implements OnInit, OnChanges {
   @Input() match: MatchData;

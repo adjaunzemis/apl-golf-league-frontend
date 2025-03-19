@@ -27,13 +27,6 @@
 
   <p class="italic" *ngIf="!showScorecard">Select a match to view scorecard</p>
 
-  <app-match-scorecard
-    class="full-width"
-    [match]="focusedMatch"
-    [topTeamId]="team.id"
-    *ngIf="showScorecard"
-  ></app-match-scorecard>
-
   <div class="card-container">
     <div
       aria-hidden="true"
