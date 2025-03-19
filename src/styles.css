@@ -14,7 +14,7 @@ body {
 }
 
 .p-button:hover {
-  @apply text-blue-600 shadow-xl hover:-translate-y-1;
+  @apply text-blue-600 shadow-lg;
 }
 
 .p-menubar {
