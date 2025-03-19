@@ -2,12 +2,17 @@
   <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
     <span class="text-2xl font-semibold">Statistics</span>
     <div class="mx-auto"></div>
-    <p-togglebutton class="font-semibold" onLabel="Net" offLabel="Gross" (onChange)="onChangeScoringMode($event)" />
+    <p-togglebutton
+      class="font-semibold"
+      onLabel="Net"
+      offLabel="Gross"
+      (onChange)="onChangeScoringMode($event)"
+    />
   </div>
 
   <p-table
     #dt
-    [value]="statistics.golfers"
+    [value]="displayStatistics"
     dataKey="golfer_id"
     sortField="avg_points_won"
     [sortOrder]="-1"
@@ -20,23 +25,21 @@
         <th pSortableColumn="num_matches">Matches <p-sortIcon field="num_matches" /></th>
         <th pSortableColumn="points_won">Points <p-sortIcon field="points_won" /></th>
         <th pSortableColumn="avg_points_won">Avg. Points <p-sortIcon field="avg_points_won" /></th>
-        <th pSortableColumn="avg_gross">Avg. Gross <p-sortIcon field="avg_gross" /></th>
-        <th pSortableColumn="avg_gross_to_par">To Par <p-sortIcon field="avg_gross_to_par" /></th>
-        <th pSortableColumn="avg_net">Avg. Net <p-sortIcon field="avg_net" /></th>
-        <th pSortableColumn="avg_net_to_par">To Par <p-sortIcon field="avg_net_to_par" /></th>
+        <th pSortableColumn="avg_score">Avg. Score <p-sortIcon field="avg_score" /></th>
+        <th pSortableColumn="avg_score_to_par">To Par <p-sortIcon field="avg_score_to_par" /></th>
+        <th pSortableColumn="avg_par_3_score">Par 3 <p-sortIcon field="avg_par_3_score" /></th>
+        <th pSortableColumn="avg_par_4_score">Par 4 <p-sortIcon field="avg_par_4_score" /></th>
+        <th pSortableColumn="avg_par_5_score">Par 5 <p-sortIcon field="avg_par_5_score" /></th>
         <th pSortableColumn="num_holes">Holes <p-sortIcon field="num_holes" /></th>
-        <th pSortableColumn="num_aces">Aces <p-sortIcon field="num_aces" /></th>
-        <th pSortableColumn="num_albatrosses">
-          Albatrosses <p-sortIcon field="num_albatrosses" />
+        <th pSortableColumn="num_eagles_or_better">
+          Eagles+ <p-sortIcon field="num_eagles_or_better" />
         </th>
-        <th pSortableColumn="num_eagles">Eagles <p-sortIcon field="num_eagles" /></th>
         <th pSortableColumn="num_birdies">Birdies <p-sortIcon field="num_birdies" /></th>
         <th pSortableColumn="num_pars">Pars <p-sortIcon field="num_pars" /></th>
         <th pSortableColumn="num_bogeys">Bogeys <p-sortIcon field="num_bogeys" /></th>
-        <th pSortableColumn="num_double_bogeys">
-          Double Bogeys <p-sortIcon field="num_double_bogeys" />
+        <th pSortableColumn="num_double_bogeys_or_worse">
+          Doubles+ <p-sortIcon field="num_double_bogeys_or_worse" />
         </th>
-        <th pSortableColumn="num_others">Others <p-sortIcon field="num_others" /></th>
       </tr>
     </ng-template>
     <ng-template #body let-golfer>
@@ -45,19 +48,17 @@
         <td class="text-gray-800">{{ golfer.num_matches }}</td>
         <td class="text-gray-800">{{ golfer.points_won | number: '1.1-1' }}</td>
         <td class="text-gray-800">{{ golfer.avg_points_won | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_gross | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_gross_to_par | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_net | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_net_to_par | number: '1.2-2' }}</td>
+        <td class="text-gray-800">{{ golfer.avg_score | number: '1.2-2' }}</td>
+        <td class="text-gray-800">{{ golfer.avg_score_to_par | number: '1.2-2' }}</td>
+        <td class="text-gray-800">{{ golfer.avg_par_3_score - 3 | number: '1.2-2' }}</td>
+        <td class="text-gray-800">{{ golfer.avg_par_4_score - 4 | number: '1.2-2' }}</td>
+        <td class="text-gray-800">{{ golfer.avg_par_5_score - 5 | number: '1.2-2' }}</td>
         <td class="text-gray-800">{{ golfer.num_holes }}</td>
-        <td class="text-gray-800">{{ golfer.num_aces }}</td>
-        <td class="text-gray-800">{{ golfer.num_albatrosses }}</td>
-        <td class="text-gray-800">{{ golfer.num_eagles }}</td>
+        <td class="text-gray-800">{{ golfer.num_eagles_or_better }}</td>
         <td class="text-gray-800">{{ golfer.num_birdies }}</td>
         <td class="text-gray-800">{{ golfer.num_pars }}</td>
         <td class="text-gray-800">{{ golfer.num_bogeys }}</td>
-        <td class="text-gray-800">{{ golfer.num_double_bogeys }}</td>
-        <td class="text-gray-800">{{ golfer.num_others }}</td>
+        <td class="text-gray-800">{{ golfer.num_double_bogeys_or_worse }}</td>
       </tr>
     </ng-template>
   </p-table>
