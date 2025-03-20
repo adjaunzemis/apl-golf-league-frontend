@@ -108,29 +108,12 @@ export interface FlightStandings {
   teams: FlightStandingsTeam[];
 }
 
-export interface FlightStatisticsGolfer {
-  golfer_id: number;
-  golfer_name: string;
-  golfer_team_id: number;
-  golfer_team_role: string;
-  num_matches: number;
-  num_rounds: number;
-  points_won: number;
-  avg_points_won: number;
-  avg_gross: number;
-  avg_gross_to_par: number;
-  avg_net: number;
-  avg_net_to_par: number;
-  num_holes: number;
-  num_par_3_holes: number;
-  num_par_4_holes: number;
-  num_par_5_holes: number;
-  avg_par_3_gross: number;
-  avg_par_3_net: number;
-  avg_par_4_gross: number;
-  avg_par_4_net: number;
-  avg_par_5_gross: number;
-  avg_par_5_net: number;
+export interface GolferStatisticsScoring {
+  avg_score: number;
+  avg_score_to_par: number;
+  avg_par_3_score: number;
+  avg_par_4_score: number;
+  avg_par_5_score: number;
   num_aces: number;
   num_albatrosses: number;
   num_eagles: number;
@@ -141,7 +124,27 @@ export interface FlightStatisticsGolfer {
   num_others: number;
 }
 
+export interface GolferStatistics {
+  golfer_id: number;
+  golfer_name: string;
+  golfer_team_id: number;
+  golfer_team_role: string;
+  num_rounds: number;
+  num_holes: number;
+  num_par_3_holes: number;
+  num_par_4_holes: number;
+  num_par_5_holes: number;
+  gross_scoring: GolferStatisticsScoring;
+  net_scoring: GolferStatisticsScoring;
+}
+
+export interface FlightGolferStatistics extends GolferStatistics {
+  num_matches: number;
+  points_won: number;
+  avg_points_won: number;
+}
+
 export interface FlightStatistics {
   flight_id: number;
-  golfers: FlightStatisticsGolfer[];
+  golfers: FlightGolferStatistics[];
 }

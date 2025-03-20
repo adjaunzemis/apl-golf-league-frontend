@@ -32,6 +32,8 @@ export class FlightStatisticsComponent implements OnInit {
     this.displayStatistics = [];
 
     for (const golfer of this.statistics.golfers) {
+      const golferScoring = this.scoringMode == 'gross' ? golfer.gross_scoring : golfer.net_scoring;
+
       this.displayStatistics.push({
         golfer_id: golfer.golfer_id,
         golfer_name: golfer.golfer_name,
@@ -39,31 +41,25 @@ export class FlightStatisticsComponent implements OnInit {
         golfer_team_role: golfer.golfer_team_role,
         num_matches: golfer.num_matches,
         num_rounds: golfer.num_rounds,
-        points_won: golfer.points_won,
-        avg_points_won: golfer.avg_points_won,
-        avg_score: this.scoringMode == 'gross' ? golfer.avg_gross : golfer.avg_net,
-        avg_score_to_par:
-          this.scoringMode == 'gross' ? golfer.avg_gross_to_par : golfer.avg_net_to_par,
         num_holes: golfer.num_holes,
         num_par_3_holes: golfer.num_par_3_holes,
-        avg_par_3_score:
-          this.scoringMode == 'gross' ? golfer.avg_par_3_gross : golfer.avg_par_3_net,
         num_par_4_holes: golfer.num_par_4_holes,
-        avg_par_4_score:
-          this.scoringMode == 'gross' ? golfer.avg_par_4_gross : golfer.avg_par_4_net,
         num_par_5_holes: golfer.num_par_5_holes,
-        avg_par_5_score:
-          this.scoringMode == 'gross' ? golfer.avg_par_5_gross : golfer.avg_par_5_net,
-        num_aces: this.scoringMode == 'gross' ? golfer.num_aces : golfer.num_aces, // TODO: net
-        num_albatrosses:
-          this.scoringMode == 'gross' ? golfer.num_albatrosses : golfer.num_albatrosses, // TODO: net
-        num_eagles: this.scoringMode == 'gross' ? golfer.num_eagles : golfer.num_eagles, // TODO: net
-        num_birdies: this.scoringMode == 'gross' ? golfer.num_birdies : golfer.num_birdies, // TODO: net
-        num_pars: this.scoringMode == 'gross' ? golfer.num_pars : golfer.num_pars, // TODO: net
-        num_bogeys: this.scoringMode == 'gross' ? golfer.num_bogeys : golfer.num_bogeys, // TODO: net
-        num_double_bogeys:
-          this.scoringMode == 'gross' ? golfer.num_double_bogeys : golfer.num_double_bogeys, // TODO: net
-        num_others: this.scoringMode == 'gross' ? golfer.num_others : golfer.num_others, // TODO: net
+        points_won: golfer.points_won,
+        avg_points_won: golfer.avg_points_won,
+        avg_score: golferScoring.avg_score,
+        avg_score_to_par: golferScoring.avg_score_to_par,
+        avg_par_3_score: golferScoring.avg_par_3_score,
+        avg_par_4_score: golferScoring.avg_par_4_score,
+        avg_par_5_score: golferScoring.avg_par_5_score,
+        num_aces: golferScoring.num_aces,
+        num_albatrosses: golferScoring.num_albatrosses,
+        num_eagles: golferScoring.num_eagles,
+        num_birdies: golferScoring.num_birdies,
+        num_pars: golferScoring.num_pars,
+        num_bogeys: golferScoring.num_bogeys,
+        num_double_bogeys: golferScoring.num_double_bogeys,
+        num_others: golferScoring.num_others,
       });
     }
   }
@@ -85,12 +81,12 @@ interface GolferStatistics {
   golfer_team_role: string;
   num_matches: number;
   num_rounds: number;
+  num_holes: number;
+  num_par_3_holes: number;
   points_won: number;
   avg_points_won: number;
   avg_score: number;
   avg_score_to_par: number;
-  num_holes: number;
-  num_par_3_holes: number;
   avg_par_3_score: number;
   num_par_4_holes: number;
   avg_par_4_score: number;

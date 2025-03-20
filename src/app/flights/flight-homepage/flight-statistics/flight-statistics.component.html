@@ -155,24 +155,30 @@
                 <div>Holes <p-sortIcon field="num_par_3_holes" /></div>
               </th>
               <th rowspan="2" pSortableColumn="avg_par_3_score">
-                <div>Par 3</div>
-                <div>Avg. Score <p-sortIcon field="avg_par_3_score" /></div>
+                <div>Par 3 Avg.</div>
+                <div>
+                  {{ scoringMode | titlecase }} Score <p-sortIcon field="avg_par_3_score" />
+                </div>
               </th>
               <th rowspan="2" pSortableColumn="num_par_4_holes">
                 <div>Par 4</div>
                 <div>Holes <p-sortIcon field="num_par_4_holes" /></div>
               </th>
               <th rowspan="2" pSortableColumn="avg_par_4_score">
-                <div>Par 4</div>
-                <div>Avg. Score <p-sortIcon field="avg_par_4_score" /></div>
+                <div>Par 4 Avg.</div>
+                <div>
+                  {{ scoringMode | titlecase }} Score <p-sortIcon field="avg_par_4_score" />
+                </div>
               </th>
               <th rowspan="2" pSortableColumn="num_par_5_holes">
                 <div>Par 5</div>
                 <div>Holes <p-sortIcon field="num_par_5_holes" /></div>
               </th>
               <th rowspan="2" pSortableColumn="avg_par_5_score">
-                <div>Par 5</div>
-                <div>Avg. Score <p-sortIcon field="avg_par_5_score" /></div>
+                <div>Par 5 Avg.</div>
+                <div>
+                  {{ scoringMode | titlecase }} Score <p-sortIcon field="avg_par_5_score" />
+                </div>
               </th>
             </tr>
           </ng-template>
