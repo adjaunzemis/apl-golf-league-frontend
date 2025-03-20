@@ -1,0 +1,98 @@
+<div class="p-4">
+  <p-carousel
+    [value]="weeklyMatches"
+    [numVisible]="3"
+    [numScroll]="1"
+    [circular]="false"
+    [page]="getPageForCurrentWeek()"
+    (onRowSelected)="onMatchSelected()"
+  >
+    <ng-template let-weekMatchData #item>
+      <div class="border border-surface rounded-border border-gray-300 rounded-xl m-2 p-4">
+        <p-table
+          [value]="weekMatchData.matches"
+          stripedRows
+          selectionMode="single"
+          dataKey="match_id"
+          [(selection)]="selectedMatch"
+          (onRowSelect)="onMatchSelected()"
+        >
+          <ng-template #header>
+            <tr>
+              <td colspan="5" class="text-center font-semibold">Week {{ weekMatchData.week }}</td>
+            </tr>
+            <tr>
+              <td colspan="5" class="text-center font-normal italic text-sm text-gray-700 pb-2">
+                {{ getWeekSpan(weekMatchData.week) }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #body let-match *ngIf="weekMatchData.matches.length > 0; else noMatches">
+            <tr [pSelectableRow]="match">
+              <td
+                class="text-center text-gray-700 w-1/15"
+                [ngClass]="{ winner: isWinnerHome(match) }"
+              >
+                {{ match.home_score }}
+              </td>
+              <td
+                class="text-center text-gray-700 w-2/5"
+                [ngClass]="{ winner: isWinnerHome(match) }"
+              >
+                {{ match.home_team_name }}
+              </td>
+              <td class="text-center text-gray-700 w-1/15">vs</td>
+              <td
+                class="text-center text-gray-700 w-2/5"
+                [ngClass]="{ winner: isWinnerAway(match) }"
+              >
+                {{ match.away_team_name }}
+              </td>
+              <td
+                class="text-center text-gray-700 w-1/15"
+                [ngClass]="{ winner: isWinnerAway(match) }"
+              >
+                {{ match.away_score }}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #noMatches>
+            <p>Bye week, no matches!</p>
+          </ng-template>
+        </p-table>
+      </div>
+    </ng-template>
+  </p-carousel>
+  <div *ngIf="selectedMatch">
+    <div class="flex flex-col items-center w-full pt-4 pb-2">
+      <span class="font-semibold"
+        >Week {{ selectedMatch.week }} - {{ getMatchTitle(selectedMatch, selectedMatchData) }}</span
+      >
+      <span
+        class="font-normal text-sm"
+        *ngIf="selectedMatchData && selectedMatchData.rounds.length > 0"
+        >Played {{ selectedMatchData.rounds[0].date_played | date: 'longDate' }}</span
+      >
+    </div>
+
+    <div class="flex flex-col items-center" *ngIf="selectedMatchData; else loadingMatch">
+      <app-match-scorecard
+        class="w-250"
+        [match]="selectedMatchData"
+        [topTeamId]="selectedMatchData.home_team_id"
+        *ngIf="isMatchPlayed(selectedMatchData)"
+      />
+    </div>
+
+    <ng-template #loadingMatch>
+      <div class="flex flex-col items-center w-full p-10">
+        <p-progress-spinner
+          strokeWidth="4"
+          fill="transparent"
+          animationDuration="2s"
+          [style]="{ widthcs: '100px', height: '100px' }"
+        />
+      </div>
+    </ng-template>
+  </div>
+</div>

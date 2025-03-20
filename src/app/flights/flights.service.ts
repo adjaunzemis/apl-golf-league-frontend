@@ -6,9 +6,11 @@ import { Observable, Subject } from 'rxjs';
 import {
   FlightData,
   FlightInfo,
+  FlightDivision,
   FlightCreate,
   FlightStandings,
   FlightTeam,
+  FlightStatistics,
 } from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
@@ -24,11 +26,17 @@ export class FlightsService {
   private flightInfo: FlightInfo;
   private flightInfoUpdated = new Subject<FlightInfo>();
 
+  private flightDivisions: FlightDivision[];
+  private flightDivisionsUpdated = new Subject<FlightDivision[]>();
+
   private flightTeams: FlightTeam[];
   private flightTeamsUpdated = new Subject<FlightTeam[]>();
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
+
+  private flightStatistics: FlightStatistics;
+  private flightStatisticsUpdated = new Subject<FlightStatistics>();
 
   private flightMatches: MatchSummary[];
   private flightMatchesUpdated = new Subject<MatchSummary[]>();
@@ -100,6 +108,19 @@ export class FlightsService {
     return this.flightInfoUpdated.asObservable();
   }
 
+  getDivisions(id: number): void {
+    this.http
+      .get<FlightDivision[]>(environment.apiUrl + `flights/divisions/${id}`)
+      .subscribe((result) => {
+        this.flightDivisions = result;
+        this.flightDivisionsUpdated.next([...this.flightDivisions]);
+      });
+  }
+
+  getDivisionsUpdateListener(): Observable<FlightDivision[]> {
+    return this.flightDivisionsUpdated.asObservable();
+  }
+
   getTeams(id: number): void {
     this.http.get<FlightTeam[]>(environment.apiUrl + `flights/teams/${id}`).subscribe((result) => {
       this.flightTeams = result;
@@ -122,6 +143,19 @@ export class FlightsService {
 
   getStandingsUpdateListener(): Observable<FlightStandings> {
     return this.flightStandingsUpdated.asObservable();
+  }
+
+  getStatistics(id: number): void {
+    this.http
+      .get<FlightStatistics>(environment.apiUrl + `flights/statistics/${id}`)
+      .subscribe((result) => {
+        this.flightStatistics = result;
+        this.flightStatisticsUpdated.next(result);
+      });
+  }
+
+  getStatisticsUpdateListener(): Observable<FlightStatistics> {
+    return this.flightStatisticsUpdated.asObservable();
   }
 
   getMatches(id: number): void {

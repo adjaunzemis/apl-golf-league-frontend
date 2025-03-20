@@ -3,14 +3,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AngularMaterialModule } from '../angular-material.module';
-import { MatchesModule } from '../matches/matches.module';
 import { TeamHomeComponent } from './team-home/team-home.component';
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
-import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
 import { ErrorModule } from '../shared/error/error.module';
-import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
 import { FlightMatchScorecardComponent } from './flight-match-create/flight-match-scorecard.component';
 import { DivisionsModule } from '../divisions/divisions.module';
@@ -24,9 +21,7 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
     TeamHomeComponent,
     TeamScheduleComponent,
     GolferStatisticsComponent,
-    FlightHomeComponent,
     FlightHistoryComponent,
-    FlightScheduleComponent,
     FlightMatchScorecardComponent,
     FlightMatchCreateComponent,
     PlayoffBracketComponent,
@@ -36,7 +31,6 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
     CommonModule,
     RouterModule,
     AngularMaterialModule,
-    MatchesModule,
     ScorecardModule,
     ErrorModule,
     DivisionsModule,

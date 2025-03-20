@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+.winner {
+  @apply font-semibold text-gray-800;
+}
