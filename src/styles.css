@@ -43,6 +43,10 @@ body {
   @apply bg-blue-400;
 }
 
+.p-paginator-page-selected {
+  @apply text-blue-600 font-semibold;
+}
+
 /* 
 .content {
   display: flex;
