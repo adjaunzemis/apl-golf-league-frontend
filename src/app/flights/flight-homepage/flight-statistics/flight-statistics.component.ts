@@ -5,6 +5,7 @@ import { CardModule } from 'primeng/card';
 import { TabsModule } from 'primeng/tabs';
 import { TableModule } from 'primeng/table';
 import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutton';
+import { CheckboxModule } from 'primeng/checkbox';
 
 import { FlightStatistics } from 'src/app/shared/flight.model';
 
@@ -12,17 +13,33 @@ import { FlightStatistics } from 'src/app/shared/flight.model';
   selector: 'app-flight-statistics',
   templateUrl: './flight-statistics.component.html',
   styleUrls: ['./flight-statistics.component.css'],
-  imports: [CommonModule, FormsModule, CardModule, TabsModule, TableModule, ToggleButtonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CardModule,
+    TabsModule,
+    TableModule,
+    ToggleButtonModule,
+    CheckboxModule,
+  ],
 })
 export class FlightStatisticsComponent implements OnInit {
   @Input() statistics: FlightStatistics;
+  @Input() matchCountLimit = 3;
 
   displayStatistics: GolferStatistics[] = [];
 
   scoringMode = 'gross';
+  labelScoringModeGross = 'Scoring Mode: Gross';
+  labelScoringModeNet = 'Scoring Mode: Net';
 
-  scoring_mode_label_gross = 'Scoring Mode: Gross';
-  scoring_mode_label_net = 'Scoring Mode: Net';
+  showSubstitutes = false;
+  labelShowSubstitutesOn = 'Substitutes: Include';
+  labelShowSubstitutesOff = 'Substitutes: Exclude';
+
+  filterLowMatchCount = true;
+  labelFilterLowMatchCountEnabled = `Min Matches: ${this.matchCountLimit}`;
+  labelFilterLowMatchCountDisabled = 'Min Matches: n/a';
 
   ngOnInit(): void {
     this.updateGolferStatistics();
@@ -32,6 +49,13 @@ export class FlightStatisticsComponent implements OnInit {
     this.displayStatistics = [];
 
     for (const golfer of this.statistics.golfers) {
+      if (!this.showSubstitutes && golfer.golfer_team_role === 'Substitute') {
+        continue;
+      }
+      if (this.filterLowMatchCount && golfer.num_matches < this.matchCountLimit) {
+        continue;
+      }
+
       const golferScoring = this.scoringMode == 'gross' ? golfer.gross_scoring : golfer.net_scoring;
 
       this.displayStatistics.push({
@@ -69,6 +93,24 @@ export class FlightStatisticsComponent implements OnInit {
       this.scoringMode = 'net';
     } else {
       this.scoringMode = 'gross';
+    }
+    this.updateGolferStatistics();
+  }
+
+  onChangeShowSubstitutes(event: ToggleButtonChangeEvent): void {
+    if (event.checked) {
+      this.showSubstitutes = true;
+    } else {
+      this.showSubstitutes = false;
+    }
+    this.updateGolferStatistics();
+  }
+
+  onChangeFilterLowMatchCount(event: ToggleButtonChangeEvent): void {
+    if (event.checked) {
+      this.filterLowMatchCount = false;
+    } else {
+      this.filterLowMatchCount = true;
     }
     this.updateGolferStatistics();
   }
