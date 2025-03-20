@@ -1,126 +1,99 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { FlightCreate, FlightData } from '../../shared/flight.model';
+import { FlightInfoComponent } from './flight-info/flight-info.component';
+import { FlightDivisionsComponent } from './flight-divisions/flight-divisions.component';
+import { FlightStandingsComponent } from './flight-standings/flight-standings.component';
+import { FlightTeamsComponent } from './flight-teams/flight-teams.component';
+import { FlightScheduleComponent } from './flight-schedule/flight-schedule.component';
 import { FlightsService } from '../flights.service';
-import { FlightCreateComponent } from '../flight-create/flight-create.component';
-import { AuthService } from '../../auth/auth.service';
-import { User } from '../../shared/user.model';
+import {
+  FlightDivision,
+  FlightInfo,
+  FlightStandings,
+  FlightStatistics,
+  FlightTeam,
+} from 'src/app/shared/flight.model';
+import { MatchSummary } from 'src/app/shared/match.model';
+import { FlightStatisticsComponent } from './flight-statistics/flight-statistics.component';
 
 @Component({
   selector: 'app-flight-home',
   templateUrl: './flight-home.component.html',
-  styleUrls: ['./flight-home.component.css'],
-  standalone: false,
+  styleUrl: './flight-home.component.css',
+  imports: [
+    CommonModule,
+    ProgressSpinnerModule,
+    FlightInfoComponent,
+    FlightDivisionsComponent,
+    FlightStandingsComponent,
+    FlightStatisticsComponent,
+    FlightTeamsComponent,
+    FlightScheduleComponent,
+  ],
 })
 export class FlightHomeComponent implements OnInit, OnDestroy {
-  isLoading = true;
+  info: FlightInfo | undefined;
+  divisions: FlightDivision[] | undefined;
+  teams: FlightTeam[] | undefined;
+  standings: FlightStandings | undefined;
+  statistics: FlightStatistics | undefined;
+  matches: MatchSummary[] | undefined;
 
-  isAuthenticated = false;
-  private userSub: Subscription;
-  currentUser: User | null = null;
+  private route = inject(ActivatedRoute);
 
-  flight: FlightData;
-  private flightSub: Subscription;
-
-  currentDate = new Date();
-
-  showScheduleMatrix = false;
-
-  isPlayoffFlight = false;
-
-  constructor(
-    private flightsService: FlightsService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-  ) {}
+  private flightsService = inject(FlightsService);
+  private infoSub: Subscription;
+  private teamsSub: Subscription;
+  private standingsSub: Subscription;
+  private statisticsSub: Subscription;
+  private matchesSub: Subscription;
+  private divisionsSub: Subscription;
 
   ngOnInit(): void {
-    this.userSub = this.authService.user.subscribe((user) => {
-      this.isAuthenticated = !user ? false : true;
-      if (this.isAuthenticated) {
-        this.currentUser = user;
-      }
-    });
-
-    this.flightSub = this.flightsService.getDataUpdateListener().subscribe((flightData) => {
-      console.log(
-        `[FlightHomeComponent] Received data for flight: name=${flightData.name}, year=${flightData.year}, id=${flightData.id}`,
-      );
-      this.flight = flightData;
-      this.isLoading = false;
-
-      if (flightData.name.includes('Playoffs')) {
-        console.log(`[FlightHomeComponent] Displaying playoff-specific flight details`);
-        this.isPlayoffFlight = true;
-      }
-    });
+    this.infoSub = this.flightsService
+      .getInfoUpdateListener()
+      .subscribe((result) => (this.info = result));
+    this.divisionsSub = this.flightsService
+      .getDivisionsUpdateListener()
+      .subscribe((result) => (this.divisions = result));
+    this.teamsSub = this.flightsService
+      .getTeamsUpdateListener()
+      .subscribe((result) => (this.teams = result));
+    this.standingsSub = this.flightsService
+      .getStandingsUpdateListener()
+      .subscribe((result) => (this.standings = result));
+    this.statisticsSub = this.flightsService
+      .getStatisticsUpdateListener()
+      .subscribe((result) => (this.statistics = result));
+    this.matchesSub = this.flightsService
+      .getMatchesUpdateListener()
+      .subscribe((result) => (this.matches = result));
 
     this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.id) {
-          console.log(
-            '[FlightHomeComponent] Processing route with query parameter: id=' + params.id,
-          );
-          this.flightsService.getData(params.id);
-        }
+      if (params && params.id) {
+        console.log('[FlightHomeComponent] Processing route with query parameter: id=' + params.id);
+        const flightId = params.id;
+
+        this.flightsService.getInfo(flightId);
+        this.flightsService.getDivisions(flightId);
+        this.flightsService.getTeams(flightId);
+        this.flightsService.getStandings(flightId);
+        this.flightsService.getStatistics(flightId);
+        this.flightsService.getMatches(flightId);
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-    this.flightSub.unsubscribe();
-  }
-
-  getFlightEmailList(): string {
-    let emailList = '';
-    if (this.flight.secretary_email) {
-      emailList += this.flight.secretary_email + ';';
-    }
-    if (this.flight.teams) {
-      for (const team of this.flight.teams) {
-        for (const golfer of team.golfers) {
-          if (golfer.golfer_email) {
-            emailList += golfer.golfer_email + ';';
-          }
-        }
-      }
-    }
-    return emailList.substring(0, emailList.length - 1);
-  }
-
-  // TODO: Move to admin view?
-  // TODO: Conslidate with header onAddNewFlight
-  onManageFlight(): void {
-    const dialogRef = this.dialog.open(FlightCreateComponent, {
-      width: '900px',
-      data: this.flight as FlightCreate,
-    });
-
-    dialogRef.afterClosed().subscribe((flightData) => {
-      if (flightData !== null && flightData !== undefined) {
-        this.flightsService.updateFlight(flightData).subscribe((result) => {
-          console.log(
-            `[FlightHomeComponent] Successfully updated flight: ${result.name} (${result.year})`,
-          );
-          this.snackBar.open(
-            `Successfully updated flight: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
-          );
-
-          this.flightsService.getData(this.flight.id); // refresh flight data
-        });
-      }
-    });
+    this.infoSub.unsubscribe();
+    this.divisionsSub.unsubscribe();
+    this.teamsSub.unsubscribe();
+    this.standingsSub.unsubscribe();
+    this.statisticsSub.unsubscribe();
+    this.matchesSub.unsubscribe();
   }
 }

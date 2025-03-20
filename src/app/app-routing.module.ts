@@ -24,7 +24,7 @@ import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments
 import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
 import { AddQualifyingScoreComponent } from './golfers/add-qualifying-score/add-qualifying-score.component';
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
-import { FlightHomepageComponent } from './flights/flight-homepage/flight-homepage.component';
+import { FlightHomeComponent } from './flights/flight-home/flight-home.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 const routes: Routes = environment.maintenance
@@ -35,7 +35,7 @@ const routes: Routes = environment.maintenance
   : [
       { path: '', component: LeagueHomeComponent },
       { path: 'signup', component: SignupComponent },
-      { path: 'flight', component: FlightHomepageComponent },
+      { path: 'flight', component: FlightHomeComponent },
       { path: 'flight/team', component: TeamHomeComponent },
       { path: 'flight/history', component: FlightHistoryComponent },
       { path: 'flight/match/scorecard', component: FlightMatchScorecardComponent },

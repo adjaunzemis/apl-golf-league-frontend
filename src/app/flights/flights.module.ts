@@ -6,7 +6,6 @@ import { AngularMaterialModule } from '../angular-material.module';
 import { TeamHomeComponent } from './team-home/team-home.component';
 import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
-import { FlightHomeComponent } from './flight-home/flight-home.component';
 import { FlightHistoryComponent } from './flight-history/flight-history.component';
 import { ErrorModule } from '../shared/error/error.module';
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
@@ -22,7 +21,6 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
     TeamHomeComponent,
     TeamScheduleComponent,
     GolferStatisticsComponent,
-    FlightHomeComponent,
     FlightHistoryComponent,
     FlightMatchScorecardComponent,
     FlightMatchCreateComponent,
