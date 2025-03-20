@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
+import { TabsModule } from 'primeng/tabs';
 import { TableModule } from 'primeng/table';
 import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutton';
 
@@ -11,7 +12,7 @@ import { FlightStatistics } from 'src/app/shared/flight.model';
   selector: 'app-flight-statistics',
   templateUrl: './flight-statistics.component.html',
   styleUrls: ['./flight-statistics.component.css'],
-  imports: [CommonModule, FormsModule, CardModule, TableModule, ToggleButtonModule],
+  imports: [CommonModule, FormsModule, CardModule, TabsModule, TableModule, ToggleButtonModule],
 })
 export class FlightStatisticsComponent implements OnInit {
   @Input() statistics: FlightStatistics;
@@ -19,6 +20,9 @@ export class FlightStatisticsComponent implements OnInit {
   displayStatistics: GolferStatistics[] = [];
 
   scoringMode = 'gross';
+
+  scoring_mode_label_gross = 'Scoring Mode: Gross';
+  scoring_mode_label_net = 'Scoring Mode: Net';
 
   ngOnInit(): void {
     this.updateGolferStatistics();
@@ -50,17 +54,16 @@ export class FlightStatisticsComponent implements OnInit {
         num_par_5_holes: golfer.num_par_5_holes,
         avg_par_5_score:
           this.scoringMode == 'gross' ? golfer.avg_par_5_gross : golfer.avg_par_5_net,
-        num_eagles_or_better:
-          this.scoringMode == 'gross'
-            ? golfer.num_aces + golfer.num_albatrosses + golfer.num_eagles
-            : golfer.num_eagles, // TODO: net
+        num_aces: this.scoringMode == 'gross' ? golfer.num_aces : golfer.num_aces, // TODO: net
+        num_albatrosses:
+          this.scoringMode == 'gross' ? golfer.num_albatrosses : golfer.num_albatrosses, // TODO: net
+        num_eagles: this.scoringMode == 'gross' ? golfer.num_eagles : golfer.num_eagles, // TODO: net
         num_birdies: this.scoringMode == 'gross' ? golfer.num_birdies : golfer.num_birdies, // TODO: net
         num_pars: this.scoringMode == 'gross' ? golfer.num_pars : golfer.num_pars, // TODO: net
         num_bogeys: this.scoringMode == 'gross' ? golfer.num_bogeys : golfer.num_bogeys, // TODO: net
-        num_double_bogeys_or_worse:
-          this.scoringMode == 'gross'
-            ? golfer.num_double_bogeys + golfer.num_others
-            : golfer.num_double_bogeys + golfer.num_others, // TODO: net
+        num_double_bogeys:
+          this.scoringMode == 'gross' ? golfer.num_double_bogeys : golfer.num_double_bogeys, // TODO: net
+        num_others: this.scoringMode == 'gross' ? golfer.num_others : golfer.num_others, // TODO: net
       });
     }
   }
@@ -93,9 +96,12 @@ interface GolferStatistics {
   avg_par_4_score: number;
   num_par_5_holes: number;
   avg_par_5_score: number;
-  num_eagles_or_better: number;
+  num_aces: number;
+  num_albatrosses: number;
+  num_eagles: number;
   num_birdies: number;
   num_pars: number;
   num_bogeys: number;
-  num_double_bogeys_or_worse: number;
+  num_double_bogeys: number;
+  num_others: number;
 }

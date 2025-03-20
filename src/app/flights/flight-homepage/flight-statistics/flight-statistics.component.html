@@ -4,64 +4,172 @@
     <div class="mx-auto"></div>
     <p-togglebutton
       class="font-semibold"
-      onLabel="Net"
-      offLabel="Gross"
+      [onLabel]="scoring_mode_label_net"
+      [offLabel]="scoring_mode_label_gross"
       (onChange)="onChangeScoringMode($event)"
     />
   </div>
 
-  <p-table
-    #dt
-    [value]="displayStatistics"
-    dataKey="golfer_id"
-    sortField="avg_points_won"
-    [sortOrder]="-1"
-    stripedRows
-    selectionMode="single"
-    [paginator]="true"
-    [rows]="10"
-  >
-    <ng-template #header>
-      <tr>
-        <th pSortableColumn="golfer_name">Name <p-sortIcon field="golfer_name" /></th>
-        <th pSortableColumn="num_matches">Matches <p-sortIcon field="num_matches" /></th>
-        <th pSortableColumn="points_won">Points <p-sortIcon field="points_won" /></th>
-        <th pSortableColumn="avg_points_won">Avg. Points <p-sortIcon field="avg_points_won" /></th>
-        <th pSortableColumn="avg_score">Avg. Score <p-sortIcon field="avg_score" /></th>
-        <th pSortableColumn="avg_score_to_par">To Par <p-sortIcon field="avg_score_to_par" /></th>
-        <th pSortableColumn="avg_par_3_score">Par 3 <p-sortIcon field="avg_par_3_score" /></th>
-        <th pSortableColumn="avg_par_4_score">Par 4 <p-sortIcon field="avg_par_4_score" /></th>
-        <th pSortableColumn="avg_par_5_score">Par 5 <p-sortIcon field="avg_par_5_score" /></th>
-        <th pSortableColumn="num_holes">Holes <p-sortIcon field="num_holes" /></th>
-        <th pSortableColumn="num_eagles_or_better">
-          Eagles+ <p-sortIcon field="num_eagles_or_better" />
-        </th>
-        <th pSortableColumn="num_birdies">Birdies <p-sortIcon field="num_birdies" /></th>
-        <th pSortableColumn="num_pars">Pars <p-sortIcon field="num_pars" /></th>
-        <th pSortableColumn="num_bogeys">Bogeys <p-sortIcon field="num_bogeys" /></th>
-        <th pSortableColumn="num_double_bogeys_or_worse">
-          Doubles+ <p-sortIcon field="num_double_bogeys_or_worse" />
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-golfer>
-      <tr [pSelectableRow]="golfer">
-        <td class="text-gray-800">{{ golfer.golfer_name }}</td>
-        <td class="text-gray-800">{{ golfer.num_matches }}</td>
-        <td class="text-gray-800">{{ golfer.points_won | number: '1.1-1' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_points_won | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_score | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_score_to_par | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_par_3_score - 3 | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_par_4_score - 4 | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.avg_par_5_score - 5 | number: '1.2-2' }}</td>
-        <td class="text-gray-800">{{ golfer.num_holes }}</td>
-        <td class="text-gray-800">{{ golfer.num_eagles_or_better }}</td>
-        <td class="text-gray-800">{{ golfer.num_birdies }}</td>
-        <td class="text-gray-800">{{ golfer.num_pars }}</td>
-        <td class="text-gray-800">{{ golfer.num_bogeys }}</td>
-        <td class="text-gray-800">{{ golfer.num_double_bogeys_or_worse }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <p-tabs class="pt-2" value="0">
+    <p-tablist>
+      <p-tab class="px-8 py-2" value="0">General</p-tab>
+      <p-tab class="px-8 py-2" value="1">Scoring</p-tab>
+      <p-tab class="px-8 py-2" value="2">By Hole Type</p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <p-table
+          #dt
+          [value]="displayStatistics"
+          dataKey="golfer_id"
+          sortField="avg_points_won"
+          [sortOrder]="-1"
+          stripedRows
+          selectionMode="single"
+          [paginator]="true"
+          [rows]="10"
+        >
+          <ng-template #header>
+            <tr>
+              <th pSortableColumn="golfer_name">Name <p-sortIcon field="golfer_name" /></th>
+              <th pSortableColumn="num_matches">Matches <p-sortIcon field="num_matches" /></th>
+              <th pSortableColumn="points_won">Points <p-sortIcon field="points_won" /></th>
+              <th pSortableColumn="avg_points_won">
+                Avg. Points <p-sortIcon field="avg_points_won" />
+              </th>
+              <th pSortableColumn="avg_score">Avg. Score <p-sortIcon field="avg_score" /></th>
+              <th pSortableColumn="avg_score_to_par">
+                Avg. To Par <p-sortIcon field="avg_score_to_par" />
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-golfer>
+            <tr [pSelectableRow]="golfer">
+              <td class="text-gray-800">{{ golfer.golfer_name }}</td>
+              <td class="text-gray-800">{{ golfer.num_matches }}</td>
+              <td class="text-gray-800">{{ golfer.points_won | number: '1.1-1' }}</td>
+              <td class="text-gray-800">{{ golfer.avg_points_won | number: '1.2-2' }}</td>
+              <td class="text-gray-800">{{ golfer.avg_score | number: '1.2-2' }}</td>
+              <td class="text-gray-800">{{ golfer.avg_score_to_par | number: '1.2-2' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <p-tabpanel value="1">
+        <p-table
+          #dt
+          [value]="displayStatistics"
+          dataKey="golfer_id"
+          sortField="avg_points_won"
+          [sortOrder]="-1"
+          stripedRows
+          selectionMode="single"
+          [paginator]="true"
+          [rows]="10"
+        >
+          <ng-template #header>
+            <tr>
+              <th pSortableColumn="golfer_name">Name <p-sortIcon field="golfer_name" /></th>
+              <th pSortableColumn="num_holes">Holes <p-sortIcon field="num_holes" /></th>
+              <th pSortableColumn="num_aces">Aces <p-sortIcon field="num_aces" /></th>
+              <th pSortableColumn="num_albatrosses">
+                Albatrosses <p-sortIcon field="num_albatrosses" />
+              </th>
+              <th pSortableColumn="num_eagles">Eagles <p-sortIcon field="num_eagles" /></th>
+              <th pSortableColumn="num_birdies">Birdies <p-sortIcon field="num_birdies" /></th>
+              <th pSortableColumn="num_pars">Pars <p-sortIcon field="num_pars" /></th>
+              <th pSortableColumn="num_bogeys">Bogeys <p-sortIcon field="num_bogeys" /></th>
+              <th pSortableColumn="num_double_bogeys">
+                Double Bogeys <p-sortIcon field="num_double_bogeys" />
+              </th>
+              <th pSortableColumn="num_others">Others <p-sortIcon field="num_others" /></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-golfer>
+            <tr [pSelectableRow]="golfer">
+              <td class="text-gray-800">{{ golfer.golfer_name }}</td>
+              <td class="text-gray-800">{{ golfer.num_holes }}</td>
+              <td class="text-gray-800">{{ golfer.num_aces }}</td>
+              <td class="text-gray-800">{{ golfer.num_albatrosses }}</td>
+              <td class="text-gray-800">{{ golfer.num_eagles }}</td>
+              <td class="text-gray-800">{{ golfer.num_birdies }}</td>
+              <td class="text-gray-800">{{ golfer.num_pars }}</td>
+              <td class="text-gray-800">{{ golfer.num_bogeys }}</td>
+              <td class="text-gray-800">{{ golfer.num_double_bogeys }}</td>
+              <td class="text-gray-800">{{ golfer.num_others }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+
+      <p-tabpanel value="2">
+        <p-table
+          #dt
+          [value]="displayStatistics"
+          dataKey="golfer_id"
+          sortField="avg_points_won"
+          [sortOrder]="-1"
+          stripedRows
+          selectionMode="single"
+          [paginator]="true"
+          [rows]="10"
+        >
+          <ng-template #header>
+            <tr>
+              <th></th>
+              <th colspan="2" class="text-center">Par 3</th>
+              <th colspan="2" class="text-center">Par 4</th>
+              <th colspan="2" class="text-center">Par 5</th>
+            </tr>
+            <tr>
+              <th pSortableColumn="golfer_name">Name <p-sortIcon field="golfer_name" /></th>
+              <th pSortableColumn="num_par_3_holes">
+                Holes <p-sortIcon field="num_par_3_holes" />
+              </th>
+              <th pSortableColumn="avg_par_3_score">
+                Avg. Score <p-sortIcon field="avg_par_3_score" />
+              </th>
+              <th pSortableColumn="num_par_4_holes">
+                Holes <p-sortIcon field="num_par_4_holes" />
+              </th>
+              <th pSortableColumn="avg_par_4_score">
+                Avg. Score <p-sortIcon field="avg_par_4_score" />
+              </th>
+              <th pSortableColumn="num_par_5_holes">
+                Holes <p-sortIcon field="num_par_5_holes" />
+              </th>
+              <th pSortableColumn="avg_par_5_score">
+                Avg. Score <p-sortIcon field="avg_par_5_score" />
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-golfer>
+            <tr [pSelectableRow]="golfer">
+              <td class="text-gray-800">{{ golfer.golfer_name }}</td>
+              <td class="text-gray-800">{{ golfer.num_par_3_holes }}</td>
+              <td class="text-gray-800">
+                {{ golfer.avg_par_3_score | number: '1.2-2' }} ({{
+                  golfer.avg_par_3_score >= 3 ? '+' : ''
+                }}{{ golfer.avg_par_3_score - 3 | number: '1.2-2' }})
+              </td>
+              <td class="text-gray-800">{{ golfer.num_par_4_holes }}</td>
+              <td class="text-gray-800">
+                {{ golfer.avg_par_4_score | number: '1.2-2' }} ({{
+                  golfer.avg_par_4_score >= 4 ? '+' : ''
+                }}{{ golfer.avg_par_4_score - 4 | number: '1.2-2' }})
+              </td>
+              <td class="text-gray-800">{{ golfer.num_par_5_holes }}</td>
+              <td class="text-gray-800">
+                {{ golfer.avg_par_5_score | number: '1.2-2' }} ({{
+                  golfer.avg_par_5_score >= 5 ? '+' : ''
+                }}{{ golfer.avg_par_5_score - 5 | number: '1.2-2' }})
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 </p-card>
