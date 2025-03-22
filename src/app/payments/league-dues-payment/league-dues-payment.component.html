@@ -1,18 +1,18 @@
-<div class="content">
-  <h1 mat-dialog-title>Pay League Dues</h1>
+<div>
+  <span mat-dialog-title class="font-bold">Pay League Dues</span>
 
-  <p class="bold">
+  <p class="font-semibold px-4">
     Flight Dues: ${{ leagueDuesFlight }} USD | Tournament-Only Dues: ${{ leagueDuesTournamentOnly }}
     USD
   </p>
-  <p class="italic" style="margin-bottom: 16px">
+  <p class="italic px-4 mb-2">
     Note: "Flight Dues" grant eligibility for both flight and tournament play
   </p>
 
   <mat-spinner *ngIf="isLoadingLeagueDuesList || isLoadingLeagueDuesPaymentInfoList"></mat-spinner>
 
   <form
-    style="margin-top: 8px"
+    class="px-4 py-2"
     [formGroup]="golferPaymentsForm"
     (keydown.enter)="$event.preventDefault()"
     *ngIf="!isLoadingLeagueDuesList && !isLoadingLeagueDuesPaymentInfoList"
@@ -22,7 +22,7 @@
       *ngFor="let golferPayment of getGolferPaymentsArray().controls; let idx = index"
     >
       <div formGroupName="{{ idx }}">
-        <mat-form-field appearance="fill" class="long-field">
+        <mat-form-field appearance="fill" class="pr-4">
           <mat-label>Golfer</mat-label>
           <input
             type="text"
@@ -47,7 +47,7 @@
           >
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="short-field">
+        <mat-form-field appearance="fill" class="pr-4 w-40">
           <mat-label>Type</mat-label>
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let t of typeOptions" [value]="t">{{ t }}</mat-option>
@@ -61,6 +61,7 @@
         </mat-form-field>
 
         <button
+          class="pr-4"
           mat-raised-button
           color="warn"
           (click)="removeNewGolferPaymentForm(idx)"
@@ -80,13 +81,15 @@
     </div>
   </form>
 
-  <div>
+  <div class="font-semibold px-4 my-2">
     <h3>Total: ${{ getPaymentTotalAmount() | number: '1.2-2' }}</h3>
   </div>
 
-  <p class="italic bold" style="color: red; margin-bottom: 16px" *ngIf="!golferPaymentsForm.valid">
+  <p class="font-semibold text-red-600 px-4 mb-4" *ngIf="!golferPaymentsForm.valid">
     Complete form before selecting payment option!
   </p>
 
-  <div #paypal></div>
+  <div class="flex flex-col w-full px-4 py-2">
+    <div #paypal></div>
+  </div>
 </div>
