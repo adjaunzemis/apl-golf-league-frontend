@@ -15,7 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       delayedRetry(1000, 3),
       catchError((error: HttpErrorResponse) => {
-        const errorSummary = 'Unknown Error';
+        const errorSummary = 'Error';
         let errorMessage =
           'Uh oh... An unknown error occurred! :( Please try again later. If this error persists, contact the webmaster.';
         if (error.error.detail) {
