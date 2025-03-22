@@ -8,10 +8,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { NotificationService } from 'src/app/notifications/notification.service';
 import { PaymentsService } from '../payments.service';
 import {
   LeagueDuesPaymentInfo,
@@ -59,7 +59,7 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<LeagueDuesPaymentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: object,
     private formBuilder: UntypedFormBuilder,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
     private paymentsService: PaymentsService,
     private golfersService: GolfersService,
     private seasonsService: SeasonsService,
@@ -113,10 +113,11 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
       .Buttons({
         onClick: () => {
           if (!this.golferPaymentsForm.valid) {
-            this.snackBar.open('Must complete form before submitting payment!', undefined, {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            });
+            this.notificationService.showError(
+              'Payment Error',
+              'Must complete form before submitting payment!',
+              5000,
+            );
             return false;
           }
           return true;
@@ -139,13 +140,10 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
 
           // Check for completed status
           if (order.status !== 'COMPLETED') {
-            this.snackBar.open(
+            this.notificationService.showError(
+              'Payment Error',
               "ERROR: Payment was not 'COMPLETED' - please contact treasurer or webmaster!",
-              undefined,
-              {
-                duration: 10000,
-                panelClass: ['error-snackbar'],
-              },
+              10000,
             );
             return; // leave dialog box open
           }
@@ -215,19 +213,17 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
             };
 
             this.paymentsService.postLeagueDuesPaypalTransaction(transaction).subscribe(() => {
-              this.snackBar.open('Payment successful!', undefined, {
-                duration: 5000,
-                panelClass: ['success-snackbar'],
-              });
+              this.notificationService.showSuccess(
+                'Payment Success',
+                'Payment was successful!',
+                5000,
+              );
             });
           } catch (err) {
-            this.snackBar.open(
+            this.notificationService.showError(
+              'Payment Error',
               'ERROR: Payment was successful, but not recorded in our database - please contact treasurer or webmaster!',
-              undefined,
-              {
-                duration: 10000,
-                panelClass: ['error-snackbar'],
-              },
+              10000,
             );
             console.log(err);
           }
@@ -236,19 +232,13 @@ export class LeagueDuesPaymentComponent implements OnInit, OnDestroy {
           this.dialogRef.close(true); // true to indicate payment was successful
         },
         onCancel: () => {
-          this.snackBar.open('Payment cancelled!', undefined, {
-            duration: 5000,
-            panelClass: ['warning-snackbar'],
-          });
+          this.notificationService.showWarning('Payment Cancelled', 'Payment cancelled!', 5000);
         },
         onError: (err: any) => {
-          this.snackBar.open(
+          this.notificationService.showError(
+            'Payment Error',
             'Error processing PayPal payment - please contact treasurer or webmaster!',
-            undefined,
-            {
-              duration: 10000,
-              panelClass: ['error-snackbar'],
-            },
+            10000,
           );
           console.error(err);
         },
