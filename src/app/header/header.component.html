@@ -41,8 +41,9 @@
     </ng-template>
 
     <ng-template *ngIf="!maintenance" #end>
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center ml-4">
         <p-select
+          class="ring-1 ring-gray-300 text-center h-8 pl-2 py-1 mr-4"
           [options]="seasons"
           [(ngModel)]="selectedSeason"
           optionLabel="year"
