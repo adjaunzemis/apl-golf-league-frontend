@@ -15,7 +15,7 @@ export class LoginComponent {
   passwordControl = new UntypedFormControl('', [Validators.required]);
 
   private authService = inject(AuthService);
-  private notificationService = inject(NotificationService)
+  private notificationService = inject(NotificationService);
 
   isLoggedIn(): boolean {
     return !!this.authService.user.value;
@@ -41,9 +41,9 @@ export class LoginComponent {
         .login(this.usernameControl.value, this.passwordControl.value)
         .subscribe(() => {
           this.notificationService.showSuccess(
-            "Login Successful",
+            'Login Successful',
             `Successfully logged in as user '${this.getLoggedInUsername()}'!`,
-            5000
+            5000,
           );
 
           this.usernameControl.reset();
