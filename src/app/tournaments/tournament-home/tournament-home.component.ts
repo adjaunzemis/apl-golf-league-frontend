@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { TournamentsService } from '../tournaments.service';
+import { NotificationService } from 'src/app/notifications/notification.service';
 import { TournamentCreate, TournamentData } from '../../shared/tournament.model';
 import { RoundData } from '../../shared/round.model';
 import { TournamentTeamData } from '../../shared/team.model';
@@ -36,13 +36,11 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
 
   currentDate = new Date();
 
-  constructor(
-    private tournamentsService: TournamentsService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-  ) {}
+  private tournamentsService = inject(TournamentsService);
+  private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
+  private route = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe((user) => {
@@ -130,13 +128,10 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
           console.log(
             `[TournamentHomeComponent] Successfully updated tournament: ${result.name} (${result.year})`,
           );
-          this.snackBar.open(
+          this.notificationService.showSuccess(
+            'Tournament Updated',
             `Successfully updated tournament: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
+            5000,
           );
 
           this.tournamentsService.getTournament(this.tournament.id); // refresh tournament data
