@@ -20,7 +20,7 @@ import { Season } from 'src/app/shared/season.model';
 export class FlightsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  focusedSeason: Season;
+  private focusedSeason: Season;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -39,7 +39,6 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
       if (!result) {
         return;
       }
-
       this.focusedSeason = result;
       this.flightsService.getList(this.focusedSeason.year);
     });

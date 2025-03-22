@@ -6,9 +6,10 @@ import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { SeasonsService } from '../../seasons/seasons.service';
 import { TournamentInfo } from '../../shared/tournament.model';
 import { TournamentsService } from '../tournaments.service';
+import { SeasonsService } from '../../seasons/seasons.service';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-tournaments-dashboard',
@@ -19,7 +20,7 @@ import { TournamentsService } from '../tournaments.service';
 export class TournamentsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  private currentYear: number | undefined;
+  private focusedSeason: Season;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -38,15 +39,26 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       });
 
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-      this.tournamentsService.getTournamentsList(this.currentYear);
+    this.seasonsSub = this.seasonsService.focusedSeason.subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this.focusedSeason = result;
+      this.tournamentsService.getTournamentsList(this.focusedSeason.year);
     });
   }
 
   ngOnDestroy(): void {
     this.tournamentsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+  }
+
+  getName(tournament: TournamentInfo): string {
+    let name = tournament.name;
+    if (!this.focusedSeason.is_active) {
+      name += ` (${tournament.year})`;
+    }
+    return name;
   }
 
   getOrganizersEmailList(): string {
