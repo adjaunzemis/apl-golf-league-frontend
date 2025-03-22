@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -21,6 +20,7 @@ import { User } from '../shared/user.model';
 import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
 import { TournamentEntryFeesPaymentComponent } from '../payments/tournament-entry-fees-payment/tournament-entry-fees-payment.component';
 import { SeasonsService } from '../seasons/seasons.service';
+import { NotificationService } from '../notifications/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -68,12 +68,12 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
+    private notificationService: NotificationService,
     private flightsService: FlightsService,
     private tournamentsService: TournamentsService,
     private teamsService: TeamsService,
     private golfersService: GolfersService,
     private seasonsService: SeasonsService,
-    private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private route: ActivatedRoute,
   ) {}
@@ -378,10 +378,11 @@ export class SignupComponent implements OnInit, OnDestroy {
               console.log(
                 `[SignupComponent] Updated team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
-              this.snackBar.open(`Updated team '${team.name}'`, undefined, {
-                duration: 5000,
-                panelClass: ['success-snackbar'],
-              });
+              this.notificationService.showSuccess(
+                'Team Updated',
+                `Successfully updated team '${team.name}'`,
+                5000,
+              );
 
               if (this.selectedFlightOrTournament) {
                 if (this.selectedTabIdx === 0) {
@@ -408,10 +409,11 @@ export class SignupComponent implements OnInit, OnDestroy {
               console.log(
                 `[SignupComponent] Created team '${team.name}' (id=${team.id}) for ${flightTournamentStr} '${this.selectedFlightOrTournament?.name} (${this.selectedFlightOrTournament?.year})'`,
               );
-              this.snackBar.open(`Created team '${team.name}'`, undefined, {
-                duration: 5000,
-                panelClass: ['success-snackbar'],
-              });
+              this.notificationService.showSuccess(
+                'Created Team',
+                `Successfully created team '${team.name}'`,
+                5000,
+              );
 
               if (this.selectedFlightOrTournament) {
                 if (this.selectedTabIdx === 0) {
