@@ -13,8 +13,6 @@ import { TournamentScorecardCreateComponent } from './tournaments/tournament-sco
 import { CourseListComponent } from './courses/course-list/course-list.component';
 import { CourseCreateComponent } from './courses/course-create/course-create.component';
 import { GolferHomeComponent } from './golfers/golfer-home/golfer-home.component';
-import { FlightHistoryComponent } from './flights/flight-history/flight-history.component';
-import { TournamentHistoryComponent } from './tournaments/tournament-history/tournament-history.component';
 import { LoginComponent } from './auth/login/login.component';
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
 import { UserHomeComponent } from './auth/user-home/user-home.component';
@@ -37,7 +35,6 @@ const routes: Routes = environment.maintenance
       { path: 'signup', component: SignupComponent },
       { path: 'flight', component: FlightHomeComponent },
       { path: 'flight/team', component: TeamHomeComponent },
-      { path: 'flight/history', component: FlightHistoryComponent },
       { path: 'flight/match/scorecard', component: FlightMatchScorecardComponent },
       {
         path: 'flight/match/edit',
@@ -55,7 +52,6 @@ const routes: Routes = environment.maintenance
         canActivate: [AuthGuard],
       },
       { path: 'tournament', component: TournamentHomeComponent },
-      { path: 'tournament/history', component: TournamentHistoryComponent },
       {
         path: 'tournament/scores',
         component: TournamentScorecardCreateComponent,
