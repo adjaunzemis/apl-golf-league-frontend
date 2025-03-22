@@ -106,6 +106,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.activeSeason = result;
       this.flightsService.getList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
+
+      if (!this.selectedSeason) {
+        this.selectedSeason = this.activeSeason;
+      }
     });
 
     this.seasonsSub = this.seasonsService.getSeasons().subscribe((result) => {
