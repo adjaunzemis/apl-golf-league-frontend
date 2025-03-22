@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 
 import { AuthService } from '../auth/auth.service';
+import { NotificationService } from '../notifications/notification.service';
 import { FlightCreateComponent } from '../flights/flight-create/flight-create.component';
 import { FlightsService } from '../flights/flights.service';
 import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
@@ -49,16 +49,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   items: MenuItem[] | undefined;
 
-  constructor(
-    private authService: AuthService,
-    private golfersService: GolfersService,
-    private flightsService: FlightsService,
-    private seasonsService: SeasonsService,
-    private tournamentsService: TournamentsService,
-    private signupComponent: SignupComponent,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-  ) {}
+  private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
+  private golfersService = inject(GolfersService);
+  private flightsService = inject(FlightsService);
+  private seasonsService = inject(SeasonsService);
+  private tournamentsService = inject(TournamentsService);
+  private signupComponent = inject(SignupComponent);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     if (this.maintenance) {
@@ -289,10 +287,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (golferData !== null && golferData !== undefined) {
         const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
         if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
-          this.snackBar.open(`Golfer with name '${golferData.name}' already exists!`, undefined, {
-            duration: 5000,
-            panelClass: ['error-snackbar'],
-          });
+          this.notificationService.showError(
+            'New Golfer Error',
+            `Golfer with name '${golferData.name}' already exists!`,
+            5000,
+          );
           return;
         }
 
@@ -305,10 +304,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
           )
           .subscribe((result) => {
             console.log(`[HeaderComponent] Successfully added golfer: ${result.name}`);
-            this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            });
+            this.notificationService.showSuccess(
+              'Created Golfer',
+              `Successfully added golfer: ${result.name}`,
+              5000,
+            );
 
             this.golfersService.getAllGolfers(); // refresh golfer name options
           });
@@ -350,13 +350,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         const existingFlights = this.flights.filter((f) => f.year == flightData.year);
         const existingFlightNames = existingFlights.map((f) => f.name.toLowerCase());
         if (existingFlightNames.includes(flightData.name.toLowerCase())) {
-          this.snackBar.open(
+          this.notificationService.showError(
+            'New Flight Error',
             `Flight with name '${flightData.name}' and year '${flightData.year}' already exists!`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            },
+            5000,
           );
           // TODO: re-open dialog window to edit selections
           return;
@@ -367,13 +364,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
           console.log(
             `[HeaderComponent] Successfully created flight: ${result.name} (${result.year})`,
           );
-          this.snackBar.open(
+          this.notificationService.showSuccess(
+            'Created Flight',
             `Successfully created flight: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
+            5000,
           );
 
           this.flightsService.getList(this.activeSeason.year); // refresh flights list
@@ -421,13 +415,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         const existingTournaments = this.tournaments.filter((t) => t.year == tournamentData.year);
         const existingTournamentNames = existingTournaments.map((t) => t.name.toLowerCase());
         if (existingTournamentNames.includes(tournamentData.name.toLowerCase())) {
-          this.snackBar.open(
+          this.notificationService.showError(
+            'New Tournament Error',
             `Tournament with name '${tournamentData.name}' and year '${tournamentData.year}' already exists!`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            },
+            5000,
           );
           // TODO: re-open dialog window to edit selections
           return;
@@ -439,13 +430,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
           console.log(
             `[HeaderComponent] Successfully created tournament: ${result.name} (${result.year})`,
           );
-          this.snackBar.open(
+          this.notificationService.showSuccess(
+            'Created Tournament',
             `Successfully created tournament: ${result.name} (${result.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
+            5000,
           );
 
           this.tournamentsService.getTournamentsList(this.activeSeason.year); // refresh tournaments list

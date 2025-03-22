@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from '../auth.service';
+import { NotificationService } from 'src/app/notifications/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +14,8 @@ export class LoginComponent {
   usernameControl = new UntypedFormControl('', Validators.required);
   passwordControl = new UntypedFormControl('', [Validators.required]);
 
-  constructor(
-    private authService: AuthService,
-    private snackBar: MatSnackBar,
-  ) {}
+  private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
 
   isLoggedIn(): boolean {
     return !!this.authService.user.value;
@@ -42,13 +40,10 @@ export class LoginComponent {
       this.authService
         .login(this.usernameControl.value, this.passwordControl.value)
         .subscribe(() => {
-          this.snackBar.open(
+          this.notificationService.showSuccess(
+            'Login Successful',
             `Successfully logged in as user '${this.getLoggedInUsername()}'!`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
+            5000,
           );
 
           this.usernameControl.reset();

@@ -7,10 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { NotificationService } from '../notifications/notification.service';
 import { TeamCreate, TeamGolferCreate } from '../shared/team.model';
 import { DivisionData } from './../shared/division.model';
 import { Golfer, GolferAffiliation } from '../shared/golfer.model';
@@ -53,7 +53,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     },
     private formBuilder: UntypedFormBuilder,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private notificationService: NotificationService,
     private golfersService: GolfersService,
   ) {}
 
@@ -130,10 +130,11 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
       const golferMatches = this.golferOptions.filter((g) => g.name === golferName);
       if (golferMatches.length !== 1) {
-        this.snackBar.open(`Invalid golfer name: ${golferName}`, undefined, {
-          duration: 5000,
-          panelClass: ['error-snackbar'],
-        });
+        this.notificationService.showError(
+          'Invalid Golfer',
+          `Invalid golfer name: ${golferName}`,
+          5000,
+        );
         return;
       }
       const golfer = golferMatches[0];
@@ -225,10 +226,11 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       if (golferData !== null && golferData !== undefined) {
         const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
         if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
-          this.snackBar.open(`Golfer with name '${golferData.name}' already exists!`, undefined, {
-            duration: 5000,
-            panelClass: ['error-snackbar'],
-          });
+          this.notificationService.showError(
+            'Duplicate Golfer',
+            `Golfer with name '${golferData.name}' already exists!`,
+            5000,
+          );
           return;
         }
 
@@ -241,10 +243,11 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
           )
           .subscribe((result) => {
             console.log(`[SignupComponent] Successfully added golfer: ${result.name}`);
-            this.snackBar.open(`Successfully added golfer: ${result.name}`, undefined, {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            });
+            this.notificationService.showSuccess(
+              'Added Golfer',
+              `Successfully added golfer: ${result.name}`,
+              5000,
+            );
 
             this.golfersService.getAllGolfers(); // refresh golfer name options
           });

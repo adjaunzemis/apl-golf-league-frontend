@@ -9,6 +9,10 @@ body {
   @apply bg-gray-100;
 }
 
+.p-toast .p-toast-message {
+  @apply mb-2 p-2;
+}
+
 .p-button,
 .p-togglebutton {
   @apply bg-gray-50 ring-1 ring-gray-200 text-gray-800 text-sm py-2 px-4 mx-2 rounded-md shadow-md transition;

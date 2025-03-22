@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { AuthService } from './auth/auth.service';
 
@@ -11,7 +11,7 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'APL Golf League';
 
-  constructor(private authService: AuthService) {}
+  private authService = inject(AuthService);
 
   ngOnInit(): void {
     this.authService.autoLogin();

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../auth.service';
+import { NotificationService } from 'src/app/notifications/notification.service';
 import { User } from '../../shared/user.model';
 
 @Component({
@@ -25,10 +25,8 @@ export class UserManageComponent implements OnInit, OnDestroy {
     Validators.minLength(6),
   ]);
 
-  constructor(
-    private authService: AuthService,
-    private snackBar: MatSnackBar,
-  ) {}
+  private authService = inject(AuthService);
+  private notificationService = inject(NotificationService);
 
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe((user) => {
@@ -83,10 +81,11 @@ export class UserManageComponent implements OnInit, OnDestroy {
         )
         .subscribe(() => {
           console.log(`[UserManageComponent] Successfully changed password!`);
-          this.snackBar.open(`Successfully changed password! Login with new password.`, undefined, {
-            duration: 5000,
-            panelClass: ['success-snackbar'],
-          });
+          this.notificationService.showSuccess(
+            'Password Changed',
+            `Successfully changed password! Please login with new password.`,
+            5000,
+          );
           this.authService.logout();
         });
     }

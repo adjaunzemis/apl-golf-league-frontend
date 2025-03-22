@@ -22,7 +22,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
@@ -50,7 +49,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatNativeDateModule,
     MatMenuModule,
     MatTabsModule,
-    MatSnackBarModule,
     MatCheckboxModule,
   ],
   providers: [MatNativeDateModule],

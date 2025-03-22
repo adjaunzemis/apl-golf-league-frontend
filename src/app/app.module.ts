@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import Material from '@primeng/themes/material';
 
 import { AppComponent } from './app.component';
@@ -46,6 +48,7 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ToastModule,
     AppRoutingModule,
     AngularMaterialModule,
     CoursesModule,
@@ -92,6 +95,7 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
       },
       ripple: true,
     }),
+    MessageService,
   ],
 })
 export class AppModule {}
