@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { Season } from './../shared/season.model';
@@ -12,6 +12,8 @@ import { environment } from './../../environments/environment';
 export class SeasonsService {
   private seasons: Season[] | null = null;
   private activeSeason: Season | null = null;
+
+  focusedSeason = new BehaviorSubject<Season | null>(null);
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +27,7 @@ export class SeasonsService {
         console.log(`[SeasonsService] Fetched list of ${result.length} seasons`);
         this.seasons = result;
       }),
-    ); 
+    );
   }
 
   getActiveSeason(): Observable<Season> {
@@ -35,9 +37,18 @@ export class SeasonsService {
 
     return this.http.get<Season>(environment.apiUrl + 'seasons/active/').pipe(
       tap((result) => {
-        console.log(`[SeasonsService] Set active season: year=${result.year}`);
+        console.log(`[SeasonsService] Setting active season: year=${result.year}`);
         this.activeSeason = result;
+
+        if (!this.focusedSeason.value) {
+          this.setFocusedSeason(result);
+        }
       }),
     );
+  }
+
+  setFocusedSeason(season: Season): void {
+    console.log(`[SeasonsService] Setting focused season: year=${season.year}`);
+    this.focusedSeason.next(season);
   }
 }

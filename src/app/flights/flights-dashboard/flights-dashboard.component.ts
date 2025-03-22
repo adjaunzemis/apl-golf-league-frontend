@@ -9,6 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from '../../shared/flight.model';
 import { SeasonsService } from '../../seasons/seasons.service';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-flights-dashboard',
@@ -19,7 +20,7 @@ import { SeasonsService } from '../../seasons/seasons.service';
 export class FlightsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  private currentYear: number | undefined;
+  focusedSeason: Season;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -34,15 +35,27 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
 
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-      this.flightsService.getList(this.currentYear);
+    this.seasonsSub = this.seasonsService.focusedSeason.subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      this.focusedSeason = result;
+      this.flightsService.getList(this.focusedSeason.year);
     });
   }
 
   ngOnDestroy(): void {
     this.flightsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+  }
+
+  getName(flight: FlightInfo) {
+    let name = flight.name;
+    if (!this.focusedSeason.is_active) {
+      name += ` (${flight.year})`;
+    }
+    return name;
   }
 
   getSecretariesEmailList(): string {

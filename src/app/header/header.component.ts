@@ -19,6 +19,7 @@ import { TournamentInfo } from '../shared/tournament.model';
 import { environment } from 'src/environments/environment';
 import { SeasonsService } from '../seasons/seasons.service';
 import { Season } from '../shared/season.model';
+import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-header',
@@ -37,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   seasons: Season[];
   private seasonsSub: Subscription;
-  
+
   activeSeason: Season;
   private activeSeasonSub: Subscription;
 
@@ -273,6 +274,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.currentUser = null;
     this.updateMenuItems();
+  }
+
+  onSelectedYearChanged(event: SelectChangeEvent): void {
+    this.seasonsService.setFocusedSeason(event.value);
   }
 
   onPayDues(): void {

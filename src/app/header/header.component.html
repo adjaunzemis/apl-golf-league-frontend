@@ -1,4 +1,3 @@
-
 <p-card>
   <p-menubar [model]="items">
     <ng-template #start>
@@ -43,7 +42,13 @@
 
     <ng-template *ngIf="!maintenance" #end>
       <div class="flex flex-row">
-        <p-select [options]="seasons" [(ngModel)]="selectedSeason" optionLabel="year" placeholder="Season"/>
+        <p-select
+          [options]="seasons"
+          [(ngModel)]="selectedSeason"
+          optionLabel="year"
+          placeholder="Season"
+          (onChange)="onSelectedYearChanged($event)"
+        />
 
         <ng-container *ngIf="isAuthenticated; else loginRef">
           <!-- TODO: Add profile page here? Routerlink: /auth/user -->
@@ -60,8 +65,7 @@
             <span>Login</span>
           </a>
         </ng-template>
-          
       </div>
     </ng-template>
-  </p-menubar>  
+  </p-menubar>
 </p-card>
