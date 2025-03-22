@@ -9,6 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { OfficersService } from '../officers.service';
 import { Committee, Officer } from '../../shared/officer.model';
 import { SeasonsService } from '../../seasons/seasons.service';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-officers-dashboard',
@@ -19,7 +20,7 @@ import { SeasonsService } from '../../seasons/seasons.service';
 export class OfficersDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  private currentYear: number | undefined;
+  private focusedSeason: Season;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -34,15 +35,26 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
 
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-      this.officersService.getOfficersList(this.currentYear);
+    this.seasonsSub = this.seasonsService.focusedSeason.subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this.focusedSeason = result;
+      this.officersService.getOfficersList(this.focusedSeason.year);
     });
   }
 
   ngOnDestroy(): void {
     this.officersSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+  }
+
+  getTitle(): string {
+    let title = 'Officers';
+    if (!this.focusedSeason.is_active) {
+      title += ` (${this.focusedSeason.year})`;
+    }
+    return title;
   }
 
   getLeagueOfficersEmailList(): string {
