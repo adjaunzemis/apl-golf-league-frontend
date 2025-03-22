@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   UntypedFormArray,
   UntypedFormBuilder,
@@ -7,9 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
+import { NotificationService } from 'src/app/notifications/notification.service';
 import { CoursesService } from '../courses.service';
 import { Course, CourseData } from 'src/app/shared/course.model';
 import { TeeData } from 'src/app/shared/tee.model';
@@ -34,13 +34,11 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
   readonly TEE_GENDER_OPTIONS = ["Men's", "Ladies'"];
 
-  constructor(
-    private coursesService: CoursesService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: UntypedFormBuilder,
-    private snackBar: MatSnackBar,
-  ) {}
+  private coursesService = inject(CoursesService);
+  private notificationService = inject(NotificationService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private formBuilder = inject(UntypedFormBuilder);
 
   ngOnInit(): void {
     this.coursesSub = this.coursesService
@@ -213,13 +211,10 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
       if (this.course === undefined) {
         // Create new course
         this.coursesService.createCourse(courseData).subscribe((courseResponse) => {
-          this.snackBar.open(
+          this.notificationService.showSuccess(
+            'Course Created',
             `Successfully created course: ${courseResponse.name} (${courseResponse.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
+            5000,
           );
           this.router.navigate(['courses/']);
         });
@@ -256,13 +251,10 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
 
         // Update existing course
         this.coursesService.updateCourse(courseData).subscribe((courseResponse) => {
-          this.snackBar.open(
+          this.notificationService.showSuccess(
+            'Course Updated',
             `Successfully updated course: ${courseResponse.name} (${courseResponse.year})`,
-            undefined,
-            {
-              duration: 5000,
-              panelClass: ['success-snackbar'],
-            },
+            5000,
           );
           this.router.navigate(['courses/']);
         });
