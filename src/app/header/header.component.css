@@ -17,11 +17,3 @@ p-image {
 .p-menubar-item-link span:last-of-type {
   @apply mr-2;
 }
-
-.season-active {
-  @apply bg-green-600 text-white;
-}
-
-.season-complete {
-  @apply bg-blue-500 text-white;
-}

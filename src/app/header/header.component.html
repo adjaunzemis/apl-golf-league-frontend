@@ -54,9 +54,9 @@
             <div class="flex items-center gap-2" *ngIf="selectedOption">
               <span>{{ selectedOption.year }}</span>
               <p-tag
-                class="text-sm font-normal px-1"
-                [ngClass]="selectedOption.is_active ? 'season-active' : 'season-complete'"
-                value="{{ selectedOption.is_active ? 'Active' : 'Complete' }}"
+                class="bg-blue-500 text-white text-sm font-normal px-1"
+                value="Active"
+                *ngIf="selectedOption.is_active"
               />
             </div>
           </ng-template>
@@ -64,9 +64,9 @@
             <div class="flex items-center gap-2">
               <span>{{ option.year }}</span>
               <p-tag
-                class="text-sm font-normal px-1"
-                [ngClass]="option.is_active ? 'season-active' : 'season-complete'"
-                value="{{ option.is_active ? 'Active' : 'Complete' }}"
+                class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
+                value="Active"
+                *ngIf="option.is_active"
               />
             </div>
           </ng-template>
