@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -46,6 +48,8 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
   ],
   bootstrap: [AppComponent],
   imports: [
+    CommonModule,
+    FormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     ToastModule,

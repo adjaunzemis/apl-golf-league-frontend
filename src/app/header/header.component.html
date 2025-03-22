@@ -42,7 +42,9 @@
     </ng-template>
 
     <ng-template *ngIf="!maintenance" #end>
-      <div class="ml-5">
+      <div class="flex flex-row ml-5">
+        <p-select [options]="seasonOptions" [(ngModel)]="selectedSeason" optionLabel="year" placeholder="Select a season"/>
+
         <ng-container *ngIf="isAuthenticated; else loginRef">
           <!-- TODO: Add profile page here? Routerlink: /auth/user -->
 

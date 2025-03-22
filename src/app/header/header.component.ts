@@ -38,6 +38,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   activeSeason: Season;
   private seasonsSub: Subscription;
 
+  seasonOptions: Season[] = [{year: 2025}, {year: 2024}, {year: 2023}];
+  selectedSeason = {year: 2024};
+
   golferNameOptions: string[] = [];
   private golfersSub: Subscription;
 
