@@ -13,12 +13,19 @@ import { NotificationService } from 'src/app/notifications/notification.service'
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule, FloatLabel],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CardModule,
+    ButtonModule,
+    InputTextModule,
+    FloatLabel,
+  ],
 })
 export class LoginComponent {
   loginFormGroup = new FormGroup({
     usernameControl: new FormControl('', Validators.required),
-    passwordControl:  new FormControl('', Validators.required),
+    passwordControl: new FormControl('', Validators.required),
   });
 
   private authService = inject(AuthService);

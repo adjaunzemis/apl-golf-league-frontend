@@ -66,10 +66,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.updateMenuItems();
 
     this.userSub = this.authService.user.subscribe((user) => {
+      console.log(`HEADER: user=${user} | ${!user}`);
       this.isAuthenticated = !user ? false : true;
-      if (this.isAuthenticated) {
-        this.currentUser = user;
-      }
+      this.currentUser = user;
       this.updateMenuItems();
     });
 

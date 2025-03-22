@@ -100,11 +100,7 @@ export class AuthService {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
-    this.notificationService.showInfo(
-      'Logout',
-      `Successfully logged out!`,
-      5000,
-    );
+    this.notificationService.showInfo('Logout', `Successfully logged out!`, 5000);
   }
 
   autoLogout(expirationDuration: number): void {

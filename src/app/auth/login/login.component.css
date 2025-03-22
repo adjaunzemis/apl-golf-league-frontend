@@ -1,5 +1,5 @@
 @import 'tailwindcss';
 
 input {
-    @apply py-2;
+  @apply py-2;
 }
