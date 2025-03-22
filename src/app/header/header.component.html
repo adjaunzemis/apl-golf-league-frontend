@@ -49,7 +49,28 @@
           optionLabel="year"
           placeholder="Season"
           (onChange)="onSelectedYearChanged($event)"
-        />
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2" *ngIf="selectedOption">
+              <span>{{ selectedOption.year }}</span>
+              <p-tag
+                class="text-sm font-normal px-1"
+                [ngClass]="selectedOption.is_active ? 'season-active' : 'season-complete'"
+                value="{{ selectedOption.is_active ? 'Active' : 'Complete' }}"
+              />
+            </div>
+          </ng-template>
+          <ng-template let-option #item>
+            <div class="flex items-center gap-2">
+              <span>{{ option.year }}</span>
+              <p-tag
+                class="text-sm font-normal px-1"
+                [ngClass]="option.is_active ? 'season-active' : 'season-complete'"
+                value="{{ option.is_active ? 'Active' : 'Complete' }}"
+              />
+            </div>
+          </ng-template>
+        </p-select>
 
         <ng-container *ngIf="isAuthenticated; else loginRef">
           <!-- TODO: Add profile page here? Routerlink: /auth/user -->

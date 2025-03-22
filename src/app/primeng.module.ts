@@ -9,6 +9,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
 import { DrawerModule } from 'primeng/drawer';
 import { SelectModule } from 'primeng/select';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   exports: [
@@ -22,6 +23,7 @@ import { SelectModule } from 'primeng/select';
     BadgeModule,
     DrawerModule,
     SelectModule,
+    TagModule,
   ],
 })
 export class PrimeNGModule {}
