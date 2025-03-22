@@ -35,11 +35,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   currentUser: User | null = null;
 
-  activeSeason: Season;
+  seasons: Season[];
   private seasonsSub: Subscription;
+  
+  activeSeason: Season;
+  private activeSeasonSub: Subscription;
 
-  seasonOptions: Season[] = [{year: 2025}, {year: 2024}, {year: 2023}];
-  selectedSeason = {year: 2024};
+  selectedSeason: Season;
 
   golferNameOptions: string[] = [];
   private golfersSub: Subscription;
@@ -100,11 +102,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.golfersService.getAllGolfers();
 
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+    this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[HeaderComponent] Received active season: year=${result.year}`);
       this.activeSeason = result;
       this.flightsService.getList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
+    });
+
+    this.seasonsSub = this.seasonsService.getSeasons().subscribe((result) => {
+      console.log(`[HeaderComponent] Received list of ${result.length} seasons`);
+      this.seasons = result;
     });
   }
 
@@ -113,6 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
     this.flightsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+    this.activeSeasonSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
   }
 
