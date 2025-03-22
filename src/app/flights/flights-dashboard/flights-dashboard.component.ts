@@ -20,7 +20,7 @@ import { Season } from 'src/app/shared/season.model';
 export class FlightsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  private focusedSeason: Season;
+  private focusedSeason: Season | undefined;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -51,7 +51,7 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
 
   getName(flight: FlightInfo) {
     let name = flight.name;
-    if (!this.focusedSeason.is_active) {
+    if (this.focusedSeason && !this.focusedSeason.is_active) {
       name += ` (${flight.year})`;
     }
     return name;

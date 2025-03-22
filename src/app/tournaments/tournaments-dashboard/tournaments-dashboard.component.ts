@@ -20,7 +20,7 @@ import { Season } from 'src/app/shared/season.model';
 export class TournamentsDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  private focusedSeason: Season;
+  private focusedSeason: Season | undefined;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -55,7 +55,7 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy {
 
   getName(tournament: TournamentInfo): string {
     let name = tournament.name;
-    if (!this.focusedSeason.is_active) {
+    if (this.focusedSeason && !this.focusedSeason.is_active) {
       name += ` (${tournament.year})`;
     }
     return name;

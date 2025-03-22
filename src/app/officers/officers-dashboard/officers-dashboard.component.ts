@@ -20,7 +20,7 @@ import { Season } from 'src/app/shared/season.model';
 export class OfficersDashboardComponent implements OnInit, OnDestroy {
   isLoading = true;
 
-  private focusedSeason: Season;
+  private focusedSeason: Season | undefined;
   private seasonsSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
@@ -51,7 +51,7 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
 
   getTitle(): string {
     let title = 'Officers';
-    if (!this.focusedSeason.is_active) {
+    if (this.focusedSeason && !this.focusedSeason.is_active) {
       title += ` (${this.focusedSeason.year})`;
     }
     return title;
