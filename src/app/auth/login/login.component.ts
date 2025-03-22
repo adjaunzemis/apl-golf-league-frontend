@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormGroup, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabel } from 'primeng/floatlabel';
 
 import { AuthService } from '../auth.service';
 import { NotificationService } from 'src/app/notifications/notification.service';
@@ -8,11 +13,20 @@ import { NotificationService } from 'src/app/notifications/notification.service'
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CardModule,
+    ButtonModule,
+    InputTextModule,
+    FloatLabel,
+  ],
 })
 export class LoginComponent {
-  usernameControl = new UntypedFormControl('', Validators.required);
-  passwordControl = new UntypedFormControl('', [Validators.required]);
+  loginFormGroup = new FormGroup({
+    usernameControl: new FormControl('', Validators.required),
+    passwordControl: new FormControl('', Validators.required),
+  });
 
   private authService = inject(AuthService);
   private notificationService = inject(NotificationService);
@@ -36,9 +50,9 @@ export class LoginComponent {
   }
 
   onLogin(): void {
-    if (this.usernameControl.valid && this.passwordControl.valid) {
+    if (this.loginFormGroup.value.usernameControl && this.loginFormGroup.value.passwordControl) {
       this.authService
-        .login(this.usernameControl.value, this.passwordControl.value)
+        .login(this.loginFormGroup.value.usernameControl, this.loginFormGroup.value.passwordControl)
         .subscribe(() => {
           this.notificationService.showSuccess(
             'Login Successful',
@@ -46,8 +60,7 @@ export class LoginComponent {
             5000,
           );
 
-          this.usernameControl.reset();
-          this.passwordControl.reset();
+          this.loginFormGroup.reset();
         });
     }
   }

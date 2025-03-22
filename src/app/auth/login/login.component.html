@@ -1,50 +1,53 @@
-<div class="content">
-  <h1>Login</h1>
-
-  <p class="italic">
-    Note: Currently only enabled for flight and tournament secretaries for entering scores
-  </p>
-
-  <div class="content" *ngIf="!isLoggedIn(); else loggedIn">
-    <mat-form-field appearance="fill">
-      <mat-label>Username</mat-label>
-      <input
-        type="text"
-        matInput
-        required
-        [formControl]="usernameControl"
-        (keydown.enter)="onLogin()"
-      />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input
-        type="password"
-        matInput
-        required
-        [formControl]="passwordControl"
-        (keydown.enter)="onLogin()"
-      />
-    </mat-form-field>
-
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="!usernameControl.valid || !passwordControl.valid"
-      (click)="onLogin()"
-    >
-      Login
-    </button>
-  </div>
-
-  <ng-template #loggedIn>
-    <div class="content">
-      <p>Currently logged in as '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</p>
+<div class="flex flex-0 justify-center w-full py-4">
+  <p-card>
+    <div class="flex flex-1 flex-col px-4 pt-4">
+      <span class="text-2xl font-semibold">Login</span>
+      <span class="italic pt-2">Only enabled for flight and tournament secretaries</span>
     </div>
 
-    <button mat-raised-button color="accent" [disabled]="!isLoggedIn()" (click)="onLogout()">
-      Logout
-    </button>
-  </ng-template>
+    <div
+      class="flex flex-col flex-2 w-full items-center p-4"
+      [formGroup]="loginFormGroup"
+      *ngIf="!isLoggedIn(); else loggedIn"
+    >
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="username"
+          formControlName="usernameControl"
+          autocomplete="off"
+          (keydown.enter)="onLogin()"
+        />
+        <label for="username">Username</label>
+      </p-floatlabel>
+
+      <div class="py-4">
+        <p-floatlabel variant="on">
+          <input
+            type="password"
+            pInputText
+            id="password"
+            formControlName="passwordControl"
+            autocomplete="off"
+            (keydown.enter)="onLogin()"
+          />
+          <label for="password">Password</label>
+        </p-floatlabel>
+      </div>
+
+      <p-button class="font-semibold" (click)="onLogin()">Login</p-button>
+    </div>
+
+    <ng-template #loggedIn>
+      <div class="flex flex-col flex-2 w-full items-center p-4">
+        <span class="font-semibold"
+          >Currently logged in as '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</span
+        >
+
+        <p-button class="font-semibold pt-4" [disabled]="!isLoggedIn()" (click)="onLogout()">
+          Logout
+        </p-button>
+      </div>
+    </ng-template>
+  </p-card>
 </div>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -6,6 +6,7 @@ import { tap, take, exhaustMap } from 'rxjs/operators';
 
 import { environment } from './../../environments/environment';
 import { User, UserInfo } from '../shared/user.model';
+import { NotificationService } from '../notifications/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,9 @@ export class AuthService {
 
   user = new BehaviorSubject<User | null>(null);
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
+  private notificationService = inject(NotificationService);
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   login(username: string, password: string) {
     const body = new HttpParams()
@@ -100,6 +100,7 @@ export class AuthService {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
+    this.notificationService.showInfo('Logout', `Successfully logged out!`, 5000);
   }
 
   autoLogout(expirationDuration: number): void {
