@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, signal, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { OfficersService } from '../officers.service';
 import { Committee, Officer } from '../../shared/officer.model';
-import { SeasonsService } from '../../seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
 
 @Component({
@@ -17,12 +16,10 @@ import { Season } from 'src/app/shared/season.model';
   styleUrls: ['./officers-dashboard.component.css'],
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
 })
-export class OfficersDashboardComponent implements OnInit, OnDestroy {
+export class OfficersDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;
 
-  private focusedSeason: Season | undefined;
-  private seasonsSub: Subscription;
-  private seasonsService = inject(SeasonsService);
+  @Input() season!: Season;
 
   officers = signal<Officer[]>([]);
   private officersSub: Subscription;
@@ -34,25 +31,22 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
       this.officers.set([...result]);
       this.isLoading = false;
     });
-
-    this.seasonsSub = this.seasonsService.focusedSeason.subscribe((result) => {
-      if (!result) {
-        return;
-      }
-      this.focusedSeason = result;
-      this.officersService.getOfficersList(this.focusedSeason.year);
-    });
   }
 
   ngOnDestroy(): void {
     this.officersSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
+  }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['season'] && this.season) {
+      this.officersService.getOfficersList(this.season.year);
+    }
   }
 
   getTitle(): string {
     let title = 'Officers';
-    if (this.focusedSeason && !this.focusedSeason.is_active) {
-      title += ` (${this.focusedSeason.year})`;
+    if (this.season && !this.season.is_active) {
+      title += ` (${this.season.year})`;
     }
     return title;
   }
