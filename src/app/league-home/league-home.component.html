@@ -12,6 +12,7 @@
           [(ngModel)]="selectedSeason"
           optionLabel="year"
           placeholder="Season"
+          (onChange)="updateUrl()"
         >
           <ng-template #selectedItem let-selectedOption>
             <div class="flex items-center gap-2" *ngIf="selectedOption">

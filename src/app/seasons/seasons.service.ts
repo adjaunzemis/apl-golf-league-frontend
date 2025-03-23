@@ -28,6 +28,10 @@ export class SeasonsService {
     );
   }
 
+  getSeason(year: number): Observable<Season> {
+    return this.http.get<Season>(environment.apiUrl + `seasons/${year}`);
+  }
+
   getActiveSeason(): Observable<Season> {
     if (this.activeSeason) {
       return of(this.activeSeason);
