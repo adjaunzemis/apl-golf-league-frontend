@@ -19,7 +19,6 @@ import { TournamentInfo } from '../shared/tournament.model';
 import { environment } from 'src/environments/environment';
 import { SeasonsService } from '../seasons/seasons.service';
 import { Season } from '../shared/season.model';
-import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-header',
@@ -36,13 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   currentUser: User | null = null;
 
-  seasons: Season[];
-  private seasonsSub: Subscription;
-
   activeSeason: Season;
   private activeSeasonSub: Subscription;
-
-  selectedSeason: Season;
 
   golferNameOptions: string[] = [];
   private golfersSub: Subscription;
@@ -107,15 +101,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.activeSeason = result;
       this.flightsService.getList(this.activeSeason.year);
       this.tournamentsService.getTournamentsList(this.activeSeason.year);
-
-      if (!this.selectedSeason) {
-        this.selectedSeason = this.activeSeason;
-      }
-    });
-
-    this.seasonsSub = this.seasonsService.getSeasons().subscribe((result) => {
-      console.log(`[HeaderComponent] Received list of ${result.length} seasons`);
-      this.seasons = result;
     });
   }
 
@@ -123,7 +108,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
     this.golfersSub.unsubscribe();
     this.flightsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
   }
@@ -274,10 +258,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.currentUser = null;
     this.updateMenuItems();
-  }
-
-  onSelectedYearChanged(event: SelectChangeEvent): void {
-    this.seasonsService.setFocusedSeason(event.value);
   }
 
   onPayDues(): void {
