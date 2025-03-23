@@ -12,7 +12,6 @@
           [(ngModel)]="selectedSeason"
           optionLabel="year"
           placeholder="Season"
-          (onChange)="onSelectedYearChanged($event)"
         >
           <ng-template #selectedItem let-selectedOption>
             <div class="flex items-center gap-2" *ngIf="selectedOption">
@@ -44,8 +43,14 @@
 
   <!-- Row 2 -->
   <div class="hidden md:block md:col-span-1 xl:col-span-2"></div>
-  <app-flights-dashboard class="col-span-12 md:col-span-5 xl:col-span-4" [season]="selectedSeason"/>
-  <app-tournaments-dashboard class="col-span-12 md:col-span-5 xl:col-span-4" [season]="selectedSeason"/>
+  <app-flights-dashboard
+    class="col-span-12 md:col-span-5 xl:col-span-4"
+    [season]="selectedSeason"
+  />
+  <app-tournaments-dashboard
+    class="col-span-12 md:col-span-5 xl:col-span-4"
+    [season]="selectedSeason"
+  />
   <div class="hidden md:block md:col-span-1 xl:col-span-2"></div>
 
   <!-- Row 3 -->
@@ -55,6 +60,6 @@
 
   <!-- Row 4 -->
   <div class="col-span-3"></div>
-  <app-officers-dashboard class="col-span-6" [season]="selectedSeason"/>
+  <app-officers-dashboard class="col-span-6" [season]="selectedSeason" />
   <div class="col-span-3"></div>
 </div>

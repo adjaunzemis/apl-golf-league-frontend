@@ -1,4 +1,13 @@
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, signal, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -36,7 +45,7 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy, OnChanges 
   ngOnDestroy(): void {
     this.officersSub.unsubscribe();
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['season'] && this.season) {
       this.officersService.getOfficersList(this.season.year);

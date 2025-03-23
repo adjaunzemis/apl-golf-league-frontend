@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
-import { SelectChangeEvent, SelectModule } from 'primeng/select';
+import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 
 import { FlightsDashboardComponent } from '../flights/flights-dashboard/flights-dashboard.component';
@@ -54,9 +54,5 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.seasonsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
-  }
-
-  onSelectedYearChanged(event: SelectChangeEvent): void {
-    this.seasonsService.setFocusedSeason(event.value);
   }
 }
