@@ -50,7 +50,7 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     });
 
     this.route.queryParams.subscribe((params) => {
-      if (!params['year'] && !this.selectedSeason) {
+      if (!params['year']) {
         this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
           if (!this.selectedSeason) {
             this.selectedSeason = result;
