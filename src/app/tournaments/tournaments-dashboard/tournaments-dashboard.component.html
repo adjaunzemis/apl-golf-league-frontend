@@ -48,7 +48,7 @@
                     {{ item.course }}
                   </div>
                   <div class="hidden lg:block text-sm font-medium text-gray-600">
-                    {{ item.date | date: 'mediumDate' }}
+                    {{ item.date | date: 'mediumDate' : 'ET' }}
                     {{ item.date | date: 'shortTime' : 'ET' }}
                   </div>
                 </div>
