@@ -1,4 +1,13 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -6,9 +15,9 @@ import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { SeasonsService } from '../../seasons/seasons.service';
 import { TournamentInfo } from '../../shared/tournament.model';
 import { TournamentsService } from '../tournaments.service';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-tournaments-dashboard',
@@ -16,12 +25,10 @@ import { TournamentsService } from '../tournaments.service';
   styleUrls: ['./tournaments-dashboard.component.css'],
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
 })
-export class TournamentsDashboardComponent implements OnInit, OnDestroy {
+export class TournamentsDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;
 
-  private currentYear: number | undefined;
-  private seasonsSub: Subscription;
-  private seasonsService = inject(SeasonsService);
+  @Input() season!: Season;
 
   tournaments = signal<TournamentInfo[]>([]);
   private tournamentsSub: Subscription;
@@ -37,16 +44,25 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy {
         this.tournaments.set([...result.tournaments]);
         this.isLoading = false;
       });
-
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-      this.tournamentsService.getTournamentsList(this.currentYear);
-    });
   }
 
   ngOnDestroy(): void {
     this.tournamentsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['season'] && this.season) {
+      this.isLoading = true;
+      this.tournamentsService.getTournamentsList(this.season.year);
+    }
+  }
+
+  getName(tournament: TournamentInfo): string {
+    let name = tournament.name;
+    if (!this.season.is_active) {
+      name += ` (${tournament.year})`;
+    }
+    return name;
   }
 
   getOrganizersEmailList(): string {

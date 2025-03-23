@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
 
   activeSeason: Season;
-  private seasonsSub: Subscription;
+  private activeSeasonSub: Subscription;
 
   golferNameOptions: string[] = [];
   private golfersSub: Subscription;
@@ -66,7 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.updateMenuItems();
 
     this.userSub = this.authService.user.subscribe((user) => {
-      console.log(`HEADER: user=${user} | ${!user}`);
       this.isAuthenticated = !user ? false : true;
       this.currentUser = user;
       this.updateMenuItems();
@@ -97,7 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.golfersService.getAllGolfers();
 
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
+    this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[HeaderComponent] Received active season: year=${result.year}`);
       this.activeSeason = result;
       this.flightsService.getList(this.activeSeason.year);
@@ -109,7 +108,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
     this.golfersSub.unsubscribe();
     this.flightsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
+    this.activeSeasonSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
   }
 

@@ -24,7 +24,7 @@ body {
 }
 
 .p-menubar {
-  @apply bg-gray-50 ring-1 ring-gray-200 text-black;
+  /* @apply bg-gray-50 ring-1 ring-gray-200 text-black; */
 }
 
 .p-inputtext {
@@ -50,74 +50,6 @@ body {
 .p-paginator-page-selected {
   @apply text-blue-600 font-semibold;
 }
-
-/* 
-.content {
-  display: flex;
-  margin: 16px auto 32px;
-  padding: 0 16px;
-  max-width: 960px;
-  flex-direction: column;
-  align-items: center;
-}
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 16px;
-}
-
-.card {
-  border-radius: 4px;
-  border: 1px solid #eee;
-  color: #252525;
-  background-color: #fafafa;
-  height: 40px;
-  width: 400px;
-  margin: 0 8px 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.2s ease-in-out;
-  line-height: 24px;
-}
-
-.card img {
-  margin-right: 16px;
-}
-
-.card.selected {
-  background-color: #b8cefd8c;
-}
-
-.card.card-small {
-  height: 16px;
-  width: 200px;
-  flex-direction: column;
-}
-
-.card.announcements-card {
-  background-color: #e2c750;
-  color: black;
-  font-weight: 600;
-  border: none;
-  width: auto;
-  height: auto;
-  min-width: 30%;
-  position: relative;
-  padding: 10px;
-  margin-bottom: 16px;
-}
-
-.card.selectable:hover {
-  cursor: pointer;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-  color: #125699;
-} */
 
 a {
   color: #252525;

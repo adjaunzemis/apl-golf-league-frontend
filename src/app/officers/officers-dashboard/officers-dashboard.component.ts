@@ -1,4 +1,13 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,7 +17,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { OfficersService } from '../officers.service';
 import { Committee, Officer } from '../../shared/officer.model';
-import { SeasonsService } from '../../seasons/seasons.service';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-officers-dashboard',
@@ -16,12 +25,10 @@ import { SeasonsService } from '../../seasons/seasons.service';
   styleUrls: ['./officers-dashboard.component.css'],
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
 })
-export class OfficersDashboardComponent implements OnInit, OnDestroy {
+export class OfficersDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;
 
-  private currentYear: number | undefined;
-  private seasonsSub: Subscription;
-  private seasonsService = inject(SeasonsService);
+  @Input() season!: Season;
 
   officers = signal<Officer[]>([]);
   private officersSub: Subscription;
@@ -33,16 +40,25 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy {
       this.officers.set([...result]);
       this.isLoading = false;
     });
-
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-      this.officersService.getOfficersList(this.currentYear);
-    });
   }
 
   ngOnDestroy(): void {
     this.officersSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['season'] && this.season) {
+      this.isLoading = true;
+      this.officersService.getOfficersList(this.season.year);
+    }
+  }
+
+  getTitle(): string {
+    let title = 'Officers';
+    if (this.season && !this.season.is_active) {
+      title += ` (${this.season.year})`;
+    }
+    return title;
   }
 
   getLeagueOfficersEmailList(): string {

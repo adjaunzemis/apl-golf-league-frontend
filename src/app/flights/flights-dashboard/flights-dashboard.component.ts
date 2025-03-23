@@ -1,4 +1,13 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,7 +17,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from '../../shared/flight.model';
-import { SeasonsService } from '../../seasons/seasons.service';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-flights-dashboard',
@@ -16,12 +25,10 @@ import { SeasonsService } from '../../seasons/seasons.service';
   styleUrls: ['./flights-dashboard.component.css'],
   imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
 })
-export class FlightsDashboardComponent implements OnInit, OnDestroy {
+export class FlightsDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;
 
-  private currentYear: number | undefined;
-  private seasonsSub: Subscription;
-  private seasonsService = inject(SeasonsService);
+  @Input() season!: Season;
 
   flights = signal<FlightInfo[]>([]);
   private flightsSub: Subscription;
@@ -33,16 +40,25 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy {
       this.flights.set([...result]);
       this.isLoading = false;
     });
-
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.currentYear = result.year;
-      this.flightsService.getList(this.currentYear);
-    });
   }
 
   ngOnDestroy(): void {
     this.flightsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['season'] && this.season) {
+      this.isLoading = true;
+      this.flightsService.getList(this.season.year);
+    }
+  }
+
+  getName(flight: FlightInfo) {
+    let name = flight.name;
+    if (!this.season.is_active) {
+      name += ` (${flight.year})`;
+    }
+    return name;
   }
 
   getSecretariesEmailList(): string {
