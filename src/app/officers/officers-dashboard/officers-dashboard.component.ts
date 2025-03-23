@@ -48,6 +48,7 @@ export class OfficersDashboardComponent implements OnInit, OnDestroy, OnChanges 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['season'] && this.season) {
+      this.isLoading = true;
       this.officersService.getOfficersList(this.season.year);
     }
   }

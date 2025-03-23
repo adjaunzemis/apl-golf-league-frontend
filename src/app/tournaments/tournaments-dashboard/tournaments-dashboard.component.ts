@@ -52,6 +52,7 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy, OnChang
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['season'] && this.season) {
+      this.isLoading = true;
       this.tournamentsService.getTournamentsList(this.season.year);
     }
   }

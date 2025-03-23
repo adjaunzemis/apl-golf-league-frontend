@@ -48,6 +48,7 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['season'] && this.season) {
+      this.isLoading = true;
       this.flightsService.getList(this.season.year);
     }
   }
