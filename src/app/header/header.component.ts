@@ -137,7 +137,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         label: 'Sign-Ups',
         icon: 'pi pi-clipboard',
         visible: true,
-        route: '/signup',
+        items: [
+          {
+            label: 'Flights',
+            icon: 'pi pi-venus',
+            visible: true,
+            route: '/flight/signup',
+          },
+          {
+            label: 'Tournaments',
+            icon: 'pi pi-trophy',
+            visible: true,
+            route: '/tournament/signup',
+          },
+        ],
       },
       {
         label: 'Payments',
