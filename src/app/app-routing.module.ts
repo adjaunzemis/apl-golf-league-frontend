@@ -25,6 +25,8 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { FlightSignupComponent } from './flights/flight-signup/flight-signup.component';
 import { TournamentSignupComponent } from './tournaments/tournament-signup/tournament-signup.component';
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
+import { UnderConstructionComponent } from './maintenance/under-construction/under-construction.component';
+import { UnderConstructionGuard } from './maintenance/under-construction/under-construction.guard';
 
 const routes: Routes = environment.maintenance
   ? [
@@ -34,10 +36,15 @@ const routes: Routes = environment.maintenance
   : [
       { path: '', component: LeagueHomeComponent },
       // { path: 'signup', component: SignupComponent },
+      { path: 'under-construction', component: UnderConstructionComponent },
       { path: 'flight', component: FlightHomeComponent },
       { path: 'flight/signup', component: FlightSignupComponent },
-      { path: 'flight/team', component: TeamHomeComponent },
-      { path: 'flight/match/scorecard', component: FlightMatchScorecardComponent },
+      { path: 'flight/team', component: TeamHomeComponent, canActivate: [UnderConstructionGuard] },
+      {
+        path: 'flight/match/scorecard',
+        component: FlightMatchScorecardComponent,
+        canActivate: [UnderConstructionGuard],
+      },
       {
         path: 'flight/match/edit',
         component: FlightMatchCreateComponent,
@@ -60,14 +67,14 @@ const routes: Routes = environment.maintenance
         component: TournamentScorecardCreateComponent,
         canActivate: [AuthGuard],
       },
-      { path: 'golfer', component: GolferHomeComponent },
+      { path: 'golfer', component: GolferHomeComponent, canActivate: [UnderConstructionGuard] },
       { path: 'golfer-search', component: GolferSearchComponent },
       {
         path: 'golfer/qualifying',
         component: AddQualifyingScoreComponent,
         canActivate: [AuthGuard],
       },
-      { path: 'courses', component: CourseListComponent },
+      { path: 'courses', component: CourseListComponent, canActivate: [UnderConstructionGuard] },
       { path: 'courses/edit', component: CourseCreateComponent, canActivate: [AuthGuard] },
       { path: 'auth/login', component: LoginComponent },
       {
@@ -80,7 +87,7 @@ const routes: Routes = environment.maintenance
         component: UserHomeComponent,
         canActivate: [AuthGuard],
       },
-      { path: 'handicaps', component: HandicapsComponent },
+      { path: 'handicaps', component: HandicapsComponent, canActivate: [UnderConstructionGuard] },
       { path: 'primeng-example', component: PrimeNGExampleComponent },
       { path: '**', redirectTo: '' },
     ];
