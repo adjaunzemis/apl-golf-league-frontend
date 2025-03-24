@@ -33,6 +33,8 @@ export interface TournamentInfo {
   name: string;
   date: Date;
   course: string;
+  address?: string;
+  phone?: string;
   logo_url?: string;
   secretary: string;
   secretary_email?: string;
@@ -47,6 +49,7 @@ export interface TournamentInfo {
   ryder_cup: boolean;
   individual: boolean;
   chachacha: boolean;
+  num_teams: number;
 }
 
 export interface TournamentCreate {

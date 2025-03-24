@@ -1,10 +1,10 @@
-<div class="grid grid-cols-12 place-items-stretch gap-4 p-4" *ngIf="false; else loading">
-  <!-- <div
+<!-- TODO: && standings && matches -->
+<div
   class="grid grid-cols-12 place-items-stretch gap-4 p-4"
-  *ngIf="info && teams && standings && matches; else loading"
-> -->
+  *ngIf="info && divisions && teams; else loading"
+>
   <div class="col-span-1 bg-transparent"></div>
-  <!-- <app-tournament-info class="col-span-3" [info]="info" *ngIf="info" /> -->
+  <app-tournament-info class="col-span-3" [info]="info" *ngIf="info" />
   <!-- <app-tournament-standings class="col-span-4" [standings]="standings" *ngIf="standings" /> -->
   <!-- <app-tournament-divisions class="col-span-3" [divisions]="divisions" *ngIf="divisions" /> -->
   <div class="col-span-1 bg-transparent"></div>

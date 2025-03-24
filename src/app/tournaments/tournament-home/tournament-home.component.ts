@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-// import { TournamentInfoComponent } from './tournament-info/tournament-info.component';
+import { TournamentInfoComponent } from './tournament-info/tournament-info.component';
 // import { TournamentDivisionsComponent } from './tournament-divisions/tournament-divisions.component';
 // import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
 // import { TournamentTeamsComponent } from './tournament-teams/tournament-teams.component';
@@ -26,7 +26,7 @@ import {
   imports: [
     CommonModule,
     ProgressSpinnerModule,
-    // TournamentInfoComponent,
+    TournamentInfoComponent,
     // TournamentDivisionsComponent,
     // TournamentStandingsComponent,
     // TournamentStatisticsComponent,
