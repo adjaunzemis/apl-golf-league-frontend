@@ -13,11 +13,11 @@
   <app-tournament-divisions class="col-span-3" [divisions]="divisions" *ngIf="divisions" />
   <div class="col-span-1 bg-transparent"></div>
 
-  <div class="col-span-2 bg-transparent" *ngIf="selectedTeamRounds"></div>
-  <div class="col-span-8" *ngIf="selectedTeamRounds">
+  <div class="col-span-3 bg-transparent" *ngIf="selectedTeamRounds"></div>
+  <div class="col-span-6" *ngIf="selectedTeamRounds">
     <app-tournament-scorecard [info]="info" [rounds]="selectedTeamRounds" />
   </div>
-  <div class="col-span-2 bg-transparent" *ngIf="selectedTeamRounds"></div>
+  <div class="col-span-3 bg-transparent" *ngIf="selectedTeamRounds"></div>
 
   <div class="col-span-1 bg-transparent"></div>
   <app-tournament-teams class="col-span-3" [teams]="teams" *ngIf="teams" />
