@@ -7,7 +7,9 @@
     <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
       <p-accordion-header class="font-semibold px-4 py-2">{{ team.name }}</p-accordion-header>
       <p-accordion-content>
-        <p-table [value]="team.golfers" stripedRows selectionMode="single" dataKey="golfer_id">
+        <p-table [value]="team.golfers" stripedRows selectionMode="single" dataKey="golfer_id"
+        [(selection)]="selectedGolfer"
+        (onRowSelect)="onGolferSelected()">
           <ng-template #header>
             <tr>
               <th>Golfer</th>
