@@ -3,17 +3,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { TournamentsService } from '../tournaments.service';
+import { TournamentsService } from '../../tournaments.service';
 import { NotificationService } from 'src/app/notifications/notification.service';
-import { TournamentCreate, TournamentData } from '../../shared/tournament.model';
-import { RoundData } from '../../shared/round.model';
-import { TournamentTeamData } from '../../shared/team.model';
-import { AuthService } from '../../auth/auth.service';
-import { User } from '../../shared/user.model';
-import { TournamentCreateComponent } from '../tournament-create/tournament-create.component';
+import { TournamentCreate, TournamentData } from '../../../shared/tournament.model';
+import { RoundData } from '../../../shared/round.model';
+import { TournamentTeamData } from '../../../shared/team.model';
+import { AuthService } from '../../../auth/auth.service';
+import { User } from '../../../shared/user.model';
+import { TournamentCreateComponent } from '../../tournament-create/tournament-create.component';
 
 @Component({
-  selector: 'old-app-tournament-home',
+  selector: 'app-tournament-home-old',
   templateUrl: './tournament-home.component.html',
   styleUrls: ['./tournament-home.component.css'],
   standalone: false,
