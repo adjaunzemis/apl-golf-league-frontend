@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AuthGuard } from './auth/auth.guard';
 import { LeagueHomeComponent } from './league-home/league-home.component';
-import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { TeamHomeComponent } from './flights/team-home/team-home.component';
 import { FlightMatchScorecardComponent } from './flights/flight-match-create/flight-match-scorecard.component';
 import { FlightMatchCreateComponent } from './flights/flight-match-create/flight-match-create.component';
@@ -25,6 +24,7 @@ import { FlightHomeComponent } from './flights/flight-home/flight-home.component
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { FlightSignupComponent } from './flights/flight-signup/flight-signup.component';
 import { TournamentSignupComponent } from './tournaments/tournament-signup/tournament-signup.component';
+import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 
 const routes: Routes = environment.maintenance
   ? [
