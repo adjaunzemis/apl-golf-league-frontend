@@ -1,18 +1,21 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { TournamentInfo } from '../../shared/tournament.model';
-import { RoundData } from '../../shared/round.model';
-import { HoleResultData } from '../../shared/hole-result.model';
+import { TournamentInfo } from '../../../shared/tournament.model';
+import { RoundData } from '../../../shared/round.model';
+import { HoleResultData } from '../../../shared/hole-result.model';
+import { ScorecardModule } from 'src/app/shared/scorecard/scorecard.module';
 
 @Component({
   selector: 'app-tournament-scorecard',
   templateUrl: './tournament-scorecard.component.html',
   styleUrls: ['./tournament-scorecard.component.css'],
-  standalone: false,
+  imports: [CommonModule, ScorecardModule],
 })
 export class TournamentScorecardComponent implements OnInit, OnChanges {
-  @Input() tournament: TournamentInfo;
+  @Input() info: TournamentInfo;
   @Input() rounds: RoundData[];
+
   scoreMode = 'gross';
 
   roundIdx = 0;
@@ -71,7 +74,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   }
 
   getRoundTitle(round: RoundData): string {
-    if (this.tournament.scramble) {
+    if (this.info.scramble) {
       return 'Scramble';
     } else {
       return round.golfer_name;
@@ -88,17 +91,17 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
 
   getTeamRoundTitle(): string {
     // TODO: Implement for other modes
-    if (this.tournament.scramble) {
+    if (this.info.scramble) {
       return 'Scramble';
-    } else if (this.tournament.bestball > 1) {
-      return `${this.tournament.bestball} Best Balls`;
+    } else if (this.info.bestball > 1) {
+      return `${this.info.bestball} Best Balls`;
     } else {
       return 'Best Ball';
     }
   }
 
   getTeamRoundFrontSubtitle(): string {
-    if (this.tournament.scramble) {
+    if (this.info.scramble) {
       return `${this.scoreMode} - Hcp: ${this.frontRounds[0].golfer_playing_handicap ? this.frontRounds[0].golfer_playing_handicap.toFixed(0) : '--'}`;
     } else {
       return `${this.scoreMode}`;
@@ -106,7 +109,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   }
 
   getTeamRoundBackSubtitle(): string {
-    if (this.tournament.scramble) {
+    if (this.info.scramble) {
       return `${this.scoreMode} - Hcp: ${this.backRounds[0].golfer_playing_handicap ? this.backRounds[0].golfer_playing_handicap.toFixed(0) : '--'}`;
     } else {
       return `${this.scoreMode}`;
@@ -115,20 +118,18 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
 
   getTeamRoundFront(): RoundData {
     const teamFirstRound = this.frontRounds[0]; // TODO: Select team round info more intelligently, impacts scramble scoring?
-    const playingHandicap = this.tournament.scramble
-      ? teamFirstRound.golfer_playing_handicap
-      : undefined;
+    const playingHandicap = this.info.scramble ? teamFirstRound.golfer_playing_handicap : undefined;
     const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
-      date_played: this.tournament.date,
+      date_played: this.info.date,
       round_type: 'Tournament',
       golfer_id: -1, // TODO: remove placeholder?
       golfer_name: teamFirstRound.team_name ? teamFirstRound.team_name : 'n/a',
       golfer_playing_handicap: playingHandicap,
       team_name: teamFirstRound.team_name,
       course_id: teamFirstRound.course_id,
-      course_name: this.tournament.course,
+      course_name: this.info.course,
       track_id: teamFirstRound.track_id,
       track_name: teamFirstRound.track_name,
       tee_id: teamFirstRound.tee_id, // TODO: Select tee-id more intelligently for team round, impacts scramble scoring?
@@ -137,8 +138,8 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
       tee_par:
-        this.tournament.bestball > 0
-          ? this.tournament.bestball * teamFirstRound.tee_par
+        this.info.bestball > 0
+          ? this.info.bestball * teamFirstRound.tee_par
           : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
@@ -151,20 +152,18 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
 
   getTeamRoundBack(): RoundData {
     const teamFirstRound = this.backRounds[0]; // TODO: Select team round info more intelligently, impacts scramble scoring?
-    const playingHandicap = this.tournament.scramble
-      ? teamFirstRound.golfer_playing_handicap
-      : undefined;
+    const playingHandicap = this.info.scramble ? teamFirstRound.golfer_playing_handicap : undefined;
     const teamRound: RoundData = {
       round_id: -1, // TODO: remove placeholder?
       team_id: teamFirstRound.team_id,
-      date_played: this.tournament.date,
+      date_played: this.info.date,
       round_type: 'Tournament',
       golfer_id: -1, // TODO: remove placeholder?
       golfer_name: teamFirstRound.team_name ? teamFirstRound.team_name : 'n/a',
       golfer_playing_handicap: playingHandicap,
       team_name: teamFirstRound.team_name,
       course_id: teamFirstRound.course_id,
-      course_name: this.tournament.course,
+      course_name: this.info.course,
       track_id: teamFirstRound.track_id,
       track_name: teamFirstRound.track_name,
       tee_id: teamFirstRound.tee_id, // TODO: Select tee-id more intelligently for team round, impacts scramble scoring?
@@ -173,8 +172,8 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       tee_rating: teamFirstRound.tee_rating,
       tee_slope: teamFirstRound.tee_slope,
       tee_par:
-        this.tournament.bestball > 0
-          ? this.tournament.bestball * teamFirstRound.tee_par
+        this.info.bestball > 0
+          ? this.info.bestball * teamFirstRound.tee_par
           : teamFirstRound.tee_par,
       tee_color: teamFirstRound.tee_color,
       gross_score: 0, // TODO: remove placeholder?
@@ -196,7 +195,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       let holePar = hole.par;
       let grossScore = 99;
       let netScore = 99;
-      if (this.tournament.bestball === 2) {
+      if (this.info.bestball === 2) {
         holePar = hole.par * 2;
         const grossScores = [99, 99];
         const netScores = [99, 99];

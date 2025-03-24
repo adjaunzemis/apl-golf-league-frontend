@@ -1,4 +1,5 @@
 import { DivisionData, DivisionCreate } from './division.model';
+import { GolferStatistics } from './golfer.model';
 import { MatchSummary } from './match.model';
 import { TeamData } from './team.model';
 
@@ -106,36 +107,6 @@ export interface FlightStandingsTeam {
 export interface FlightStandings {
   flight_id: number;
   teams: FlightStandingsTeam[];
-}
-
-export interface GolferStatisticsScoring {
-  avg_score: number;
-  avg_score_to_par: number;
-  avg_par_3_score: number;
-  avg_par_4_score: number;
-  avg_par_5_score: number;
-  num_aces: number;
-  num_albatrosses: number;
-  num_eagles: number;
-  num_birdies: number;
-  num_pars: number;
-  num_bogeys: number;
-  num_double_bogeys: number;
-  num_others: number;
-}
-
-export interface GolferStatistics {
-  golfer_id: number;
-  golfer_name: string;
-  golfer_team_id: number;
-  golfer_team_role: string;
-  num_rounds: number;
-  num_holes: number;
-  num_par_3_holes: number;
-  num_par_4_holes: number;
-  num_par_5_holes: number;
-  gross_scoring: GolferStatisticsScoring;
-  net_scoring: GolferStatisticsScoring;
 }
 
 export interface FlightGolferStatistics extends GolferStatistics {

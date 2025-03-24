@@ -44,12 +44,12 @@ export interface TeamGolferData {
   team_name: string;
   year: number;
   role: string;
-  statistics?: GolferStatistics;
+  statistics?: GolferStatisticsOLD;
   handicap_index?: number;
   handicap_index_updated?: number;
 }
 
-export interface GolferStatistics {
+export interface GolferStatisticsOLD {
   num_rounds: number;
   num_holes: number;
   avg_gross_score: number;
@@ -70,4 +70,34 @@ export interface HandicapIndexData {
   active_rounds?: RoundSummary[];
   pending_handicap_index?: number;
   pending_rounds?: RoundSummary[];
+}
+
+export interface GolferStatisticsScoring {
+  avg_score: number;
+  avg_score_to_par: number;
+  avg_par_3_score: number;
+  avg_par_4_score: number;
+  avg_par_5_score: number;
+  num_aces: number;
+  num_albatrosses: number;
+  num_eagles: number;
+  num_birdies: number;
+  num_pars: number;
+  num_bogeys: number;
+  num_double_bogeys: number;
+  num_others: number;
+}
+
+export interface GolferStatistics {
+  golfer_id: number;
+  golfer_name: string;
+  golfer_team_id: number;
+  golfer_team_role: string;
+  num_rounds: number;
+  num_holes: number;
+  num_par_3_holes: number;
+  num_par_4_holes: number;
+  num_par_5_holes: number;
+  gross_scoring: GolferStatisticsScoring;
+  net_scoring: GolferStatisticsScoring;
 }

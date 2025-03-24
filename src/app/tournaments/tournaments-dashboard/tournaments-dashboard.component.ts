@@ -35,15 +35,11 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy, OnChang
   private tournamentsService = inject(TournamentsService);
 
   ngOnInit(): void {
-    this.tournamentsSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
-        console.log(
-          `[TournamentsDashboardComponent] Received list of ${result.numTournaments} tournaments`,
-        );
-        this.tournaments.set([...result.tournaments]);
-        this.isLoading = false;
-      });
+    this.tournamentsSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
+      console.log(`[TournamentsDashboardComponent] Received list of ${result.length} tournaments`);
+      this.tournaments.set([...result]);
+      this.isLoading = false;
+    });
   }
 
   ngOnDestroy(): void {
@@ -53,7 +49,7 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy, OnChang
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['season'] && this.season) {
       this.isLoading = true;
-      this.tournamentsService.getTournamentsList(this.season.year);
+      this.tournamentsService.getList(this.season.year);
     }
   }
 

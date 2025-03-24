@@ -3,9 +3,17 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { TournamentInput } from '../shared/match.model';
-import { RoundSummary } from '../shared/round.model';
+import { RoundData, RoundSummary } from '../shared/round.model';
 
-import { TournamentCreate, TournamentData, TournamentInfo } from '../shared/tournament.model';
+import {
+  TournamentCreate,
+  TournamentData,
+  TournamentDivision,
+  TournamentInfo,
+  TournamentStandings,
+  TournamentStatistics,
+  TournamentTeam,
+} from '../shared/tournament.model';
 import { environment } from './../../environments/environment';
 
 @Injectable({
@@ -13,10 +21,25 @@ import { environment } from './../../environments/environment';
 })
 export class TournamentsService {
   private tournamentsList: TournamentInfo[] = [];
-  private tournamentsListUpdated = new Subject<{
-    numTournaments: number;
-    tournaments: TournamentInfo[];
-  }>();
+  private tournamentsListUpdated = new Subject<TournamentInfo[]>();
+
+  private tournamentInfo: TournamentInfo;
+  private tournamentInfoUpdated = new Subject<TournamentInfo>();
+
+  private tournamentDivisions: TournamentDivision[];
+  private tournamentDivisionsUpdated = new Subject<TournamentDivision[]>();
+
+  private tournamentTeams: TournamentTeam[];
+  private tournamentTeamsUpdated = new Subject<TournamentTeam[]>();
+
+  private tournamentStandings: TournamentStandings;
+  private tournamentStandingsUpdated = new Subject<TournamentStandings>();
+
+  private tournamentStatistics: TournamentStatistics;
+  private tournamentStatisticsUpdated = new Subject<TournamentStatistics>();
+
+  private tournamentRoundsForTeam: RoundData[];
+  private tournamentRoundsForTeamUpdated = new Subject<RoundData[]>();
 
   private tournamentData: TournamentData;
   private tournamentDataUpdated = new Subject<TournamentData>();
@@ -26,18 +49,15 @@ export class TournamentsService {
     private router: Router,
   ) {}
 
-  getTournamentsList(year?: number): void {
+  getList(year?: number): void {
     let queryParams = ``;
     if (year) {
       queryParams = `?year=${year}&`;
     }
     this.http
-      .get<{
-        num_tournaments: number;
-        tournaments: TournamentInfo[];
-      }>(environment.apiUrl + 'tournaments/' + queryParams)
+      .get<TournamentInfo[]>(environment.apiUrl + 'tournaments/' + queryParams)
       .subscribe((result) => {
-        this.tournamentsList = result.tournaments;
+        this.tournamentsList = [...result];
         this.tournamentsList.map((tournament) => {
           if (tournament.date) {
             tournament.date = new Date(tournament.date);
@@ -49,17 +69,11 @@ export class TournamentsService {
             tournament.signup_stop_date = new Date(tournament.signup_stop_date);
           }
         });
-        this.tournamentsListUpdated.next({
-          numTournaments: result.num_tournaments,
-          tournaments: [...this.tournamentsList],
-        });
+        this.tournamentsListUpdated.next([...this.tournamentsList]);
       });
   }
 
-  getTournamentsListUpdateListener(): Observable<{
-    tournaments: TournamentInfo[];
-    numTournaments: number;
-  }> {
+  getListUpdateListener(): Observable<TournamentInfo[]> {
     return this.tournamentsListUpdated.asObservable();
   }
 
@@ -99,5 +113,82 @@ export class TournamentsService {
       environment.apiUrl + `tournaments/rounds`,
       tournamentInput,
     );
+  }
+
+  getInfo(id: number): void {
+    this.http
+      .get<TournamentInfo>(environment.apiUrl + `tournaments/info/${id}`)
+      .subscribe((result) => {
+        this.tournamentInfo = result;
+        this.tournamentInfoUpdated.next(result);
+      });
+  }
+
+  getInfoUpdateListener(): Observable<TournamentInfo> {
+    return this.tournamentInfoUpdated.asObservable();
+  }
+
+  getDivisions(id: number): void {
+    this.http
+      .get<TournamentDivision[]>(environment.apiUrl + `tournaments/divisions/${id}`)
+      .subscribe((result) => {
+        this.tournamentDivisions = result;
+        this.tournamentDivisionsUpdated.next([...this.tournamentDivisions]);
+      });
+  }
+
+  getDivisionsUpdateListener(): Observable<TournamentDivision[]> {
+    return this.tournamentDivisionsUpdated.asObservable();
+  }
+
+  getTeams(id: number): void {
+    this.http
+      .get<TournamentTeam[]>(environment.apiUrl + `tournaments/teams/${id}`)
+      .subscribe((result) => {
+        this.tournamentTeams = result;
+        this.tournamentTeamsUpdated.next(result);
+      });
+  }
+
+  getTeamsUpdateListener(): Observable<TournamentTeam[]> {
+    return this.tournamentTeamsUpdated.asObservable();
+  }
+
+  getStandings(id: number): void {
+    this.http
+      .get<TournamentStandings>(environment.apiUrl + `tournaments/standings/${id}`)
+      .subscribe((result) => {
+        this.tournamentStandings = result;
+        this.tournamentStandingsUpdated.next(result);
+      });
+  }
+
+  getStandingsUpdateListener(): Observable<TournamentStandings> {
+    return this.tournamentStandingsUpdated.asObservable();
+  }
+
+  getStatistics(id: number): void {
+    this.http
+      .get<TournamentStatistics>(environment.apiUrl + `tournaments/statistics/${id}`)
+      .subscribe((result) => {
+        this.tournamentStatistics = result;
+        this.tournamentStatisticsUpdated.next(result);
+      });
+  }
+
+  getStatisticsUpdateListener(): Observable<TournamentStatistics> {
+    return this.tournamentStatisticsUpdated.asObservable();
+  }
+
+  getRoundsForTeam(id: number): void {
+    this.http
+      .get<RoundData[]>(environment.apiUrl + `tournaments/team-rounds/${id}`)
+      .subscribe((result) => {
+        this.tournamentRoundsForTeam = result;
+        this.tournamentRoundsForTeamUpdated.next([...result]);
+      });
+  }
+  getRoundsForTeamUpdateListener(): Observable<RoundData[]> {
+    return this.tournamentRoundsForTeamUpdated.asObservable();
   }
 }

@@ -30,16 +30,14 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
   private seasonsService = inject(SeasonsService);
 
   ngOnInit(): void {
-    this.infoSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
-        this.tournaments = [...result.tournaments];
-        this.isLoading = false;
-      });
+    this.infoSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
+      this.tournaments = [...result];
+      this.isLoading = false;
+    });
 
     this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.season = result;
-      this.tournamentsService.getTournamentsList(result.year);
+      this.tournamentsService.getList(result.year);
     });
 
     this.seasonsService.getActiveSeason();
