@@ -15,7 +15,7 @@ import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 })
 export class FlightTeamsComponent {
   @Input() teams: FlightTeam[];
-  
+
   selectedGolfer: FlightTeamGolfer;
 
   private router = inject(Router);
