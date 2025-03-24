@@ -2,7 +2,7 @@
   <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
     <span class="text-2xl font-semibold">Standings</span>
   </div>
-  
+
   <p-tabs class="pt-2" value="0">
     <p-tablist>
       <p-tab class="px-8 py-2" value="0">Team</p-tab>
@@ -56,7 +56,9 @@
             <tr>
               <!-- <th>Pos</th> -->
               <th pSortableColumn="team_name">Name <p-sortIcon field="golfer_name" /></th>
-              <th pSortableColumn="golfer_playing_handicap">Handicap <p-sortIcon field="golfer_playing_handicap" /></th>
+              <th pSortableColumn="golfer_playing_handicap">
+                Handicap <p-sortIcon field="golfer_playing_handicap" />
+              </th>
               <th pSortableColumn="gross_score">Gross Score <p-sortIcon field="gross_score" /></th>
               <th pSortableColumn="net_score">Net Score <p-sortIcon field="net_score" /></th>
             </tr>
@@ -70,9 +72,8 @@
               <td class="text-gray-800">{{ golfer.net_score }}</td>
             </tr>
           </ng-template>
-        </p-table></p-tabpanel>
+        </p-table></p-tabpanel
+      >
     </p-tabpanels>
   </p-tabs>
-
-  
 </p-card>

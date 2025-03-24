@@ -11,6 +11,7 @@ import {
   TournamentDivision,
   TournamentInfo,
   TournamentStandings,
+  TournamentStatistics,
   TournamentTeam,
 } from '../shared/tournament.model';
 import { environment } from './../../environments/environment';
@@ -34,8 +35,8 @@ export class TournamentsService {
   private tournamentStandings: TournamentStandings;
   private tournamentStandingsUpdated = new Subject<TournamentStandings>();
 
-  // private tournamentStatistics: TournamentStatistics;
-  // private tournamentStatisticsUpdated = new Subject<TournamentStatistics>();
+  private tournamentStatistics: TournamentStatistics;
+  private tournamentStatisticsUpdated = new Subject<TournamentStatistics>();
 
   private tournamentRounds: RoundSummary[];
   private tournamentRoundsUpdated = new Subject<RoundSummary[]>();
@@ -166,18 +167,18 @@ export class TournamentsService {
     return this.tournamentStandingsUpdated.asObservable();
   }
 
-  // getStatistics(id: number): void {
-  //   this.http
-  //     .get<TournamentStatistics>(environment.apiUrl + `tournaments/statistics/${id}`)
-  //     .subscribe((result) => {
-  //       this.tournamentStatistics = result;
-  //       this.tournamentStatisticsUpdated.next(result);
-  //     });
-  // }
+  getStatistics(id: number): void {
+    this.http
+      .get<TournamentStatistics>(environment.apiUrl + `tournaments/statistics/${id}`)
+      .subscribe((result) => {
+        this.tournamentStatistics = result;
+        this.tournamentStatisticsUpdated.next(result);
+      });
+  }
 
-  // getStatisticsUpdateListener(): Observable<TournamentStatistics> {
-  //   return this.tournamentStatisticsUpdated.asObservable();
-  // }
+  getStatisticsUpdateListener(): Observable<TournamentStatistics> {
+    return this.tournamentStatisticsUpdated.asObservable();
+  }
 
   getRounds(id: number): void {
     this.http
