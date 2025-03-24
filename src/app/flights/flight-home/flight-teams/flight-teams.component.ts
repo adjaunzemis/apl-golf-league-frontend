@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
 
-import { FlightTeam } from 'src/app/shared/flight.model';
+import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 
 @Component({
   selector: 'app-flight-teams',
@@ -14,4 +15,16 @@ import { FlightTeam } from 'src/app/shared/flight.model';
 })
 export class FlightTeamsComponent {
   @Input() teams: FlightTeam[];
+
+  selectedGolfer: FlightTeamGolfer;
+
+  private router = inject(Router);
+
+  onGolferSelected(): void {
+    if (this.selectedGolfer.golfer_id) {
+      this.router.navigate(['/golfer'], {
+        queryParams: { id: this.selectedGolfer.golfer_id },
+      });
+    }
+  }
 }

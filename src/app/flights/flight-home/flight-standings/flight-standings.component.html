@@ -11,7 +11,10 @@
     [sortOrder]="-1"
     stripedRows
     selectionMode="single"
+    [(selection)]="selectedTeam"
+    (onRowSelect)="onTeamSelected()"
   >
+    >
     <ng-template #header>
       <tr>
         <th>Pos</th>
