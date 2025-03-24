@@ -73,22 +73,20 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       this.tournamentId = Number(paramsTournamentId);
     }
 
-    this.tournamentInfoSub = this.tournamentsService
-      .getTournamentsListUpdateListener()
-      .subscribe((result) => {
-        console.log(`[TournamentScorecardCreateComponent] Received current tournaments list`);
-        this.tournamentOptions = result.tournaments;
-        this.isLoading = false;
-        if (this.tournamentId) {
-          for (const flightInfo of this.tournamentOptions) {
-            if (flightInfo.id == this.tournamentId) {
-              this.selectedTournamentInfo = flightInfo;
-              this.loadTournamentData();
-              break;
-            }
+    this.tournamentInfoSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
+      console.log(`[TournamentScorecardCreateComponent] Received current tournaments list`);
+      this.tournamentOptions = result;
+      this.isLoading = false;
+      if (this.tournamentId) {
+        for (const flightInfo of this.tournamentOptions) {
+          if (flightInfo.id == this.tournamentId) {
+            this.selectedTournamentInfo = flightInfo;
+            this.loadTournamentData();
+            break;
           }
         }
-      });
+      }
+    });
 
     this.tournamentDataSub = this.tournamentsService
       .getTournamentUpdateListener()
@@ -129,7 +127,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   private getTournamentOptions(): void {
     this.isLoading = true;
-    this.tournamentsService.getTournamentsList(this.currentYear);
+    this.tournamentsService.getList(this.currentYear);
   }
 
   private clearSelectedTeamData(): void {

@@ -1,4 +1,5 @@
 import { DivisionCreate, DivisionData } from './division.model';
+import { GolferStatistics } from './golfer.model';
 import { TournamentTeamData } from './team.model';
 
 export interface TournamentData {
@@ -31,14 +32,14 @@ export interface TournamentInfo {
   year: number;
   name: string;
   date: Date;
-  secretary?: string;
+  course: string;
+  logo_url?: string;
+  secretary: string;
   secretary_email?: string;
   signup_start_date: Date;
   signup_stop_date: Date;
   members_entry_fee: number;
   non_members_entry_fee: number;
-  course: string;
-  logo_url?: string;
   shotgun: boolean;
   strokeplay: boolean;
   bestball: number;
@@ -71,4 +72,58 @@ export interface TournamentCreate {
   chachacha: boolean;
   locked?: boolean;
   divisions: DivisionCreate[];
+}
+
+export interface TournamentDivision {
+  id: number;
+  tournament_id: number;
+  name: string;
+  gender: string;
+  primary_track_id: number;
+  primary_track_name: string;
+  primary_tee_id: number;
+  primary_tee_name: string;
+  primary_tee_par: number;
+  primary_tee_rating: number;
+  primary_tee_slope: number;
+  secondary_track_id: number;
+  secondary_track_name: string;
+  secondary_tee_par: number;
+  secondary_tee_id: number;
+  secondary_tee_name: string;
+  secondary_tee_rating: number;
+  secondary_tee_slope: number;
+}
+
+export interface TournamentTeamGolfer {
+  golfer_id: number;
+  name: string;
+  role: string;
+  division: string;
+}
+
+export interface TournamentTeam {
+  tournament_id: number;
+  team_id: number;
+  name: string;
+  golfers: TournamentTeamGolfer[];
+}
+
+export interface TournamentStandingsTeam {
+  team_id: number;
+  team_name: string;
+  points_won: number;
+  matches_played: number;
+  avg_points: number;
+  position: string;
+}
+
+export interface TournamentStandings {
+  tournament_id: number;
+  teams: TournamentStandingsTeam[];
+}
+
+export interface TournamentStatistics {
+  tournament_id: number;
+  golfers: GolferStatistics[];
 }
