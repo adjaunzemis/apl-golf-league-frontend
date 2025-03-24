@@ -97,6 +97,7 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     this.teamsSub.unsubscribe();
     this.standingsSub.unsubscribe();
     this.statisticsSub.unsubscribe();
+    this.roundsSub.unsubscribe();
   }
 
   onTeamSelected(teamId: number) {
