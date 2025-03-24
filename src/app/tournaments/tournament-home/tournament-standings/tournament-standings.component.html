@@ -21,6 +21,8 @@
           selectionMode="single"
           [paginator]="true"
           [rows]="10"
+          [(selection)]="selectedTeam"
+          (onRowSelect)="onTeamSelected()"
         >
           <ng-template #header>
             <tr>

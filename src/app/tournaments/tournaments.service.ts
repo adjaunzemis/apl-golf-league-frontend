@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { TournamentInput } from '../shared/match.model';
-import { RoundSummary } from '../shared/round.model';
+import { RoundData, RoundSummary } from '../shared/round.model';
 
 import {
   TournamentCreate,
@@ -38,8 +38,8 @@ export class TournamentsService {
   private tournamentStatistics: TournamentStatistics;
   private tournamentStatisticsUpdated = new Subject<TournamentStatistics>();
 
-  private tournamentRounds: RoundSummary[];
-  private tournamentRoundsUpdated = new Subject<RoundSummary[]>();
+  private tournamentRoundsForTeam: RoundData[];
+  private tournamentRoundsForTeamUpdated = new Subject<RoundData[]>();
 
   private tournamentData: TournamentData;
   private tournamentDataUpdated = new Subject<TournamentData>();
@@ -180,16 +180,15 @@ export class TournamentsService {
     return this.tournamentStatisticsUpdated.asObservable();
   }
 
-  getRounds(id: number): void {
+  getRoundsForTeam(id: number): void {
     this.http
-      .get<RoundSummary[]>(environment.apiUrl + `tournaments/rounds/${id}`)
+      .get<RoundData[]>(environment.apiUrl + `tournaments/team-rounds/${id}`)
       .subscribe((result) => {
-        this.tournamentRounds = result;
-        this.tournamentRoundsUpdated.next(result);
+        this.tournamentRoundsForTeam = result;
+        this.tournamentRoundsForTeamUpdated.next([...result]);
       });
   }
-
-  getRoundsUpdateListener(): Observable<RoundSummary[]> {
-    return this.tournamentRoundsUpdated.asObservable();
+  getRoundsForTeamUpdateListener(): Observable<RoundData[]> {
+    return this.tournamentRoundsForTeamUpdated.asObservable();
   }
 }

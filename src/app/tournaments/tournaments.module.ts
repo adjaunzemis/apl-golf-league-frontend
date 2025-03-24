@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 
 import { AngularMaterialModule } from '../angular-material.module';
 import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
-import { TournamentScorecardComponent } from './tournament-scorecard/tournament-scorecard.component';
 import { ScorecardModule } from '../shared/scorecard/scorecard.module';
 import { DivisionsModule } from '../divisions/divisions.module';
 import { TournamentScorecardCreateComponent } from './tournament-scorecard-create/tournament-scorecard-create.component';
@@ -13,7 +12,6 @@ import { TournamentCreateComponent } from './tournament-create/tournament-create
 @NgModule({
   declarations: [
     TournamentStandingsComponent,
-    TournamentScorecardComponent,
     TournamentScorecardCreateComponent,
     TournamentCreateComponent,
   ],

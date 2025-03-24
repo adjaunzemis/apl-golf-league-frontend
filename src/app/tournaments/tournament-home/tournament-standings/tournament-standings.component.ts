@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 
-import { TournamentStandings } from 'src/app/shared/tournament.model';
+import { TournamentStandings, TournamentStandingsTeam } from 'src/app/shared/tournament.model';
 
 @Component({
   selector: 'app-tournament-standings',
@@ -14,4 +14,11 @@ import { TournamentStandings } from 'src/app/shared/tournament.model';
 })
 export class TournamentStandingsComponent {
   @Input() standings: TournamentStandings;
+  @Output() teamSelected = new EventEmitter<number>();
+
+  selectedTeam: TournamentStandingsTeam;
+
+  onTeamSelected() {
+    this.teamSelected.emit(this.selectedTeam.team_id);
+  }
 }

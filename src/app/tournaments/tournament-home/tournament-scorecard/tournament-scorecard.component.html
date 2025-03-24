@@ -14,7 +14,7 @@
     [holeResultData]="frontRounds[roundIdx].holes"
     [showDetails]="true"
   ></app-scorecard-tee-info>
-  <ng-container *ngIf="!tournament.scramble">
+  <ng-container *ngIf="!info.scramble">
     <app-scorecard-score-line
       [round]="round"
       [scoreMode]="scoreMode"
@@ -32,7 +32,7 @@
     [title]="getTeamRoundTitle()"
     subtitle="{{ getTeamRoundFrontSubtitle() | titlecase }}"
     [linkToGolferHome]="false"
-    *ngIf="tournament.bestball || tournament.scramble"
+    *ngIf="info.bestball || info.scramble"
   ></app-scorecard-score-line>
 
   <app-scorecard-hole-line
@@ -43,7 +43,7 @@
     [holeResultData]="backRounds[roundIdx].holes"
     [showDetails]="true"
   ></app-scorecard-tee-info>
-  <ng-container *ngIf="!tournament.scramble">
+  <ng-container *ngIf="!info.scramble">
     <app-scorecard-score-line
       [round]="round"
       [scoreMode]="scoreMode"
@@ -61,6 +61,6 @@
     [title]="getTeamRoundTitle()"
     subtitle="{{ getTeamRoundBackSubtitle() | titlecase }}"
     [linkToGolferHome]="false"
-    *ngIf="tournament.bestball || tournament.scramble"
+    *ngIf="info.bestball || info.scramble"
   ></app-scorecard-score-line>
 </div>

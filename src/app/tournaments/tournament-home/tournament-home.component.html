@@ -1,12 +1,23 @@
 <div
   class="grid grid-cols-12 place-items-stretch gap-4 p-4"
-  *ngIf="info && divisions && teams && standings && statistics && rounds; else loading"
+  *ngIf="info && divisions && teams && standings && statistics; else loading"
 >
   <div class="col-span-1 bg-transparent"></div>
   <app-tournament-info class="col-span-3" [info]="info" *ngIf="info" />
-  <app-tournament-standings class="col-span-4" [standings]="standings" *ngIf="standings" />
+  <app-tournament-standings
+    class="col-span-4"
+    [standings]="standings"
+    (teamSelected)="onTeamSelected($event)"
+    *ngIf="standings"
+  />
   <app-tournament-divisions class="col-span-3" [divisions]="divisions" *ngIf="divisions" />
   <div class="col-span-1 bg-transparent"></div>
+
+  <div class="col-span-2 bg-transparent" *ngIf="selectedTeamRounds"></div>
+  <div class="col-span-8" *ngIf="selectedTeamRounds">
+    <app-tournament-scorecard [info]="info" [rounds]="selectedTeamRounds" />
+  </div>
+  <div class="col-span-2 bg-transparent" *ngIf="selectedTeamRounds"></div>
 
   <div class="col-span-1 bg-transparent"></div>
   <app-tournament-teams class="col-span-3" [teams]="teams" *ngIf="teams" />

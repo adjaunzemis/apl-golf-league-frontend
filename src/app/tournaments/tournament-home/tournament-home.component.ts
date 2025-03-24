@@ -9,6 +9,7 @@ import { TournamentDivisionsComponent } from './tournament-divisions/tournament-
 import { TournamentTeamsComponent } from './tournament-teams/tournament-teams.component';
 import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
 import { TournamentStatisticsComponent } from './tournament-statistics/tournament-statistics.component';
+import { TournamentScorecardComponent } from './tournament-scorecard/tournament-scorecard.component';
 import { TournamentsService } from '../tournaments.service';
 import {
   TournamentDivision,
@@ -17,7 +18,7 @@ import {
   TournamentStatistics,
   TournamentTeam,
 } from 'src/app/shared/tournament.model';
-import { RoundSummary } from 'src/app/shared/round.model';
+import { RoundData } from 'src/app/shared/round.model';
 
 @Component({
   selector: 'app-tournament-home',
@@ -31,6 +32,7 @@ import { RoundSummary } from 'src/app/shared/round.model';
     TournamentStandingsComponent,
     TournamentStatisticsComponent,
     TournamentTeamsComponent,
+    TournamentScorecardComponent,
   ],
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
@@ -39,7 +41,9 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   teams: TournamentTeam[] | undefined;
   standings: TournamentStandings | undefined;
   statistics: TournamentStatistics | undefined;
-  rounds: RoundSummary[] | undefined;
+  selectedTeamRounds: RoundData[] | undefined;
+
+  selectedTeamId: number | null = null;
 
   private route = inject(ActivatedRoute);
 
@@ -68,8 +72,8 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
       .getStatisticsUpdateListener()
       .subscribe((result) => (this.statistics = result));
     this.roundsSub = this.tournamentsService
-      .getRoundsUpdateListener()
-      .subscribe((result) => (this.rounds = result));
+      .getRoundsForTeamUpdateListener()
+      .subscribe((result) => (this.selectedTeamRounds = result));
 
     this.route.queryParams.subscribe((params) => {
       if (params && params.id) {
@@ -83,7 +87,6 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
         this.tournamentsService.getTeams(tournamentId);
         this.tournamentsService.getStandings(tournamentId);
         this.tournamentsService.getStatistics(tournamentId);
-        this.tournamentsService.getRounds(tournamentId);
       }
     });
   }
@@ -94,6 +97,10 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     this.teamsSub.unsubscribe();
     this.standingsSub.unsubscribe();
     this.statisticsSub.unsubscribe();
-    this.roundsSub.unsubscribe();
+  }
+
+  onTeamSelected(teamId: number) {
+    this.selectedTeamId = teamId;
+    this.tournamentsService.getRoundsForTeam(this.selectedTeamId);
   }
 }
