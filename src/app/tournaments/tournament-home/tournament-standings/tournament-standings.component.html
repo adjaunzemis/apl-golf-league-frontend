@@ -1,0 +1,78 @@
+<p-card *ngIf="standings">
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-2xl font-semibold">Standings</span>
+  </div>
+  
+  <p-tabs class="pt-2" value="0">
+    <p-tablist>
+      <p-tab class="px-8 py-2" value="0">Team</p-tab>
+      <p-tab class="px-8 py-2" value="1" *ngIf="standings.golfers.length > 0">Individual</p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <p-table
+          #dt
+          [value]="standings.teams"
+          dataKey="team_id"
+          sortField="gross_score"
+          [sortOrder]="1"
+          stripedRows
+          selectionMode="single"
+          [paginator]="true"
+          [rows]="10"
+        >
+          <ng-template #header>
+            <tr>
+              <!-- <th>Pos</th> -->
+              <th pSortableColumn="team_name">Team <p-sortIcon field="team_name" /></th>
+              <th pSortableColumn="gross_score">Gross Score <p-sortIcon field="gross_score" /></th>
+              <th pSortableColumn="net_score">Net Score <p-sortIcon field="net_score" /></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-team>
+            <tr [pSelectableRow]="team">
+              <!-- <td class="text-gray-800">{{ team.position }}</td> -->
+              <td class="text-gray-800">{{ team.team_name }}</td>
+              <td class="text-gray-800">{{ team.gross_score }}</td>
+              <td class="text-gray-800">{{ team.net_score }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <p-table
+          #dt
+          [value]="standings.golfers"
+          dataKey="golfer_id"
+          sortField="gross_score"
+          [sortOrder]="1"
+          stripedRows
+          selectionMode="single"
+          [paginator]="true"
+          [rows]="10"
+        >
+          <ng-template #header>
+            <tr>
+              <!-- <th>Pos</th> -->
+              <th pSortableColumn="team_name">Name <p-sortIcon field="golfer_name" /></th>
+              <th pSortableColumn="golfer_playing_handicap">Handicap <p-sortIcon field="golfer_playing_handicap" /></th>
+              <th pSortableColumn="gross_score">Gross Score <p-sortIcon field="gross_score" /></th>
+              <th pSortableColumn="net_score">Net Score <p-sortIcon field="net_score" /></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-golfer>
+            <tr [pSelectableRow]="golfer">
+              <!-- <td class="text-gray-800">{{ golfer.position }}</td> -->
+              <td class="text-gray-800">{{ golfer.golfer_name }}</td>
+              <td class="text-gray-800">{{ golfer.golfer_playing_handicap }}</td>
+              <td class="text-gray-800">{{ golfer.gross_score }}</td>
+              <td class="text-gray-800">{{ golfer.net_score }}</td>
+            </tr>
+          </ng-template>
+        </p-table></p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+
+  
+</p-card>

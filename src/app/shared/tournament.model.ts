@@ -115,15 +115,24 @@ export interface TournamentTeam {
 export interface TournamentStandingsTeam {
   team_id: number;
   team_name: string;
-  points_won: number;
-  matches_played: number;
-  avg_points: number;
+  gross_score: number;
+  net_score: number;
+  position: string;
+}
+
+export interface TournamentStandingsGolfer {
+  golfer_id: number;
+  golfer_name: string;
+  golfer_playing_handicap: number;
+  gross_score: number;
+  net_score: number;
   position: string;
 }
 
 export interface TournamentStandings {
   tournament_id: number;
   teams: TournamentStandingsTeam[];
+  golfers: TournamentStandingsGolfer[];
 }
 
 export interface TournamentStatistics {

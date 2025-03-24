@@ -7,17 +7,17 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TournamentInfoComponent } from './tournament-info/tournament-info.component';
 import { TournamentDivisionsComponent } from './tournament-divisions/tournament-divisions.component';
 import { TournamentTeamsComponent } from './tournament-teams/tournament-teams.component';
-// import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
+import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
 // import { TournamentStatisticsComponent } from './tournament-statistics/tournament-statistics.component';
 import { TournamentsService } from '../tournaments.service';
 import {
   TournamentDivision,
   TournamentInfo,
-  // TournamentStandings,
+  TournamentStandings,
   // TournamentStatistics,
   TournamentTeam,
 } from 'src/app/shared/tournament.model';
-// import { RoundSummary } from 'src/app/shared/round.model';
+import { RoundSummary } from 'src/app/shared/round.model';
 
 @Component({
   selector: 'app-tournament-home',
@@ -28,7 +28,7 @@ import {
     ProgressSpinnerModule,
     TournamentInfoComponent,
     TournamentDivisionsComponent,
-    // TournamentStandingsComponent,
+    TournamentStandingsComponent,
     // TournamentStatisticsComponent,
     TournamentTeamsComponent,
   ],
@@ -37,9 +37,9 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   info: TournamentInfo | undefined;
   divisions: TournamentDivision[] | undefined;
   teams: TournamentTeam[] | undefined;
-  // standings: TournamentStandings | undefined;
+  standings: TournamentStandings | undefined;
   // statistics: TournamentStatistics | undefined;
-  // rounds: RoundSummary[] | undefined;
+  rounds: RoundSummary[] | undefined;
 
   private route = inject(ActivatedRoute);
 
@@ -47,9 +47,9 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
   private infoSub: Subscription;
   private divisionsSub: Subscription;
   private teamsSub: Subscription;
-  // private standingsSub: Subscription;
+  private standingsSub: Subscription;
   // private statisticsSub: Subscription;
-  // private roundsSub: Subscription;
+  private roundsSub: Subscription;
 
   ngOnInit(): void {
     this.infoSub = this.tournamentsService
@@ -61,15 +61,15 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     this.teamsSub = this.tournamentsService
       .getTeamsUpdateListener()
       .subscribe((result) => (this.teams = result));
-    // this.standingsSub = this.tournamentsService
-    //   .getStandingsUpdateListener()
-    //   .subscribe((result) => (this.standings = result));
+    this.standingsSub = this.tournamentsService
+      .getStandingsUpdateListener()
+      .subscribe((result) => (this.standings = result));
     // this.statisticsSub = this.tournamentsService
     //   .getStatisticsUpdateListener()
     //   .subscribe((result) => (this.statistics = result));
-    // this.roundsSub = this.tournamentsService
-    //   .getRoundsUpdateListener()
-    //   .subscribe((result) => (this.rounds = result));
+    this.roundsSub = this.tournamentsService
+      .getRoundsUpdateListener()
+      .subscribe((result) => (this.rounds = result));
 
     this.route.queryParams.subscribe((params) => {
       if (params && params.id) {
@@ -81,9 +81,9 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
         this.tournamentsService.getInfo(tournamentId);
         this.tournamentsService.getDivisions(tournamentId);
         this.tournamentsService.getTeams(tournamentId);
-        // this.tournamentsService.getStandings(tournamentId);
+        this.tournamentsService.getStandings(tournamentId);
         // this.tournamentsService.getStatistics(tournamentId);
-        // this.tournamentsService.getScorecards(tournamentId);
+        this.tournamentsService.getRounds(tournamentId);
       }
     });
   }
@@ -92,8 +92,8 @@ export class TournamentHomeComponent implements OnInit, OnDestroy {
     this.infoSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.teamsSub.unsubscribe();
-    // this.standingsSub.unsubscribe();
+    this.standingsSub.unsubscribe();
     // this.statisticsSub.unsubscribe();
-    // this.matchesSub.unsubscribe();
+    this.roundsSub.unsubscribe();
   }
 }

@@ -26,4 +26,36 @@ export class TournamentInfoComponent {
     }
     return this.info.address.split(',').slice(1).join(', ');
   }
+
+  getScoringModes(): string {
+    const modes: string[] = [];
+
+    if (this.info.scramble) {
+      modes.push("Shotgun");
+    }
+    if (this.info.scramble) {
+      modes.push("Scramble");
+    }
+    if (this.info.bestball > 0) {
+      if (this.info.bestball == 1) {
+        modes.push("Best Ball");
+      } else {
+        modes.push(`Best Ball (${this.info.bestball})`);
+      }
+    }
+    if (this.info.ryder_cup) {
+      modes.push("Ryder Cup");
+    }
+    if (this.info.chachacha) {
+      modes.push("Cha-Cha-Cha");
+    }
+    if (this.info.individual) {
+      modes.push("Individual");
+    }
+    if (this.info.strokeplay) {
+      modes.push("Strokeplay");
+    }
+
+    return modes.join(", ");
+  }
 }
