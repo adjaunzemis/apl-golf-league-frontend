@@ -44,7 +44,7 @@
               <div class="flex flex-row md:flex-col justify-center items-start gap-2">
                 <div>
                   <div class="text-lg font-semibold text-gray-700 mt-1">{{ getName(item) }}</div>
-                  <div class="hidden md:block font-medium text-gray-600 text-sm">
+                  <div class="hidden lg:block font-medium text-gray-600 text-sm">
                     {{ item.course }}
                   </div>
                   <div class="hidden lg:block text-sm font-medium text-gray-600">
@@ -56,14 +56,6 @@
           </div>
         </div>
       </div>
-    </ng-template>
-    <ng-template #empty>
-      <ng-template pTemplate="empty">
-        <div class="text-center p-4">
-          <i class="pi pi-info-circle text-sm"></i>
-          <p>Nothing here yet</p>
-        </div>
-      </ng-template>
     </ng-template>
   </p-dataview>
 </p-card>
