@@ -93,10 +93,17 @@
   </p-card>
 
   <div class="flex flex-col flex-stretch gap-4" *ngIf="selectedFlight">
-    <app-flight-info [info]="selectedFlight" />
+    <div class="flex flex-row flex-stretch gap-4">
+      <app-flight-info [info]="selectedFlight" />
+      <app-flight-divisions [divisions]="selectedFlightDivisions" *ngIf="selectedFlightDivisions" />
+    </div>
 
-    <app-flight-teams [teams]="selectedFlightTeams" *ngIf="selectedFlightTeams" />
+    <div class="flex flex-row flex-stretch gap-4">
+      <app-flight-teams [teams]="selectedFlightTeams" *ngIf="selectedFlightTeams" />
+      <app-team-create
+        [divisionOptions]="selectedFlightDivisions"
+        *ngIf="selectedFlightDivisions"
+      />
+    </div>
   </div>
-
-  <app-team-create *ngIf="selectedFlight" />
 </div>

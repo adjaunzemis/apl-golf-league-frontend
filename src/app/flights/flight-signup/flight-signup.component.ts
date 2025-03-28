@@ -9,12 +9,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
 
 import { FlightsService } from '../flights.service';
-import { FlightInfo, FlightTeam } from 'src/app/shared/flight.model';
+import { FlightDivision, FlightInfo, FlightTeam } from 'src/app/shared/flight.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
 import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.component';
 import { FlightInfoComponent } from '../flight-home/flight-info/flight-info.component';
 import { FlightTeamsComponent } from '../flight-home/flight-teams/flight-teams.component';
+import { FlightDivisionsComponent } from '../flight-home/flight-divisions/flight-divisions.component';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/shared/user.model';
 
@@ -31,6 +32,7 @@ import { User } from 'src/app/shared/user.model';
     ProgressSpinnerModule,
     TagModule,
     FlightInfoComponent,
+    FlightDivisionsComponent,
     FlightTeamsComponent,
     TeamCreateComponent,
   ],
@@ -44,9 +46,11 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   selectedFlight: FlightInfo | undefined;
   selectedFlightTeams: FlightTeam[] | undefined;
+  selectedFlightDivisions: FlightDivision[] | undefined;
 
   private infoSub: Subscription;
   private teamsSub: Subscription;
+  private divisionsSub: Subscription;
   private flightsService = inject(FlightsService);
 
   season!: Season;
@@ -76,6 +80,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       this.selectedFlightTeams = [...result];
     });
 
+    this.divisionsSub = this.flightsService.getDivisionsUpdateListener().subscribe((result) => {
+      this.selectedFlightDivisions = [...result];
+    });
+
     this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.season = result;
       this.flightsService.getList(result.year);
@@ -88,6 +96,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.userSub.unsubscribe();
     this.infoSub.unsubscribe();
     this.teamsSub.unsubscribe();
+    this.divisionsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
   }
 
@@ -121,5 +130,6 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     }
     this.selectedFlight = info;
     this.flightsService.getTeams(info.id);
+    this.flightsService.getDivisions(info.id);
   }
 }
