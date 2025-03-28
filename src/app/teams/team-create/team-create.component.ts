@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import {
+  FormsModule,
   UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormControl,
@@ -10,17 +11,19 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { NotificationService } from '../notifications/notification.service';
-import { TeamCreate, TeamGolferCreate } from '../shared/team.model';
-import { DivisionData } from './../shared/division.model';
-import { Golfer, GolferAffiliation } from '../shared/golfer.model';
-import { GolfersService } from '../golfers/golfers.service';
-import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
+import { NotificationService } from '../../notifications/notification.service';
+import { TeamCreate, TeamGolferCreate } from '../../shared/team.model';
+import { DivisionData } from '../../shared/division.model';
+import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
+import { GolfersService } from '../../golfers/golfers.service';
+import { GolferCreateComponent } from '../../golfers/golfer-create/golfer-create.component';
+import { CommonModule } from '@angular/common';
+import { AngularMaterialModule } from 'src/app/angular-material.module';
 
 @Component({
   templateUrl: './team-create.component.html',
   styleUrls: ['./team-create.component.css'],
-  standalone: false,
+  imports: [CommonModule, FormsModule, AngularMaterialModule],
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
   updateMode = false;

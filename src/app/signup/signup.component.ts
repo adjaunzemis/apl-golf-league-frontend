@@ -14,7 +14,7 @@ import { DivisionData } from '../shared/division.model';
 import { GolfersService } from '../golfers/golfers.service';
 import { TeamInfo } from '../shared/team.model';
 import { TeamCreate, TeamGolferCreate } from './../shared/team.model';
-import { TeamCreateComponent } from './team-create.component';
+import { TeamCreateComponent } from '../teams/team-create/team-create.component';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../shared/user.model';
 import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
