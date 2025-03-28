@@ -6,12 +6,13 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
 
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { CommonModule } from '@angular/common';
-import { FlightDivision } from 'src/app/shared/flight.model';
+import { FlightDivision, FlightTeamGolfer } from 'src/app/shared/flight.model';
 
 @Component({
   selector: 'app-team-create',
@@ -25,12 +26,15 @@ import { FlightDivision } from 'src/app/shared/flight.model';
     InputGroupAddonModule,
     InputTextModule,
     SelectModule,
+    ButtonModule
   ],
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
   @Input() update = false;
   @Input() allowSubstitutes = false;
-  @Input() divisionOptions: FlightDivision[] = [];
+  @Input() divisionOptions: FlightDivision[];
+
+  @Input() teamGolfers: FlightTeamGolfer[] = [];
 
   teamName: string;
   newGolferName: string;
@@ -79,5 +83,21 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   private _filter(value: string): Golfer[] {
     const filterValue = value.toLowerCase();
     return this.golferOptions.filter((option) => option.name.toLowerCase().includes(filterValue));
+  }
+
+  addGolferToTeam(): void {
+    // TODO: Validate entries
+
+    this.teamGolfers.push({
+      golfer_id: 0, // TODO: Set this
+      name: this.newGolferName,
+      role: this.newGolferRole,
+      division: this.newGolferDivision,
+    });
+
+    // Clear form
+    this.newGolferName = "";
+    this.newGolferRole = "";
+    this.newGolferDivision = "";
   }
 }

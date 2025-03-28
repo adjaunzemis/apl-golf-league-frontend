@@ -4,13 +4,15 @@
   </div>
 
   <p-inputgroup class="px-4">
-    <input pInputText [(ngModel)]="teamName" placeholder="Ex: Teamy McTeamFace" />
+    <input pInputText [(ngModel)]="teamName" id="teamName" placeholder="Ex: Teamy McTeamFace" #tName="ngModel" required />
   </p-inputgroup>
+
+  <small class="p-error text-red-400 px-4" *ngIf="tName.invalid && tName.dirty">Invalid team name</small>
 
   <p-inputgroup class="p-4">
     <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
 
-    <input pInputText [(ngModel)]="newGolferName" placeholder="Name" />
+    <input pInputText [(ngModel)]="newGolferName" id="newGolferName" placeholder="Name" #gName="ngModel" required />
 
     <p-select
       class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 ml-2 pl-2 py-1"
@@ -26,5 +28,10 @@
       optionLabel="name"
       placeholder="Division"
     />
+
+    <p-button (click)="addGolferToTeam()">
+      <span class="pi pi-plus"></span>
+    </p-button>
   </p-inputgroup>
+
 </p-card>
