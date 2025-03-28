@@ -28,6 +28,8 @@
               class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
               [ngClass]="{ 'border-t border-gray-300': !first }"
               (click)="selectFlight(item)"
+              (keyup)="selectFlight(item)"
+              aria-hidden="true"
             >
               <div class="md:w-20 relative ml-4">
                 <img

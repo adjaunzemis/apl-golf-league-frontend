@@ -18,7 +18,16 @@ import { FlightInfoComponent } from '../flight-home/flight-info/flight-info.comp
   selector: 'app-flight-signup',
   templateUrl: './flight-signup.component.html',
   styleUrl: './flight-signup.component.css',
-  imports: [CommonModule, RouterModule, ButtonModule, CardModule, DataViewModule, ProgressSpinnerModule, FlightInfoComponent, TeamCreateComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ButtonModule,
+    CardModule,
+    DataViewModule,
+    ProgressSpinnerModule,
+    FlightInfoComponent,
+    TeamCreateComponent,
+  ],
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
   isLoading = true;
