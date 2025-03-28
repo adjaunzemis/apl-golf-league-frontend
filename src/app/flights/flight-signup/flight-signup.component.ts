@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TagModule } from 'primeng/tag';
 
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from 'src/app/shared/flight.model';
@@ -25,12 +26,15 @@ import { FlightInfoComponent } from '../flight-home/flight-info/flight-info.comp
     CardModule,
     DataViewModule,
     ProgressSpinnerModule,
+    TagModule,
     FlightInfoComponent,
     TeamCreateComponent,
   ],
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
   isLoading = true;
+
+  currentDate = new Date();
 
   flights!: FlightInfo[];
 
@@ -73,7 +77,24 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     return d;
   }
 
+  isSignupOpen(info: FlightInfo): boolean {
+    return this.currentDate >= info.signup_start_date && this.currentDate <= info.signup_stop_date;
+  }
+
+  getDaysUntilSignupStart(info: FlightInfo): number {
+    const timeDiff = info.signup_start_date.getTime() - this.currentDate.getTime();
+    return Math.ceil(timeDiff / (1000 * 3600 * 24));
+  }
+
+  getDaysUntilSignupStop(info: FlightInfo): number {
+    const timeDiff = info.signup_stop_date.getTime() - this.currentDate.getTime();
+    return Math.ceil(timeDiff / (1000 * 3600 * 24));
+  }
+
   selectFlight(info: FlightInfo): void {
+    if (!this.isSignupOpen(info)) {
+      return;
+    }
     this.selectedFlight = info;
   }
 }

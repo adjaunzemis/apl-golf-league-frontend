@@ -60,7 +60,7 @@ export class FlightsService {
     this.http
       .get<FlightInfo[]>(environment.apiUrl + 'flights/' + queryParams)
       .subscribe((result) => {
-        result.map(info => {
+        result.map((info) => {
           info.start_date = new Date(info.start_date);
           info.signup_start_date = new Date(info.signup_start_date);
           info.signup_stop_date = new Date(info.signup_stop_date);
