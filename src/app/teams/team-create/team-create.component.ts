@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { AngularMaterialModule } from 'src/app/angular-material.module';
 
 @Component({
+  selector: 'app-team-create',
   templateUrl: './team-create.component.html',
   styleUrls: ['./team-create.component.css'],
   imports: [CommonModule, FormsModule, AngularMaterialModule],

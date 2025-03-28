@@ -9,11 +9,14 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
 
 import { FlightsService } from '../flights.service';
-import { FlightInfo } from 'src/app/shared/flight.model';
+import { FlightInfo, FlightTeam } from 'src/app/shared/flight.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
 import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.component';
 import { FlightInfoComponent } from '../flight-home/flight-info/flight-info.component';
+import { FlightTeamsComponent } from '../flight-home/flight-teams/flight-teams.component';
+import { AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/shared/user.model';
 
 @Component({
   selector: 'app-flight-signup',
@@ -28,6 +31,7 @@ import { FlightInfoComponent } from '../flight-home/flight-info/flight-info.comp
     ProgressSpinnerModule,
     TagModule,
     FlightInfoComponent,
+    FlightTeamsComponent,
     TeamCreateComponent,
   ],
 })
@@ -38,20 +42,38 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   flights!: FlightInfo[];
 
-  private infoSub: Subscription;
-  private flightsService = inject(FlightsService);
+  selectedFlight: FlightInfo | undefined;
+  selectedFlightTeams: FlightTeam[] | undefined;
 
-  selectedFlight: FlightInfo | null = null;
+  private infoSub: Subscription;
+  private teamsSub: Subscription;
+  private flightsService = inject(FlightsService);
 
   season!: Season;
 
   private activeSeasonSub: Subscription;
   private seasonsService = inject(SeasonsService);
 
+  isAuthenticated = false;
+  currentUser: User | null = null;
+  private userSub: Subscription;
+  private authService = inject(AuthService);
+
   ngOnInit(): void {
+    this.userSub = this.authService.user.subscribe((user) => {
+      this.isAuthenticated = !user ? false : true;
+      if (this.isAuthenticated) {
+        this.currentUser = user;
+      }
+    });
+
     this.infoSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       this.flights = [...result];
       this.isLoading = false;
+    });
+
+    this.teamsSub = this.flightsService.getTeamsUpdateListener().subscribe((result) => {
+      this.selectedFlightTeams = [...result];
     });
 
     this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
@@ -63,7 +85,9 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.userSub.unsubscribe();
     this.infoSub.unsubscribe();
+    this.teamsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
   }
 
@@ -92,9 +116,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   selectFlight(info: FlightInfo): void {
-    if (!this.isSignupOpen(info)) {
+    if (!this.isSignupOpen(info) && !this.currentUser?.is_admin) {
       return;
     }
     this.selectedFlight = info;
+    this.flightsService.getTeams(info.id);
   }
 }
