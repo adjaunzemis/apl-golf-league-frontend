@@ -7,6 +7,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
 
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
@@ -26,7 +27,8 @@ import { FlightDivision, FlightTeamGolfer } from 'src/app/shared/flight.model';
     InputGroupAddonModule,
     InputTextModule,
     SelectModule,
-    ButtonModule
+    ButtonModule,
+    TableModule,
   ],
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
@@ -37,9 +39,9 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   @Input() teamGolfers: FlightTeamGolfer[] = [];
 
   teamName: string;
-  newGolferName: string;
+  newGolferName: string; // TODO: Golfer
   newGolferRole: string;
-  newGolferDivision: string;
+  newGolferDivision: FlightDivision | null = null;
 
   roleOptions = ['Captain', 'Player'];
 
@@ -87,17 +89,34 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   addGolferToTeam(): void {
     // TODO: Validate entries
+    if (!this.newGolferDivision) {
+      return;
+    }
 
     this.teamGolfers.push({
       golfer_id: 0, // TODO: Set this
       name: this.newGolferName,
       role: this.newGolferRole,
-      division: this.newGolferDivision,
+      division: this.newGolferDivision.name,
     });
 
-    // Clear form
-    this.newGolferName = "";
-    this.newGolferRole = "";
-    this.newGolferDivision = "";
+    this.clear();
+  }
+
+  removeGolferFromTeam(golfer: FlightTeamGolfer): void {
+    console.log('Removing golfer: ' + golfer.name);
+  }
+
+  submitTeam(): void {
+    // TODO: Send API request
+
+    this.clear();
+  }
+
+  clear(): void {
+    this.teamName = '';
+    this.newGolferName = '';
+    this.newGolferRole = '';
+    this.newGolferDivision = null;
   }
 }
