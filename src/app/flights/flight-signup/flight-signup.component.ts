@@ -138,4 +138,14 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   handleTeamSelectionChange(team: FlightTeam | null): void {
     this.selectedTeam = team;
   }
+
+  isUserAdmin(): boolean {
+    if (!this.currentUser) {
+      return false;
+    }
+    if (!this.currentUser.is_admin) {
+      return false;
+    }
+    return this.currentUser.is_admin;
+  }
 }

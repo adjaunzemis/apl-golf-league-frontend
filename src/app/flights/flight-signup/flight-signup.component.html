@@ -107,6 +107,7 @@
     <div class="flex flex-col flex-stretch gap-4">
       <app-flight-divisions [divisions]="selectedFlightDivisions" *ngIf="selectedFlightDivisions" />
       <app-team-create
+        [allowSubstitutes]="isUserAdmin()"
         [flightId]="selectedFlight.id"
         [divisionOptions]="selectedFlightDivisions"
         [initialTeam]="selectedTeam"
