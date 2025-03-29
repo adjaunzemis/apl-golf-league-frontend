@@ -3,7 +3,7 @@
     <span class="text-2xl font-semibold">Teams</span>
   </div>
 
-  <p-accordion [multiple]="true">
+  <p-accordion [multiple]="teamMultiSelect">
     <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
       <p-accordion-header class="font-semibold px-4 py-2">{{ team.name }}</p-accordion-header>
       <p-accordion-content>
