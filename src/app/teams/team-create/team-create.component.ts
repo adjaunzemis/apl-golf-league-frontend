@@ -14,6 +14,8 @@ import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { CommonModule } from '@angular/common';
 import { FlightDivision, FlightTeamGolfer } from 'src/app/shared/flight.model';
+import { TeamsService } from '../teams.service';
+import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
 
 @Component({
   selector: 'app-team-create',
@@ -32,10 +34,10 @@ import { FlightDivision, FlightTeamGolfer } from 'src/app/shared/flight.model';
   ],
 })
 export class TeamCreateComponent implements OnInit, OnDestroy {
-  @Input() update = false;
   @Input() allowSubstitutes = false;
+  @Input() flightId: number;
   @Input() divisionOptions: FlightDivision[];
-
+  @Input() teamId?: number;
   @Input() teamGolfers: FlightTeamGolfer[] = [];
 
   teamName: string;
@@ -45,11 +47,15 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   roleOptions = ['Captain', 'Player'];
 
+  private divisionNameToId: Record<string, number> = {};
+
   golferOptions: Golfer[] = [];
   golferNameOptions: string[] = [];
   filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
   private golfersSub: Subscription;
   private golfersService = inject(GolfersService);
+
+  private teamsService = inject(TeamsService);
 
   private notificationService = inject(NotificationService);
 
@@ -72,19 +78,14 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     });
 
     this.golfersService.getAllGolfers();
+
+    for (const d of this.divisionOptions) {
+      this.divisionNameToId[d.name] = d.id;
+    }
   }
 
   ngOnDestroy(): void {
     this.golfersSub.unsubscribe();
-  }
-
-  private isGolfer(object: unknown): object is Golfer {
-    return (object as Golfer).name !== undefined;
-  }
-
-  private _filter(value: string): Golfer[] {
-    const filterValue = value.toLowerCase();
-    return this.golferOptions.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
 
   addGolferToTeam(): void {
@@ -108,9 +109,65 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   }
 
   submitTeam(): void {
-    // TODO: Send API request
+    // TODO: Validate
 
-    this.clear();
+    const golfers: TeamGolferCreate[] = [];
+    for (const teamGolfer of this.teamGolfers) {
+      golfers.push({
+        golfer_id: teamGolfer.golfer_id,
+        golfer_name: teamGolfer.name,
+        role: teamGolfer.role,
+        division_id: this.divisionNameToId[teamGolfer.division],
+      });
+    }
+
+    const teamData: TeamCreate = {
+      flight_id: this.flightId,
+      name: this.teamName,
+      golfers: golfers,
+    };
+    if (this.teamId) {
+      // update existing team
+      teamData['id'] = this.teamId;
+      this.teamsService.updateTeam(teamData).subscribe(
+        (team) => {
+          console.log(`[TeamCreateComponent] Updated team '${team.name}' (id=${team.id})`);
+          this.notificationService.showSuccess(
+            'Team Updated',
+            `Successfully updated team '${team.name}'`,
+            5000,
+          );
+
+          this.clear();
+
+          // TODO: Refresh team list
+        },
+        () => {
+          console.error(
+            `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id})`,
+          );
+        },
+      );
+    } else {
+      // create new team
+      this.teamsService.createTeam(teamData).subscribe(
+        (team) => {
+          console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id})`);
+          this.notificationService.showSuccess(
+            'Team Created',
+            `Successfully created team '${team.name}'`,
+            5000,
+          );
+
+          this.clear();
+
+          // TODO: Refresh team list
+        },
+        () => {
+          console.error(`[SignupComponent] Unable to create team '${teamData.name}'`);
+        },
+      );
+    }
   }
 
   clear(): void {

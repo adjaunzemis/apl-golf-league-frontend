@@ -272,10 +272,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     const golfers: TeamGolferData[] = [];
     for (const golfer of teamCreate.golfers) {
       golfers.push({
-        golfer_id: golfer.golfer.id,
-        golfer_name: golfer.golfer.name,
-        division_id: golfer.division.id,
-        division_name: golfer.division.name,
+        golfer_id: golfer.golfer_id,
+        golfer_name: golfer.golfer_name,
+        division_id: golfer.division_id,
+        division_name: '', // TODO: remove?
         role: golfer.role,
         team_id: teamCreate.id ? teamCreate.id : -1, // TODO: refactor placeholder
         team_name: teamCreate.name,
@@ -325,9 +325,10 @@ export class SignupComponent implements OnInit, OnDestroy {
 
         if (golfer && division) {
           initTeamGolfers.push({
-            golfer: golfer,
+            golfer_id: golfer.id,
+            golfer_name: golfer.name,
             role: initTeamGolfer.role,
-            division: division,
+            division_id: division.id,
           });
         }
       }

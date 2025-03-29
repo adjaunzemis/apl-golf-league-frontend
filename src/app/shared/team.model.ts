@@ -1,7 +1,6 @@
-import { Golfer, TeamGolferData } from './golfer.model';
+import { TeamGolferData } from './golfer.model';
 import { MatchData } from './match.model';
 import { RoundData } from './round.model';
-import { DivisionData } from './division.model';
 
 export interface TeamInfo {
   id?: number;
@@ -36,9 +35,10 @@ export interface TournamentTeamData {
 }
 
 export interface TeamGolferCreate {
-  golfer: Golfer;
+  golfer_id: number;
+  golfer_name: string;
+  division_id: number;
   role: string;
-  division: DivisionData;
 }
 
 export interface TeamCreate {
