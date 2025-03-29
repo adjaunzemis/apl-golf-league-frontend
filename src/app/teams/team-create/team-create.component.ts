@@ -39,7 +39,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   @Input() teamGolfers: FlightTeamGolfer[] = [];
 
   teamName: string;
-  newGolferName: string; // TODO: Golfer
+  newGolfer: Golfer | null;
   newGolferRole: string;
   newGolferDivision: FlightDivision | null = null;
 
@@ -89,13 +89,13 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   addGolferToTeam(): void {
     // TODO: Validate entries
-    if (!this.newGolferDivision) {
+    if (!this.newGolfer || !this.newGolferDivision) {
       return;
     }
 
     this.teamGolfers.push({
-      golfer_id: 0, // TODO: Set this
-      name: this.newGolferName,
+      golfer_id: this.newGolfer.id,
+      name: this.newGolfer.name,
       role: this.newGolferRole,
       division: this.newGolferDivision.name,
     });
@@ -115,7 +115,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   clear(): void {
     this.teamName = '';
-    this.newGolferName = '';
+    this.newGolfer = null;
     this.newGolferRole = '';
     this.newGolferDivision = null;
   }
