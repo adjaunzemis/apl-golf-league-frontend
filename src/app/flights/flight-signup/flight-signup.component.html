@@ -108,6 +108,7 @@
       <app-flight-divisions [divisions]="selectedFlightDivisions" *ngIf="selectedFlightDivisions" />
       <app-team-create
         [allowSubstitutes]="isUserAdmin()"
+        [allowDelete]="isUserAdmin()"
         [flightId]="selectedFlight.id"
         [divisionOptions]="selectedFlightDivisions"
         [initialTeam]="selectedTeam"

@@ -48,4 +48,8 @@ export class TeamsService {
       );
     }
   }
+
+  deleteTeam(teamId: number): Observable<{ id: number; name: string }> {
+    return this.http.delete<{ id: number; name: string }>(environment.apiUrl + `teams/${teamId}`);
+  }
 }

@@ -43,6 +43,7 @@ import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
 })
 export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
   @Input() allowSubstitutes = false;
+  @Input() allowDelete = false;
 
   @Input() flightId: number;
   @Input() divisionOptions: FlightDivision[];
@@ -136,7 +137,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   submitTeam(): void {
-    // TODO: Validate
+    // TODO: Validate? Or in API?
 
     const golfers: TeamGolferCreate[] = [];
     for (const teamGolfer of this.teamGolfers) {
@@ -171,7 +172,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
         },
         () => {
           console.error(
-            `[SignupComponent] Unable to update team '${teamData.name}' (id=${teamData.id})`,
+            `[TeamCreateComponent] Unable to update team '${teamData.name}' (id=${teamData.id})`,
           );
         },
       );
@@ -179,7 +180,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
       // create new team
       this.teamsService.createTeam(teamData).subscribe(
         (team) => {
-          console.log(`[SignupComponent] Created team '${team.name}' (id=${team.id})`);
+          console.log(`[TeamCreateComponent] Created team '${team.name}' (id=${team.id})`);
           this.notificationService.showSuccess(
             'Team Created',
             `Successfully created team '${team.name}'`,
@@ -191,7 +192,29 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
           // TODO: Refresh team list
         },
         () => {
-          console.error(`[SignupComponent] Unable to create team '${teamData.name}'`);
+          console.error(`[TeamCreateComponent] Unable to create team '${teamData.name}'`);
+        },
+      );
+    }
+  }
+
+  deleteTeam(): void {
+    if (this.teamId) {
+      this.teamsService.deleteTeam(this.teamId).subscribe(
+        (team) => {
+          console.log(`[TeamCreateComponent] Deleted team '${team.name}' (id=${team.id})`);
+          this.notificationService.showSuccess(
+            'Team Deleted',
+            `Successfully deleted team '${team.name}'`,
+            5000,
+          );
+
+          this.clear();
+
+          // TODO: Refresh team list
+        },
+        () => {
+          console.error(`[TeamCreateComponent] Unable to delete team id=${this.teamId}`);
         },
       );
     }
