@@ -41,8 +41,8 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   @Input() teamGolfers: FlightTeamGolfer[] = [];
 
   teamName: string;
-  newGolfer: Golfer | null;
-  newGolferRole: string;
+  newGolfer: Golfer | null = null;
+  newGolferRole: string | undefined;
   newGolferDivision: FlightDivision | null = null;
 
   roleOptions = ['Captain', 'Player'];
@@ -90,7 +90,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   addGolferToTeam(): void {
     // TODO: Validate entries
-    if (!this.newGolfer || !this.newGolferDivision) {
+    if (!this.newGolfer || !this.newGolferDivision || this.newGolferRole === undefined) {
       return;
     }
 
@@ -105,7 +105,9 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   }
 
   removeGolferFromTeam(golfer: FlightTeamGolfer): void {
-    console.log('Removing golfer: ' + golfer.name);
+    this.teamGolfers = this.teamGolfers.filter(
+      (teamGolfer) => teamGolfer.golfer_id !== golfer.golfer_id,
+    );
   }
 
   submitTeam(): void {
@@ -182,7 +184,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
 
   private clearNewGolfer(): void {
     this.newGolfer = null;
-    this.newGolferRole = '';
+    this.newGolferRole = undefined;
     this.newGolferDivision = null;
   }
 }

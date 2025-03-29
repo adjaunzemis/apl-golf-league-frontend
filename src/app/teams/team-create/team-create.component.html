@@ -17,10 +17,6 @@
     />
   </p-inputgroup>
 
-  <small class="p-error text-red-400 px-4" *ngIf="tName.invalid && tName.dirty"
-    >Invalid team name</small
-  >
-
   <p-inputgroup class="p-4">
     <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
 
@@ -65,13 +61,7 @@
     </p-button>
   </p-inputgroup>
 
-  <p-table
-    [value]="teamGolfers"
-    stripedRows
-    selectionMode="single"
-    dataKey="golfer_id"
-    *ngIf="teamGolfers.length > 0"
-  >
+  <p-table [value]="teamGolfers" dataKey="golfer_id" *ngIf="teamGolfers.length > 0">
     <ng-template #header>
       <tr>
         <th>Golfer</th>
@@ -93,7 +83,7 @@
   </p-table>
 
   <p-inputgroup class="flex items-center justify-center py-4">
-    <p-button (click)="submitTeam()">Submit</p-button>
-    <p-button (click)="clear()">Clear</p-button>
+    <p-button class="font-semibold" (click)="submitTeam()">Submit</p-button>
+    <p-button class="font-semibold" (click)="clear()">Clear</p-button>
   </p-inputgroup>
 </p-card>
