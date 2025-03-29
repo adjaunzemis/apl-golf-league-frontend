@@ -100,7 +100,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
       division: this.newGolferDivision.name,
     });
 
-    this.clear();
+    this.clearNewGolfer();
   }
 
   removeGolferFromTeam(golfer: FlightTeamGolfer): void {
@@ -114,7 +114,16 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   }
 
   clear(): void {
+    this.clearNewGolfer();
+    this.clearTeam();
+  }
+
+  private clearTeam(): void {
     this.teamName = '';
+    this.teamGolfers = [];
+  }
+
+  private clearNewGolfer(): void {
     this.newGolfer = null;
     this.newGolferRole = '';
     this.newGolferDivision = null;

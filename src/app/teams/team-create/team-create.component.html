@@ -2,34 +2,37 @@
   <div class="flex flex-1 flex-col px-4 py-4">
     <span class="text-2xl font-semibold">{{ update ? 'Update' : 'Create' }} Team</span>
   </div>
-  
-  <p-inputgroup class="px-4">
+
+  <p-inputgroup class="px-4 w-92">
     <input
-    pInputText
-    [(ngModel)]="teamName"
-    id="teamName"
-    placeholder="Ex: Teamy McTeamFace"
-    #tName="ngModel"
-    required
+      pInputText
+      [(ngModel)]="teamName"
+      id="teamName"
+      placeholder="Ex: Teamy McTeamFace"
+      #tName="ngModel"
+      required
+      minlength="3"
+      maxlength="20"
+      pattern="[a-zA-Z0-9\s]+"
     />
   </p-inputgroup>
-  
+
   <small class="p-error text-red-400 px-4" *ngIf="tName.invalid && tName.dirty"
-  >Invalid team name</small
+    >Invalid team name</small
   >
-  
+
   <p-inputgroup class="p-4">
     <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
-    
+
     <p-select
-    class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 ml-2 pl-2 py-1"
-    [options]="golferOptions"
-    [(ngModel)]="newGolfer"
-    optionLabel="name"
-    [filter]="true"
-    filterBy="name"
-    [showClear]="true"
-    placeholder="Golfer">
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-40 ml-2 pl-2 py-1"
+      [options]="golferOptions"
+      [(ngModel)]="newGolfer"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      placeholder="Golfer"
+    >
       <ng-template #selectedItem let-selectedOption>
         <div class="flex items-center gap-2">
           <div>{{ selectedOption.name }}</div>
@@ -41,28 +44,34 @@
         </div>
       </ng-template>
     </p-select>
-    
+
     <p-select
-    class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 ml-2 pl-2 py-1"
-    [options]="roleOptions"
-    [(ngModel)]="golferOptions"
-    placeholder="Role"
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-28 ml-2 pl-2 py-1"
+      [options]="roleOptions"
+      [(ngModel)]="newGolferRole"
+      placeholder="Role"
     />
-    
+
     <p-select
-    class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 ml-2 pl-2 py-1"
-    [options]="divisionOptions"
-    [(ngModel)]="newGolferDivision"
-    optionLabel="name"
-    placeholder="Division"
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-28 ml-2 pl-2 py-1"
+      [options]="divisionOptions"
+      [(ngModel)]="newGolferDivision"
+      optionLabel="name"
+      placeholder="Division"
     />
-    
+
     <p-button (click)="addGolferToTeam()">
       <span class="pi pi-plus text-sm"></span>
     </p-button>
   </p-inputgroup>
-  
-  <p-table [value]="teamGolfers" stripedRows selectionMode="single" dataKey="golfer_id">
+
+  <p-table
+    [value]="teamGolfers"
+    stripedRows
+    selectionMode="single"
+    dataKey="golfer_id"
+    *ngIf="teamGolfers.length > 0"
+  >
     <ng-template #header>
       <tr>
         <th>Golfer</th>
@@ -82,9 +91,9 @@
       </tr>
     </ng-template>
   </p-table>
-  
+
   <p-inputgroup class="flex items-center justify-center py-4">
-    <p-button (click)="submitTeam()" rounded>Submit</p-button>
-    <p-button (click)="clear()" rounded>Clear</p-button>
+    <p-button (click)="submitTeam()">Submit</p-button>
+    <p-button (click)="clear()">Clear</p-button>
   </p-inputgroup>
 </p-card>
