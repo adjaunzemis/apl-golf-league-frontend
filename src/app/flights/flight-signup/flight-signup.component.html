@@ -99,6 +99,7 @@
         [teams]="selectedFlightTeams"
         [linkGolferHome]="false"
         [teamMultiSelect]="false"
+        (teamSelected)="handleTeamSelectionChange($event)"
         *ngIf="selectedFlightTeams"
       />
     </div>

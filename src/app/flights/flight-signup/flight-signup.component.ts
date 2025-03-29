@@ -132,4 +132,8 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.flightsService.getTeams(info.id);
     this.flightsService.getDivisions(info.id);
   }
+
+  handleTeamSelectionChange(team: FlightTeam | null): void {
+    console.log(team);
+  }
 }
