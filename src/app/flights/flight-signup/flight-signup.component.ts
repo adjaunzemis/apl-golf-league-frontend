@@ -63,6 +63,8 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   private authService = inject(AuthService);
 
+  selectedTeam: FlightTeam | null = null;
+
   ngOnInit(): void {
     this.userSub = this.authService.user.subscribe((user) => {
       this.isAuthenticated = !user ? false : true;
@@ -134,6 +136,6 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   handleTeamSelectionChange(team: FlightTeam | null): void {
-    console.log(team);
+    this.selectedTeam = team;
   }
 }

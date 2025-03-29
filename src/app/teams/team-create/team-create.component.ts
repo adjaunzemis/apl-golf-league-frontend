@@ -1,4 +1,12 @@
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
@@ -13,7 +21,7 @@ import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
 import { GolfersService } from '../../golfers/golfers.service';
 import { CommonModule } from '@angular/common';
-import { FlightDivision, FlightTeamGolfer } from 'src/app/shared/flight.model';
+import { FlightDivision, FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 import { TeamsService } from '../teams.service';
 import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
 
@@ -33,14 +41,18 @@ import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
     TableModule,
   ],
 })
-export class TeamCreateComponent implements OnInit, OnDestroy {
+export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
   @Input() allowSubstitutes = false;
+
   @Input() flightId: number;
   @Input() divisionOptions: FlightDivision[];
-  @Input() teamId?: number;
-  @Input() teamGolfers: FlightTeamGolfer[] = [];
+
+  @Input() initialTeam: FlightTeam | null;
+  teamId: number | null = null;
+  teamGolfers: FlightTeamGolfer[] = [];
 
   teamName: string;
+
   newGolfer: Golfer | null = null;
   newGolferRole: string | undefined;
   newGolferDivision: FlightDivision | null = null;
@@ -88,8 +100,21 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialTeam']) {
+      if (changes['initialTeam'].currentValue === null) {
+        this.teamId = null;
+        this.clearTeam();
+      } else {
+        const team: FlightTeam = changes['initialTeam'].currentValue;
+        this.teamId = team.team_id;
+        this.teamName = team.name;
+        this.teamGolfers = team.golfers;
+      }
+    }
+  }
+
   addGolferToTeam(): void {
-    // TODO: Validate entries
     if (!this.newGolfer || !this.newGolferDivision || this.newGolferRole === undefined) {
       return;
     }
@@ -178,6 +203,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy {
   }
 
   private clearTeam(): void {
+    this.teamId = null;
     this.teamName = '';
     this.teamGolfers = [];
   }
