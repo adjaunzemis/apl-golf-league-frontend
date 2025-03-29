@@ -154,13 +154,13 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   }
 
   getUnpaidEmailAddresses(): string {
-    let mailToList = 'mailto:';
+    let mailToList = '';
     for (const payment of this.leagueDuesPayments) {
       if (
         payment.amount_due > payment.amount_paid &&
         !(payment.method === 'Exempt' || payment.method === 'Linked')
       ) {
-        if (payment.golfer_email !== undefined) {
+        if (payment.golfer_email !== undefined || payment.golfer_email !== null) {
           mailToList += payment.golfer_email + ';';
         }
       }
