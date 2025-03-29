@@ -15,13 +15,14 @@ import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 })
 export class FlightTeamsComponent {
   @Input() teams: FlightTeam[];
+  @Input() linkGolferHome = true;
 
   selectedGolfer: FlightTeamGolfer;
 
   private router = inject(Router);
 
   onGolferSelected(): void {
-    if (this.selectedGolfer.golfer_id) {
+    if (this.linkGolferHome && this.selectedGolfer.golfer_id) {
       this.router.navigate(['/golfer'], {
         queryParams: { id: this.selectedGolfer.golfer_id },
       });
