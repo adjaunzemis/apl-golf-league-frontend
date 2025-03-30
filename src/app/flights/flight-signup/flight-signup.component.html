@@ -109,11 +109,17 @@
       <app-team-create
         [allowSubstitutes]="isUserAdmin()"
         [allowDelete]="isUserAdmin()"
+        [golferOptions]="golfers"
         [flightId]="selectedFlight.id"
         [divisionOptions]="selectedFlightDivisions"
         [initialTeam]="selectedTeam"
         (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
-        *ngIf="selectedFlightDivisions"
+        *ngIf="selectedFlightDivisions && golfers"
+      />
+      <app-substitutes-signup
+        [substitutes]="selectedFlightSubstitutes"
+        [golferOptions]="golfers"
+        *ngIf="selectedFlightSubstitutes && golfers"
       />
     </div>
   </div>

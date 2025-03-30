@@ -9,15 +9,23 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
 
 import { FlightsService } from '../flights.service';
-import { FlightDivision, FlightInfo, FlightTeam } from 'src/app/shared/flight.model';
+import {
+  FlightDivision,
+  FlightInfo,
+  FlightTeam,
+  FlightTeamGolfer,
+} from 'src/app/shared/flight.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
 import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.component';
+import { SubstitutesSignupComponent } from './substitutes-signup/substitutes-signup.component';
 import { FlightInfoComponent } from '../flight-home/flight-info/flight-info.component';
 import { FlightTeamsComponent } from '../flight-home/flight-teams/flight-teams.component';
 import { FlightDivisionsComponent } from '../flight-home/flight-divisions/flight-divisions.component';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/shared/user.model';
+import { Golfer } from 'src/app/shared/golfer.model';
+import { GolfersService } from 'src/app/golfers/golfers.service';
 
 @Component({
   selector: 'app-flight-signup',
@@ -35,6 +43,7 @@ import { User } from 'src/app/shared/user.model';
     FlightDivisionsComponent,
     FlightTeamsComponent,
     TeamCreateComponent,
+    SubstitutesSignupComponent,
   ],
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
@@ -42,14 +51,20 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   currentDate = new Date();
 
+  golfers!: Golfer[];
+  private golfersSub: Subscription;
+  private golfersService = inject(GolfersService);
+
   flights!: FlightInfo[];
 
   selectedFlight: FlightInfo | undefined;
   selectedFlightTeams: FlightTeam[] | undefined;
+  selectedFlightSubstitutes: FlightTeamGolfer[] | undefined;
   selectedFlightDivisions: FlightDivision[] | undefined;
 
   private infoSub: Subscription;
   private teamsSub: Subscription;
+  private substitutesSub: Subscription;
   private divisionsSub: Subscription;
   private flightsService = inject(FlightsService);
 
@@ -73,6 +88,19 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
+      this.golfers = result.sort((a: Golfer, b: Golfer) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+    });
+    this.golfersService.getAllGolfers();
+
     this.infoSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       this.flights = [...result];
       this.isLoading = false;
@@ -80,6 +108,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
     this.teamsSub = this.flightsService.getTeamsUpdateListener().subscribe((result) => {
       this.selectedFlightTeams = [...result];
+    });
+
+    this.substitutesSub = this.flightsService.getSubstitutesUpdateListener().subscribe((result) => {
+      this.selectedFlightSubstitutes = [...result];
     });
 
     this.divisionsSub = this.flightsService.getDivisionsUpdateListener().subscribe((result) => {
@@ -96,8 +128,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+    this.golfersSub.unsubscribe();
     this.infoSub.unsubscribe();
     this.teamsSub.unsubscribe();
+    this.substitutesSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
   }
@@ -132,6 +166,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     }
     this.selectedFlight = info;
     this.flightsService.getTeams(info.id);
+    this.flightsService.getSubstitutes(info.id);
     this.flightsService.getDivisions(info.id);
   }
 
@@ -141,6 +176,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   refreshSelectedFlightTeams(flightId: number): void {
     this.flightsService.getTeams(flightId);
+    this.flightsService.getSubstitutes(flightId);
   }
 
   isUserAdmin(): boolean {
