@@ -110,10 +110,9 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
       this.clear();
     }
     if (changes['initialTeam']) {
-      this.clearNewGolfer();
-      if (changes['initialTeam'].currentValue === null) {
-        this.teamId = null;
-      } else {
+      this.clear();
+      this.teamId = null;
+      if (changes['initialTeam'].currentValue !== null) {
         this.refreshFromTeam(changes['initialTeam'].currentValue as FlightTeam);
       }
     }
