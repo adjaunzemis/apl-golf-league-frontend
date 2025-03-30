@@ -1,8 +1,8 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
-import { AccordionModule } from 'primeng/accordion';
+import { AccordionModule, AccordionTabOpenEvent } from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
 
 import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
@@ -15,16 +15,28 @@ import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 })
 export class FlightTeamsComponent {
   @Input() teams: FlightTeam[];
+  @Input() linkGolferHome = true;
+  @Input() teamMultiSelect = true;
+
+  @Output() teamSelected = new EventEmitter<FlightTeam | null>();
 
   selectedGolfer: FlightTeamGolfer;
 
   private router = inject(Router);
 
   onGolferSelected(): void {
-    if (this.selectedGolfer.golfer_id) {
+    if (this.linkGolferHome && this.selectedGolfer.golfer_id) {
       this.router.navigate(['/golfer'], {
         queryParams: { id: this.selectedGolfer.golfer_id },
       });
     }
+  }
+
+  onTeamSelected(event: AccordionTabOpenEvent): void {
+    this.teamSelected.emit(this.teams[event.index]);
+  }
+
+  onTeamDeselected(): void {
+    this.teamSelected.emit(null);
   }
 }

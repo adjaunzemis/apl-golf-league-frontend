@@ -35,10 +35,9 @@ const routes: Routes = environment.maintenance
     ]
   : [
       { path: '', component: LeagueHomeComponent },
-      // { path: 'signup', component: SignupComponent },
       { path: 'under-construction', component: UnderConstructionComponent },
       { path: 'flight', component: FlightHomeComponent },
-      { path: 'flight/signup', component: FlightSignupComponent },
+      { path: 'flight-signup', component: FlightSignupComponent },
       { path: 'flight/team', component: TeamHomeComponent, canActivate: [UnderConstructionGuard] },
       {
         path: 'flight/match/scorecard',
@@ -61,7 +60,7 @@ const routes: Routes = environment.maintenance
         canActivate: [AuthGuard],
       },
       { path: 'tournament', component: TournamentHomeComponent },
-      { path: 'tournament/signup', component: TournamentSignupComponent },
+      { path: 'tournament-signup', component: TournamentSignupComponent },
       {
         path: 'tournament/scores',
         component: TournamentScorecardCreateComponent,

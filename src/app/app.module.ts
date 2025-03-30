@@ -27,7 +27,6 @@ import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
 import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
-import { TeamCreateComponent } from './signup/team-create.component'; // TODO: Move to signup module
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { PrimeNGModule } from './primeng.module';
 import { FlightsDashboardComponent } from './flights/flights-dashboard/flights-dashboard.component';
@@ -44,7 +43,6 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
     FooterComponent,
     HandicapsComponent,
     SignupComponent,
-    TeamCreateComponent,
   ],
   bootstrap: [AppComponent],
   imports: [

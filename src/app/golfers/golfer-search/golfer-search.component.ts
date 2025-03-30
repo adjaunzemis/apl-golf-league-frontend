@@ -7,6 +7,7 @@ import { CardModule } from 'primeng/card';
 import { TableModule, TableRowSelectEvent } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { GolfersService } from '../golfers.service';
 import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
@@ -15,7 +16,15 @@ import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
   selector: 'app-golfer-search',
   templateUrl: './golfer-search.component.html',
   styleUrls: ['./golfer-search.component.css'],
-  imports: [CommonModule, FormsModule, CardModule, TableModule, TagModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CardModule,
+    TableModule,
+    TagModule,
+    ProgressSpinnerModule,
+    InputTextModule,
+  ],
 })
 export class GolferSearchComponent implements OnInit, OnDestroy {
   isLoading = true;

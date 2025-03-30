@@ -1,4 +1,4 @@
-<div class="flex flex-0 justify-center w-full py-4">
+<div class="flex flex-0 justify-center gap-4 py-4">
   <p-card>
     <div class="flex flex-1 flex-col px-4 py-4">
       <span class="text-2xl font-semibold">Flight Sign-Ups</span>
@@ -13,20 +13,20 @@
       />
     </div>
 
-    <div class="flex flex-2 flex-col items-center pt-4" *ngIf="!isLoading">
-      <span class="font-semibold"
-        >Sign-ups open on {{ getEarliestSignupDate() | date: 'longDate' }}.</span
-      >
-      <span class="font-semibold">Check back soon!</span>
-    </div>
-
     <p-dataview #dv [value]="flights" *ngIf="!isLoading">
       <ng-template #list let-items>
         <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
-          <div class="col-span-12 listItem" *ngFor="let item of items; let first = first">
+          <div
+            class="col-span-12"
+            [ngClass]="{ listItem: isSignupOpen(item) || this.currentUser?.is_admin }"
+            *ngFor="let item of items; let first = first"
+          >
             <div
               class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
               [ngClass]="{ 'border-t border-gray-300': !first }"
+              (click)="selectFlight(item)"
+              (keyup)="selectFlight(item)"
+              aria-hidden="true"
             >
               <div class="md:w-20 relative ml-4">
                 <img
@@ -51,15 +51,70 @@
                       Tee Times: {{ item.tee_times }}
                     </div>
                     <div class="hidden lg:block text-sm font-medium text-gray-600">
-                      Sign-ups Open: {{ item.signup_start_date | date: 'longDate' : 'ET' }}
+                      Sign-ups: {{ item.signup_start_date | date: 'shortDate' : 'ET' }} -
+                      {{ item.signup_stop_date | date: 'shortDate' : 'ET' }}
                     </div>
                   </div>
                 </div>
               </div>
+              <p-tag
+                class="flex flex-col gap-0 text-sm text-center px-2 py-1 bg-blue-400"
+                *ngIf="getDaysUntilSignupStart(item) > 0"
+              >
+                <div>Opens:</div>
+                <p *ngIf="getDaysUntilSignupStart(item) > 1">
+                  {{ getDaysUntilSignupStart(item) }} days
+                </p>
+                <p *ngIf="getDaysUntilSignupStart(item) === 1">tomorrow!</p>
+              </p-tag>
+              <p-tag
+                class="text-sm text-center pl-1 py-1 bg-green-500"
+                *ngIf="isSignupOpen(item) && getDaysUntilSignupStop(item) > 2"
+                >Open</p-tag
+              >
+              <p-tag
+                class="flex flex-col gap-0 text-sm text-center px-2 py-1 bg-orange-400"
+                *ngIf="isSignupOpen(item) && getDaysUntilSignupStop(item) <= 2"
+              >
+                <p>Closes:</p>
+                <p *ngIf="getDaysUntilSignupStop(item) === 2">tomorrow!</p>
+                <p *ngIf="getDaysUntilSignupStop(item) === 1">today!</p>
+              </p-tag>
+              <p-tag
+                class="text-sm text-center pl-1 py-1 bg-red-400"
+                *ngIf="getDaysUntilSignupStop(item) <= 0"
+                >Closed</p-tag
+              >
             </div>
           </div>
         </div>
       </ng-template>
     </p-dataview>
   </p-card>
+
+  <div class="flex flex-row flex-stretch gap-4" *ngIf="selectedFlight">
+    <div class="flex flex-col flex-stretch gap-4">
+      <app-flight-info [info]="selectedFlight" />
+      <app-flight-teams
+        [teams]="selectedFlightTeams"
+        [linkGolferHome]="false"
+        [teamMultiSelect]="false"
+        (teamSelected)="handleTeamSelectionChange($event)"
+        *ngIf="selectedFlightTeams"
+      />
+    </div>
+
+    <div class="flex flex-col flex-stretch gap-4">
+      <app-flight-divisions [divisions]="selectedFlightDivisions" *ngIf="selectedFlightDivisions" />
+      <app-team-create
+        [allowSubstitutes]="isUserAdmin()"
+        [allowDelete]="isUserAdmin()"
+        [flightId]="selectedFlight.id"
+        [divisionOptions]="selectedFlightDivisions"
+        [initialTeam]="selectedTeam"
+        (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
+        *ngIf="selectedFlightDivisions"
+      />
+    </div>
+  </div>
 </div>

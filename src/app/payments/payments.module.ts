@@ -8,6 +8,7 @@ import { LeagueDuesPaymentsListComponent } from './league-dues-payments-list/lea
 import { LeagueDuesPaymentComponent } from './league-dues-payment/league-dues-payment.component';
 import { TournamentEntryFeePaymentsListComponent } from './tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
 import { TournamentEntryFeesPaymentComponent } from './tournament-entry-fees-payment/tournament-entry-fees-payment.component';
+import { PrimeNGModule } from '../primeng.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { TournamentEntryFeesPaymentComponent } from './tournament-entry-fees-pay
     TournamentEntryFeePaymentsListComponent,
     TournamentEntryFeesPaymentComponent,
   ],
-  imports: [CommonModule, RouterModule, AngularMaterialModule, FormsModule],
+  imports: [CommonModule, RouterModule, AngularMaterialModule, FormsModule, PrimeNGModule],
   exports: [LeagueDuesPaymentComponent, TournamentEntryFeesPaymentComponent],
 })
 export class PaymentsModule {}

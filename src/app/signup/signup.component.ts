@@ -14,7 +14,7 @@ import { DivisionData } from '../shared/division.model';
 import { GolfersService } from '../golfers/golfers.service';
 import { TeamInfo } from '../shared/team.model';
 import { TeamCreate, TeamGolferCreate } from './../shared/team.model';
-import { TeamCreateComponent } from './team-create.component';
+import { TeamCreateComponent } from '../teams/team-create/team-create.component';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../shared/user.model';
 import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
@@ -272,10 +272,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     const golfers: TeamGolferData[] = [];
     for (const golfer of teamCreate.golfers) {
       golfers.push({
-        golfer_id: golfer.golfer.id,
-        golfer_name: golfer.golfer.name,
-        division_id: golfer.division.id,
-        division_name: golfer.division.name,
+        golfer_id: golfer.golfer_id,
+        golfer_name: golfer.golfer_name,
+        division_id: golfer.division_id,
+        division_name: '', // TODO: remove?
         role: golfer.role,
         team_id: teamCreate.id ? teamCreate.id : -1, // TODO: refactor placeholder
         team_name: teamCreate.name,
@@ -325,9 +325,10 @@ export class SignupComponent implements OnInit, OnDestroy {
 
         if (golfer && division) {
           initTeamGolfers.push({
-            golfer: golfer,
+            golfer_id: golfer.id,
+            golfer_name: golfer.name,
             role: initTeamGolfer.role,
-            division: division,
+            division_id: division.id,
           });
         }
       }
