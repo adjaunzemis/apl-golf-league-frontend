@@ -16,6 +16,7 @@ import {
   FlightStandings,
   FlightStatistics,
   FlightTeam,
+  FlightTeamGolfer,
 } from 'src/app/shared/flight.model';
 import { MatchSummary } from 'src/app/shared/match.model';
 import { FlightStatisticsComponent } from './flight-statistics/flight-statistics.component';
@@ -39,6 +40,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   info: FlightInfo | undefined;
   divisions: FlightDivision[] | undefined;
   teams: FlightTeam[] | undefined;
+  substitutes: FlightTeamGolfer[] | undefined;
   standings: FlightStandings | undefined;
   statistics: FlightStatistics | undefined;
   matches: MatchSummary[] | undefined;
@@ -48,6 +50,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   private flightsService = inject(FlightsService);
   private infoSub: Subscription;
   private teamsSub: Subscription;
+  private substitutesSub: Subscription;
   private standingsSub: Subscription;
   private statisticsSub: Subscription;
   private matchesSub: Subscription;
@@ -63,6 +66,9 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
     this.teamsSub = this.flightsService
       .getTeamsUpdateListener()
       .subscribe((result) => (this.teams = result));
+    this.substitutesSub = this.flightsService
+      .getSubstitutesUpdateListener()
+      .subscribe((result) => (this.substitutes = result));
     this.standingsSub = this.flightsService
       .getStandingsUpdateListener()
       .subscribe((result) => (this.standings = result));
@@ -81,6 +87,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
         this.flightsService.getInfo(flightId);
         this.flightsService.getDivisions(flightId);
         this.flightsService.getTeams(flightId);
+        this.flightsService.getSubstitutes(flightId);
         this.flightsService.getStandings(flightId);
         this.flightsService.getStatistics(flightId);
         this.flightsService.getMatches(flightId);
@@ -92,6 +99,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
     this.infoSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.teamsSub.unsubscribe();
+    this.substitutesSub.unsubscribe();
     this.standingsSub.unsubscribe();
     this.statisticsSub.unsubscribe();
     this.matchesSub.unsubscribe();

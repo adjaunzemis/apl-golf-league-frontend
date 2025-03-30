@@ -27,7 +27,12 @@
   <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
 
   <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
-  <app-flight-teams class="col-span-12 md:col-span- xl:col-span-3" [teams]="teams" *ngIf="teams" />
+  <app-flight-teams
+    class="col-span-12 md:col-span- xl:col-span-3"
+    [teams]="teams"
+    [substitutes]="substitutes"
+    *ngIf="teams && substitutes"
+  />
   <app-flight-statistics
     class="col-span-12 xl:col-span-7"
     [statistics]="statistics"
