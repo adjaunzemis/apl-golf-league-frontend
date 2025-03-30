@@ -43,6 +43,8 @@ import { NotificationService } from 'src/app/notifications/notification.service'
 export class SubstitutesSignupComponent implements OnInit, OnChanges {
   @Output() refreshTeamsForFlight = new EventEmitter<number>();
 
+  @Input() allowDelete = false;
+
   @Input() substitutes: FlightTeamGolfer[];
 
   @Input() golferOptions: Golfer[];

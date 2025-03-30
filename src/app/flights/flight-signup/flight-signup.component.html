@@ -117,6 +117,7 @@
         *ngIf="selectedFlightDivisions && golfers"
       />
       <app-substitutes-signup
+        [allowDelete]="isUserAdmin()"
         [substitutes]="selectedFlightSubstitutes"
         [golferOptions]="golfers"
         [flightId]="selectedFlight.id"

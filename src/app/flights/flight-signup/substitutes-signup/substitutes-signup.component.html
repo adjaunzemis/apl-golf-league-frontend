@@ -70,7 +70,12 @@
               <td class="text-gray-700">{{ golfer.role }}</td>
               <td class="text-gray-700">{{ golfer.division }}</td>
               <td>
-                <p-button icon="pi pi-minus text-sm" (click)="removeGolfer(golfer)" rounded />
+                <p-button
+                  icon="pi pi-minus text-sm"
+                  (click)="removeGolfer(golfer)"
+                  rounded
+                  *ngIf="allowDelete"
+                />
               </td>
             </tr>
           </ng-template>
