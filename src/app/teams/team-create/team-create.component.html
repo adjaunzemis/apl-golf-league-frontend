@@ -2,7 +2,7 @@
   <div class="flex flex-row items-center px-4 pt-4">
     <span class="text-2xl font-semibold">{{ teamId ? 'Update' : 'Create' }} Team</span>
     <div class="mx-auto"></div>
-    <p-button class="hidden md:block" (click)="deleteTeam()">
+    <p-button class="hidden md:block" (click)="deleteTeam()" *ngIf="allowDelete && teamId">
       <span class="text-sm pi pi-times"></span>
       <span class="font-semibold">Delete</span>
     </p-button>

@@ -1,10 +1,12 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +44,8 @@ import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
   ],
 })
 export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
+  @Output() refreshTeamsForFlight = new EventEmitter<number>();
+
   @Input() allowSubstitutes = false;
   @Input() allowDelete = false;
 
@@ -107,12 +111,15 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
         this.teamId = null;
         this.clearTeam();
       } else {
-        const team: FlightTeam = changes['initialTeam'].currentValue;
-        this.teamId = team.team_id;
-        this.teamName = team.name;
-        this.teamGolfers = team.golfers;
+        this.refreshFromTeam(changes['initialTeam'].currentValue as FlightTeam);
       }
     }
+  }
+
+  private refreshFromTeam(team: FlightTeam): void {
+    this.teamId = team.team_id;
+    this.teamName = team.name;
+    this.teamGolfers = [...team.golfers];
   }
 
   addGolferToTeam(): void {
@@ -137,8 +144,6 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   submitTeam(): void {
-    // TODO: Validate? Or in API?
-
     const golfers: TeamGolferCreate[] = [];
     for (const teamGolfer of this.teamGolfers) {
       golfers.push({
@@ -168,7 +173,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
 
           this.clear();
 
-          // TODO: Refresh team list
+          this.refreshTeamsForFlight.emit(this.flightId);
         },
         () => {
           console.error(
@@ -189,7 +194,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
 
           this.clear();
 
-          // TODO: Refresh team list
+          this.refreshTeamsForFlight.emit(this.flightId);
         },
         () => {
           console.error(`[TeamCreateComponent] Unable to create team '${teamData.name}'`);
@@ -211,7 +216,7 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
 
           this.clear();
 
-          // TODO: Refresh team list
+          this.refreshTeamsForFlight.emit(this.flightId);
         },
         () => {
           console.error(`[TeamCreateComponent] Unable to delete team id=${this.teamId}`);

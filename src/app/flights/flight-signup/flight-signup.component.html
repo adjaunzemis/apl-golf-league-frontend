@@ -112,6 +112,7 @@
         [flightId]="selectedFlight.id"
         [divisionOptions]="selectedFlightDivisions"
         [initialTeam]="selectedTeam"
+        (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
         *ngIf="selectedFlightDivisions"
       />
     </div>

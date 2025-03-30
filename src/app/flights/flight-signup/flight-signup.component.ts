@@ -139,6 +139,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.selectedTeam = team;
   }
 
+  refreshSelectedFlightTeams(flightId: number): void {
+    this.flightsService.getTeams(flightId);
+  }
+
   isUserAdmin(): boolean {
     if (!this.currentUser) {
       return false;
