@@ -15,6 +15,7 @@ import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 })
 export class FlightTeamsComponent {
   @Input() teams: FlightTeam[];
+  @Input() substitutes: FlightTeamGolfer[] = [];
   @Input() linkGolferHome = true;
   @Input() teamMultiSelect = true;
 

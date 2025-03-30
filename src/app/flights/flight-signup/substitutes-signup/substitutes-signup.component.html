@@ -1,0 +1,86 @@
+<p-card>
+  <div class="flex flex-col items-start px-4 py-4">
+    <span class="text-2xl font-semibold">Substitutes</span>
+
+    <span class="font-normal pt-2"
+      >Golfers willing to substitute for unavailable regular team members.</span
+    >
+    <span class="font-normal"
+      >Substitutes cannot be regular members on another team in the same flight.</span
+    >
+  </div>
+
+  <p-inputgroup class="pb-4">
+    <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
+
+    <p-select
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-40 ml-2 pl-2 py-1"
+      [options]="golferOptions"
+      [(ngModel)]="newGolfer"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      placeholder="Golfer"
+    >
+      <ng-template #selectedItem let-selectedOption>
+        <div class="flex items-center gap-2">
+          <div>{{ selectedOption.name }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-golfer #item>
+        <div class="flex items-center gap-2">
+          <div>{{ golfer.name }}</div>
+        </div>
+      </ng-template>
+    </p-select>
+
+    <p-select
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-28 ml-2 pl-2 py-1"
+      [options]="divisionOptions"
+      [(ngModel)]="newGolferDivision"
+      optionLabel="name"
+      placeholder="Division"
+    />
+
+    <p-button (click)="addGolfer()">
+      <span class="pi pi-plus text-sm"></span>
+    </p-button>
+  </p-inputgroup>
+
+  <p-accordion>
+    <p-accordion-panel [value]="0">
+      <p-accordion-header class="font-semibold px-4 py-2"
+        >Roster ({{ substitutes.length }} golfer{{
+          substitutes.length !== 1 ? 's' : ''
+        }})</p-accordion-header
+      >
+      <p-accordion-content>
+        <p-table [value]="substitutes" dataKey="golfer_id" *ngIf="substitutes.length > 0">
+          <ng-template #header>
+            <tr>
+              <th>Golfer</th>
+              <th>Role</th>
+              <th>Division</th>
+              <th class="w-4"></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-golfer>
+            <tr [pSelectableRow]="golfer">
+              <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+              <td class="text-gray-700">{{ golfer.role }}</td>
+              <td class="text-gray-700">{{ golfer.division }}</td>
+              <td>
+                <p-button
+                  icon="pi pi-minus text-sm"
+                  (click)="removeGolfer(golfer)"
+                  rounded
+                  *ngIf="allowDelete"
+                />
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-accordion-content>
+    </p-accordion-panel>
+  </p-accordion>
+</p-card>

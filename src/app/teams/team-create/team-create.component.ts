@@ -4,13 +4,11 @@ import {
   inject,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -21,7 +19,6 @@ import { TableModule } from 'primeng/table';
 
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
-import { GolfersService } from '../../golfers/golfers.service';
 import { CommonModule } from '@angular/common';
 import { FlightDivision, FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 import { TeamsService } from '../teams.service';
@@ -43,14 +40,17 @@ import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
     TableModule,
   ],
 })
-export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
+export class TeamCreateComponent implements OnInit, OnChanges {
   @Output() refreshTeamsForFlight = new EventEmitter<number>();
 
   @Input() allowSubstitutes = false;
   @Input() allowDelete = false;
 
+  @Input() golferOptions: Golfer[] = [];
+
   @Input() flightId: number;
   @Input() divisionOptions: FlightDivision[];
+  private divisionNameToId: Record<string, number> = {};
 
   @Input() initialTeam: FlightTeam | null;
   teamId: number | null = null;
@@ -64,14 +64,6 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
 
   roleOptions = ['Captain', 'Player'];
 
-  private divisionNameToId: Record<string, number> = {};
-
-  golferOptions: Golfer[] = [];
-  golferNameOptions: string[] = [];
-  filteredGolferOptionsArray: Observable<Golfer[]>[] = [];
-  private golfersSub: Subscription;
-  private golfersService = inject(GolfersService);
-
   private teamsService = inject(TeamsService);
 
   private notificationService = inject(NotificationService);
@@ -81,40 +73,32 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
       this.roleOptions.push('Substitute');
     }
 
-    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
-      this.golferOptions = result.sort((a: Golfer, b: Golfer) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      this.golferNameOptions = result.map((golfer) => golfer.name);
-    });
-
-    this.golfersService.getAllGolfers();
-
-    for (const d of this.divisionOptions) {
-      this.divisionNameToId[d.name] = d.id;
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.golfersSub.unsubscribe();
+    this.updateDivisionIdMap();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['flightId']) {
+    if (changes['golferOptions'] || changes['flightId']) {
       this.clear();
     }
+
+    if (changes['divisionOptions']) {
+      this.clear();
+      this.updateDivisionIdMap();
+    }
+
     if (changes['initialTeam']) {
       this.clear();
       this.teamId = null;
       if (changes['initialTeam'].currentValue !== null) {
         this.refreshFromTeam(changes['initialTeam'].currentValue as FlightTeam);
       }
+    }
+  }
+
+  private updateDivisionIdMap(): void {
+    this.divisionNameToId = {};
+    for (const d of this.divisionOptions) {
+      this.divisionNameToId[d.name] = d.id;
     }
   }
 
