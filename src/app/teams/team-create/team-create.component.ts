@@ -50,6 +50,7 @@ export class TeamCreateComponent implements OnInit, OnChanges {
 
   @Input() flightId: number;
   @Input() divisionOptions: FlightDivision[];
+  private divisionNameToId: Record<string, number> = {};
 
   @Input() initialTeam: FlightTeam | null;
   teamId: number | null = null;
@@ -63,8 +64,6 @@ export class TeamCreateComponent implements OnInit, OnChanges {
 
   roleOptions = ['Captain', 'Player'];
 
-  private divisionNameToId: Record<string, number> = {};
-
   private teamsService = inject(TeamsService);
 
   private notificationService = inject(NotificationService);
@@ -74,21 +73,32 @@ export class TeamCreateComponent implements OnInit, OnChanges {
       this.roleOptions.push('Substitute');
     }
 
-    for (const d of this.divisionOptions) {
-      this.divisionNameToId[d.name] = d.id;
-    }
+    this.updateDivisionIdMap();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['golferOptions'] || changes['flightId'] || changes['divisionOptions']) {
+    if (changes['golferOptions'] || changes['flightId']) {
       this.clear();
     }
+
+    if (changes['divisionOptions']) {
+      this.clear();
+      this.updateDivisionIdMap();
+    }
+
     if (changes['initialTeam']) {
       this.clear();
       this.teamId = null;
       if (changes['initialTeam'].currentValue !== null) {
         this.refreshFromTeam(changes['initialTeam'].currentValue as FlightTeam);
       }
+    }
+  }
+
+  private updateDivisionIdMap(): void {
+    this.divisionNameToId = {};
+    for (const d of this.divisionOptions) {
+      this.divisionNameToId[d.name] = d.id;
     }
   }
 

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from './../../environments/environment';
 import { TeamCreate } from '../shared/team.model';
+import { Substitute } from '../shared/substitute.model';
 
 @Injectable({
   providedIn: 'root',
@@ -51,5 +52,16 @@ export class TeamsService {
 
   deleteTeam(teamId: number): Observable<{ id: number; name: string }> {
     return this.http.delete<{ id: number; name: string }>(environment.apiUrl + `teams/${teamId}`);
+  }
+
+  addSubstitute(substitute: Substitute): Observable<Substitute> {
+    return this.http.post<Substitute>(environment.apiUrl + `substitutes/`, substitute);
+  }
+
+  deleteSubstitute(substitute: Substitute): Observable<Substitute> {
+    return this.http.delete<Substitute>(
+      environment.apiUrl +
+        `substitutes/?flight_id=${substitute.flight_id}&golfer_id=${substitute.golfer_id}`,
+    );
   }
 }

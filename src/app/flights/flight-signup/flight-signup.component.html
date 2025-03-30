@@ -119,7 +119,10 @@
       <app-substitutes-signup
         [substitutes]="selectedFlightSubstitutes"
         [golferOptions]="golfers"
-        *ngIf="selectedFlightSubstitutes && golfers"
+        [flightId]="selectedFlight.id"
+        [divisionOptions]="selectedFlightDivisions"
+        (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
+        *ngIf="selectedFlightSubstitutes && selectedFlightDivisions && golfers"
       />
     </div>
   </div>
