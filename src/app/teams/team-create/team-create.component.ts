@@ -106,6 +106,9 @@ export class TeamCreateComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['flightId']) {
+      this.clear();
+    }
     if (changes['initialTeam']) {
       this.clearNewGolfer();
       if (changes['initialTeam'].currentValue === null) {
