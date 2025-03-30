@@ -10,6 +10,43 @@
     >
   </div>
 
+  <p-inputgroup class="pb-4">
+    <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
+
+    <p-select
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-40 ml-2 pl-2 py-1"
+      [options]="golferOptions"
+      [(ngModel)]="newGolfer"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      placeholder="Golfer"
+    >
+      <ng-template #selectedItem let-selectedOption>
+        <div class="flex items-center gap-2">
+          <div>{{ selectedOption.name }}</div>
+        </div>
+      </ng-template>
+      <ng-template let-golfer #item>
+        <div class="flex items-center gap-2">
+          <div>{{ golfer.name }}</div>
+        </div>
+      </ng-template>
+    </p-select>
+
+    <p-select
+      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-28 ml-2 pl-2 py-1"
+      [options]="divisionOptions"
+      [(ngModel)]="newGolferDivision"
+      optionLabel="name"
+      placeholder="Division"
+    />
+
+    <p-button (click)="addGolfer()">
+      <span class="pi pi-plus text-sm"></span>
+    </p-button>
+  </p-inputgroup>
+
   <p-accordion>
     <p-accordion-panel [value]="0">
       <p-accordion-header class="font-semibold px-4 py-2"
@@ -18,43 +55,6 @@
         }})</p-accordion-header
       >
       <p-accordion-content>
-        <p-inputgroup class="p-4">
-          <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
-
-          <p-select
-            class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-40 ml-2 pl-2 py-1"
-            [options]="golferOptions"
-            [(ngModel)]="newGolfer"
-            optionLabel="name"
-            [filter]="true"
-            filterBy="name"
-            placeholder="Golfer"
-          >
-            <ng-template #selectedItem let-selectedOption>
-              <div class="flex items-center gap-2">
-                <div>{{ selectedOption.name }}</div>
-              </div>
-            </ng-template>
-            <ng-template let-golfer #item>
-              <div class="flex items-center gap-2">
-                <div>{{ golfer.name }}</div>
-              </div>
-            </ng-template>
-          </p-select>
-
-          <p-select
-            class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-28 ml-2 pl-2 py-1"
-            [options]="divisionOptions"
-            [(ngModel)]="newGolferDivision"
-            optionLabel="name"
-            placeholder="Division"
-          />
-
-          <p-button (click)="addGolfer()">
-            <span class="pi pi-plus text-sm"></span>
-          </p-button>
-        </p-inputgroup>
-
         <p-table [value]="substitutes" dataKey="golfer_id" *ngIf="substitutes.length > 0">
           <ng-template #header>
             <tr>

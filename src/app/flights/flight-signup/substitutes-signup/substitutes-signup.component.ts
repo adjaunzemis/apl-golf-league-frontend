@@ -63,11 +63,11 @@ export class SubstitutesSignupComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['golferOptions'] || changes['flightId']) {
-      // this.clearNewSubstitute();
+      this.clearNewSubstitute();
     }
 
     if (changes['divisionOptions']) {
-      // this.clearNewSubstitute();
+      this.clearNewSubstitute();
       this.updateDivisionIdMap();
     }
   }
