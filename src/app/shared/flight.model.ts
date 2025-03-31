@@ -1,5 +1,6 @@
 import { DivisionData, DivisionCreate } from './division.model';
-import { FreeAgentCadence, GolferStatistics } from './golfer.model';
+import { FreeAgentCadence } from './free-agent.model';
+import { GolferStatistics } from './golfer.model';
 import { MatchSummary } from './match.model';
 import { TeamData } from './team.model';
 

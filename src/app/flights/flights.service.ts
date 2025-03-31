@@ -12,6 +12,7 @@ import {
   FlightTeam,
   FlightStatistics,
   FlightGolfer,
+  FlightFreeAgent,
 } from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
@@ -35,6 +36,9 @@ export class FlightsService {
 
   private flightSubstitutes: FlightGolfer[];
   private flightSubstitutesUpdated = new Subject<FlightGolfer[]>();
+
+  private flightFreeAgents: FlightFreeAgent[];
+  private flightFreeAgentsUpdated = new Subject<FlightFreeAgent[]>();
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
@@ -146,6 +150,19 @@ export class FlightsService {
 
   getSubstitutesUpdateListener(): Observable<FlightGolfer[]> {
     return this.flightSubstitutesUpdated.asObservable();
+  }
+
+  getFreeAgents(id: number): void {
+    this.http
+      .get<FlightFreeAgent[]>(environment.apiUrl + `flights/free_agents/${id}`)
+      .subscribe((result) => {
+        this.flightFreeAgents = result;
+        this.flightFreeAgentsUpdated.next(result);
+      });
+  }
+
+  getFreeAgentsUpdateListener(): Observable<FlightFreeAgent[]> {
+    return this.flightFreeAgentsUpdated.asObservable();
   }
 
   getStandings(id: number): void {
