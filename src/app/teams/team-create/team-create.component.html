@@ -21,11 +21,10 @@
       [(ngModel)]="teamName"
       id="teamName"
       placeholder="Ex: Teamy McTeamFace"
-      #tName="ngModel"
       required
       minlength="3"
-      maxlength="20"
-      pattern="[a-zA-Z0-9\s]+"
+      maxlength="25"
+      pattern="[a-zA-Z0-9\s\-']+"
     />
   </p-inputgroup>
 

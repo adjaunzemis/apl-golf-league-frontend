@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 import { AuthService } from '../auth/auth.service';
 import { NotificationService } from '../notifications/notification.service';
@@ -16,12 +17,13 @@ import { TournamentInfo } from '../shared/tournament.model';
 import { environment } from 'src/environments/environment';
 import { SeasonsService } from '../seasons/seasons.service';
 import { Season } from '../shared/season.model';
+import { TeamCreateComponent } from '../teams/team-create/team-create.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  providers: [SignupComponent],
+  providers: [SignupComponent, TeamCreateComponent, DialogService],
   standalone: false,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
@@ -49,6 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private seasonsService = inject(SeasonsService);
   private tournamentsService = inject(TournamentsService);
   private signupComponent = inject(SignupComponent);
+  private teamCreateComponent = inject(TeamCreateComponent);
   private dialog = inject(MatDialog);
 
   ngOnInit(): void {
@@ -113,6 +116,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
         icon: 'pi pi-clipboard',
         visible: true,
         items: [
+          {
+            label: 'Register Golfer',
+            icon: 'pi pi-user-plus',
+            visible: true,
+            callback: () => this.teamCreateComponent.onRegisterGolfer(),
+          },
           {
             label: 'Flights',
             icon: 'pi pi-venus',

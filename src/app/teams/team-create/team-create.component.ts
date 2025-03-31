@@ -236,6 +236,7 @@ export class TeamCreateComponent implements OnInit, OnChanges {
     this.newGolferDivision = null;
   }
 
+  // TODO: Consolidate with HeaderComponent?
   onRegisterGolfer(): void {
     this.dialogRef = this.dialogService.open(GolferCreateComponent, {
       width: '300px',
