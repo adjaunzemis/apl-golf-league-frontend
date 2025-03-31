@@ -7,6 +7,13 @@ export enum GolferAffiliation {
   NON_APL_EMPLOYEE = 'Non-APL Employee',
 }
 
+export enum FreeAgentCadence {
+  WEEKLY = 'Weekly',
+  BIWEEKLY = 'Biweekly',
+  MONTHLY = 'Monthly',
+  OCCASIONALLY = 'Occasionally',
+}
+
 export interface Golfer {
   id: number;
   name: string;

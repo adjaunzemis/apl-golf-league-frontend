@@ -9,12 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TagModule } from 'primeng/tag';
 
 import { FlightsService } from '../flights.service';
-import {
-  FlightDivision,
-  FlightInfo,
-  FlightTeam,
-  FlightTeamGolfer,
-} from 'src/app/shared/flight.model';
+import { FlightDivision, FlightInfo, FlightTeam, FlightGolfer } from 'src/app/shared/flight.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
 import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.component';
@@ -59,7 +54,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   selectedFlight: FlightInfo | undefined;
   selectedFlightTeams: FlightTeam[] | undefined;
-  selectedFlightSubstitutes: FlightTeamGolfer[] | undefined;
+  selectedFlightSubstitutes: FlightGolfer[] | undefined;
   selectedFlightDivisions: FlightDivision[] | undefined;
 
   private infoSub: Subscription;

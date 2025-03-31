@@ -11,7 +11,7 @@ import {
   FlightStandings,
   FlightTeam,
   FlightStatistics,
-  FlightTeamGolfer,
+  FlightGolfer,
 } from '../shared/flight.model';
 import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
@@ -33,8 +33,8 @@ export class FlightsService {
   private flightTeams: FlightTeam[];
   private flightTeamsUpdated = new Subject<FlightTeam[]>();
 
-  private flightSubstitutes: FlightTeamGolfer[];
-  private flightSubstitutesUpdated = new Subject<FlightTeamGolfer[]>();
+  private flightSubstitutes: FlightGolfer[];
+  private flightSubstitutesUpdated = new Subject<FlightGolfer[]>();
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
@@ -137,14 +137,14 @@ export class FlightsService {
 
   getSubstitutes(id: number): void {
     this.http
-      .get<FlightTeamGolfer[]>(environment.apiUrl + `flights/substitutes/${id}`)
+      .get<FlightGolfer[]>(environment.apiUrl + `flights/substitutes/${id}`)
       .subscribe((result) => {
         this.flightSubstitutes = result;
         this.flightSubstitutesUpdated.next(result);
       });
   }
 
-  getSubstitutesUpdateListener(): Observable<FlightTeamGolfer[]> {
+  getSubstitutesUpdateListener(): Observable<FlightGolfer[]> {
     return this.flightSubstitutesUpdated.asObservable();
   }
 

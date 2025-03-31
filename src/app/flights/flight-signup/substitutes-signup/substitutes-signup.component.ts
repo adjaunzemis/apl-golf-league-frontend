@@ -18,7 +18,7 @@ import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { AccordionModule } from 'primeng/accordion';
 
-import { FlightDivision, FlightTeamGolfer } from 'src/app/shared/flight.model';
+import { FlightDivision, FlightGolfer } from 'src/app/shared/flight.model';
 import { Golfer } from 'src/app/shared/golfer.model';
 import { TeamsService } from 'src/app/teams/teams.service';
 import { Substitute } from 'src/app/shared/substitute.model';
@@ -45,7 +45,7 @@ export class SubstitutesSignupComponent implements OnInit, OnChanges {
 
   @Input() allowDelete = false;
 
-  @Input() substitutes: FlightTeamGolfer[];
+  @Input() substitutes: FlightGolfer[];
 
   @Input() golferOptions: Golfer[];
 
@@ -115,7 +115,7 @@ export class SubstitutesSignupComponent implements OnInit, OnChanges {
     );
   }
 
-  removeGolfer(golfer: FlightTeamGolfer): void {
+  removeGolfer(golfer: FlightGolfer): void {
     const substitute: Substitute = {
       flight_id: this.flightId,
       golfer_id: golfer.golfer_id,

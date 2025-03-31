@@ -16,7 +16,7 @@ import {
   FlightStandings,
   FlightStatistics,
   FlightTeam,
-  FlightTeamGolfer,
+  FlightGolfer,
 } from 'src/app/shared/flight.model';
 import { MatchSummary } from 'src/app/shared/match.model';
 import { FlightStatisticsComponent } from './flight-statistics/flight-statistics.component';
@@ -40,7 +40,7 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   info: FlightInfo | undefined;
   divisions: FlightDivision[] | undefined;
   teams: FlightTeam[] | undefined;
-  substitutes: FlightTeamGolfer[] | undefined;
+  substitutes: FlightGolfer[] | undefined;
   standings: FlightStandings | undefined;
   statistics: FlightStatistics | undefined;
   matches: MatchSummary[] | undefined;
