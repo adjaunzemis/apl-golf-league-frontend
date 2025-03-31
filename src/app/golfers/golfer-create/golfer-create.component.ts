@@ -1,29 +1,29 @@
-import { Component, Inject } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormControl, Validators } from '@angular/forms';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
+import { AngularMaterialModule } from 'src/app/angular-material.module';
 
 @Component({
   templateUrl: './golfer-create.component.html',
   styleUrls: ['./golfer-create.component.css'],
-  standalone: false,
+  imports: [CommonModule, ReactiveFormsModule, AngularMaterialModule],
 })
 export class GolferCreateComponent {
-  nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [
+  nameControl: UntypedFormControl = new UntypedFormControl('', [
     Validators.required,
     Validators.minLength(3),
     Validators.maxLength(25),
     Validators.pattern("^[a-zA-Z' ]*$"),
   ]);
-  affiliationControl: UntypedFormControl = new UntypedFormControl(this.data.affiliation, [
-    Validators.required,
-  ]);
-  emailControl: UntypedFormControl = new UntypedFormControl(this.data.email, [
+  affiliationControl: UntypedFormControl = new UntypedFormControl('', [Validators.required]);
+  emailControl: UntypedFormControl = new UntypedFormControl('', [
     Validators.required,
     Validators.email,
   ]);
-  phoneControl: UntypedFormControl = new UntypedFormControl(this.data.phone, []);
+  phoneControl: UntypedFormControl = new UntypedFormControl('', []);
 
   affiliationOptions = [
     GolferAffiliation.APL_EMPLOYEE,
@@ -32,11 +32,7 @@ export class GolferCreateComponent {
     GolferAffiliation.NON_APL_EMPLOYEE,
   ];
 
-  constructor(
-    public dialogRef: MatDialogRef<GolferCreateComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: { name: string; affiliation: GolferAffiliation; email: string; phone: string },
-  ) {}
+  constructor(public dialogRef: DynamicDialogRef<GolferCreateComponent>) {}
 
   onSubmit(): void {
     let golferName: string = this.nameControl.value;

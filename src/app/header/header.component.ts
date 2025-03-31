@@ -7,10 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { NotificationService } from '../notifications/notification.service';
 import { FlightCreateComponent } from '../flights/flight-create/flight-create.component';
 import { FlightsService } from '../flights/flights.service';
-import { GolferCreateComponent } from '../golfers/golfer-create/golfer-create.component';
-import { GolfersService } from '../golfers/golfers.service';
 import { FlightInfo } from '../shared/flight.model';
-import { Golfer, GolferAffiliation } from '../shared/golfer.model';
 import { User } from '../shared/user.model';
 import { SignupComponent } from '../signup/signup.component';
 import { TournamentCreateComponent } from '../tournaments/tournament-create/tournament-create.component';
@@ -38,9 +35,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   activeSeason: Season;
   private activeSeasonSub: Subscription;
 
-  golferNameOptions: string[] = [];
-  private golfersSub: Subscription;
-
   flights: FlightInfo[] = [];
   private flightsSub: Subscription;
 
@@ -51,7 +45,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private authService = inject(AuthService);
   private notificationService = inject(NotificationService);
-  private golfersService = inject(GolfersService);
   private flightsService = inject(FlightsService);
   private seasonsService = inject(SeasonsService);
   private tournamentsService = inject(TournamentsService);
@@ -71,19 +64,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.updateMenuItems();
     });
 
-    this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((result) => {
-      const golferOptions = result.sort((a: Golfer, b: Golfer) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      this.golferNameOptions = golferOptions.map((golfer) => golfer.name);
-    });
-
     this.flightsSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       this.flights = result;
     });
@@ -91,8 +71,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tournamentsSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
       this.tournaments = result;
     });
-
-    this.golfersService.getAllGolfers();
 
     this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       console.log(`[HeaderComponent] Received active season: year=${result.year}`);
@@ -104,7 +82,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
-    this.golfersSub.unsubscribe();
     this.flightsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
     this.tournamentsSub.unsubscribe();
@@ -201,12 +178,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.currentUser?.edit_payments,
         items: [
           {
-            label: 'Add Golfer',
-            icon: 'pi pi-user-plus',
-            visible: this.currentUser?.is_admin,
-            callback: () => this.onAddNewGolfer(),
-          },
-          {
             label: 'Qualifying Scores',
             icon: 'pi pi-venus',
             visible: this.currentUser?.is_admin,
@@ -277,52 +248,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onPayEntryFees(): void {
     this.signupComponent.onPayEntryFees();
-  }
-
-  // TODO: Consolidate `onAddNewGolfer()` usage from header, signups
-  // TODO: Move to admin view?
-  onAddNewGolfer(): void {
-    const dialogRef = this.dialog.open(GolferCreateComponent, {
-      width: '300px',
-      data: {
-        name: '',
-        affiliation: GolferAffiliation.APL_EMPLOYEE,
-        email: '',
-        phone: '',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((golferData) => {
-      if (golferData !== null && golferData !== undefined) {
-        const golferNameOptionsLowercase = this.golferNameOptions.map((name) => name.toLowerCase());
-        if (golferNameOptionsLowercase.includes(golferData.name.toLowerCase())) {
-          this.notificationService.showError(
-            'New Golfer Error',
-            `Golfer with name '${golferData.name}' already exists!`,
-            5000,
-          );
-          return;
-        }
-
-        this.golfersService
-          .createGolfer(
-            golferData.name,
-            golferData.affiliation,
-            golferData.email !== '' ? golferData.email : null,
-            golferData.phone !== '' ? golferData.phone : null,
-          )
-          .subscribe((result) => {
-            console.log(`[HeaderComponent] Successfully added golfer: ${result.name}`);
-            this.notificationService.showSuccess(
-              'Created Golfer',
-              `Successfully added golfer: ${result.name}`,
-              5000,
-            );
-
-            this.golfersService.getAllGolfers(); // refresh golfer name options
-          });
-      }
-    });
   }
 
   // TODO: Move to admin view?

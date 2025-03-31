@@ -81,7 +81,7 @@ export class GolfersService {
   createGolfer(
     name: string,
     affiliation: GolferAffiliation,
-    email?: string,
+    email: string,
     phone?: string,
   ): Observable<Golfer> {
     return this.http.post<Golfer>(environment.apiUrl + `golfers/`, {

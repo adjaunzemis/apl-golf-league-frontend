@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
@@ -23,6 +24,8 @@ import { CommonModule } from '@angular/common';
 import { FlightDivision, FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 import { TeamsService } from '../teams.service';
 import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
+import { GolferCreateComponent } from 'src/app/golfers/golfer-create/golfer-create.component';
+import { GolfersService } from 'src/app/golfers/golfers.service';
 
 @Component({
   selector: 'app-team-create',
@@ -39,6 +42,7 @@ import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
     ButtonModule,
     TableModule,
   ],
+  providers: [DialogService],
 })
 export class TeamCreateComponent implements OnInit, OnChanges {
   @Output() refreshTeamsForFlight = new EventEmitter<number>();
@@ -65,6 +69,10 @@ export class TeamCreateComponent implements OnInit, OnChanges {
   roleOptions = ['Captain', 'Player'];
 
   private teamsService = inject(TeamsService);
+
+  dialogRef: DynamicDialogRef | undefined;
+  public dialogService = inject(DialogService);
+  private golfersService = inject(GolfersService);
 
   private notificationService = inject(NotificationService);
 
@@ -226,5 +234,35 @@ export class TeamCreateComponent implements OnInit, OnChanges {
     this.newGolfer = null;
     this.newGolferRole = undefined;
     this.newGolferDivision = null;
+  }
+
+  onRegisterGolfer(): void {
+    this.dialogRef = this.dialogService.open(GolferCreateComponent, {
+      width: '300px',
+      modal: true,
+    });
+
+    this.dialogRef.onClose.subscribe((golferData) => {
+      console.log(golferData);
+      if (golferData !== null && golferData !== undefined) {
+        this.golfersService
+          .createGolfer(
+            golferData.name,
+            golferData.affiliation,
+            golferData.email,
+            golferData.phone !== '' ? golferData.phone : null,
+          )
+          .subscribe((result) => {
+            console.log(`[TeamCreateComponent] Successfully registered golfer: ${result.name}`);
+            this.notificationService.showSuccess(
+              'Registered Golfer',
+              `Successfully registered golfer: ${result.name}`,
+              5000,
+            );
+
+            this.golfersService.getAllGolfers();
+          });
+      }
+    });
   }
 }
