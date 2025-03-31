@@ -243,7 +243,6 @@ export class TeamCreateComponent implements OnInit, OnChanges {
     });
 
     this.dialogRef.onClose.subscribe((golferData) => {
-      console.log(golferData);
       if (golferData !== null && golferData !== undefined) {
         this.golfersService
           .createGolfer(
