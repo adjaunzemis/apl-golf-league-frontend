@@ -1,7 +1,14 @@
 <p-card>
   <div class="flex flex-row items-center px-4 pt-4">
     <span class="text-2xl font-semibold">{{ teamId ? 'Update' : 'Create' }} Team</span>
+
     <div class="mx-auto"></div>
+
+    <p-button class="hidden md:block" (click)="onRegisterGolfer()">
+      <span class="text-sm pi pi-user-plus"></span>
+      <span class="font-semibold">Register Golfer</span>
+    </p-button>
+
     <p-button class="hidden md:block" (click)="deleteTeam()" *ngIf="allowDelete && teamId">
       <span class="text-sm pi pi-times"></span>
       <span class="font-semibold">Delete</span>
@@ -14,11 +21,10 @@
       [(ngModel)]="teamName"
       id="teamName"
       placeholder="Ex: Teamy McTeamFace"
-      #tName="ngModel"
       required
       minlength="3"
-      maxlength="20"
-      pattern="[a-zA-Z0-9\s]+"
+      maxlength="25"
+      pattern="[a-zA-Z0-9\s\-']+"
     />
   </p-inputgroup>
 

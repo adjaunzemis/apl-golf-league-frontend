@@ -9,7 +9,6 @@ import { ScoringRecordComponent } from './scoring-record/scoring-record.componen
 import { CombinedRoundsScorecardComponent } from './combined-rounds-scorecard/combined-rounds-scorecard.component';
 import { ScorecardModule } from '../shared/scorecard/scorecard.module';
 import { AverageScoreLineComponent } from './combined-rounds-scorecard/average-score-line/average-score-line.component';
-import { GolferCreateComponent } from './golfer-create/golfer-create.component';
 import { AddQualifyingScoreComponent } from './add-qualifying-score/add-qualifying-score.component';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { AddQualifyingScoreComponent } from './add-qualifying-score/add-qualifyi
     ScoringRecordComponent,
     CombinedRoundsScorecardComponent,
     AverageScoreLineComponent,
-    GolferCreateComponent,
     AddQualifyingScoreComponent,
   ],
   imports: [CommonModule, RouterModule, FormsModule, AngularMaterialModule, ScorecardModule],

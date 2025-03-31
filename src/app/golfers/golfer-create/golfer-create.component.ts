@@ -1,29 +1,33 @@
-import { Component, Inject } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabel } from 'primeng/floatlabel';
 
 import { Golfer, GolferAffiliation } from '../../shared/golfer.model';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   templateUrl: './golfer-create.component.html',
   styleUrls: ['./golfer-create.component.css'],
-  standalone: false,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    FloatLabel,
+    SelectModule,
+  ],
 })
 export class GolferCreateComponent {
-  nameControl: UntypedFormControl = new UntypedFormControl(this.data.name, [
-    Validators.required,
-    Validators.minLength(3),
-    Validators.maxLength(25),
-    Validators.pattern("^[a-zA-Z' ]*$"),
-  ]);
-  affiliationControl: UntypedFormControl = new UntypedFormControl(this.data.affiliation, [
-    Validators.required,
-  ]);
-  emailControl: UntypedFormControl = new UntypedFormControl(this.data.email, [
-    Validators.required,
-    Validators.email,
-  ]);
-  phoneControl: UntypedFormControl = new UntypedFormControl(this.data.phone, []);
+  newGolferFormGroup = new FormGroup({
+    nameControl: new FormControl('', Validators.required),
+    affiliationControl: new FormControl(GolferAffiliation.APL_EMPLOYEE, Validators.required),
+    emailControl: new FormControl('', [Validators.required, Validators.email]),
+    phoneControl: new FormControl(''),
+  });
 
   affiliationOptions = [
     GolferAffiliation.APL_EMPLOYEE,
@@ -32,14 +36,13 @@ export class GolferCreateComponent {
     GolferAffiliation.NON_APL_EMPLOYEE,
   ];
 
-  constructor(
-    public dialogRef: MatDialogRef<GolferCreateComponent>,
-    @Inject(MAT_DIALOG_DATA)
-    public data: { name: string; affiliation: GolferAffiliation; email: string; phone: string },
-  ) {}
+  public dialogRef: DynamicDialogRef<GolferCreateComponent> = inject(DynamicDialogRef);
 
   onSubmit(): void {
-    let golferName: string = this.nameControl.value;
+    if (!this.newGolferFormGroup.valid) {
+      return;
+    }
+    let golferName: string = this.newGolferFormGroup.value.nameControl as string;
     golferName = golferName
       .split(' ')
       .map((namePart) => namePart.charAt(0).toUpperCase() + namePart.slice(1))
@@ -49,9 +52,9 @@ export class GolferCreateComponent {
     const golferData: Golfer = {
       id: -1, // TODO: relax required 'id' value
       name: golferName,
-      affiliation: this.affiliationControl.value as GolferAffiliation,
-      email: this.emailControl.value.trim(),
-      phone: this.phoneControl.value.trim(),
+      affiliation: this.newGolferFormGroup.value.affiliationControl as GolferAffiliation,
+      email: (this.newGolferFormGroup.value.emailControl as string).trim(),
+      phone: (this.newGolferFormGroup.value.phoneControl as string).trim(),
     };
 
     this.dialogRef.close(golferData);
