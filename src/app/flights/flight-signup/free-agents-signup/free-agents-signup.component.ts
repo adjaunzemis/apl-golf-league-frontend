@@ -55,7 +55,7 @@ export class FreeAgentsSignupComponent implements OnInit, OnChanges {
 
   newGolfer: Golfer | null = null;
   newGolferDivision: FlightDivision | null = null;
-  newGolferCadence: FreeAgentCadence | undefined;
+  newGolferCadence: FreeAgentCadence | null = null;
 
   cadenceOptions = [
     FreeAgentCadence.WEEKLY,
@@ -158,5 +158,6 @@ export class FreeAgentsSignupComponent implements OnInit, OnChanges {
   private clearNewFreeAgent(): void {
     this.newGolfer = null;
     this.newGolferDivision = null;
+    this.newGolferCadence = null;
   }
 }
