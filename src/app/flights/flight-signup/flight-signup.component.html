@@ -116,6 +116,15 @@
         (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
         *ngIf="selectedFlightDivisions && golfers"
       />
+      <app-free-agents-signup
+        [allowDelete]="isUserAdmin()"
+        [freeAgents]="selectedFlightFreeAgents"
+        [golferOptions]="golfers"
+        [flightId]="selectedFlight.id"
+        [divisionOptions]="selectedFlightDivisions"
+        (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
+        *ngIf="selectedFlightFreeAgents && selectedFlightDivisions && golfers"
+      />
       <app-substitutes-signup
         [allowDelete]="isUserAdmin()"
         [substitutes]="selectedFlightSubstitutes"

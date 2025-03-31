@@ -13,7 +13,8 @@ import {
   FlightDivision,
   FlightInfo,
   FlightTeam,
-  FlightTeamGolfer,
+  FlightGolfer,
+  FlightFreeAgent,
 } from 'src/app/shared/flight.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
@@ -26,6 +27,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/shared/user.model';
 import { Golfer } from 'src/app/shared/golfer.model';
 import { GolfersService } from 'src/app/golfers/golfers.service';
+import { FreeAgentsSignupComponent } from './free-agents-signup/free-agents-signup.component';
 
 @Component({
   selector: 'app-flight-signup',
@@ -44,6 +46,7 @@ import { GolfersService } from 'src/app/golfers/golfers.service';
     FlightTeamsComponent,
     TeamCreateComponent,
     SubstitutesSignupComponent,
+    FreeAgentsSignupComponent,
   ],
 })
 export class FlightSignupComponent implements OnInit, OnDestroy {
@@ -59,12 +62,14 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
 
   selectedFlight: FlightInfo | undefined;
   selectedFlightTeams: FlightTeam[] | undefined;
-  selectedFlightSubstitutes: FlightTeamGolfer[] | undefined;
+  selectedFlightSubstitutes: FlightGolfer[] | undefined;
+  selectedFlightFreeAgents: FlightFreeAgent[] | undefined;
   selectedFlightDivisions: FlightDivision[] | undefined;
 
   private infoSub: Subscription;
   private teamsSub: Subscription;
   private substitutesSub: Subscription;
+  private freeAgentsSub: Subscription;
   private divisionsSub: Subscription;
   private flightsService = inject(FlightsService);
 
@@ -114,6 +119,10 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       this.selectedFlightSubstitutes = [...result];
     });
 
+    this.freeAgentsSub = this.flightsService.getFreeAgentsUpdateListener().subscribe((result) => {
+      this.selectedFlightFreeAgents = [...result];
+    });
+
     this.divisionsSub = this.flightsService.getDivisionsUpdateListener().subscribe((result) => {
       this.selectedFlightDivisions = [...result];
     });
@@ -132,6 +141,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
     this.infoSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.substitutesSub.unsubscribe();
+    this.freeAgentsSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
   }
@@ -165,9 +175,8 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       return;
     }
     this.selectedFlight = info;
-    this.flightsService.getTeams(info.id);
-    this.flightsService.getSubstitutes(info.id);
     this.flightsService.getDivisions(info.id);
+    this.refreshSelectedFlightTeams(info.id);
   }
 
   handleTeamSelectionChange(team: FlightTeam | null): void {
@@ -177,6 +186,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   refreshSelectedFlightTeams(flightId: number): void {
     this.flightsService.getTeams(flightId);
     this.flightsService.getSubstitutes(flightId);
+    this.flightsService.getFreeAgents(flightId);
   }
 
   isUserAdmin(): boolean {

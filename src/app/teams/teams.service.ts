@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { TeamCreate } from '../shared/team.model';
 import { Substitute } from '../shared/substitute.model';
+import { FreeAgent } from '../shared/free-agent.model';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +63,17 @@ export class TeamsService {
     return this.http.delete<Substitute>(
       environment.apiUrl +
         `substitutes/?flight_id=${substitute.flight_id}&golfer_id=${substitute.golfer_id}`,
+    );
+  }
+
+  addFreeAgent(freeAgent: FreeAgent): Observable<FreeAgent> {
+    return this.http.post<FreeAgent>(environment.apiUrl + `free_agents/`, freeAgent);
+  }
+
+  deleteFreeAgent(freeAgent: FreeAgent): Observable<FreeAgent> {
+    return this.http.delete<FreeAgent>(
+      environment.apiUrl +
+        `free_agents/?flight_id=${freeAgent.flight_id}&golfer_id=${freeAgent.golfer_id}`,
     );
   }
 }

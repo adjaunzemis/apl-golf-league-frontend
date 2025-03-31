@@ -21,7 +21,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
 import { CommonModule } from '@angular/common';
-import { FlightDivision, FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
+import { FlightDivision, FlightTeam, FlightGolfer } from 'src/app/shared/flight.model';
 import { TeamsService } from '../teams.service';
 import { TeamCreate, TeamGolferCreate } from 'src/app/shared/team.model';
 import { GolferCreateComponent } from 'src/app/golfers/golfer-create/golfer-create.component';
@@ -58,7 +58,7 @@ export class TeamCreateComponent implements OnInit, OnChanges {
 
   @Input() initialTeam: FlightTeam | null;
   teamId: number | null = null;
-  teamGolfers: FlightTeamGolfer[] = [];
+  teamGolfers: FlightGolfer[] = [];
 
   teamName: string;
 
@@ -131,7 +131,7 @@ export class TeamCreateComponent implements OnInit, OnChanges {
     this.clearNewGolfer();
   }
 
-  removeGolferFromTeam(golfer: FlightTeamGolfer): void {
+  removeGolferFromTeam(golfer: FlightGolfer): void {
     this.teamGolfers = this.teamGolfers.filter(
       (teamGolfer) => teamGolfer.golfer_id !== golfer.golfer_id,
     );

@@ -1,4 +1,5 @@
 import { DivisionData, DivisionCreate } from './division.model';
+import { FreeAgentCadence } from './free-agent.model';
 import { GolferStatistics } from './golfer.model';
 import { MatchSummary } from './match.model';
 import { TeamData } from './team.model';
@@ -81,18 +82,23 @@ export interface FlightDivision {
   secondary_tee_slope: number;
 }
 
-export interface FlightTeamGolfer {
+export interface FlightGolfer {
   golfer_id: number;
   name: string;
   role: string;
   division: string;
+  email?: string;
+}
+
+export interface FlightFreeAgent extends FlightGolfer {
+  cadence: FreeAgentCadence;
 }
 
 export interface FlightTeam {
   flight_id: number;
   team_id: number;
   name: string;
-  golfers: FlightTeamGolfer[];
+  golfers: FlightGolfer[];
 }
 
 export interface FlightStandingsTeam {

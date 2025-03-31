@@ -5,7 +5,7 @@ import { CardModule } from 'primeng/card';
 import { AccordionModule, AccordionTabOpenEvent } from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
 
-import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
+import { FlightTeam, FlightGolfer } from 'src/app/shared/flight.model';
 
 @Component({
   selector: 'app-flight-teams',
@@ -15,13 +15,13 @@ import { FlightTeam, FlightTeamGolfer } from 'src/app/shared/flight.model';
 })
 export class FlightTeamsComponent {
   @Input() teams: FlightTeam[];
-  @Input() substitutes: FlightTeamGolfer[] = [];
+  @Input() substitutes: FlightGolfer[] = [];
   @Input() linkGolferHome = true;
   @Input() teamMultiSelect = true;
 
   @Output() teamSelected = new EventEmitter<FlightTeam | null>();
 
-  selectedGolfer: FlightTeamGolfer;
+  selectedGolfer: FlightGolfer;
 
   private router = inject(Router);
 
