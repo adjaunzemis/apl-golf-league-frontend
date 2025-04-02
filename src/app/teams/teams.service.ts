@@ -67,13 +67,13 @@ export class TeamsService {
   }
 
   addFreeAgent(freeAgent: FreeAgent): Observable<FreeAgent> {
-    return this.http.post<FreeAgent>(environment.apiUrl + `free_agents/`, freeAgent);
+    return this.http.post<FreeAgent>(environment.apiUrl + `free-agents/`, freeAgent);
   }
 
   deleteFreeAgent(freeAgent: FreeAgent): Observable<FreeAgent> {
     return this.http.delete<FreeAgent>(
       environment.apiUrl +
-        `free_agents/?flight_id=${freeAgent.flight_id}&golfer_id=${freeAgent.golfer_id}`,
+        `free-agents/?flight_id=${freeAgent.flight_id}&golfer_id=${freeAgent.golfer_id}`,
     );
   }
 }
