@@ -18,6 +18,7 @@ export class FlightTeamsComponent {
   @Input() substitutes: FlightGolfer[] = [];
   @Input() linkGolferHome = true;
   @Input() teamMultiSelect = true;
+  @Input() showFlightEmailButton = false;
 
   @Output() teamSelected = new EventEmitter<FlightTeam | null>();
 
@@ -39,5 +40,18 @@ export class FlightTeamsComponent {
 
   onTeamDeselected(): void {
     this.teamSelected.emit(null);
+  }
+
+  getFlightEmailList(): string {
+    // TODO: Deduplicate emails
+    let emailList = '';
+    for (const team of this.teams) {
+      for (const golfer of team.golfers) {
+        if (golfer.email) {
+          emailList += golfer.email + ';';
+        }
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
   }
 }
