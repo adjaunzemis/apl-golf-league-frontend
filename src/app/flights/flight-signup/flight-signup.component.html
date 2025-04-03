@@ -1,4 +1,4 @@
-<div class="flex flex-0 justify-center gap-4 py-4">
+<div class="flex flex-col xl:flex-row flex-0 justify-center gap-4 p-4">
   <p-card>
     <div class="flex flex-1 flex-col px-4 py-4">
       <span class="text-2xl font-semibold">Flight Sign-Ups</span>
@@ -92,7 +92,7 @@
     </p-dataview>
   </p-card>
 
-  <div class="flex flex-row flex-stretch gap-4" *ngIf="selectedFlight">
+  <div class="flex flex-col lg:flex-row flex-stretch justify-center gap-4" *ngIf="selectedFlight">
     <div class="flex flex-col flex-stretch gap-4">
       <app-flight-info [info]="selectedFlight" />
       <app-flight-teams
@@ -105,7 +105,11 @@
     </div>
 
     <div class="flex flex-col flex-stretch gap-4">
-      <app-flight-divisions [divisions]="selectedFlightDivisions" *ngIf="selectedFlightDivisions" />
+      <app-flight-divisions
+        class="hidden lg:block"
+        [divisions]="selectedFlightDivisions"
+        *ngIf="selectedFlightDivisions"
+      />
       <app-team-create
         [allowSubstitutes]="isUserAdmin()"
         [allowDelete]="isUserAdmin()"
