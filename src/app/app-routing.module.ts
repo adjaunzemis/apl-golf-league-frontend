@@ -20,6 +20,7 @@ import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-e
 import { AddQualifyingScoreComponent } from './golfers/add-qualifying-score/add-qualifying-score.component';
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { FlightHomeComponent } from './flights/flight-home/flight-home.component';
+import { TeamHomeComponent } from './flights/team-home/team-home.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { FlightSignupComponent } from './flights/flight-signup/flight-signup.component';
 import { TournamentSignupComponent } from './tournaments/tournament-signup/tournament-signup.component';
@@ -37,7 +38,7 @@ const routes: Routes = environment.maintenance
       { path: 'under-construction', component: UnderConstructionComponent },
       { path: 'flight', component: FlightHomeComponent },
       { path: 'flight-signup', component: FlightSignupComponent },
-      { path: 'flight-team', component: UnderConstructionComponent },
+      { path: 'flight-team', component: TeamHomeComponent },
       {
         path: 'flight/match/scorecard',
         component: FlightMatchScorecardComponent,
