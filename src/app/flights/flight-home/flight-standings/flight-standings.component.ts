@@ -21,7 +21,7 @@ export class FlightStandingsComponent {
 
   onTeamSelected(): void {
     if (this.selectedTeam.team_id) {
-      this.router.navigate(['/flight/team'], {
+      this.router.navigate(['/flight-team'], {
         queryParams: { id: this.selectedTeam.team_id },
       });
     }
