@@ -17,10 +17,11 @@ export interface TeamData {
   matches: MatchData[];
 }
 
-export interface TeamDataWithMatches {
+export interface FlightTeamDataWithMatches {
   id: number;
   name: string;
   year: number;
+  flight_id: number;
   golfers: TeamGolferData[];
   matches: MatchData[];
 }

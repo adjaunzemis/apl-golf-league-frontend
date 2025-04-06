@@ -14,7 +14,6 @@ import {
   FlightGolfer,
   FlightFreeAgent,
 } from '../shared/flight.model';
-import { TeamDataWithMatches } from '../shared/team.model';
 import { environment } from './../../environments/environment';
 import { MatchSummary } from '../shared/match.model';
 
@@ -51,9 +50,6 @@ export class FlightsService {
 
   private flightData: FlightData;
   private flightDataUpdated = new Subject<FlightData>();
-
-  private teamData: TeamDataWithMatches;
-  private teamDataUpdated = new Subject<TeamDataWithMatches>();
 
   constructor(
     private http: HttpClient,
@@ -202,17 +198,5 @@ export class FlightsService {
 
   getMatchesUpdateListener(): Observable<MatchSummary[]> {
     return this.flightMatchesUpdated.asObservable();
-  }
-
-  // TODO: Move team routes to own service
-  getTeamData(id: number): void {
-    this.http.get<TeamDataWithMatches>(environment.apiUrl + `teams/${id}`).subscribe((result) => {
-      this.teamData = result;
-      this.teamDataUpdated.next(result);
-    });
-  }
-
-  getTeamDataUpdateListener(): Observable<TeamDataWithMatches> {
-    return this.teamDataUpdated.asObservable();
   }
 }
