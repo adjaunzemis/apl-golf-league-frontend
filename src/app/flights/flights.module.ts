@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AngularMaterialModule } from '../angular-material.module';
-import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
 import { ErrorModule } from '../shared/error/error.module';
 import { FlightMatchCreateComponent } from './flight-match-create/flight-match-create.component';
 import { FlightMatchScorecardComponent } from './flight-match-create/flight-match-scorecard.component';
@@ -15,7 +14,6 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
 
 @NgModule({
   declarations: [
-    GolferStatisticsComponent,
     FlightMatchScorecardComponent,
     FlightMatchCreateComponent,
     PlayoffBracketComponent,
