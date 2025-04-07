@@ -2,17 +2,19 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FlightTeamDataWithMatches } from 'src/app/shared/team.model';
 import { TeamsService } from 'src/app/teams/teams.service';
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from 'src/app/shared/flight.model';
+import { TeamInfoComponent } from './team-info/team-info.component';
 
 @Component({
   selector: 'app-team-home',
   templateUrl: './team-home.component.html',
   styleUrl: './team-home.component.css',
-  imports: [CommonModule],
+  imports: [CommonModule, ProgressSpinnerModule, TeamInfoComponent],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;

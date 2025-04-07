@@ -1,6 +1,6 @@
-<div class="flex flex-col items-center p-4 gap-4">
+<div class="flex flex-col items-center p-4 gap-4" *ngIf="!isLoading; else loading">
   <div class="flex flex-row flex-1 gap-4">
-    <p>Team Info</p>
+    <app-team-info [flightInfo]="flightInfo" [teamData]="teamData" />
     <p>Team Roster</p>
   </div>
 
@@ -13,3 +13,14 @@
     <p>Statistics</p>
   </div>
 </div>
+
+<ng-template #loading>
+  <div class="flex flex-col items-center w-full p-10">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ widthcs: '100px', height: '100px' }"
+    />
+  </div>
+</ng-template>
