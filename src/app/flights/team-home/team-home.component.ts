@@ -9,12 +9,13 @@ import { TeamsService } from 'src/app/teams/teams.service';
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from 'src/app/shared/flight.model';
 import { TeamInfoComponent } from './team-info/team-info.component';
+import { TeamRosterComponent } from './team-roster/team-roster.component';
 
 @Component({
   selector: 'app-team-home',
   templateUrl: './team-home.component.html',
   styleUrl: './team-home.component.css',
-  imports: [CommonModule, ProgressSpinnerModule, TeamInfoComponent],
+  imports: [CommonModule, ProgressSpinnerModule, TeamInfoComponent, TeamRosterComponent],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
