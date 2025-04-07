@@ -22,17 +22,17 @@
   >
     <ng-template #header>
       <tr>
-        <th>Golfer</th>
-        <th>Role</th>
-        <th>Division</th>
-        <th>Handicap</th>
+        <th class="w-50">Golfer</th>
+        <th class="w-20">Role</th>
+        <th class="w-20">Division</th>
+        <th class="w-20">Handicap</th>
       </tr>
     </ng-template>
     <ng-template #body let-golfer>
       <tr [pSelectableRow]="golfer">
-        <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+        <td class="font-semibold text-gray-700">{{ golfer.golfer_name }}</td>
         <td class="text-gray-700">{{ golfer.role }}</td>
-        <td class="text-gray-700">{{ golfer.division }}</td>
+        <td class="text-gray-700">{{ golfer.division_name }}</td>
         <td class="text-gray-700">{{ golfer.handicap_index | number: '1.1-1' }}</td>
       </tr>
     </ng-template>

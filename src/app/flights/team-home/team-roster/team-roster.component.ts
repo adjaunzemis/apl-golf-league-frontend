@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -12,17 +12,34 @@ import { Golfer } from 'src/app/shared/golfer.model';
   styleUrl: './team-roster.component.css',
   imports: [CommonModule, RouterModule, CardModule, TableModule],
 })
-export class TeamRosterComponent {
+export class TeamRosterComponent implements OnInit {
   @Input() showTeamEmailButton = true;
   @Input() teamData!: TeamData;
 
   selectedGolfer: Golfer | undefined;
+
+  ngOnInit(): void {
+    this.teamData.golfers.sort((a, b) => {
+      if (a.role < b.role) {
+        return -1;
+      } else if (b.role < a.role) {
+        return 1;
+      }
+      return 0;
+    });
+  }
 
   onGolferSelected(): void {
     console.log('Selected');
   }
 
   getTeamEmailList(): string | null {
-    return 'emails!';
+    let emailList = '';
+    for (const golfer of this.teamData.golfers) {
+      if (golfer.golfer_email) {
+        emailList += golfer.golfer_email + ';';
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
   }
 }
