@@ -53,5 +53,6 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.teamDataSub.unsubscribe();
+    this.flightInfoSub.unsubscribe();
   }
 }
