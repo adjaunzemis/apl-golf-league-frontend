@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
+
 import { TeamData } from 'src/app/shared/team.model';
-import { Golfer } from 'src/app/shared/golfer.model';
+import { TeamGolferData } from 'src/app/shared/golfer.model';
 
 @Component({
   selector: 'app-team-roster',
@@ -16,7 +17,9 @@ export class TeamRosterComponent implements OnInit {
   @Input() showTeamEmailButton = true;
   @Input() teamData!: TeamData;
 
-  selectedGolfer: Golfer | undefined;
+  selectedGolfer: TeamGolferData | undefined;
+
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.teamData.golfers.sort((a, b) => {
@@ -30,7 +33,11 @@ export class TeamRosterComponent implements OnInit {
   }
 
   onGolferSelected(): void {
-    console.log('Selected');
+    if (this.selectedGolfer && this.selectedGolfer.golfer_id) {
+      this.router.navigate(['/golfer'], {
+        queryParams: { id: this.selectedGolfer.golfer_id },
+      });
+    }
   }
 
   getTeamEmailList(): string | null {
