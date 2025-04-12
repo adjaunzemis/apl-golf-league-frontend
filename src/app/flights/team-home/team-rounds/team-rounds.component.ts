@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
+import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutton';
 
 import { RoundData } from 'src/app/shared/round.model';
 
@@ -9,18 +10,28 @@ import { RoundData } from 'src/app/shared/round.model';
   selector: 'app-team-rounds',
   templateUrl: './team-rounds.component.html',
   styleUrl: './team-rounds.component.css',
-  imports: [CommonModule, CardModule, TableModule],
+  imports: [CommonModule, CardModule, TableModule, ToggleButtonModule],
 })
 export class TeamRoundsComponent {
   @Input() rounds!: RoundData[];
 
-  scoreMode = 'gross';
+  scoringMode = 'gross';
+  labelScoringModeGross = 'Scoring Mode: Gross';
+  labelScoringModeNet = 'Scoring Mode: Net';
+
+  onChangeScoringMode(event: ToggleButtonChangeEvent): void {
+    if (event.checked) {
+      this.scoringMode = 'net';
+    } else {
+      this.scoringMode = 'gross';
+    }
+  }
 
   getScoreForHole(round: RoundData, holeNum: number): number {
-    if (this.scoreMode == 'net') {
+    if (this.scoringMode == 'net') {
       return round.holes[holeNum - 1].net_score;
     }
-    if (this.scoreMode == 'adj_gross') {
+    if (this.scoringMode == 'adj_gross') {
       return round.holes[holeNum - 1].adjusted_gross_score;
     }
     return round.holes[holeNum - 1].gross_score;
@@ -42,10 +53,10 @@ export class TeamRoundsComponent {
   }
 
   getRoundTotalScore(round: RoundData): number {
-    if (this.scoreMode == 'net') {
+    if (this.scoringMode == 'net') {
       return round.net_score;
     }
-    if (this.scoreMode == 'adj_gross') {
+    if (this.scoringMode == 'adj_gross') {
       return round.adjusted_gross_score;
     }
     return round.gross_score;
