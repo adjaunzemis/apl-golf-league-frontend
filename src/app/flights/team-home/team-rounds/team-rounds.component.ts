@@ -26,17 +26,17 @@ export class TeamRoundsComponent {
     return round.holes[holeNum - 1].gross_score;
   }
 
-  isScoreCircled(round: RoundData, holeNum: number): boolean {
+  isScoreBelowPar(round: RoundData, holeNum: number): boolean {
     const score = this.getScoreForHole(round, holeNum);
     return score < round.holes[holeNum - 1].par;
   }
 
-  isScoreBoxed(round: RoundData, holeNum: number): boolean {
+  isScoreAbovePar(round: RoundData, holeNum: number): boolean {
     const score = this.getScoreForHole(round, holeNum);
     return score > round.holes[holeNum - 1].par;
   }
 
-  isScoreCrosshatched(round: RoundData, holeNum: number): boolean {
+  isScoreAtLeastTwoFromPar(round: RoundData, holeNum: number): boolean {
     const score = this.getScoreForHole(round, holeNum);
     return Math.abs(score - round.holes[holeNum - 1].par) > 1;
   }
