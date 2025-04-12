@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 
-import { FlightInfo } from 'src/app/shared/flight.model';
+import { FlightInfo, FlightStandingsTeam } from 'src/app/shared/flight.model';
 import { TeamData } from 'src/app/shared/team.model';
 
 @Component({
@@ -15,6 +15,7 @@ import { TeamData } from 'src/app/shared/team.model';
 export class TeamInfoComponent {
   @Input() flightInfo!: FlightInfo;
   @Input() teamData!: TeamData;
+  @Input() teamStandings: FlightStandingsTeam | undefined;
 
   getCaptainName(): string | undefined {
     const captain = this.teamData.golfers.filter((golfer) => golfer.role === 'Captain')[0];

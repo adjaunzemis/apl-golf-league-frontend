@@ -93,7 +93,7 @@ export class FlightsService {
   }
 
   createFlight(flight: FlightCreate): Observable<FlightInfo> {
-    return this.http.post<FlightInfo>(environment.apiUrl + `flights`, flight);
+    return this.http.post<FlightInfo>(environment.apiUrl + `flights/`, flight);
   }
 
   updateFlight(flight: FlightCreate): Observable<FlightInfo> {

@@ -18,6 +18,15 @@
             <div class="font-medium text-gray-700 text-sm">
               {{ flightInfo.name }} ({{ flightInfo.year }})
             </div>
+            <div class="font-semibold text-gray-700 text-sm pt-1" *ngIf="teamStandings">
+              Position: {{ teamStandings.position }} of {{ flightInfo.num_teams }}
+            </div>
+            <div class="font-semibold text-gray-700 text-sm" *ngIf="teamStandings">
+              Avg. Points: {{ teamStandings.avg_points | number: '1.2-2' }}
+            </div>
+            <div class="font-semibold text-gray-700 text-sm" *ngIf="teamStandings">
+              Matches Played: {{ teamStandings.matches_played }}
+            </div>
           </div>
         </div>
       </div>

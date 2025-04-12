@@ -7,7 +7,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightTeamDataWithMatches } from 'src/app/shared/team.model';
 import { TeamsService } from 'src/app/teams/teams.service';
 import { FlightsService } from '../flights.service';
-import { FlightInfo } from 'src/app/shared/flight.model';
+import { FlightInfo, FlightStandingsTeam } from 'src/app/shared/flight.model';
 import { TeamInfoComponent } from './team-info/team-info.component';
 import { TeamRosterComponent } from './team-roster/team-roster.component';
 import { TeamRoundsComponent } from './team-rounds/team-rounds.component';
@@ -30,12 +30,15 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   teamData!: FlightTeamDataWithMatches;
   flightInfo!: FlightInfo;
+  teamStandings: FlightStandingsTeam | undefined;
 
   private teamDataSub: Subscription;
   private teamsService = inject(TeamsService);
 
   private flightInfoSub: Subscription;
   private flightsService = inject(FlightsService);
+
+  private teamStandingsSub: Subscription;
 
   private route = inject(ActivatedRoute);
 
@@ -50,6 +53,15 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
       this.teamData = result;
 
       this.flightsService.getInfo(result.flight_id);
+      this.flightsService.getStandings(result.flight_id);
+    });
+
+    this.teamStandingsSub = this.flightsService.getStandingsUpdateListener().subscribe((result) => {
+      for (const teamStandings of result.teams) {
+        if (teamStandings.team_id === this.teamData.id) {
+          this.teamStandings = teamStandings;
+        }
+      }
     });
 
     this.route.queryParams.subscribe((params) => {
@@ -65,6 +77,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.teamDataSub.unsubscribe();
     this.flightInfoSub.unsubscribe();
+    this.teamStandingsSub.unsubscribe();
   }
 
   getRounds(): RoundData[] {
