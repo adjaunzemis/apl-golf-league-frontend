@@ -37,22 +37,22 @@ export class TeamRoundsComponent {
     return round.holes[holeNum - 1].gross_score;
   }
 
-  isScoreBelowPar(round: RoundData, holeNum: number): boolean {
+  isHoleScoreBelowPar(round: RoundData, holeNum: number): boolean {
     const score = this.getScoreForHole(round, holeNum);
     return score < round.holes[holeNum - 1].par;
   }
 
-  isScoreAbovePar(round: RoundData, holeNum: number): boolean {
+  isHoleScoreAbovePar(round: RoundData, holeNum: number): boolean {
     const score = this.getScoreForHole(round, holeNum);
     return score > round.holes[holeNum - 1].par;
   }
 
-  isScoreAtLeastTwoFromPar(round: RoundData, holeNum: number): boolean {
+  isHoleScoreAtLeastTwoFromPar(round: RoundData, holeNum: number): boolean {
     const score = this.getScoreForHole(round, holeNum);
     return Math.abs(score - round.holes[holeNum - 1].par) > 1;
   }
 
-  getRoundTotalScore(round: RoundData): number {
+  getRoundScore(round: RoundData): number {
     if (this.scoringMode == 'net') {
       return round.net_score;
     }
@@ -62,8 +62,8 @@ export class TeamRoundsComponent {
     return round.gross_score;
   }
 
-  getRoundTotalScoreToPar(round: RoundData): string {
-    const scoreToPar = this.getRoundTotalScore(round) - round.tee_par;
+  getRoundScoreToPar(round: RoundData): string {
+    const scoreToPar = this.getRoundScore(round) - round.tee_par;
     if (scoreToPar == 0) {
       return 'E';
     }
@@ -71,5 +71,9 @@ export class TeamRoundsComponent {
       return '+' + scoreToPar;
     }
     return '' + scoreToPar;
+  }
+
+  isRoundScoreBelowPar(round: RoundData): boolean {
+    return this.getRoundScore(round) < round.tee_par;
   }
 }
