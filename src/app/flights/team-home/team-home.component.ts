@@ -7,11 +7,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FlightTeamDataWithMatches } from 'src/app/shared/team.model';
 import { TeamsService } from 'src/app/teams/teams.service';
 import { FlightsService } from '../flights.service';
-import { FlightInfo, FlightStandingsTeam } from 'src/app/shared/flight.model';
+import { FlightInfo, FlightStandingsTeam, FlightStatistics } from 'src/app/shared/flight.model';
 import { TeamInfoComponent } from './team-info/team-info.component';
 import { TeamRosterComponent } from './team-roster/team-roster.component';
 import { TeamRoundsComponent } from './team-rounds/team-rounds.component';
 import { RoundData } from 'src/app/shared/round.model';
+import { FlightStatisticsComponent } from '../flight-home/flight-statistics/flight-statistics.component';
 
 @Component({
   selector: 'app-team-home',
@@ -23,6 +24,7 @@ import { RoundData } from 'src/app/shared/round.model';
     TeamInfoComponent,
     TeamRosterComponent,
     TeamRoundsComponent,
+    FlightStatisticsComponent,
   ],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
@@ -31,6 +33,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   teamData!: FlightTeamDataWithMatches;
   flightInfo!: FlightInfo;
   teamStandings: FlightStandingsTeam | undefined;
+  statistics: FlightStatistics | undefined;
 
   private teamDataSub: Subscription;
   private teamsService = inject(TeamsService);
@@ -39,6 +42,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   private flightsService = inject(FlightsService);
 
   private teamStandingsSub: Subscription;
+  private teamStatisticsSub: Subscription;
 
   private route = inject(ActivatedRoute);
 
@@ -54,6 +58,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
       this.flightsService.getInfo(result.flight_id);
       this.flightsService.getStandings(result.flight_id);
+      this.flightsService.getStatistics(result.flight_id);
     });
 
     this.teamStandingsSub = this.flightsService.getStandingsUpdateListener().subscribe((result) => {
@@ -63,6 +68,22 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.teamStatisticsSub = this.flightsService
+      .getStatisticsUpdateListener()
+      .subscribe((result) => {
+        const teamStatistics = [];
+        for (const golferStatistics of result.golfers) {
+          console.log(golferStatistics.golfer_name);
+          if (golferStatistics.golfer_team_id === this.teamData.id) {
+            teamStatistics.push(golferStatistics);
+          }
+        }
+        this.statistics = {
+          flight_id: result.flight_id,
+          golfers: teamStatistics,
+        };
+      });
 
     this.route.queryParams.subscribe((params) => {
       if (params && params.id) {
@@ -78,6 +99,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
     this.teamDataSub.unsubscribe();
     this.flightInfoSub.unsubscribe();
     this.teamStandingsSub.unsubscribe();
+    this.teamStatisticsSub.unsubscribe();
   }
 
   getRounds(): RoundData[] {

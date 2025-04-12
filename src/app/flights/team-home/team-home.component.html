@@ -9,12 +9,16 @@
   </div>
 
   <div class="flex flex-row flex-1 gap-4">
-    <p>Matches</p>
+    <!-- <p>Matches</p> -->
     <app-team-rounds [rounds]="getRounds()" />
   </div>
 
   <div class="flex flex-row flex-1 gap-4">
-    <p>Statistics</p>
+    <app-flight-statistics
+      class="col-span-12 xl:col-span-7"
+      [statistics]="statistics"
+      *ngIf="statistics"
+    />
   </div>
 </div>
 
