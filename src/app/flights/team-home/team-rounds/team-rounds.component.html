@@ -3,18 +3,15 @@
     <span class="text-2xl font-semibold">Rounds</span>
   </div>
 
-  <p-table
-    [value]="rounds"
-    stripedRows
-    selectionMode="single"
-    dataKey="round_id"
-  >
+  <p-table [value]="rounds" stripedRows selectionMode="single" dataKey="round_id">
     <ng-template #header>
       <tr>
         <th class="w-20">Date</th>
         <th class="w-50">Golfer</th>
         <th class="w-10 text-center">Hcp</th>
-        <th class="w-5 text-center" *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]">{{ holeNum }}</th>
+        <th class="w-5 text-center" *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+          {{ holeNum }}
+        </th>
         <th class="w-5 text-center">TOT</th>
       </tr>
     </ng-template>
@@ -23,7 +20,10 @@
         <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
         <td class="font-semibold text-gray-700">{{ round.golfer_name }}</td>
         <td class="text-gray-700 text-center">{{ round.golfer_playing_handicap }}</td>
-        <td class="text-gray-700 text-center p-0.5" *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+        <td
+          class="text-gray-700 text-center p-0.5"
+          *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+        >
           <div class="ring-1 rounded-none crosshatch">{{ getScoreForHole(round, holeNum) }}</div>
         </td>
         <td class="text-gray-700 text-center p-0.5">

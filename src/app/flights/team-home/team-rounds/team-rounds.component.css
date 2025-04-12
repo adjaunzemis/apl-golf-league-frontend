@@ -1,13 +1,13 @@
 .crosshatch {
-    background-image: linear-gradient(
-        -45deg,
-        rgba(0, 0, 0, 0.2) 25%,
-        transparent 25%,
-        transparent 50%,
-        rgba(0, 0, 0, 0.2) 50%,
-        rgba(0, 0, 0, 0.2) 75%,
-        transparent 75%,
-        transparent
-    );
-    background-size: 5px 5px;
+  background-image: linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 5px 5px;
 }

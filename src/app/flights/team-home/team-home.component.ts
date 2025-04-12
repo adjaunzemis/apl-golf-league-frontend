@@ -17,7 +17,13 @@ import { RoundData } from 'src/app/shared/round.model';
   selector: 'app-team-home',
   templateUrl: './team-home.component.html',
   styleUrl: './team-home.component.css',
-  imports: [CommonModule, ProgressSpinnerModule, TeamInfoComponent, TeamRosterComponent, TeamRoundsComponent],
+  imports: [
+    CommonModule,
+    ProgressSpinnerModule,
+    TeamInfoComponent,
+    TeamRosterComponent,
+    TeamRoundsComponent,
+  ],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
