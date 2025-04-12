@@ -61,4 +61,15 @@ export class TeamRoundsComponent {
     }
     return round.gross_score;
   }
+
+  getRoundTotalScoreToPar(round: RoundData): string {
+    const scoreToPar = this.getRoundTotalScore(round) - round.tee_par;
+    if (scoreToPar == 0) {
+      return 'E';
+    }
+    if (scoreToPar > 0) {
+      return '+' + scoreToPar;
+    }
+    return '' + scoreToPar;
+  }
 }

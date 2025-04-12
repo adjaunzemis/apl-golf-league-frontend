@@ -21,7 +21,7 @@
         <th class="w-6 text-center" *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
           {{ holeNum }}
         </th>
-        <th class="w-6 text-center">TOT</th>
+        <th colspan="2" class="text-center">Total</th>
       </tr>
     </ng-template>
     <ng-template #body let-round>
@@ -45,8 +45,11 @@
             }}</span>
           </div>
         </td>
-        <td class="text-gary-800 text-center font-semibold p-0.5">
-          <div>{{ getRoundTotalScore(round) }}</div>
+        <td class="text-gray-800 text-center font-semibold pl-2 pr-0.5">
+          {{ getRoundTotalScore(round) }}
+        </td>
+        <td class="text-gray-800 text-center font-semibold pr-1">
+          ({{ getRoundTotalScoreToPar(round) }})
         </td>
       </tr>
     </ng-template>
