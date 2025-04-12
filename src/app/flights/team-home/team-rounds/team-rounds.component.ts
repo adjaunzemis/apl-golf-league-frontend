@@ -16,7 +16,7 @@ export class TeamRoundsComponent {
 
   scoreMode = 'gross';
 
-  getScoreForHole(round: RoundData, holeNum: number) {
+  getScoreForHole(round: RoundData, holeNum: number): number {
     if (this.scoreMode == 'net') {
       return round.holes[holeNum - 1].net_score;
     }
@@ -26,7 +26,22 @@ export class TeamRoundsComponent {
     return round.holes[holeNum - 1].gross_score;
   }
 
-  getRoundTotalScore(round: RoundData) {
+  isScoreCircled(round: RoundData, holeNum: number): boolean {
+    const score = this.getScoreForHole(round, holeNum);
+    return score < round.holes[holeNum - 1].par;
+  }
+
+  isScoreBoxed(round: RoundData, holeNum: number): boolean {
+    const score = this.getScoreForHole(round, holeNum);
+    return score > round.holes[holeNum - 1].par;
+  }
+
+  isScoreCrosshatched(round: RoundData, holeNum: number): boolean {
+    const score = this.getScoreForHole(round, holeNum);
+    return Math.abs(score - round.holes[holeNum - 1].par) > 1;
+  }
+
+  getRoundTotalScore(round: RoundData): number {
     if (this.scoreMode == 'net') {
       return round.net_score;
     }
