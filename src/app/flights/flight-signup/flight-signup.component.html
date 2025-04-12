@@ -97,6 +97,7 @@
       <app-flight-info [info]="selectedFlight" />
       <app-flight-teams
         [teams]="selectedFlightTeams"
+        [linkTeamHome]="false"
         [linkGolferHome]="false"
         [teamMultiSelect]="false"
         (teamSelected)="handleTeamSelectionChange($event)"

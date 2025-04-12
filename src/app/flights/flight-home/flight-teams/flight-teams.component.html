@@ -46,8 +46,18 @@
       </p-accordion-content>
     </p-accordion-panel>
     <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
-      <p-accordion-header class="font-semibold px-4 py-2">{{ team.name }}</p-accordion-header>
+      <p-accordion-header class="font-semibold px-4 py-2">
+        <span>{{ team.name }}</span>
+      </p-accordion-header>
       <p-accordion-content>
+        <div class="flex flex-col items-end w-full py-1">
+          <p-button
+            icon="pi pi-home"
+            class="text-sm mx-4"
+            (onClick)="onTeamHomeSelected(team)"
+            *ngIf="linkTeamHome"
+          />
+        </div>
         <p-table
           [value]="team.golfers"
           stripedRows
