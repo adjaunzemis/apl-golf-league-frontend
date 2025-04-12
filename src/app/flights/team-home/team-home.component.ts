@@ -10,12 +10,14 @@ import { FlightsService } from '../flights.service';
 import { FlightInfo } from 'src/app/shared/flight.model';
 import { TeamInfoComponent } from './team-info/team-info.component';
 import { TeamRosterComponent } from './team-roster/team-roster.component';
+import { TeamRoundsComponent } from './team-rounds/team-rounds.component';
+import { RoundData } from 'src/app/shared/round.model';
 
 @Component({
   selector: 'app-team-home',
   templateUrl: './team-home.component.html',
   styleUrl: './team-home.component.css',
-  imports: [CommonModule, ProgressSpinnerModule, TeamInfoComponent, TeamRosterComponent],
+  imports: [CommonModule, ProgressSpinnerModule, TeamInfoComponent, TeamRosterComponent, TeamRoundsComponent],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -57,5 +59,20 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.teamDataSub.unsubscribe();
     this.flightInfoSub.unsubscribe();
+  }
+
+  getRounds(): RoundData[] {
+    if (!this.teamData) {
+      return [];
+    }
+    const rounds: RoundData[] = [];
+    for (const match of this.teamData.matches) {
+      for (const round of match.rounds) {
+        if (round.team_id === this.teamData.id) {
+          rounds.push(round);
+        }
+      }
+    }
+    return rounds;
   }
 }
