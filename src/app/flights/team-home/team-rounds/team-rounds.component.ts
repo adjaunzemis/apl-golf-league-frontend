@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutton';
+import { SelectModule } from 'primeng/select';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { RoundData } from 'src/app/shared/round.model';
 
@@ -10,14 +12,29 @@ import { RoundData } from 'src/app/shared/round.model';
   selector: 'app-team-rounds',
   templateUrl: './team-rounds.component.html',
   styleUrl: './team-rounds.component.css',
-  imports: [CommonModule, CardModule, TableModule, ToggleButtonModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    TableModule,
+    ToggleButtonModule,
+    SelectModule,
+    InputTextModule,
+  ],
 })
-export class TeamRoundsComponent {
+export class TeamRoundsComponent implements OnInit {
   @Input() rounds!: RoundData[];
+
+  golferNames!: string[];
 
   scoringMode = 'gross';
   labelScoringModeGross = 'Scoring Mode: Gross';
   labelScoringModeNet = 'Scoring Mode: Net';
+
+  ngOnInit(): void {
+    const roundGolferNames = this.rounds.map((round) => round.golfer_name);
+    this.golferNames = [...new Set(roundGolferNames)];
+    this.golferNames.push('');
+  }
 
   onChangeScoringMode(event: ToggleButtonChangeEvent): void {
     if (event.checked) {
