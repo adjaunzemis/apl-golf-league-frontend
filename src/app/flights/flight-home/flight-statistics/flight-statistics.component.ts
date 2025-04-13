@@ -26,6 +26,7 @@ import { FlightStatistics } from 'src/app/shared/flight.model';
 export class FlightStatisticsComponent implements OnInit {
   @Input() statistics: FlightStatistics;
   @Input() matchCountLimit = 3;
+  @Input() pagination = true;
 
   displayStatistics: GolferStatistics[] = [];
 
@@ -38,10 +39,11 @@ export class FlightStatisticsComponent implements OnInit {
   labelShowSubstitutesOff = 'Substitutes: Exclude';
 
   filterLowMatchCount = true;
-  labelFilterLowMatchCountEnabled = `Min Matches: ${this.matchCountLimit}`;
+  labelFilterLowMatchCountEnabled = `Min Matches: ?`;
   labelFilterLowMatchCountDisabled = 'Min Matches: n/a';
 
   ngOnInit(): void {
+    this.labelFilterLowMatchCountEnabled = `Min Matches: ${this.matchCountLimit}`;
     this.updateGolferStatistics();
   }
 
