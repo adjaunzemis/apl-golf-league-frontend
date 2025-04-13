@@ -77,7 +77,7 @@
 
     <div class="flex flex-col items-center" *ngIf="selectedMatchData; else loadingMatch">
       <app-match-scorecard
-        class="w-250"
+        class="w-full"
         [match]="selectedMatchData"
         [topTeamId]="selectedMatchData.home_team_id"
         *ngIf="isMatchPlayed(selectedMatchData)"
