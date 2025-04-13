@@ -26,6 +26,7 @@ export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
   @Input() info: FlightInfo;
   @Input() matches: MatchSummary[];
   @Input() currentWeek: number;
+  @Input() numMatchesVisible = 3;
 
   matchesPerWeek: Record<string, MatchSummary[]> = {};
   weeklyMatches: MatchWeekData[] = [];

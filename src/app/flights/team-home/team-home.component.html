@@ -11,9 +11,15 @@
     class="col-span-12 row-span-2 md:col-span-6 xl:col-span-4 xl:row-span-3"
     [rounds]="getRounds()"
   />
-  <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
+  <div class="hidden xl:block xl:col-span-1 xl:row-span-3 bg-transparent"></div>
 
-  <!-- <p>Matches</p> -->
+  <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
+  <app-team-schedule
+    class="col-span-12 md:col-span-6"
+    [flightInfo]="flightInfo"
+    [matches]="teamMatches"
+    *ngIf="teamMatches"
+  />
 
   <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
   <app-flight-statistics

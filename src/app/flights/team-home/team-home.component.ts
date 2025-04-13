@@ -12,7 +12,9 @@ import { TeamInfoComponent } from './team-info/team-info.component';
 import { TeamRosterComponent } from './team-roster/team-roster.component';
 import { TeamRoundsComponent } from './team-rounds/team-rounds.component';
 import { RoundData } from 'src/app/shared/round.model';
+import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
 import { FlightStatisticsComponent } from '../flight-home/flight-statistics/flight-statistics.component';
+import { MatchSummary } from 'src/app/shared/match.model';
 
 @Component({
   selector: 'app-team-home',
@@ -24,6 +26,7 @@ import { FlightStatisticsComponent } from '../flight-home/flight-statistics/flig
     TeamInfoComponent,
     TeamRosterComponent,
     TeamRoundsComponent,
+    TeamScheduleComponent,
     FlightStatisticsComponent,
   ],
 })
@@ -34,6 +37,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
   flightInfo!: FlightInfo;
   teamStandings: FlightStandingsTeam | undefined;
   statistics: FlightStatistics | undefined;
+  teamMatches: MatchSummary[] | undefined;
 
   private teamDataSub: Subscription;
   private teamsService = inject(TeamsService);
@@ -43,6 +47,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
 
   private teamStandingsSub: Subscription;
   private teamStatisticsSub: Subscription;
+  private teamMatchesSub: Subscription;
 
   private route = inject(ActivatedRoute);
 
@@ -59,6 +64,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
       this.flightsService.getInfo(result.flight_id);
       this.flightsService.getStandings(result.flight_id);
       this.flightsService.getStatistics(result.flight_id);
+      this.flightsService.getMatches(result.flight_id);
     });
 
     this.teamStandingsSub = this.flightsService.getStandingsUpdateListener().subscribe((result) => {
@@ -74,7 +80,6 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         const teamStatistics = [];
         for (const golferStatistics of result.golfers) {
-          console.log(golferStatistics.golfer_name);
           if (golferStatistics.golfer_team_id === this.teamData.id) {
             teamStatistics.push(golferStatistics);
           }
@@ -84,6 +89,15 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
           golfers: teamStatistics,
         };
       });
+
+    this.teamMatchesSub = this.flightsService.getMatchesUpdateListener().subscribe((result) => {
+      this.teamMatches = [];
+      for (const match of result) {
+        if (match.home_team_id === this.teamData.id || match.away_team_id === this.teamData.id) {
+          this.teamMatches.push(match);
+        }
+      }
+    });
 
     this.route.queryParams.subscribe((params) => {
       if (params && params.id) {
@@ -100,6 +114,7 @@ export class TeamHomeComponent implements OnInit, OnDestroy {
     this.flightInfoSub.unsubscribe();
     this.teamStandingsSub.unsubscribe();
     this.teamStatisticsSub.unsubscribe();
+    this.teamMatchesSub.unsubscribe();
   }
 
   getRounds(): RoundData[] {
