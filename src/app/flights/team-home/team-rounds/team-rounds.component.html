@@ -52,8 +52,12 @@
           <div
             [class.circle]="isHoleScoreBelowPar(round, holeNum)"
             [class.box]="isHoleScoreAbovePar(round, holeNum)"
-            [class.crosshatch]="isHoleScoreAtLeastTwoFromPar(round, holeNum)"
-            [class.bg-blue-100]="isHoleScoreBelowPar(round, holeNum)"
+            [class.crosshatch]="
+              isHoleScoreAbovePar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
+            "
+            [class.bg-blue-100]="
+              isHoleScoreBelowPar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
+            "
             [class.text-blue-500]="isHoleScoreBelowPar(round, holeNum)"
           >
             <span [class.text-blue-700]="isHoleScoreBelowPar(round, holeNum)">{{
