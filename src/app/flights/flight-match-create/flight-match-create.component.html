@@ -105,28 +105,43 @@
         [options]="weekOptions"
         (onChange)="onSelectedWeekChanged($event)"
         placeholder="Week"
+      />
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-100 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedMatch"
+        [options]="selectedWeekMatches"
+        (onChange)="onMatchSelected()"
+        placeholder="Select match"
+        *ngIf="selectedFlight"
       >
-        <ng-template #selectedItem let-selectedWeek>
+        <ng-template #selectedItem let-match>
           <div class="flex items-center gap-2">
-            <div>{{ selectedWeek }}</div>
+            <span>{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
+            <span *ngIf="editMode && (match.home_score || match.away_score)"
+              >{{ match.home_score | number: '1.1-1' }} -
+              {{ match.away_score | number: '1.1-1' }}</span
+            >
+            <span class="italic" *ngIf="editMode && !match.home_score && !match.away_score"
+              >TBD</span
+            >
           </div>
         </ng-template>
-        <ng-template let-weekOption #item>
+        <ng-template let-matchOption #item>
           <div class="flex items-center gap-2">
-            <div>{{ weekOption }}</div>
+            <span>{{ matchOption.home_team_name }} vs. {{ matchOption.away_team_name }}</span>
+            <span *ngIf="editMode && (matchOption.home_score || matchOption.away_score)"
+              >{{ matchOption.home_score | number: '1.1-1' }} -
+              {{ matchOption.away_score | number: '1.1-1' }}</span
+            >
+            <span
+              class="italic"
+              *ngIf="editMode && !matchOption.home_score && !matchOption.away_score"
+              >TBD</span
+            >
           </div>
         </ng-template>
       </p-select>
-
-      <!-- <mat-form-field appearance="fill" class="input-field" *ngIf="!hideForPrint">
-        <mat-label>Week</mat-label>
-        <mat-select
-          [value]="weekOptions[selectedWeek - 1]"
-          (selectionChange)="onSelectedWeekChanged($event)"
-        >
-          <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
-        </mat-select>
-      </mat-form-field> -->
     </div>
   </p-card>
   <div class="hidden md:block md:col-span-1 xl:col-span-2 bg-transparent"></div>
@@ -175,27 +190,6 @@
       </ul>
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
-  </div>
-
-  <span class="italic" *ngIf="editMode && !hideForPrint && selectedFlight && !selectedMatch"
-    >Select a match card...</span
-  >
-
-  <div class="card-container" *ngIf="!hideForPrint && selectedFlight">
-    <div
-      aria-hidden="true"
-      class="card card-small selectable match-summary-card"
-      [ngClass]="selectedMatch === match ? 'selected' : ''"
-      (click)="onMatchSelected(match)"
-      (keydown)="onMatchSelected(match)"
-      *ngFor="let match of selectedWeekMatches"
-    >
-      <span class="bold">{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
-      <span *ngIf="editMode && (match.home_score || match.away_score)"
-        >{{ match.home_score | number: '1.1-1' }} - {{ match.away_score | number: '1.1-1' }}</span
-      >
-      <span class="italic" *ngIf="editMode && !match.home_score && !match.away_score">TBD</span>
-    </div>
   </div>
 
   <div *ngIf="!hideForPrint && selectedFlight">

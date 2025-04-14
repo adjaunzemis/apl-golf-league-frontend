@@ -304,15 +304,14 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onMatchSelected(match: MatchSummary) {
+  onMatchSelected() {
     this.clearSelectedTeam(1);
     this.clearSelectedTeam(2);
-    this.selectedMatch = match;
-    if (this.selectedFlight.teams) {
+    if (this.selectedMatch && this.selectedFlight.teams) {
       for (const team of this.selectedFlight.teams) {
-        if (team.id === match.home_team_id) {
+        if (team.id === this.selectedMatch.home_team_id) {
           this.selectedTeam1 = team;
-        } else if (team.id === match.away_team_id) {
+        } else if (team.id === this.selectedMatch.away_team_id) {
           this.selectedTeam2 = team;
         }
       }

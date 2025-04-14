@@ -180,7 +180,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             label: 'Flight Match',
             icon: 'pi pi-venus',
             visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
-            route: '/flight-match/edit',
+            route: '/flight-scorecard/edit',
           },
           {
             label: 'Tournament Scores',
