@@ -1,84 +1,134 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { TeamDataWithMatches } from '../../shared/team.model';
-import { MatchData } from '../../shared/match.model';
+import { FlightTeamDataWithMatches } from 'src/app/shared/team.model';
+import { TeamsService } from 'src/app/teams/teams.service';
 import { FlightsService } from '../flights.service';
+import { FlightInfo, FlightStandingsTeam, FlightStatistics } from 'src/app/shared/flight.model';
+import { TeamInfoComponent } from './team-info/team-info.component';
+import { TeamRosterComponent } from './team-roster/team-roster.component';
+import { TeamRoundsComponent } from './team-rounds/team-rounds.component';
+import { RoundData } from 'src/app/shared/round.model';
+import { TeamScheduleComponent } from './team-schedule/team-schedule.component';
+import { FlightStatisticsComponent } from '../flight-home/flight-statistics/flight-statistics.component';
+import { MatchSummary } from 'src/app/shared/match.model';
 
 @Component({
   selector: 'app-team-home',
   templateUrl: './team-home.component.html',
-  styleUrls: ['./team-home.component.css'],
-  standalone: false,
+  styleUrl: './team-home.component.css',
+  imports: [
+    CommonModule,
+    ProgressSpinnerModule,
+    TeamInfoComponent,
+    TeamRosterComponent,
+    TeamRoundsComponent,
+    TeamScheduleComponent,
+    FlightStatisticsComponent,
+  ],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
-  showScorecard = false;
 
-  teamId: number;
+  teamData!: FlightTeamDataWithMatches;
+  flightInfo!: FlightInfo;
+  teamStandings: FlightStandingsTeam | undefined;
+  statistics: FlightStatistics | undefined;
+  teamMatches: MatchSummary[] | undefined;
 
-  team: TeamDataWithMatches;
-  teamSub: Subscription;
+  private teamDataSub: Subscription;
+  private teamsService = inject(TeamsService);
 
-  focusedMatch: MatchData;
+  private flightInfoSub: Subscription;
+  private flightsService = inject(FlightsService);
 
-  constructor(
-    private flightsService: FlightsService,
-    private route: ActivatedRoute,
-  ) {}
+  private teamStandingsSub: Subscription;
+  private teamStatisticsSub: Subscription;
+  private teamMatchesSub: Subscription;
+
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.teamSub = this.flightsService
-      .getTeamDataUpdateListener()
-      .subscribe((result: TeamDataWithMatches) => {
-        console.log(`[TeamHomeComponent] Received team data`);
-        this.isLoading = false;
-        this.team = result;
-      });
+    this.flightInfoSub = this.flightsService.getInfoUpdateListener().subscribe((result) => {
+      this.flightInfo = result;
+      this.isLoading = false;
+    });
 
-    this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.id) {
-          console.log(`[TeamHomeComponent] Setting query parameter id=${params.id}`);
-          this.teamId = params.id;
+    this.teamDataSub = this.teamsService.getFlightTeamDataUpdateListener().subscribe((result) => {
+      console.log(`[TeamHomeComponent] Received team data for '${result.name}'`);
+      this.teamData = result;
+
+      this.flightsService.getInfo(result.flight_id);
+      this.flightsService.getStandings(result.flight_id);
+      this.flightsService.getStatistics(result.flight_id);
+      this.flightsService.getMatches(result.flight_id);
+    });
+
+    this.teamStandingsSub = this.flightsService.getStandingsUpdateListener().subscribe((result) => {
+      for (const teamStandings of result.teams) {
+        if (teamStandings.team_id === this.teamData.id) {
+          this.teamStandings = teamStandings;
         }
       }
     });
 
-    this.getTeamData();
+    this.teamStatisticsSub = this.flightsService
+      .getStatisticsUpdateListener()
+      .subscribe((result) => {
+        const teamStatistics = [];
+        for (const golferStatistics of result.golfers) {
+          if (golferStatistics.golfer_team_id === this.teamData.id) {
+            teamStatistics.push(golferStatistics);
+          }
+        }
+        this.statistics = {
+          flight_id: result.flight_id,
+          golfers: teamStatistics,
+        };
+      });
+
+    this.teamMatchesSub = this.flightsService.getMatchesUpdateListener().subscribe((result) => {
+      this.teamMatches = [];
+      for (const match of result) {
+        if (match.home_team_id === this.teamData.id || match.away_team_id === this.teamData.id) {
+          this.teamMatches.push(match);
+        }
+      }
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params && params.id) {
+        console.log('[TeamHomeComponent] Processing route with query parameter: id=' + params.id);
+        const teamId = params.id;
+
+        this.teamsService.getFlightTeamData(teamId);
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    this.teamSub.unsubscribe();
+    this.teamDataSub.unsubscribe();
+    this.flightInfoSub.unsubscribe();
+    this.teamStandingsSub.unsubscribe();
+    this.teamStatisticsSub.unsubscribe();
+    this.teamMatchesSub.unsubscribe();
   }
 
-  private getTeamData(): void {
-    this.flightsService.getTeamData(this.teamId);
-  }
-
-  focusMatch(match: MatchData): void {
-    if (match.home_score && match.away_score) {
-      if (this.showScorecard && this.focusedMatch === match) {
-        this.showScorecard = false;
-        return;
-      }
-      this.focusedMatch = match;
-      this.showScorecard = true;
+  getRounds(): RoundData[] {
+    if (!this.teamData) {
+      return [];
     }
-  }
-
-  getMatchResult(score: number, opponentScore: number): string {
-    return score > opponentScore ? 'Win' : score < opponentScore ? 'Loss' : 'Tie';
-  }
-
-  getGolferEmailList(): string {
-    let emailList = '';
-    for (const golfer of this.team.golfers) {
-      if (golfer.golfer_email) {
-        emailList += golfer.golfer_email + ';';
+    const rounds: RoundData[] = [];
+    for (const match of this.teamData.matches) {
+      for (const round of match.rounds) {
+        if (round.team_id === this.teamData.id) {
+          rounds.push(round);
+        }
       }
     }
-    return emailList.substring(0, emailList.length - 1);
+    return rounds;
   }
 }

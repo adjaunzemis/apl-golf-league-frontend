@@ -9,6 +9,7 @@
       [onLabel]="labelFilterLowMatchCountDisabled"
       [offLabel]="labelFilterLowMatchCountEnabled"
       (onChange)="onChangeFilterLowMatchCount($event)"
+      *ngIf="matchCountLimit !== 0"
     />
 
     <p-togglebutton
@@ -43,7 +44,7 @@
           [sortOrder]="-1"
           stripedRows
           selectionMode="single"
-          [paginator]="true"
+          [paginator]="pagination"
           [rows]="10"
         >
           <ng-template #header>

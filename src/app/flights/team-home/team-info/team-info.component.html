@@ -1,0 +1,52 @@
+<p-card>
+  <div class="flex flex-col justify-center px-8 pt-4 pb-6">
+    <div class="flex flex-row flex-1 items-center ml-2">
+      <div class="w-30">
+        <a routerLink="/flight" [queryParams]="{ id: flightInfo.id }">
+          <img
+            class="block xl:block mx-auto rounded-border"
+            [src]="'assets/' + flightInfo.logo_url"
+            [alt]="flightInfo.name"
+          />
+        </a>
+      </div>
+
+      <div class="flex flex-row flex-2 justify-between items-center ml-4">
+        <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
+          <div class="flex flex-col justify-stretch items-center w-full">
+            <div class="text-xl font-semibold text-black">{{ teamData.name }}</div>
+            <div class="font-medium text-gray-700 text-sm">
+              {{ flightInfo.name }} ({{ flightInfo.year }})
+            </div>
+            <div class="font-semibold text-gray-700 text-sm pt-1" *ngIf="teamStandings">
+              Position: {{ teamStandings.position }} of {{ flightInfo.num_teams }}
+            </div>
+            <div class="font-normal text-gray-700 text-sm" *ngIf="teamStandings">
+              Avg. Points: {{ teamStandings.avg_points | number: '1.2-2' }}
+            </div>
+            <div class="font-normal text-gray-700 text-sm" *ngIf="teamStandings">
+              Matches Played: {{ teamStandings.matches_played }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-stretch items-center w-full pt-4">
+      <div class="text-sm font-medium text-gray-700">
+        <div *ngIf="getCaptainEmail() !== null">
+          <span>Captain: </span>
+          <a
+            class="p-button contactButton"
+            href="mailto:{{ getCaptainEmail() | lowercase }}"
+            *ngIf="getCaptainEmail()"
+          >
+            <span class="text-sm pi pi-send"></span>
+            <span>{{ getCaptainName() }}</span>
+          </a>
+        </div>
+        <span *ngIf="getCaptainEmail() === null">Captain: {{ getCaptainName() }}</span>
+      </div>
+    </div>
+  </div>
+</p-card>

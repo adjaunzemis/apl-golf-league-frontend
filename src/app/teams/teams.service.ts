@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { environment } from './../../environments/environment';
-import { TeamCreate } from '../shared/team.model';
+import { TeamCreate, FlightTeamDataWithMatches } from '../shared/team.model';
 import { Substitute } from '../shared/substitute.model';
 import { FreeAgent } from '../shared/free-agent.model';
 
@@ -12,10 +12,11 @@ import { FreeAgent } from '../shared/free-agent.model';
   providedIn: 'root',
 })
 export class TeamsService {
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
+  private teamData: FlightTeamDataWithMatches;
+  private teamDataUpdated = new Subject<FlightTeamDataWithMatches>();
+
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   createTeam(teamData: TeamCreate): Observable<{ id: number; name: string }> {
     if (teamData.flight_id) {
@@ -75,5 +76,18 @@ export class TeamsService {
       environment.apiUrl +
         `free-agents/?flight_id=${freeAgent.flight_id}&golfer_id=${freeAgent.golfer_id}`,
     );
+  }
+
+  getFlightTeamData(id: number): void {
+    this.http
+      .get<FlightTeamDataWithMatches>(environment.apiUrl + `teams/${id}`)
+      .subscribe((result) => {
+        this.teamData = result;
+        this.teamDataUpdated.next(result);
+      });
+  }
+
+  getFlightTeamDataUpdateListener(): Observable<FlightTeamDataWithMatches> {
+    return this.teamDataUpdated.asObservable();
   }
 }

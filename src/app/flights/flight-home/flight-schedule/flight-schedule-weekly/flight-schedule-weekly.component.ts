@@ -26,6 +26,7 @@ export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
   @Input() info: FlightInfo;
   @Input() matches: MatchSummary[];
   @Input() currentWeek: number;
+  @Input() numMatchesVisible = 3;
 
   matchesPerWeek: Record<string, MatchSummary[]> = {};
   weeklyMatches: MatchWeekData[] = [];
@@ -90,13 +91,13 @@ export class FlightScheduleWeeklyComponent implements OnInit, OnDestroy {
   }
 
   getPageForCurrentWeek(): number {
-    if (this.currentWeek <= 2) {
+    if (this.currentWeek <= this.numMatchesVisible - 1) {
       return 0;
     }
     if (this.currentWeek >= this.info.weeks - 1) {
-      return this.info.weeks - 3;
+      return this.info.weeks - this.numMatchesVisible;
     }
-    return this.currentWeek - 2;
+    return this.currentWeek - (this.numMatchesVisible - 1);
   }
 
   onMatchSelected(): void {
