@@ -11,6 +11,7 @@ import { DrawerModule } from 'primeng/drawer';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { DatePickerModule } from 'primeng/datepicker';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   exports: [
@@ -26,6 +27,7 @@ import { DatePickerModule } from 'primeng/datepicker';
     SelectModule,
     TagModule,
     DatePickerModule,
+    ProgressSpinnerModule,
   ],
 })
 export class PrimeNGModule {}
