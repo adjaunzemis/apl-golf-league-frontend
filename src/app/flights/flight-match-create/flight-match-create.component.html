@@ -193,7 +193,7 @@
         placeholder="Team 1 Golfer 1 Tees"
         [disabled]="!selectedTrack"
         (onChange)="onSelectedTeeChanged($event, 1, 1)"
-        *ngIf="selectedTrack"
+        *ngIf="selectedTrack && selectedTeam1Golfer1"
       >
         <ng-template #selectedItem let-selectedTee>
           <div class="flex items-center gap-2">
@@ -241,7 +241,7 @@
         placeholder="Team 1 Golfer 2 Tees"
         [disabled]="!selectedTrack"
         (onChange)="onSelectedTeeChanged($event, 1, 2)"
-        *ngIf="selectedTrack"
+        *ngIf="selectedTrack && selectedTeam1Golfer2"
       >
         <ng-template #selectedItem let-selectedTee>
           <div class="flex items-center gap-2">
@@ -263,7 +263,7 @@
     </div>
 
     <div
-      class="flex flex-col sm:flex-row sm:items-center px-4 py-4"
+      class="flex flex-col sm:flex-row sm:items-center px-4 pb-4"
       *ngIf="!hideForPrint && selectedFlight"
     >
       <p-select
@@ -313,7 +313,7 @@
         placeholder="Team 2 Golfer 1 Tees"
         [disabled]="!selectedTrack"
         (onChange)="onSelectedTeeChanged($event, 2, 1)"
-        *ngIf="selectedTrack"
+        *ngIf="selectedTrack && selectedTeam2Golfer1"
       >
         <ng-template #selectedItem let-selectedTee>
           <div class="flex items-center gap-2">
@@ -361,7 +361,7 @@
         placeholder="Team 2 Golfer 2 Tees"
         [disabled]="!selectedTrack"
         (onChange)="onSelectedTeeChanged($event, 2, 2)"
-        *ngIf="selectedTrack"
+        *ngIf="selectedTrack && selectedTeam2Golfer2"
       >
         <ng-template #selectedItem let-selectedTee>
           <div class="flex items-center gap-2">
