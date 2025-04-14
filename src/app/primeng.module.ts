@@ -10,6 +10,7 @@ import { BadgeModule } from 'primeng/badge';
 import { DrawerModule } from 'primeng/drawer';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @NgModule({
   exports: [
@@ -24,6 +25,7 @@ import { TagModule } from 'primeng/tag';
     DrawerModule,
     SelectModule,
     TagModule,
+    DatePickerModule,
   ],
 })
 export class PrimeNGModule {}

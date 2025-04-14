@@ -150,6 +150,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
         ],
       },
       {
+        label: 'Scorecards',
+        icon: 'pi pi-pen-to-square',
+        visible: true,
+        items: [
+          {
+            label: 'Flight Match',
+            icon: 'pi pi-venus',
+            visible: true,
+            route: '/flight-scorecard',
+          },
+          {
+            label: 'Flight Match 2',
+            icon: 'pi pi-venus',
+            visible: true,
+            route: '/flight-scorecard-2',
+          },
+        ],
+      },
+      {
         label: 'Post Scores',
         icon: 'pi pi-pen-to-square',
         visible:

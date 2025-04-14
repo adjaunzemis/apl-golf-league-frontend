@@ -1,19 +1,135 @@
-<div class="content">
-  <h1 *ngIf="!hideForPrint">
-    <span *ngIf="editMode">Submit </span>
-    <span>Match Scorecard</span>
-  </h1>
+<div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
+  <div class="hidden md:block md:col-span-1 xl:col-span-2 bg-transparent"></div>
+  <p-card class="col-span-12 md:col-span-10 xl:col-span-8">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+      <span class="text-2xl font-semibold">Match Scorecard</span>
+    </div>
 
-  <div
-    aria-hidden="true"
-    class="card card-small selectable"
-    [ngClass]="showInstructions ? 'selected' : ''"
-    (click)="showInstructions = !showInstructions"
-    (keydown)="showInstructions = !showInstructions"
-    *ngIf="!editMode && !hideForPrint"
-  >
-    <span class="bold">Instructions</span>
-  </div>
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+      <p-button
+        class="font-semibold"
+        *ngIf="!editMode && !hideForPrint"
+        (click)="showInstructions = !showInstructions"
+        >Instructions</p-button
+      >
+      <p-button
+        class="font-semibold"
+        *ngIf="!hideForPrint"
+        (click)="createMatchRounds()"
+        [disabled]="!checkValidSelections()"
+        >Generate Scorecard</p-button
+      >
+      <p-button
+        class="font-semibold"
+        *ngIf="!hideForPrint"
+        (click)="printScorecard()"
+        [disabled]="
+          !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
+        "
+        >Print Scorecard</p-button
+      >
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4" *ngIf="!hideForPrint">
+      <p-datepicker
+        [(ngModel)]="selectedDate"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        [showTime]="true"
+        [showButtonBar]="true"
+      />
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 ml-2 pl-2 py-1"
+        [options]="flightOptions"
+        [(ngModel)]="selectedFlightInfo"
+        (onChange)="onSelectedFlightChanged($event)"
+        placeholder="Flight"
+      >
+        <ng-template #selectedItem let-selectedFlight>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedFlight.name }} ({{ selectedFlight.year }})</div>
+          </div>
+        </ng-template>
+        <ng-template let-flightOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ flightOption.name }} ({{ flightOption.year }})</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-70 ml-2 pl-2 py-1"
+        [options]="courseOptions"
+        [(ngModel)]="selectedCourseInfo"
+        (onChange)="onSelectedCourseChanged($event)"
+        placeholder="Course"
+      >
+        <ng-template #selectedItem let-selectedCourse>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedCourse.name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-courseOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ courseOption.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-25 ml-2 pl-2 py-1"
+        [options]="selectedCourse.tracks"
+        [(ngModel)]="selectedTrack"
+        (onChange)="onSelectedTrackChanged($event)"
+        [disabled]="!selectedCourse"
+        *ngIf="selectedCourse"
+        placeholder="Track"
+      >
+        <ng-template #selectedItem let-selectedTrack>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedTrack.name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-trackOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ trackOption.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4" *ngIf="!hideForPrint">
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-45 pl-2 py-1"
+        [options]="weekOptions"
+        (onChange)="onSelectedWeekChanged($event)"
+        placeholder="Week"
+      >
+        <ng-template #selectedItem let-selectedWeek>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedWeek }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-weekOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ weekOption }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <!-- <mat-form-field appearance="fill" class="input-field" *ngIf="!hideForPrint">
+        <mat-label>Week</mat-label>
+        <mat-select
+          [value]="weekOptions[selectedWeek - 1]"
+          (selectionChange)="onSelectedWeekChanged($event)"
+        >
+          <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    </div>
+  </p-card>
+  <div class="hidden md:block md:col-span-1 xl:col-span-2 bg-transparent"></div>
 
   <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
     <ul>
@@ -60,82 +176,6 @@
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
   </div>
-
-  <div style="margin-bottom: 16px" *ngIf="!hideForPrint">
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="!checkValidSelections()"
-      (click)="createMatchRounds()"
-    >
-      Generate Scorecard
-    </button>
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="
-        !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
-      "
-      (click)="printScorecard()"
-    >
-      Print Scorecard
-    </button>
-  </div>
-
-  <div *ngIf="!hideForPrint">
-    <mat-form-field class="selection-field date-selection-field" appearance="fill">
-      <mat-label>Date</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        [value]="selectedDate"
-        (dateChange)="onSelectedDateChanged($event)"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="selection-field flight-selection-field" appearance="fill">
-      <mat-label>Flight</mat-label>
-      <mat-select [value]="selectedFlightInfo" (selectionChange)="onSelectedFlightChanged($event)">
-        <mat-option *ngFor="let flightOption of flightOptions" [value]="flightOption"
-          >{{ flightOption.name }} ({{ flightOption.year }})</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="selection-field course-selection-field" appearance="fill">
-      <mat-label>Course</mat-label>
-      <mat-select [value]="selectedCourseInfo" (selectionChange)="onSelectedCourseChanged($event)">
-        <mat-option *ngFor="let courseOption of courseOptions" [value]="courseOption">{{
-          courseOption.name
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="selection-field track-selection-field" appearance="fill">
-      <mat-label>Track</mat-label>
-      <mat-select
-        [value]="selectedTrack"
-        (selectionChange)="onSelectedTrackChanged($event)"
-        [disabled]="!selectedCourse"
-      >
-        <mat-option *ngFor="let trackOption of selectedCourse?.tracks" [value]="trackOption">{{
-          trackOption.name
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <mat-form-field appearance="fill" class="input-field" *ngIf="!hideForPrint">
-    <mat-label>Week</mat-label>
-    <mat-select
-      [value]="weekOptions[selectedWeek - 1]"
-      (selectionChange)="onSelectedWeekChanged($event)"
-    >
-      <mat-option *ngFor="let week of weekOptions" [value]="week">{{ week }}</mat-option>
-    </mat-select>
-  </mat-form-field>
 
   <span class="italic" *ngIf="editMode && !hideForPrint && selectedFlight && !selectedMatch"
     >Select a match card...</span
