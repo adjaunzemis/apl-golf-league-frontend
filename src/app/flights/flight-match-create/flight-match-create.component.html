@@ -1,6 +1,6 @@
 <div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
-  <div class="hidden md:block md:col-span-1 xl:col-span-2 bg-transparent"></div>
-  <p-card class="col-span-12 md:col-span-10 xl:col-span-8">
+  <div class="hidden md:block md:col-span-1 bg-transparent"></div>
+  <p-card class="col-span-12 md:col-span-10">
     <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
       <span class="text-2xl font-semibold">Match Scorecard</span>
     </div>
@@ -143,8 +143,248 @@
         </ng-template>
       </p-select>
     </div>
+
+    <div
+      class="flex flex-col sm:flex-row sm:items-center px-4 pt-4"
+      *ngIf="!hideForPrint && selectedFlight"
+    >
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 pl-2 py-1"
+        [(ngModel)]="selectedTeam1"
+        [options]="selectedFlight.teams"
+        placeholder="Team 1"
+        (onChange)="onSelectedTeamChanged($event, 1)"
+      >
+        <ng-template #selectedItem let-selectedTeam>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedTeam.name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-teamOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ teamOption.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam1Golfer1"
+        [options]="selectedTeam1.golfers"
+        placeholder="Team 1 Golfer 1"
+        [disabled]="!selectedTeam1"
+        (onChange)="onSelectedGolferChanged($event, 1, 1)"
+        *ngIf="selectedTeam1"
+      >
+        <ng-template #selectedItem let-selectedGolfer>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedGolfer.golfer_name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-golferOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ golferOption.golfer_name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam1Golfer1Tee"
+        [options]="selectedTrack.tees"
+        placeholder="Team 1 Golfer 1 Tees"
+        [disabled]="!selectedTrack"
+        (onChange)="onSelectedTeeChanged($event, 1, 1)"
+        *ngIf="selectedTrack"
+      >
+        <ng-template #selectedItem let-selectedTee>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+              {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-teeOption #item>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+              {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+            </div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam1Golfer2"
+        [options]="selectedTeam1.golfers"
+        placeholder="Team 1 Golfer 2"
+        [disabled]="!selectedTeam1"
+        (onChange)="onSelectedGolferChanged($event, 1, 2)"
+        *ngIf="selectedTeam1"
+      >
+        <ng-template #selectedItem let-selectedGolfer>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedGolfer.golfer_name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-golferOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ golferOption.golfer_name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam1Golfer2Tee"
+        [options]="selectedTrack.tees"
+        placeholder="Team 1 Golfer 2 Tees"
+        [disabled]="!selectedTrack"
+        (onChange)="onSelectedTeeChanged($event, 1, 2)"
+        *ngIf="selectedTrack"
+      >
+        <ng-template #selectedItem let-selectedTee>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+              {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-teeOption #item>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+              {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+            </div>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <div
+      class="flex flex-col sm:flex-row sm:items-center px-4 py-4"
+      *ngIf="!hideForPrint && selectedFlight"
+    >
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 pl-2 py-1"
+        [(ngModel)]="selectedTeam2"
+        [options]="selectedFlight.teams"
+        (onChange)="onSelectedTeamChanged($event, 2)"
+        placeholder="Team 2"
+      >
+        <ng-template #selectedItem let-selectedTeam>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedTeam.name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-teamOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ teamOption.name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam2Golfer1"
+        [options]="selectedTeam2.golfers"
+        placeholder="Team 2 Golfer 1"
+        [disabled]="!selectedTeam2"
+        (onChange)="onSelectedGolferChanged($event, 2, 1)"
+        *ngIf="selectedTeam2"
+      >
+        <ng-template #selectedItem let-selectedGolfer>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedGolfer.golfer_name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-golferOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ golferOption.golfer_name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam2Golfer1Tee"
+        [options]="selectedTrack.tees"
+        placeholder="Team 2 Golfer 1 Tees"
+        [disabled]="!selectedTrack"
+        (onChange)="onSelectedTeeChanged($event, 2, 1)"
+        *ngIf="selectedTrack"
+      >
+        <ng-template #selectedItem let-selectedTee>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+              {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-teeOption #item>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+              {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+            </div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam2Golfer2"
+        [options]="selectedTeam2.golfers"
+        placeholder="Team 2 Golfer 2"
+        [disabled]="!selectedTeam2"
+        (onChange)="onSelectedGolferChanged($event, 2, 2)"
+        *ngIf="selectedTeam2"
+      >
+        <ng-template #selectedItem let-selectedGolfer>
+          <div class="flex items-center gap-2">
+            <div>{{ selectedGolfer.golfer_name }}</div>
+          </div>
+        </ng-template>
+        <ng-template let-golferOption #item>
+          <div class="flex items-center gap-2">
+            <div>{{ golferOption.golfer_name }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+        [(ngModel)]="selectedTeam2Golfer2Tee"
+        [options]="selectedTrack.tees"
+        placeholder="Team 2 Golfer 2 Tees"
+        [disabled]="!selectedTrack"
+        (onChange)="onSelectedTeeChanged($event, 2, 2)"
+        *ngIf="selectedTrack"
+      >
+        <ng-template #selectedItem let-selectedTee>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+              {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-teeOption #item>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+              {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+            </div>
+          </div>
+        </ng-template>
+      </p-select>
+    </div>
   </p-card>
-  <div class="hidden md:block md:col-span-1 xl:col-span-2 bg-transparent"></div>
+  <div class="hidden md:block md:col-span-1 bg-transparent"></div>
 
   <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
     <ul>
@@ -190,154 +430,6 @@
       </ul>
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
-  </div>
-
-  <div *ngIf="!hideForPrint && selectedFlight">
-    <mat-form-field class="selection-field" appearance="fill">
-      <mat-label>Team 1</mat-label>
-      <mat-select [value]="selectedTeam1" (selectionChange)="onSelectedTeamChanged($event, 1)">
-        <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{
-          teamOption.name
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field class="selection-field" appearance="fill">
-      <mat-label>Team 2</mat-label>
-      <mat-select [value]="selectedTeam2" (selectionChange)="onSelectedTeamChanged($event, 2)">
-        <mat-option *ngFor="let teamOption of selectedFlight.teams" [value]="teamOption">{{
-          teamOption.name
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div *ngIf="!hideForPrint && selectedFlight">
-    <ng-container>
-      <div>
-        <ng-container>
-          <mat-form-field class="selection-field" appearance="fill">
-            <mat-label>Team 1 Golfer 1</mat-label>
-            <mat-select
-              [disabled]="!selectedTeam1"
-              (selectionChange)="onSelectedGolferChanged($event, 1, 1)"
-            >
-              <mat-option
-                *ngFor="let golferOption of selectedTeam1?.golfers"
-                [value]="golferOption"
-                >{{ golferOption.golfer_name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
-            <mat-label>Team 1 Golfer 1 Tees</mat-label>
-            <mat-select
-              [disabled]="!selectedTrack || !selectedTeam1Golfer1"
-              [value]="selectedTeam1Golfer1Tee"
-              (selectionChange)="onSelectedTeeChanged($event, 1, 1)"
-            >
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
-                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-        </ng-container>
-
-        <ng-container>
-          <mat-form-field class="selection-field" appearance="fill">
-            <mat-label>Team 2 Golfer 1</mat-label>
-            <mat-select
-              [disabled]="!selectedTeam2"
-              (selectionChange)="onSelectedGolferChanged($event, 2, 1)"
-            >
-              <mat-option
-                *ngFor="let golferOption of selectedTeam2?.golfers"
-                [value]="golferOption"
-                >{{ golferOption.golfer_name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
-            <mat-label>Team 2 Golfer 1 Tees</mat-label>
-            <mat-select
-              [disabled]="!selectedTrack || !selectedTeam2Golfer1"
-              [value]="selectedTeam2Golfer1Tee"
-              (selectionChange)="onSelectedTeeChanged($event, 2, 1)"
-            >
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
-                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-        </ng-container>
-      </div>
-
-      <div>
-        <ng-container>
-          <mat-form-field class="selection-field" appearance="fill">
-            <mat-label>Team 1 Golfer 2</mat-label>
-            <mat-select
-              [disabled]="!selectedTeam1"
-              (selectionChange)="onSelectedGolferChanged($event, 1, 2)"
-            >
-              <mat-option
-                *ngFor="let golferOption of selectedTeam1?.golfers"
-                [value]="golferOption"
-                >{{ golferOption.golfer_name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
-            <mat-label>Team 1 Golfer 2 Tees</mat-label>
-            <mat-select
-              [disabled]="!selectedTrack || !selectedTeam1Golfer2"
-              [value]="selectedTeam1Golfer2Tee"
-              (selectionChange)="onSelectedTeeChanged($event, 1, 2)"
-            >
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
-                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-        </ng-container>
-
-        <ng-container>
-          <mat-form-field class="selection-field" appearance="fill">
-            <mat-label>Team 2 Golfer 2</mat-label>
-            <mat-select
-              [disabled]="!selectedTeam2"
-              (selectionChange)="onSelectedGolferChanged($event, 2, 2)"
-            >
-              <mat-option
-                *ngFor="let golferOption of selectedTeam2?.golfers"
-                [value]="golferOption"
-                >{{ golferOption.golfer_name }}</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="selection-field tee-selection-field">
-            <mat-label>Team 2 Golfer 2 Tees</mat-label>
-            <mat-select
-              [disabled]="!selectedTrack || !selectedTeam2Golfer2"
-              [value]="selectedTeam2Golfer2Tee"
-              (selectionChange)="onSelectedTeeChanged($event, 2, 2)"
-            >
-              <mat-option *ngFor="let teeOption of selectedTrack?.tees" [value]="teeOption"
-                >{{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-        </ng-container>
-      </div>
-    </ng-container>
   </div>
 
   <div

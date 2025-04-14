@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatSelectChange } from '@angular/material/select';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -318,7 +317,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {
+  onSelectedTeamChanged(selection: SelectChangeEvent, teamNum: number): void {
     this.selectedMatch = null;
     this.clearMatchRounds();
     const selectedTeam = selection.value as TeamData;
@@ -330,7 +329,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectedGolferChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+  onSelectedGolferChanged(selection: SelectChangeEvent, teamNum: number, golferNum: number): void {
     this.clearMatchRounds();
     const selectedGolfer = selection.value as TeamGolferData;
     console.log(
@@ -387,7 +386,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
-  onSelectedTeeChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+  onSelectedTeeChanged(selection: SelectChangeEvent, teamNum: number, golferNum: number): void {
     this.clearMatchRounds();
     const selectedTee = selection.value as Tee;
     console.log(
