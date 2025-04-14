@@ -1,27 +1,25 @@
 <div class="grid grid-cols-12 place-items-stretch gap-4 p-4" *ngIf="!isLoading; else loading">
   <div class="hidden md:block md:col-span-1 bg-transparent"></div>
   <p-card class="col-span-12 md:col-span-10">
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4" *ngIf="!hideForPrint">
       <span class="text-2xl font-semibold">Match Scorecard</span>
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4" *ngIf="!hideForPrint">
       <p-button
         class="font-semibold"
-        *ngIf="!editMode && !hideForPrint"
+        *ngIf="!editMode"
         (click)="showInstructions = !showInstructions"
         >Instructions</p-button
       >
       <p-button
         class="font-semibold"
-        *ngIf="!hideForPrint"
         (click)="createMatchRounds()"
         [disabled]="!checkValidSelections()"
         >Generate Scorecard</p-button
       >
       <p-button
         class="font-semibold"
-        *ngIf="!hideForPrint"
         (click)="printScorecard()"
         [disabled]="
           !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
@@ -387,80 +385,6 @@
     <div
       class="w-full"
       *ngIf="
-        !isSubmittingRounds &&
-        selectedTeam1 &&
-        team1Golfer1Round &&
-        team1Golfer2Round &&
-        selectedTeam2 &&
-        team2Golfer1Round &&
-        team2Golfer2Round
-      "
-    >
-      <app-scorecard-title-line
-        [rounds]="getRounds()"
-        [title]="getMatchTitle()"
-        [subtitle]="getMatchSubtitle()"
-      ></app-scorecard-title-line>
-
-      <app-scorecard-hole-line
-        [holeResultData]="getRounds()[roundIdx].holes"
-        [showScoreModeButtons]="false"
-      ></app-scorecard-hole-line>
-      <app-scorecard-tee-info
-        [holeResultData]="getRounds()[roundIdx].holes"
-        [showDetails]="true"
-      ></app-scorecard-tee-info>
-
-      <ng-container *ngFor="let round of getRoundsForTeam(1); let roundIdx = index">
-        <app-scorecard-score-line
-          [(round)]="getRoundsForTeam(1)[roundIdx]"
-          scoreMode="gross"
-          [enterScores]="editMode"
-          [showScores]="false"
-          [title]="round.golfer_name"
-          [subtitle]="getRoundSubtitle(round)"
-          [linkToGolferHome]="false"
-        ></app-scorecard-score-line>
-      </ng-container>
-
-      <app-scorecard-score-line
-        class="team-score-line"
-        [round]="getTeamRound(1)"
-        scoreMode="gross"
-        [teamScore]="true"
-        [showScores]="editMode"
-        [title]="selectedTeam1.name"
-        [subtitle]="getTeamRoundSubtitle(1)"
-        [linkToGolferHome]="false"
-      ></app-scorecard-score-line>
-
-      <app-scorecard-score-line
-        class="team-score-line"
-        [round]="getTeamRound(2)"
-        scoreMode="gross"
-        [teamScore]="true"
-        [showScores]="editMode"
-        [title]="selectedTeam2.name"
-        [subtitle]="getTeamRoundSubtitle(2)"
-        [linkToGolferHome]="false"
-      ></app-scorecard-score-line>
-
-      <ng-container *ngFor="let round of getRoundsForTeam(2); let roundIdx = index">
-        <app-scorecard-score-line
-          [round]="getRoundsForTeam(2)[roundIdx]"
-          scoreMode="gross"
-          [enterScores]="editMode"
-          [showScores]="false"
-          [title]="round.golfer_name"
-          [subtitle]="getRoundSubtitle(round)"
-          [linkToGolferHome]="false"
-        ></app-scorecard-score-line>
-      </ng-container>
-    </div>
-
-    <div
-      class="w-full"
-      *ngIf="
         editMode &&
         !hideForPrint &&
         !isSubmittingRounds &&
@@ -537,6 +461,84 @@
       <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
     </ul>
   </div>
+</div>
+
+<div class="px-4">
+  <p-card>
+    <div
+      class="flex flex-col p-4 text-sm"
+      *ngIf="
+        !isSubmittingRounds &&
+        selectedTeam1 &&
+        team1Golfer1Round &&
+        team1Golfer2Round &&
+        selectedTeam2 &&
+        team2Golfer1Round &&
+        team2Golfer2Round
+      "
+    >
+      <app-scorecard-title-line
+        [rounds]="getRounds()"
+        [title]="getMatchTitle()"
+        [subtitle]="getMatchSubtitle()"
+      ></app-scorecard-title-line>
+
+      <app-scorecard-hole-line
+        [holeResultData]="getRounds()[roundIdx].holes"
+        [showScoreModeButtons]="false"
+      ></app-scorecard-hole-line>
+      <app-scorecard-tee-info
+        [holeResultData]="getRounds()[roundIdx].holes"
+        [showDetails]="true"
+      ></app-scorecard-tee-info>
+
+      <ng-container *ngFor="let round of getRoundsForTeam(1); let roundIdx = index">
+        <app-scorecard-score-line
+          [(round)]="getRoundsForTeam(1)[roundIdx]"
+          scoreMode="gross"
+          [enterScores]="editMode"
+          [showScores]="false"
+          [title]="round.golfer_name"
+          [subtitle]="getRoundSubtitle(round)"
+          [linkToGolferHome]="false"
+        ></app-scorecard-score-line>
+      </ng-container>
+
+      <app-scorecard-score-line
+        class="team-score-line"
+        [round]="getTeamRound(1)"
+        scoreMode="gross"
+        [teamScore]="true"
+        [showScores]="editMode"
+        [title]="selectedTeam1.name"
+        [subtitle]="getTeamRoundSubtitle(1)"
+        [linkToGolferHome]="false"
+      ></app-scorecard-score-line>
+
+      <app-scorecard-score-line
+        class="team-score-line"
+        [round]="getTeamRound(2)"
+        scoreMode="gross"
+        [teamScore]="true"
+        [showScores]="editMode"
+        [title]="selectedTeam2.name"
+        [subtitle]="getTeamRoundSubtitle(2)"
+        [linkToGolferHome]="false"
+      ></app-scorecard-score-line>
+
+      <ng-container *ngFor="let round of getRoundsForTeam(2); let roundIdx = index">
+        <app-scorecard-score-line
+          [round]="getRoundsForTeam(2)[roundIdx]"
+          scoreMode="gross"
+          [enterScores]="editMode"
+          [showScores]="false"
+          [title]="round.golfer_name"
+          [subtitle]="getRoundSubtitle(round)"
+          [linkToGolferHome]="false"
+        ></app-scorecard-score-line>
+      </ng-container>
+    </div>
+  </p-card>
 </div>
 
 <ng-template #loading>
