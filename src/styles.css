@@ -18,9 +18,13 @@ body {
   @apply bg-gray-50 ring-1 ring-gray-200 text-gray-800 text-sm py-2 px-4 mx-2 rounded-md shadow-md transition;
 }
 
-.p-button:hover,
-.p-togglebutton:hover {
+.p-button:hover:not(:disabled),
+.p-togglebutton:hover:not(:disabled) {
   @apply text-blue-600 shadow-lg;
+}
+
+.p-button:disabled {
+  @apply bg-gray-300 text-gray-500;
 }
 
 .p-datepicker-panel .p-button {
@@ -57,6 +61,24 @@ body {
 
 .p-paginator-page-selected {
   @apply text-blue-600 font-semibold;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .print-target,
+  .print-target * {
+    visibility: visible;
+  }
+
+  .print-target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 }
 
 a {

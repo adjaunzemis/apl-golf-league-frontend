@@ -1,11 +1,11 @@
 <div class="grid grid-cols-12 place-items-stretch gap-4 p-4" *ngIf="!isLoading; else loading">
   <div class="hidden md:block md:col-span-1 bg-transparent"></div>
   <p-card class="col-span-12 md:col-span-10">
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4" *ngIf="!hideForPrint">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
       <span class="text-2xl font-semibold">Match Scorecard</span>
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4" *ngIf="!hideForPrint">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
       <p-button
         class="font-semibold"
         *ngIf="!editMode"
@@ -67,7 +67,7 @@
       </div>
     </p-dialog>
 
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4" *ngIf="!hideForPrint">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
       <p-datepicker
         [(ngModel)]="selectedDate"
         [iconDisplay]="'input'"
@@ -136,7 +136,7 @@
       </p-select>
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4" *ngIf="!hideForPrint">
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
       <p-select
         class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-45 pl-2 py-1"
         [options]="weekOptions"
@@ -181,10 +181,7 @@
       </p-select>
     </div>
 
-    <div
-      class="flex flex-col sm:flex-row sm:items-start px-4 pb-4"
-      *ngIf="!hideForPrint && selectedFlight"
-    >
+    <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4" *ngIf="selectedFlight">
       <p-select
         class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 pl-2 py-1"
         [(ngModel)]="selectedTeam1"
@@ -305,10 +302,7 @@
       </div>
     </div>
 
-    <div
-      class="flex flex-col sm:flex-row sm:items-start px-4 pb-4"
-      *ngIf="!hideForPrint && selectedFlight"
-    >
+    <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4" *ngIf="selectedFlight">
       <p-select
         class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 pl-2 py-1"
         [(ngModel)]="selectedTeam2"
@@ -430,10 +424,9 @@
     </div>
 
     <div
-      class="w-full"
+      class="flex flex-col items-center pb-4"
       *ngIf="
         editMode &&
-        !hideForPrint &&
         !isSubmittingRounds &&
         team1Golfer1Round &&
         team1Golfer2Round &&
@@ -451,20 +444,15 @@
         >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par
         + handicap strokes)</span
       >
-      <button
-        mat-raised-button
-        color="accent"
-        [disabled]="isMatchDataInvalid()"
-        (click)="postMatchRounds()"
-      >
+      <p-button [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">
         Post Scores
-      </button>
+      </p-button>
     </div>
   </p-card>
   <div class="hidden md:block md:col-span-1 bg-transparent"></div>
 </div>
 
-<div class="px-4">
+<div class="print-target px-4">
   <p-card>
     <div
       class="flex flex-col p-4 text-sm"

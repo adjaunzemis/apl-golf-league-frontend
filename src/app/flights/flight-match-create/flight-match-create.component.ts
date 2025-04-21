@@ -34,8 +34,6 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
   isSubmittingRounds = false;
 
-  hideForPrint = false;
-
   private currentYear: number;
   private seasonsSub: Subscription;
 
@@ -250,6 +248,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   onSelectedWeekChanged(selectedWeekChange: SelectChangeEvent): void {
     this.selectedWeek = parseInt((selectedWeekChange.value as string).split(' ')[0]);
     this.setSelectedWeekMatches();
+    this.clearMatchRounds();
+    this.clearSelectedTeam(1);
+    this.clearSelectedTeam(2);
   }
 
   private determineCurrentWeek(): number {
@@ -320,6 +321,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   onSelectedTeamChanged(selection: SelectChangeEvent, teamNum: number): void {
     this.selectedMatch = null;
     this.clearMatchRounds();
+    this.clearSelectedTeam(teamNum);
     const selectedTeam = selection.value as TeamData;
     console.log(`[FlightMatchCreateComponent] Selected team ${teamNum}: ${selectedTeam.name}`);
     if (teamNum === 1) {
@@ -430,11 +432,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   async printScorecard() {
-    this.hideForPrint = true;
-    await new Promise((r) => setTimeout(r, 500)); // wait to register changes to UI
     window.print();
-    await new Promise((r) => setTimeout(r, 500)); // wait to restore full UI
-    this.hideForPrint = false;
   }
 
   private clearMatchRounds(): void {
