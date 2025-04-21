@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MatSelectChange } from '@angular/material/select';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -24,6 +22,7 @@ import { Tee } from '../../shared/tee.model';
 import { HoleResultData } from '../../shared/hole-result.model';
 import { MatchesService } from '../../matches/matches.service';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
+import { SelectChangeEvent } from 'primeng/select';
 
 @Component({
   selector: 'app-flight-match-create',
@@ -34,8 +33,6 @@ import { SeasonsService } from 'src/app/seasons/seasons.service';
 export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   isLoading = true;
   isSubmittingRounds = false;
-
-  hideForPrint = false;
 
   private currentYear: number;
   private seasonsSub: Subscription;
@@ -195,24 +192,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     this.coursesService.getCourses();
   }
 
-  onSelectedDateChanged(event: MatDatepickerInputEvent<Date>): void {
-    if (event.value !== null) {
-      console.log(`[FlightMatchCreateComponent] Selected date: ${event.value}`);
-      this.selectedDate = event.value;
-      for (const round of [
-        this.team1Golfer1Round,
-        this.team1Golfer2Round,
-        this.team2Golfer1Round,
-        this.team2Golfer2Round,
-      ]) {
-        if (round) {
-          round.date_played = this.selectedDate;
-        }
-      }
-    }
-  }
-
-  onSelectedCourseChanged(selection: MatSelectChange): void {
+  onSelectedCourseChanged(selection: SelectChangeEvent): void {
     this.clearMatchRounds();
     this.selectedCourseInfo = selection.value as Course;
     this.loadCourseData();
@@ -226,7 +206,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     this.coursesService.getCourse(this.selectedCourseInfo.id);
   }
 
-  onSelectedTrackChanged(selection: MatSelectChange): void {
+  onSelectedTrackChanged(selection: SelectChangeEvent): void {
     this.clearMatchRounds();
     this.selectedTrack = selection.value as Track;
     console.log(
@@ -251,7 +231,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     this.flightsService.getList(this.currentYear);
   }
 
-  onSelectedFlightChanged(selection: MatSelectChange): void {
+  onSelectedFlightChanged(selection: SelectChangeEvent): void {
     this.clearMatchRounds();
     this.selectedFlightInfo = selection.value as FlightInfo;
     this.loadFlightData();
@@ -265,9 +245,12 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     this.flightsService.getData(this.selectedFlightInfo.id);
   }
 
-  onSelectedWeekChanged(selectedWeekChange: MatSelectChange): void {
+  onSelectedWeekChanged(selectedWeekChange: SelectChangeEvent): void {
     this.selectedWeek = parseInt((selectedWeekChange.value as string).split(' ')[0]);
     this.setSelectedWeekMatches();
+    this.clearMatchRounds();
+    this.clearSelectedTeam(1);
+    this.clearSelectedTeam(2);
   }
 
   private determineCurrentWeek(): number {
@@ -321,24 +304,24 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onMatchSelected(match: MatchSummary) {
+  onMatchSelected() {
     this.clearSelectedTeam(1);
     this.clearSelectedTeam(2);
-    this.selectedMatch = match;
-    if (this.selectedFlight.teams) {
+    if (this.selectedMatch && this.selectedFlight.teams) {
       for (const team of this.selectedFlight.teams) {
-        if (team.id === match.home_team_id) {
+        if (team.id === this.selectedMatch.home_team_id) {
           this.selectedTeam1 = team;
-        } else if (team.id === match.away_team_id) {
+        } else if (team.id === this.selectedMatch.away_team_id) {
           this.selectedTeam2 = team;
         }
       }
     }
   }
 
-  onSelectedTeamChanged(selection: MatSelectChange, teamNum: number): void {
+  onSelectedTeamChanged(selection: SelectChangeEvent, teamNum: number): void {
     this.selectedMatch = null;
     this.clearMatchRounds();
+    this.clearSelectedTeam(teamNum);
     const selectedTeam = selection.value as TeamData;
     console.log(`[FlightMatchCreateComponent] Selected team ${teamNum}: ${selectedTeam.name}`);
     if (teamNum === 1) {
@@ -348,7 +331,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectedGolferChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+  onSelectedGolferChanged(selection: SelectChangeEvent, teamNum: number, golferNum: number): void {
     this.clearMatchRounds();
     const selectedGolfer = selection.value as TeamGolferData;
     console.log(
@@ -405,7 +388,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
-  onSelectedTeeChanged(selection: MatSelectChange, teamNum: number, golferNum: number): void {
+  onSelectedTeeChanged(selection: SelectChangeEvent, teamNum: number, golferNum: number): void {
     this.clearMatchRounds();
     const selectedTee = selection.value as Tee;
     console.log(
@@ -449,11 +432,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   }
 
   async printScorecard() {
-    this.hideForPrint = true;
-    await new Promise((r) => setTimeout(r, 500)); // wait to register changes to UI
     window.print();
-    await new Promise((r) => setTimeout(r, 500)); // wait to restore full UI
-    this.hideForPrint = false;
   }
 
   private clearMatchRounds(): void {

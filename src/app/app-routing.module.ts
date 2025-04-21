@@ -39,13 +39,9 @@ const routes: Routes = environment.maintenance
       { path: 'flight', component: FlightHomeComponent },
       { path: 'flight-signup', component: FlightSignupComponent },
       { path: 'flight-team', component: TeamHomeComponent },
+      { path: 'flight-scorecard', component: FlightMatchScorecardComponent },
       {
-        path: 'flight/match/scorecard',
-        component: FlightMatchScorecardComponent,
-        canActivate: [UnderConstructionGuard],
-      },
-      {
-        path: 'flight/match/edit',
+        path: 'flight-scorecard/edit',
         component: FlightMatchCreateComponent,
         canActivate: [AuthGuard],
       },

@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 .styled-table {
   border-collapse: collapse;
   width: 100%;
@@ -102,19 +104,15 @@ a:hover {
 }
 
 .black-dot {
-  height: 4px;
-  width: 4px;
-  background-color: black !important;
-  border-radius: 50%;
-  -webkit-print-color-adjust: exact;
+  @apply h-1 w-1 bg-black rounded-full;
+  -webkit-print-color-adjust: exact; /* Chrome, Safari */
+  print-color-adjust: exact !important; /* Firefox */
 }
 
 .red-dot {
-  height: 4px;
-  width: 4px;
-  background-color: red !important;
-  border-radius: 50%;
-  -webkit-print-color-adjust: exact;
+  @apply h-1 w-1 bg-red-600 rounded-full;
+  -webkit-print-color-adjust: exact; /* Chrome, Safari */
+  print-color-adjust: exact !important; /* Firefox */
 }
 
 .hole-score {

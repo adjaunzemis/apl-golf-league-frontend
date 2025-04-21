@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { AngularMaterialModule } from '../angular-material.module';
 import { ErrorModule } from '../shared/error/error.module';
@@ -11,6 +12,7 @@ import { PaymentsModule } from '../payments/payments.module';
 import { ScorecardModule } from '../shared/scorecard/scorecard.module';
 import { PlayoffBracketComponent } from './playoff-bracket/playoff-bracket.component';
 import { FlightCreateComponent } from './flight-create/flight-create.component';
+import { PrimeNGModule } from '../primeng.module';
 
 @NgModule({
   declarations: [
@@ -22,11 +24,13 @@ import { FlightCreateComponent } from './flight-create/flight-create.component';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     AngularMaterialModule,
     ScorecardModule,
     ErrorModule,
     DivisionsModule,
     PaymentsModule,
+    PrimeNGModule,
   ],
 })
 export class FlightsModule {}
