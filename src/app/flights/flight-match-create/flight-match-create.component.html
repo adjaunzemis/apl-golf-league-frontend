@@ -28,6 +28,42 @@
       >
     </div>
 
+    <p-dialog header="Scorecard Instructions" [modal]="true" [(visible)]="showInstructions">
+      <div class="flex flex-col px-4 pb-4">
+        <span>Select the anticipated date of the match.</span>
+        <span>
+          Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be
+          played.
+        </span>
+        <span> Select the week and match, or manually select teams. </span>
+        <span>Select the two golfers who will play for the first team.</span>
+        <span>
+          - If the selected course is the home course for the flight, tee selection will populate
+          automatically.
+        </span>
+        <span>- Otherwise, select the tees each golfer will play.</span>
+        <span>Repeat the process for the second team.</span>
+        <span>Once all required information has been entered, click "Generate Scorecard".</span>
+        <span>- If unable to click the button, double-check the selected form entries.</span>
+        <span>
+          - The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
+          handicap index and the tee rating/slope.
+        </span>
+        <span
+          >- Black dots indicate handicap strokes given to a greater-than-zero handicap
+          golfer.</span
+        >
+        <span>- Red dots indicate handicap strokes taken from a scratch-or-better golfer.</span>
+        <span>
+          - On the team score line, black dots indicate handicap strokes received by the team with
+          the higher combined playing handicap.
+        </span>
+        <span
+          >Click "Print Scorecard" for a printable version (recommend printing in landscape).</span
+        >
+      </div>
+    </p-dialog>
+
     <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4" *ngIf="!hideForPrint">
       <p-datepicker
         [(ngModel)]="selectedDate"
@@ -415,52 +451,6 @@
     </div>
   </p-card>
   <div class="hidden md:block md:col-span-1 bg-transparent"></div>
-
-  <div class="card" style="height: 100%; width: 1000px" *ngIf="!hideForPrint && showInstructions">
-    <ul>
-      <li>Select the anticipated date of the match.</li>
-      <li>
-        Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be played.
-      </li>
-      <ul>
-        <li>
-          Navigating here from "Match Scorecard" card on flight homepage auto-populates these
-          values.
-        </li>
-      </ul>
-      <li>On the left side, select a team.</li>
-      <ul>
-        <li>Tip: Use the weekly match cards to select both teams for a match.</li>
-      </ul>
-      <li>Select the two golfers who will play for the first team.</li>
-      <ul>
-        <li>
-          If the selected course is the home course for the flight, tee selection will populate
-          automatically.
-        </li>
-        <li>Otherwise, select the tees each golfer will play.</li>
-      </ul>
-      <li>On the right side, repeat the above process for the second team.</li>
-      <ul>
-        <li>Tip: Use the weekly match cards to select both teams for a match.</li>
-      </ul>
-      <li>Once all required information has been entered, click "Generate Scorecard".</li>
-      <ul>
-        <li>
-          The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
-          handicap index and the tee rating/slope.
-        </li>
-        <li>Black dots indicate handicap strokes given to a greater-than-zero handicap golfer.</li>
-        <li>Red dots indicate handicap strokes taken from a scratch-or-better golfer.</li>
-        <li>
-          On the team score line, black dots indicate handicap strokes received by the team with the
-          higher combined playing handicap.
-        </li>
-        <li>Any selection changes will clear the generated scorecard.</li>
-      </ul>
-      <li>Click "Print Scorecard" for a printable version (recommend printing in landscape).</li>
-    </ul>
-  </div>
 </div>
 
 <div class="px-4">

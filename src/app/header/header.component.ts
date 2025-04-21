@@ -161,30 +161,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
             route: '/flight-scorecard',
           },
           {
-            label: 'Flight Match 2',
-            icon: 'pi pi-venus',
-            visible: true,
-            route: '/flight-scorecard-2',
-          },
-        ],
-      },
-      {
-        label: 'Post Scores',
-        icon: 'pi pi-pen-to-square',
-        visible:
-          this.currentUser?.is_admin ||
-          this.currentUser?.edit_flights ||
-          this.currentUser?.edit_tournaments,
-        items: [
-          {
-            label: 'Flight Match',
-            icon: 'pi pi-venus',
+            label: 'Post Flight Scores',
+            icon: 'pi pi-pen-to-square',
             visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
             route: '/flight-scorecard/edit',
           },
           {
-            label: 'Tournament Scores',
-            icon: 'pi pi-trophy',
+            label: 'Post Tournament Scores',
+            icon: 'pi pi-pen-to-square',
             visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
             route: '/tournament/scores',
           },
