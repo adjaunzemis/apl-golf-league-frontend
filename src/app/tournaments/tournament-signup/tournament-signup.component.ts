@@ -9,13 +9,22 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 
 import { TournamentsService } from '../tournaments.service';
-import { TournamentInfo, TournamentTeam } from 'src/app/shared/tournament.model';
+import {
+  TournamentDivision,
+  TournamentInfo,
+  TournamentTeam,
+  TournamentTeamGolfer,
+} from 'src/app/shared/tournament.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
 import { Golfer } from 'src/app/shared/golfer.model';
 import { GolfersService } from 'src/app/golfers/golfers.service';
 import { User } from 'src/app/shared/user.model';
 import { AuthService } from 'src/app/auth/auth.service';
+import { TournamentInfoComponent } from '../tournament-home/tournament-info/tournament-info.component';
+import { TournamentTeamsComponent } from '../tournament-home/tournament-teams/tournament-teams.component';
+import { TournamentDivisionsComponent } from '../tournament-home/tournament-divisions/tournament-divisions.component';
+import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.component';
 
 @Component({
   selector: 'app-tournament-signup',
@@ -29,13 +38,17 @@ import { AuthService } from 'src/app/auth/auth.service';
     DataViewModule,
     ProgressSpinnerModule,
     TagModule,
+    TournamentInfoComponent,
+    TournamentTeamsComponent,
+    TournamentDivisionsComponent,
+    TeamCreateComponent,
   ],
 })
 export class TournamentSignupComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   currentDate = new Date();
-  
+
   golfers!: Golfer[];
   private golfersSub: Subscription;
   private golfersService = inject(GolfersService);
@@ -43,14 +56,13 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
   tournaments!: TournamentInfo[];
 
   selectedTournament: TournamentInfo | undefined;
-  // selectedTournamentTeams: TournamentTeam[] | undefined;
-  // selectedTournamentSubstitutes: TournamentGolfer[] | undefined;
+  selectedTournamentTeams: TournamentTeam[] | undefined;
+  selectedTournamentSubstitutes: TournamentTeamGolfer[] | undefined;
   // selectedTournamentFreeAgents: TournamentFreeAgent[] | undefined;
-  // selectedTournamentDivisions: TournamentDivision[] | undefined;
+  selectedTournamentDivisions: TournamentDivision[] | undefined;
 
   private infoSub: Subscription;
   private teamsSub: Subscription;
-  private substitutesSub: Subscription;
   private freeAgentsSub: Subscription;
   private divisionsSub: Subscription;
   private tournamentsService = inject(TournamentsService);
@@ -93,21 +105,17 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
 
-    // this.teamsSub = this.tournamentsService.getTeamsUpdateListener().subscribe((result) => {
-    //   this.selectedTournamentTeams = [...result];
-    // });
-
-    // this.substitutesSub = this.tournamentsService.getSubstitutesUpdateListener().subscribe((result) => {
-    //   this.selectedTournamentSubstitutes = [...result];
-    // });
+    this.teamsSub = this.tournamentsService.getTeamsUpdateListener().subscribe((result) => {
+      this.selectedTournamentTeams = [...result];
+    });
 
     // this.freeAgentsSub = this.tournamentsService.getFreeAgentsUpdateListener().subscribe((result) => {
     //   this.selectedTournamentFreeAgents = [...result];
     // });
 
-    // this.divisionsSub = this.tournamentsService.getDivisionsUpdateListener().subscribe((result) => {
-    //   this.selectedTournamentDivisions = [...result];
-    // });
+    this.divisionsSub = this.tournamentsService.getDivisionsUpdateListener().subscribe((result) => {
+      this.selectedTournamentDivisions = [...result];
+    });
 
     this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.season = result;
@@ -122,7 +130,6 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
     this.infoSub.unsubscribe();
     this.teamsSub.unsubscribe();
-    this.substitutesSub.unsubscribe();
     this.freeAgentsSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
@@ -137,7 +144,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
     }
     return d;
   }
-  
+
   isSignupOpen(info: TournamentInfo): boolean {
     return this.currentDate >= info.signup_start_date && this.currentDate <= info.signup_stop_date;
   }

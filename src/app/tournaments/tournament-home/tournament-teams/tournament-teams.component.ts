@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -15,6 +15,11 @@ import { TournamentTeam, TournamentTeamGolfer } from 'src/app/shared/tournament.
 })
 export class TournamentTeamsComponent {
   @Input() teams: TournamentTeam[];
+  @Input() linkGolferHome = true;
+  @Input() teamMultiSelect = true;
+  @Input() showTournamentEmailButton = false;
+
+  @Output() teamSelected = new EventEmitter<TournamentTeam | null>();
 
   selectedGolfer: TournamentTeamGolfer;
 
