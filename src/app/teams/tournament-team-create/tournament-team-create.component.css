@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+::ng-deep .p-select-filter {
+  @apply w-full;
+}

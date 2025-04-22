@@ -24,7 +24,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { TournamentInfoComponent } from '../tournament-home/tournament-info/tournament-info.component';
 import { TournamentTeamsComponent } from '../tournament-home/tournament-teams/tournament-teams.component';
 import { TournamentDivisionsComponent } from '../tournament-home/tournament-divisions/tournament-divisions.component';
-import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.component';
+import { TournamentTeamCreateComponent } from 'src/app/teams/tournament-team-create/tournament-team-create.component';
 
 @Component({
   selector: 'app-tournament-signup',
@@ -41,7 +41,7 @@ import { TeamCreateComponent } from 'src/app/teams/team-create/team-create.compo
     TournamentInfoComponent,
     TournamentTeamsComponent,
     TournamentDivisionsComponent,
-    TeamCreateComponent,
+    TournamentTeamCreateComponent,
   ],
 })
 export class TournamentSignupComponent implements OnInit, OnDestroy {

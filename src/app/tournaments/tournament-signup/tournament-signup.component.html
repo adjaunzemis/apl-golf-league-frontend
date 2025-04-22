@@ -113,23 +113,22 @@
         [divisions]="selectedTournamentDivisions"
         *ngIf="selectedTournamentDivisions"
       />
-      <!-- <app-team-create
-        [allowSubstitutes]="isUserAdmin()"
+      <app-tournament-team-create
         [allowDelete]="isUserAdmin()"
         [golferOptions]="golfers"
         [tournamentId]="selectedTournament.id"
         [divisionOptions]="selectedTournamentDivisions"
         [initialTeam]="selectedTeam"
-        (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
+        (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
         *ngIf="selectedTournamentDivisions && golfers"
-      /> -->
+      />
       <!-- <app-free-agents-signup
         [allowDelete]="isUserAdmin()"
         [freeAgents]="selectedTournamentFreeAgents"
         [golferOptions]="golfers"
         [tournamentId]="selectedTournament.id"
         [divisionOptions]="selectedTournamentDivisions"
-        (refreshTeamsForFlight)="refreshSelectedFlightTeams($event)"
+        (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
         *ngIf="selectedTournamentFreeAgents && selectedTournamentDivisions && golfers"
       /> -->
     </div>
