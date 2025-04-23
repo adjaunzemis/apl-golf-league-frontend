@@ -20,6 +20,7 @@
               <th>Golfer</th>
               <th>Role</th>
               <th>Division</th>
+              <th>Hcp</th>
             </tr>
           </ng-template>
           <ng-template #body let-golfer>
@@ -27,6 +28,9 @@
               <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
               <td class="text-gray-700">{{ golfer.role }}</td>
               <td class="text-gray-700">{{ golfer.division }}</td>
+              <td class="text-gray-700">
+                {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
+              </td>
             </tr>
           </ng-template>
         </p-table>

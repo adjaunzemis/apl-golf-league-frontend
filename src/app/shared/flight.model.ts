@@ -87,6 +87,7 @@ export interface FlightGolfer {
   name: string;
   role: string;
   division: string;
+  handicap_index?: number;
   email?: string;
 }
 
