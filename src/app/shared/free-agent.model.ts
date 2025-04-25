@@ -9,5 +9,5 @@ export interface FreeAgent {
   flight_id: number;
   golfer_id: number;
   division_id: number;
-  cadence: FreeAgentCadence;
+  cadence?: FreeAgentCadence;
 }

@@ -101,7 +101,7 @@ export class FreeAgentsSignupComponent implements OnInit, OnChanges {
       cadence: this.newGolferCadence,
     };
 
-    this.teamsService.addFreeAgent(freeAgent).subscribe(
+    this.teamsService.addFlightFreeAgent(freeAgent).subscribe(
       () => {
         console.log(
           `[FreeAgentsSignupComponent] Added free agent '${this.newGolfer?.name}' to flight id=${this.flightId}`,
@@ -132,7 +132,7 @@ export class FreeAgentsSignupComponent implements OnInit, OnChanges {
       cadence: golfer.cadence,
     };
 
-    this.teamsService.deleteFreeAgent(freeAgent).subscribe(
+    this.teamsService.deleteFlightFreeAgent(freeAgent).subscribe(
       () => {
         console.log(
           `[FreeAgentsSignupComponent] Deleted free agent '${golfer.name}' from flight id=${this.flightId}`,

@@ -150,7 +150,7 @@ export class FlightsService {
 
   getFreeAgents(id: number): void {
     this.http
-      .get<FlightFreeAgent[]>(environment.apiUrl + `flights/free_agents/${id}`)
+      .get<FlightFreeAgent[]>(environment.apiUrl + `flights/free-agents/${id}`)
       .subscribe((result) => {
         this.flightFreeAgents = result;
         this.flightFreeAgentsUpdated.next(result);
