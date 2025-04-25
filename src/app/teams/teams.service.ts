@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { environment } from './../../environments/environment';
 import { TeamCreate, FlightTeamDataWithMatches } from '../shared/team.model';
 import { Substitute } from '../shared/substitute.model';
-import { FreeAgent } from '../shared/free-agent.model';
+import { FlightFreeAgent, TournamentFreeAgent } from '../shared/free-agent.model';
 
 @Injectable({
   providedIn: 'root',
@@ -67,12 +67,12 @@ export class TeamsService {
     );
   }
 
-  addFlightFreeAgent(freeAgent: FreeAgent): Observable<FreeAgent> {
-    return this.http.post<FreeAgent>(environment.apiUrl + `free-agents/flight/`, freeAgent);
+  addFlightFreeAgent(freeAgent: FlightFreeAgent): Observable<FlightFreeAgent> {
+    return this.http.post<FlightFreeAgent>(environment.apiUrl + `free-agents/flight/`, freeAgent);
   }
 
-  deleteFlightFreeAgent(freeAgent: FreeAgent): Observable<FreeAgent> {
-    return this.http.delete<FreeAgent>(
+  deleteFlightFreeAgent(freeAgent: FlightFreeAgent): Observable<FlightFreeAgent> {
+    return this.http.delete<FlightFreeAgent>(
       environment.apiUrl +
         `free-agents/flight/?flight_id=${freeAgent.flight_id}&golfer_id=${freeAgent.golfer_id}`,
     );
@@ -89,5 +89,19 @@ export class TeamsService {
 
   getFlightTeamDataUpdateListener(): Observable<FlightTeamDataWithMatches> {
     return this.teamDataUpdated.asObservable();
+  }
+
+  addTournamentFreeAgent(freeAgent: TournamentFreeAgent): Observable<TournamentFreeAgent> {
+    return this.http.post<TournamentFreeAgent>(
+      environment.apiUrl + `free-agents/tournament/`,
+      freeAgent,
+    );
+  }
+
+  deleteTournamentFreeAgent(freeAgent: TournamentFreeAgent): Observable<TournamentFreeAgent> {
+    return this.http.delete<TournamentFreeAgent>(
+      environment.apiUrl +
+        `free-agents/tournament/?tournament_id=${freeAgent.tournament_id}&golfer_id=${freeAgent.golfer_id}`,
+    );
   }
 }

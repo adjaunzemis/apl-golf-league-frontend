@@ -14,7 +14,7 @@ import {
   FlightInfo,
   FlightTeam,
   FlightGolfer,
-  FlightFreeAgent,
+  FlightFreeAgentGolfer,
 } from 'src/app/shared/flight.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
@@ -63,7 +63,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   selectedFlight: FlightInfo | undefined;
   selectedFlightTeams: FlightTeam[] | undefined;
   selectedFlightSubstitutes: FlightGolfer[] | undefined;
-  selectedFlightFreeAgents: FlightFreeAgent[] | undefined;
+  selectedFlightFreeAgents: FlightFreeAgentGolfer[] | undefined;
   selectedFlightDivisions: FlightDivision[] | undefined;
 
   private infoSub: Subscription;

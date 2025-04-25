@@ -91,7 +91,7 @@ export interface FlightGolfer {
   email?: string;
 }
 
-export interface FlightFreeAgent extends FlightGolfer {
+export interface FlightFreeAgentGolfer extends FlightGolfer {
   cadence: FreeAgentCadence;
 }
 

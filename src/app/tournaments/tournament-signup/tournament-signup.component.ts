@@ -13,7 +13,7 @@ import {
   TournamentDivision,
   TournamentInfo,
   TournamentTeam,
-  TournamentTeamGolfer,
+  TournamentFreeAgentGolfer,
 } from 'src/app/shared/tournament.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { Season } from 'src/app/shared/season.model';
@@ -25,6 +25,7 @@ import { TournamentInfoComponent } from '../tournament-home/tournament-info/tour
 import { TournamentTeamsComponent } from '../tournament-home/tournament-teams/tournament-teams.component';
 import { TournamentDivisionsComponent } from '../tournament-home/tournament-divisions/tournament-divisions.component';
 import { TournamentTeamCreateComponent } from 'src/app/teams/tournament-team-create/tournament-team-create.component';
+import { FreeAgentsSignupComponent } from 'src/app/flights/flight-signup/free-agents-signup/free-agents-signup.component';
 
 @Component({
   selector: 'app-tournament-signup',
@@ -42,6 +43,7 @@ import { TournamentTeamCreateComponent } from 'src/app/teams/tournament-team-cre
     TournamentTeamsComponent,
     TournamentDivisionsComponent,
     TournamentTeamCreateComponent,
+    FreeAgentsSignupComponent,
   ],
 })
 export class TournamentSignupComponent implements OnInit, OnDestroy {
@@ -57,8 +59,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
 
   selectedTournament: TournamentInfo | undefined;
   selectedTournamentTeams: TournamentTeam[] | undefined;
-  selectedTournamentSubstitutes: TournamentTeamGolfer[] | undefined;
-  // selectedTournamentFreeAgents: TournamentFreeAgent[] | undefined;
+  selectedTournamentFreeAgents: TournamentFreeAgentGolfer[] | undefined;
   selectedTournamentDivisions: TournamentDivision[] | undefined;
 
   private infoSub: Subscription;
@@ -109,9 +110,11 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
       this.selectedTournamentTeams = [...result];
     });
 
-    // this.freeAgentsSub = this.tournamentsService.getFreeAgentsUpdateListener().subscribe((result) => {
-    //   this.selectedTournamentFreeAgents = [...result];
-    // });
+    this.freeAgentsSub = this.tournamentsService
+      .getFreeAgentsUpdateListener()
+      .subscribe((result) => {
+        this.selectedTournamentFreeAgents = [...result];
+      });
 
     this.divisionsSub = this.tournamentsService.getDivisionsUpdateListener().subscribe((result) => {
       this.selectedTournamentDivisions = [...result];
@@ -130,7 +133,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
     this.infoSub.unsubscribe();
     this.teamsSub.unsubscribe();
-    // this.freeAgentsSub.unsubscribe();
+    this.freeAgentsSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
   }
@@ -174,8 +177,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
 
   refreshSelectedTournamentTeams(tournamentId: number): void {
     this.tournamentsService.getTeams(tournamentId);
-    // this.tournamentsService.getSubstitutes(tournamentId);
-    // this.tournamentsService.getFreeAgents(tournamentId);
+    this.tournamentsService.getFreeAgents(tournamentId);
   }
 
   isUserAdmin(): boolean {

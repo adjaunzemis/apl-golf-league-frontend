@@ -122,7 +122,7 @@
         (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
         *ngIf="selectedTournamentDivisions && golfers"
       />
-      <!-- <app-free-agents-signup
+      <app-free-agents-signup
         [allowDelete]="isUserAdmin()"
         [freeAgents]="selectedTournamentFreeAgents"
         [golferOptions]="golfers"
@@ -130,7 +130,7 @@
         [divisionOptions]="selectedTournamentDivisions"
         (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
         *ngIf="selectedTournamentFreeAgents && selectedTournamentDivisions && golfers"
-      /> -->
+      />
     </div>
   </div>
 </div>

@@ -107,6 +107,8 @@ export interface TournamentTeamGolfer {
   email?: string;
 }
 
+export type TournamentFreeAgentGolfer = TournamentTeamGolfer;
+
 export interface TournamentTeam {
   tournament_id: number;
   team_id: number;
