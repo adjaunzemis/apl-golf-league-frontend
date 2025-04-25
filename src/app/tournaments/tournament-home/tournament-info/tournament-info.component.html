@@ -32,7 +32,7 @@
     </div>
 
     <div
-      class="flex flex-row flex-1 justify-center items-center text-sm font-medium text-gray-700 pt-4 w-full"
+      class="flex flex-col flex-1 justify-center items-center text-sm font-medium text-gray-700 pt-4 w-full"
     >
       <span *ngIf="info.date; else noDate"
         >Date: {{ info.date | date: 'longDate' : 'ET' }},
@@ -41,6 +41,13 @@
       <ng-template #noDate>
         <span>Date: TBD</span>
       </ng-template>
+
+      <span
+        >Fees: ${{ info.members_entry_fee }} (Members), ${{
+          info.non_members_entry_fee
+        }}
+        (Non-Members)</span
+      >
     </div>
 
     <div

@@ -9,6 +9,7 @@ import {
   TournamentCreate,
   TournamentData,
   TournamentDivision,
+  TournamentFreeAgentGolfer,
   TournamentInfo,
   TournamentStandings,
   TournamentStatistics,
@@ -31,6 +32,9 @@ export class TournamentsService {
 
   private tournamentTeams: TournamentTeam[];
   private tournamentTeamsUpdated = new Subject<TournamentTeam[]>();
+
+  private tournamentFreeAgents: TournamentFreeAgentGolfer[];
+  private tournamentFreeAgentsUpdated = new Subject<TournamentFreeAgentGolfer[]>();
 
   private tournamentStandings: TournamentStandings;
   private tournamentStandingsUpdated = new Subject<TournamentStandings>();
@@ -152,6 +156,19 @@ export class TournamentsService {
 
   getTeamsUpdateListener(): Observable<TournamentTeam[]> {
     return this.tournamentTeamsUpdated.asObservable();
+  }
+
+  getFreeAgents(id: number): void {
+    this.http
+      .get<TournamentFreeAgentGolfer[]>(environment.apiUrl + `tournaments/free-agents/${id}`)
+      .subscribe((result) => {
+        this.tournamentFreeAgents = result;
+        this.tournamentFreeAgentsUpdated.next(result);
+      });
+  }
+
+  getFreeAgentsUpdateListener(): Observable<TournamentFreeAgentGolfer[]> {
+    return this.tournamentFreeAgentsUpdated.asObservable();
   }
 
   getStandings(id: number): void {

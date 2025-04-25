@@ -103,7 +103,11 @@ export interface TournamentTeamGolfer {
   name: string;
   role: string;
   division: string;
+  handicap_index?: number;
+  email?: string;
 }
+
+export type TournamentFreeAgentGolfer = TournamentTeamGolfer;
 
 export interface TournamentTeam {
   tournament_id: number;

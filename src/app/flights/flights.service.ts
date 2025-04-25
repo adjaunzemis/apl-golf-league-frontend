@@ -12,7 +12,7 @@ import {
   FlightTeam,
   FlightStatistics,
   FlightGolfer,
-  FlightFreeAgent,
+  FlightFreeAgentGolfer,
 } from '../shared/flight.model';
 import { environment } from './../../environments/environment';
 import { MatchSummary } from '../shared/match.model';
@@ -36,8 +36,8 @@ export class FlightsService {
   private flightSubstitutes: FlightGolfer[];
   private flightSubstitutesUpdated = new Subject<FlightGolfer[]>();
 
-  private flightFreeAgents: FlightFreeAgent[];
-  private flightFreeAgentsUpdated = new Subject<FlightFreeAgent[]>();
+  private flightFreeAgents: FlightFreeAgentGolfer[];
+  private flightFreeAgentsUpdated = new Subject<FlightFreeAgentGolfer[]>();
 
   private flightStandings: FlightStandings;
   private flightStandingsUpdated = new Subject<FlightStandings>();
@@ -150,14 +150,14 @@ export class FlightsService {
 
   getFreeAgents(id: number): void {
     this.http
-      .get<FlightFreeAgent[]>(environment.apiUrl + `flights/free_agents/${id}`)
+      .get<FlightFreeAgentGolfer[]>(environment.apiUrl + `flights/free-agents/${id}`)
       .subscribe((result) => {
         this.flightFreeAgents = result;
         this.flightFreeAgentsUpdated.next(result);
       });
   }
 
-  getFreeAgentsUpdateListener(): Observable<FlightFreeAgent[]> {
+  getFreeAgentsUpdateListener(): Observable<FlightFreeAgentGolfer[]> {
     return this.flightFreeAgentsUpdated.asObservable();
   }
 

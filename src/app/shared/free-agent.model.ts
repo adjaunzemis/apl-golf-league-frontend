@@ -5,9 +5,15 @@ export enum FreeAgentCadence {
   OCCASIONALLY = 'Occasionally',
 }
 
-export interface FreeAgent {
+export interface FlightFreeAgent {
   flight_id: number;
   golfer_id: number;
   division_id: number;
   cadence: FreeAgentCadence;
+}
+
+export interface TournamentFreeAgent {
+  tournament_id: number;
+  golfer_id: number;
+  division_id: number;
 }

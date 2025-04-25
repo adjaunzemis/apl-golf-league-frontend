@@ -87,10 +87,11 @@ export interface FlightGolfer {
   name: string;
   role: string;
   division: string;
+  handicap_index?: number;
   email?: string;
 }
 
-export interface FlightFreeAgent extends FlightGolfer {
+export interface FlightFreeAgentGolfer extends FlightGolfer {
   cadence: FreeAgentCadence;
 }
 

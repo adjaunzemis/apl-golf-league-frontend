@@ -47,6 +47,7 @@
       [options]="cadenceOptions"
       [(ngModel)]="newGolferCadence"
       placeholder="Cadence"
+      *ngIf="flightId"
     />
 
     <p-button (click)="addGolfer()">
@@ -67,7 +68,7 @@
             <tr>
               <th>Golfer</th>
               <th>Division</th>
-              <th>Cadence</th>
+              <th *ngIf="flightId">Cadence</th>
               <th class="w-4"></th>
               <th class="w-4"></th>
             </tr>
@@ -76,7 +77,7 @@
             <tr [pSelectableRow]="golfer">
               <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
               <td class="text-gray-700">{{ golfer.division }}</td>
-              <td class="text-gray-700">{{ golfer.cadence }}</td>
+              <td class="text-gray-700" *ngIf="flightId">{{ golfer.cadence }}</td>
               <td class="w-4">
                 <a
                   class="p-button"
