@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
-import { AccordionModule } from 'primeng/accordion';
+import { AccordionModule, AccordionTabOpenEvent } from 'primeng/accordion';
 import { TableModule } from 'primeng/table';
 
 import { TournamentTeam, TournamentTeamGolfer } from 'src/app/shared/tournament.model';
@@ -31,5 +31,13 @@ export class TournamentTeamsComponent {
         queryParams: { id: this.selectedGolfer.golfer_id },
       });
     }
+  }
+
+  onTeamSelected(event: AccordionTabOpenEvent): void {
+    this.teamSelected.emit(this.teams[event.index]);
+  }
+
+  onTeamDeselected(): void {
+    this.teamSelected.emit(null);
   }
 }

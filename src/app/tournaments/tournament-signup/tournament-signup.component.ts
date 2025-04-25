@@ -130,7 +130,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
     this.golfersSub.unsubscribe();
     this.infoSub.unsubscribe();
     this.teamsSub.unsubscribe();
-    this.freeAgentsSub.unsubscribe();
+    // this.freeAgentsSub.unsubscribe();
     this.divisionsSub.unsubscribe();
     this.activeSeasonSub.unsubscribe();
   }
