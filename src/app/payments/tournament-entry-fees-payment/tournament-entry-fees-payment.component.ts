@@ -49,8 +49,10 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   golferNameOptions: string[] = [];
   filteredGolferNameOptionsArray: Observable<string[]>[] = [];
 
-  private tournamentSub: Subscription;
+  private tournamentOptionsSub: Subscription;
   tournamentOptions: TournamentInfo[];
+
+  private tournamentSub: Subscription;
   tournament: TournamentData;
 
   golferPaymentsForm: UntypedFormGroup;
@@ -72,9 +74,11 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.tournamentsService.getListUpdateListener().subscribe((result) => {
-      this.tournamentOptions = [...result];
-    });
+    this.tournamentOptionsSub = this.tournamentsService
+      .getListUpdateListener()
+      .subscribe((result) => {
+        this.tournamentOptions = [...result];
+      });
 
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.year = result.year;
@@ -258,6 +262,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.seasonsSub.unsubscribe();
     this.golfersSub.unsubscribe();
+    this.tournamentOptionsSub.unsubscribe();
     this.tournamentSub.unsubscribe();
     this.tournamentEntryFeePaymentInfoListSub.unsubscribe();
   }
@@ -266,8 +271,6 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
     const tournament = event.value as TournamentInfo;
     if (tournament) {
       this.tournamentId = tournament.id;
-
-      // TODO: Clear forms
 
       this.isLoadingTournament = true;
       this.tournamentsService.getTournament(this.tournamentId);

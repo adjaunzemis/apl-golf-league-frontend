@@ -234,12 +234,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 label: 'Tournaments',
                 icon: 'pi pi-trophy',
                 visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
-                items: [
-                  {
-                    label: 'TODO',
-                    route: '/',
-                  },
-                ],
+                route: '/fee-payments',
               },
             ],
           },
