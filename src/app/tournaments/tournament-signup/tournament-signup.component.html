@@ -18,7 +18,7 @@
         <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
           <div
             class="col-span-12"
-            [ngClass]="{ listItem: isSignupOpen(item) || this.currentUser?.is_admin }"
+            [ngClass]="{ listItem: isSignupOpen(item) || isUserAdmin() || canUserEditTournaments() }"
             *ngFor="let item of items; let first = first"
           >
             <div

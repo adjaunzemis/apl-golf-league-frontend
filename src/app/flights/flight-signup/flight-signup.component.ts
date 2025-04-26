@@ -171,7 +171,7 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
   }
 
   selectFlight(info: FlightInfo): void {
-    if (!this.isSignupOpen(info) && !this.currentUser?.is_admin) {
+    if (!(this.isUserAdmin() || this.canUserEditFlights()) && !this.isSignupOpen(info)) {
       return;
     }
     this.selectedFlight = info;
@@ -197,5 +197,15 @@ export class FlightSignupComponent implements OnInit, OnDestroy {
       return false;
     }
     return this.currentUser.is_admin;
+  }
+
+  canUserEditFlights(): boolean {
+    if (!this.currentUser) {
+      return false;
+    }
+    if (!this.currentUser.edit_flights) {
+      return false;
+    }
+    return this.currentUser.edit_flights;
   }
 }

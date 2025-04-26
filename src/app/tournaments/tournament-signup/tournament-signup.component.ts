@@ -163,7 +163,7 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
   }
 
   selectTournament(info: TournamentInfo): void {
-    if (!this.isSignupOpen(info) && !this.currentUser?.is_admin) {
+    if (!(this.isUserAdmin() || this.canUserEditTournaments()) && !this.isSignupOpen(info)) {
       return;
     }
     this.selectedTournament = info;
@@ -188,5 +188,15 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
       return false;
     }
     return this.currentUser.is_admin;
+  }
+
+  canUserEditTournaments(): boolean {
+    if (!this.currentUser) {
+      return false;
+    }
+    if (!this.currentUser.edit_tournaments) {
+      return false;
+    }
+    return this.currentUser.edit_tournaments;
   }
 }
