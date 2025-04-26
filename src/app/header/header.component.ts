@@ -147,6 +147,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: true,
             callback: () => this.onPayDues(),
           },
+          {
+            label: 'Entry Fees',
+            icon: 'pi pi-trophy',
+            visible: true,
+            callback: () => this.onPayEntryFees(),
+          },
         ],
       },
       {
