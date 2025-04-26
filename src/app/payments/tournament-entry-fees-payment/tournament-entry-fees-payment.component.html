@@ -1,11 +1,19 @@
 <div>
   <h1 mat-dialog-title class="font-bold">Pay Tournament Entry Fees</h1>
 
+  <mat-form-field appearance="fill" class="px-4 py-2 w-80">
+    <mat-label>Tournament</mat-label>
+    <mat-select required (selectionChange)="onTournamentSelected($event)">
+      <mat-option *ngFor="let t of tournamentOptions" [value]="t"
+        >{{ t.name }} ({{ t.year }})</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+
   <mat-spinner
     *ngIf="isLoadingTournament || isLoadingTournamentEntryFeePaymentInfoList"
   ></mat-spinner>
 
-  <p class="font-semibold px-4" *ngIf="!isLoadingTournament">Tournament: {{ tournament.name }}</p>
   <p class="font-semibold px-4" *ngIf="!isLoadingTournament">
     Members: ${{ tournament.members_entry_fee }} USD | Non-Members: ${{
       tournament.non_members_entry_fee
