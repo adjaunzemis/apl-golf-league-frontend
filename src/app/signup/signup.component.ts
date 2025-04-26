@@ -458,23 +458,18 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onPayEntryFees(): void {
-    if (this.selectedTabIdx === 1) {
-      const selectedTournament = this.selectedFlightOrTournament as TournamentData;
-      const dialogRef = this.dialog.open(TournamentEntryFeesPaymentComponent, {
-        width: '600px',
-        data: {
-          tournamentId: selectedTournament.id,
-        },
-      });
+    const dialogRef = this.dialog.open(TournamentEntryFeesPaymentComponent, {
+      width: '600px',
+      data: {},
+    });
 
-      dialogRef.afterClosed().subscribe((paymentSuccessful) => {
-        if (paymentSuccessful) {
-          // Reload selected tournament to capture updated fees statuses
-          if (this.selectedFlightOrTournament) {
-            this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
-          }
+    dialogRef.afterClosed().subscribe((paymentSuccessful) => {
+      if (paymentSuccessful) {
+        // Reload selected tournament to capture updated fees statuses
+        if (this.selectedFlightOrTournament) {
+          this.getSelectedTournamentData(this.selectedFlightOrTournament.id); // refresh tournament info to get updated team in list
         }
-      });
-    }
+      }
+    });
   }
 }

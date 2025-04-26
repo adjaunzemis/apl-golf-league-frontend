@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
 
 import { PaymentsService } from '../payments.service';
 import { TournamentsService } from '../../tournaments/tournaments.service';
-import { TournamentData } from '../../shared/tournament.model';
+import { TournamentData, TournamentInfo } from '../../shared/tournament.model';
 import { TournamentEntryFeePaymentData } from '../../shared/payment.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-tournament-entry-fee-payments-list',
@@ -23,10 +23,13 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
 
   tournamentId = -1;
 
-  paymentsSub: Subscription;
+  private paymentsSub: Subscription;
+
+  tournamentOptions: TournamentInfo[];
+  private tournamentOptionsSub: Subscription;
 
   selectedTournament: TournamentData;
-  tournamentSub: Subscription;
+  private tournamentSub: Subscription;
 
   tournamentEntryFeePayments: TournamentEntryFeePaymentData[];
   sortedData: TournamentEntryFeePaymentData[];
@@ -54,12 +57,19 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
     private paymentsService: PaymentsService,
     private tournamentsService: TournamentsService,
     private seasonsService: SeasonsService,
-    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    this.tournamentOptionsSub = this.tournamentsService
+      .getListUpdateListener()
+      .subscribe((result) => {
+        this.tournamentOptions = [...result];
+      });
+
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.selectedYear = result.year;
+
+      this.tournamentsService.getList(this.selectedYear);
     });
 
     this.tournamentSub = this.tournamentsService
@@ -75,22 +85,23 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
         this.sortedData = this.tournamentEntryFeePayments;
         this.isLoading = false;
       });
-
-    this.route.queryParams.subscribe((params) => {
-      if (params) {
-        if (params.tournament_id) {
-          this.tournamentId = params.tournament_id;
-          this.tournamentsService.getTournament(this.tournamentId);
-          this.paymentsService.getTournamentEntryFeePaymentDataList(this.tournamentId);
-        }
-      }
-    });
   }
 
   ngOnDestroy(): void {
     this.tournamentSub.unsubscribe();
     this.paymentsSub.unsubscribe();
     this.seasonsSub.unsubscribe();
+  }
+
+  onTournamentSelected(event: MatSelectChange): void {
+    const tournament = event.value as TournamentInfo;
+    if (tournament) {
+      this.tournamentId = tournament.id;
+
+      this.isLoading = true;
+      this.tournamentsService.getTournament(this.tournamentId);
+      this.paymentsService.getTournamentEntryFeePaymentDataList(this.tournamentId);
+    }
   }
 
   editPaymentInfo(payment: TournamentEntryFeePaymentData): void {
@@ -187,7 +198,11 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
   }
 
   getUnpaidEmailAddresses(): string {
-    let mailToList = 'mailto:';
+    if (!this.tournamentEntryFeePayments) {
+      return '';
+    }
+
+    let mailToList = '';
     for (const payment of this.tournamentEntryFeePayments) {
       if (
         payment.amount_due > payment.amount_paid &&

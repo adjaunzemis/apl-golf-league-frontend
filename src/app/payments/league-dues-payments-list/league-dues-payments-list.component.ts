@@ -154,6 +154,10 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   }
 
   getUnpaidEmailAddresses(): string {
+    if (!this.leagueDuesPayments) {
+      return '';
+    }
+
     let mailToList = '';
     for (const payment of this.leagueDuesPayments) {
       if (

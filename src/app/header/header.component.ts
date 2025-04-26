@@ -147,6 +147,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: true,
             callback: () => this.onPayDues(),
           },
+          {
+            label: 'Entry Fees',
+            icon: 'pi pi-trophy',
+            visible: true,
+            callback: () => this.onPayEntryFees(),
+          },
         ],
       },
       {
@@ -228,12 +234,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 label: 'Tournaments',
                 icon: 'pi pi-trophy',
                 visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
-                items: [
-                  {
-                    label: 'TODO',
-                    route: '/',
-                  },
-                ],
+                route: '/fee-payments',
               },
             ],
           },

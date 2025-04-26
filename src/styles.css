@@ -136,34 +136,6 @@ mat-spinner {
   margin-top: 36px;
 }
 
-.success-snackbar {
-  /* border: 1px solid lightgreen; */
-  background-color: rgb(212, 235, 212);
-  color: green;
-  justify-content: center;
-}
-
-.info-snackbar {
-  /* border: 1px solid lightblue; */
-  background-color: rgb(212, 221, 235);
-  color: #2196f3;
-  justify-content: center;
-}
-
-.warning-snackbar {
-  /* border: 1px solid lightblue; */
-  background-color: rgb(235, 235, 212);
-  color: rgb(112, 112, 7);
-  justify-content: center;
-}
-
-.error-snackbar {
-  /* border: 1px solid pink; */
-  background-color: rgb(255, 236, 239);
-  color: red;
-  justify-content: center;
-}
-
 /* Custom styles */
 .full-width {
   width: 100%;

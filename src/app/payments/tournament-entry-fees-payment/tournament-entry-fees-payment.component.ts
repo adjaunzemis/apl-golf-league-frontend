@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { Observable, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -20,7 +21,7 @@ import {
 import { GolfersService } from '../../golfers/golfers.service';
 import { Golfer } from '../../shared/golfer.model';
 import { TournamentsService } from '../../tournaments/tournaments.service';
-import { TournamentData } from '../../shared/tournament.model';
+import { TournamentData, TournamentInfo } from '../../shared/tournament.model';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { NotificationService } from 'src/app/notifications/notification.service';
 
@@ -48,6 +49,9 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   golferNameOptions: string[] = [];
   filteredGolferNameOptionsArray: Observable<string[]>[] = [];
 
+  private tournamentOptionsSub: Subscription;
+  tournamentOptions: TournamentInfo[];
+
   private tournamentSub: Subscription;
   tournament: TournamentData;
 
@@ -60,7 +64,7 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<TournamentEntryFeesPaymentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { tournamentId: number },
+    @Inject(MAT_DIALOG_DATA) public data: object,
     private formBuilder: UntypedFormBuilder,
     private notificationService: NotificationService,
     private paymentsService: PaymentsService,
@@ -70,10 +74,17 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.tournamentOptionsSub = this.tournamentsService
+      .getListUpdateListener()
+      .subscribe((result) => {
+        this.tournamentOptions = [...result];
+      });
+
     this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
       this.year = result.year;
+
+      this.tournamentsService.getList(this.year);
     });
-    this.tournamentId = this.data.tournamentId;
 
     // Initialize golfer info subscriptions
     this.golfersSub = this.golfersService.getAllGolfersUpdateListener().subscribe((golfers) => {
@@ -92,7 +103,6 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
         this.tournament = result;
         this.isLoadingTournament = false;
       });
-    this.tournamentsService.getTournament(this.tournamentId);
 
     this.tournamentEntryFeePaymentInfoListSub = this.paymentsService
       .getTournamentEntryFeePaymentInfoListUpdateListener()
@@ -101,7 +111,6 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
 
         this.isLoadingTournamentEntryFeePaymentInfoList = false;
       });
-    this.paymentsService.getTournamentEntryFeePaymentInfoList(this.tournamentId);
 
     // Initialize golfer payments form
     this.golferPaymentsForm = this.formBuilder.group({
@@ -251,9 +260,24 @@ export class TournamentEntryFeesPaymentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.seasonsSub.unsubscribe();
     this.golfersSub.unsubscribe();
+    this.tournamentOptionsSub.unsubscribe();
     this.tournamentSub.unsubscribe();
     this.tournamentEntryFeePaymentInfoListSub.unsubscribe();
+  }
+
+  onTournamentSelected(event: MatSelectChange): void {
+    const tournament = event.value as TournamentInfo;
+    if (tournament) {
+      this.tournamentId = tournament.id;
+
+      this.isLoadingTournament = true;
+      this.tournamentsService.getTournament(this.tournamentId);
+
+      this.isLoadingTournamentEntryFeePaymentInfoList = true;
+      this.paymentsService.getTournamentEntryFeePaymentInfoList(this.tournamentId);
+    }
   }
 
   private getPaymentDescription(): string {
