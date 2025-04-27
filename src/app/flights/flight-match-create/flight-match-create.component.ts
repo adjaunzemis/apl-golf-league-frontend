@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { FlightsService } from '../flights.service';
 import { CoursesService } from '../../courses/courses.service';
-import { FlightData, FlightInfo } from '../../shared/flight.model';
+import { FlightData, FlightGolfer, FlightInfo } from '../../shared/flight.model';
 import { TeamData } from '../../shared/team.model';
 import { TeamGolferData } from '../../shared/golfer.model';
 import {
@@ -49,6 +49,9 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   flightSelector = new UntypedFormControl('');
   private flightDataSub: Subscription;
   selectedFlight: FlightData;
+
+  private substituesSub: Subscription;
+  substitutes: FlightGolfer[];
 
   private courseInfoSub: Subscription;
   courseOptions: Course[] = [];
@@ -146,6 +149,38 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.substituesSub = this.flightsService.getSubstitutesUpdateListener().subscribe((result) => {
+      console.log(`[FlightMatchCreateComponent] Received substitutes list`);
+      this.substitutes = [...result];
+      this.substitutes.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        } else if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+
+      // Add substitutes to each team golfer list
+      if (this.substitutes.length > 0 && this.selectedFlight.teams) {
+        for (const team of this.selectedFlight.teams) {
+          for (const golfer of this.substitutes) {
+            team.golfers.push({
+              team_id: team.id,
+              team_name: team.name,
+              golfer_id: golfer.golfer_id,
+              golfer_name: golfer.name,
+              golfer_email: golfer.email,
+              division_name: golfer.division,
+              role: 'Substitute',
+              handicap_index: golfer.handicap_index,
+              year: team.year,
+            });
+          }
+        }
+      }
+    });
+
     this.flightDataSub = this.flightsService.getDataUpdateListener().subscribe((result) => {
       console.log(
         `[FlightMatchCreateComponent] Received data for flight: ${result.name} (${result.year})`,
@@ -163,6 +198,28 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
           }
         }
       }
+
+      if (this.selectedFlight.teams) {
+        for (const team of this.selectedFlight.teams) {
+          team.golfers.sort((a, b) => {
+            if (a.role < b.role) {
+              return -1;
+            } else if (a.role > b.role) {
+              return 1;
+            }
+
+            if (a.golfer_name < b.golfer_name) {
+              return -1;
+            } else if (a.golfer_name > b.golfer_name) {
+              return 1;
+            }
+
+            return 0;
+          });
+        }
+      }
+
+      this.flightsService.getSubstitutes(this.selectedFlightInfo.id);
 
       this.setWeekOptions();
       this.selectedWeek = this.determineCurrentWeek();
@@ -182,6 +239,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.flightInfoSub.unsubscribe();
+    this.substituesSub.unsubscribe();
     this.flightDataSub.unsubscribe();
     this.courseInfoSub.unsubscribe();
     this.courseDataSub.unsubscribe();

@@ -212,14 +212,19 @@
           *ngIf="selectedTeam1"
         >
           <ng-template #selectedItem let-selectedGolfer>
-            <div class="flex items-center gap-2">
-              <div>{{ selectedGolfer.golfer_name }}</div>
-            </div>
+            <span>{{ selectedGolfer.golfer_name }}</span>
+            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
           </ng-template>
           <ng-template let-golferOption #item>
-            <div class="flex items-center gap-2">
-              <div>{{ golferOption.golfer_name }}</div>
-            </div>
+            <span
+              [ngClass]="
+                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+              "
+              >{{ golferOption.golfer_name }}</span
+            >
+            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
+              (substitute)</span
+            >
           </ng-template>
         </p-select>
 
@@ -233,11 +238,9 @@
           *ngIf="selectedTrack && selectedTeam1Golfer1"
         >
           <ng-template #selectedItem let-selectedTee>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
-                {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
-              </div>
+            <div>
+              {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+              {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
             </div>
           </ng-template>
           <ng-template let-teeOption #item>
@@ -262,14 +265,19 @@
           *ngIf="selectedTeam1"
         >
           <ng-template #selectedItem let-selectedGolfer>
-            <div class="flex items-center gap-2">
-              <div>{{ selectedGolfer.golfer_name }}</div>
-            </div>
+            <span>{{ selectedGolfer.golfer_name }}</span>
+            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
           </ng-template>
           <ng-template let-golferOption #item>
-            <div class="flex items-center gap-2">
-              <div>{{ golferOption.golfer_name }}</div>
-            </div>
+            <span
+              [ngClass]="
+                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+              "
+              >{{ golferOption.golfer_name }}</span
+            >
+            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
+              (substitute)</span
+            >
           </ng-template>
         </p-select>
 
@@ -333,14 +341,19 @@
           *ngIf="selectedTeam2"
         >
           <ng-template #selectedItem let-selectedGolfer>
-            <div class="flex items-center gap-2">
-              <div>{{ selectedGolfer.golfer_name }}</div>
-            </div>
+            <span>{{ selectedGolfer.golfer_name }}</span>
+            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
           </ng-template>
           <ng-template let-golferOption #item>
-            <div class="flex items-center gap-2">
-              <div>{{ golferOption.golfer_name }}</div>
-            </div>
+            <span
+              [ngClass]="
+                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+              "
+              >{{ golferOption.golfer_name }}</span
+            >
+            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
+              (substitute)</span
+            >
           </ng-template>
         </p-select>
 
@@ -383,14 +396,19 @@
           *ngIf="selectedTeam2"
         >
           <ng-template #selectedItem let-selectedGolfer>
-            <div class="flex items-center gap-2">
-              <div>{{ selectedGolfer.golfer_name }}</div>
-            </div>
+            <span>{{ selectedGolfer.golfer_name }}</span>
+            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
           </ng-template>
           <ng-template let-golferOption #item>
-            <div class="flex items-center gap-2">
-              <div>{{ golferOption.golfer_name }}</div>
-            </div>
+            <span
+              [ngClass]="
+                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+              "
+              >{{ golferOption.golfer_name }}</span
+            >
+            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
+              (substitute)</span
+            >
           </ng-template>
         </p-select>
 

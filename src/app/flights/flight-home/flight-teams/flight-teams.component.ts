@@ -62,4 +62,14 @@ export class FlightTeamsComponent {
     }
     return emailList.substring(0, emailList.length - 1);
   }
+
+  getSubstitutesEmailList(): string {
+    let emailList = '';
+    for (const golfer of this.substitutes) {
+      if (golfer.email) {
+        emailList += golfer.email + ';';
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
 }
