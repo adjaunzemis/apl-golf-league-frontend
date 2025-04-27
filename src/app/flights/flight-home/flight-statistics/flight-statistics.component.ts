@@ -34,6 +34,7 @@ export class FlightStatisticsComponent implements OnInit {
   labelScoringModeGross = 'Scoring Mode: Gross';
   labelScoringModeNet = 'Scoring Mode: Net';
 
+  @Input() hideSubstitutesToggle = false;
   showSubstitutes = false;
   labelShowSubstitutesOn = 'Substitutes: Include';
   labelShowSubstitutesOff = 'Substitutes: Exclude';

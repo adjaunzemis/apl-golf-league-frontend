@@ -17,6 +17,7 @@
       [onLabel]="labelShowSubstitutesOn"
       [offLabel]="labelShowSubstitutesOff"
       (onChange)="onChangeShowSubstitutes($event)"
+      *ngIf="!hideSubstitutesToggle"
     />
 
     <p-togglebutton
