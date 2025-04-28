@@ -7,6 +7,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { GolferInfoComponent } from './golfer-info/golfer-info.component';
 import { GolfersService } from '../golfers.service';
 import { GolferData } from 'src/app/shared/golfer.model';
+import { Season } from 'src/app/shared/season.model';
 
 @Component({
   selector: 'app-golfer-home',
@@ -20,6 +21,10 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   private golferSub: Subscription;
   golfer: GolferData;
 
+  private seasonsSub: Subscription;
+  seasons: Season[];
+  selectedSeason: Season;
+
   private golfersService = inject(GolfersService);
 
   private route = inject(ActivatedRoute);
@@ -27,7 +32,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.golferSub = this.golfersService.getGolferUpdateListener().subscribe((result) => {
       this.golfer = result;
-      console.log(result);
 
       this.isLoading = false;
     });
@@ -44,5 +48,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.golferSub.unsubscribe();
+    this.seasonsSub.unsubscribe();
   }
 }
