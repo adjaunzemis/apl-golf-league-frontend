@@ -46,35 +46,4 @@
       </div>
     </div>
   </div>
-
-  <div class="flex flex-col justify-stretch items-center w-full pb-6">
-    <p-select
-      class="ring-1 ring-gray-300 text-center h-8 ml-4 pl-2 py-1"
-      [options]="seasons"
-      [(ngModel)]="selectedSeason"
-      optionLabel="year"
-      placeholder="Season"
-    >
-      <ng-template #selectedItem let-selectedOption>
-        <div class="flex items-center gap-2" *ngIf="selectedOption">
-          <span>{{ selectedOption.year }}</span>
-          <p-tag
-            class="bg-blue-500 text-white text-sm font-normal px-1"
-            value="Active"
-            *ngIf="selectedOption.is_active"
-          />
-        </div>
-      </ng-template>
-      <ng-template let-option #item>
-        <div class="flex items-center gap-2">
-          <span>{{ option.year }}</span>
-          <p-tag
-            class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
-            value="Active"
-            *ngIf="option.is_active"
-          />
-        </div>
-      </ng-template>
-    </p-select>
-  </div>
 </p-card>

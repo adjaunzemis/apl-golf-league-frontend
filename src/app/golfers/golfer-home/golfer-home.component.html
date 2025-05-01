@@ -1,7 +1,44 @@
 <div class="grid grid-cols-12 place-items-stretch gap-4 p-4" *ngIf="!isLoading; else loading">
-  <div class="col-span-12 flex flex-col items-center">
-    <app-golfer-info [golfer]="golfer" />
+
+  <div class="hidden md:block md:col-span-2 xl:col-span-3"></div>
+  <div class="col-span-2 flex items-end justify-start">
+    <p-card>
+      <div class="flex items-center px-4 py-2">
+        <span class="text-lg font-semibold">Season</span>
+        <div class="mx-auto"></div>
+        <p-select
+          class="ring-1 ring-gray-300 text-center h-8 ml-4 pl-2 py-1"
+          [options]="seasons"
+          [(ngModel)]="selectedSeason"
+          optionLabel="year"
+          placeholder="Season"
+          (onChange)="onSeasonSelected()"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2" *ngIf="selectedOption">
+              <span>{{ selectedOption.year }}</span>
+              <p-tag
+                class="bg-blue-500 text-white text-sm font-normal px-1"
+                value="Active"
+                *ngIf="selectedOption.is_active"
+              />
+            </div>
+          </ng-template>
+          <ng-template let-option #item>
+            <div class="flex items-center gap-2">
+              <span>{{ option.year }}</span>
+              <p-tag
+                class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
+                value="Active"
+                *ngIf="option.is_active"
+              />
+            </div>
+          </ng-template>
+        </p-select>
+      </div>
+    </p-card>
   </div>
+  <app-golfer-info class="col-span-2" [golfer]="golfer" *ngIf="golfer" />
 
   <!-- <div class="hidden xl:block xl:col-span-1 bg-transparent"></div> -->
   <!-- <app-team-schedule
