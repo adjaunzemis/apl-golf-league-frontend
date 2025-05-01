@@ -20,7 +20,15 @@ import { SeasonsService } from 'src/app/seasons/seasons.service';
   selector: 'app-golfer-home',
   templateUrl: './golfer-home.component.html',
   styleUrl: './golfer-home.component.css',
-  imports: [CommonModule, FormsModule, CardModule, SelectModule, TagModule, ProgressSpinnerModule, GolferInfoComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CardModule,
+    SelectModule,
+    TagModule,
+    ProgressSpinnerModule,
+    GolferInfoComponent,
+  ],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoading = true;
@@ -98,7 +106,9 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   private getSelectedSeasonData(): void {
     if (this.golferId && this.selectedSeason) {
-      console.log(`[GolferHomeComponent] Fetching golfer round data for year=${this.selectedSeason.year}`);
+      console.log(
+        `[GolferHomeComponent] Fetching golfer round data for year=${this.selectedSeason.year}`,
+      );
       this.isLoading = true;
 
       this.golfersService.getGolferTeamData(this.golferId, this.selectedSeason.year);
