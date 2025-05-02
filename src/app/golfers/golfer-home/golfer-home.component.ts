@@ -15,6 +15,7 @@ import { Season } from 'src/app/shared/season.model';
 import { RoundData } from 'src/app/shared/round.model';
 import { RoundsService } from 'src/app/rounds/rounds.service';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
+import { GolferTeamsComponent } from './golfer-teams/golfer-teams.component';
 
 @Component({
   selector: 'app-golfer-home',
@@ -28,6 +29,7 @@ import { SeasonsService } from 'src/app/seasons/seasons.service';
     TagModule,
     ProgressSpinnerModule,
     GolferInfoComponent,
+    GolferTeamsComponent,
   ],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
