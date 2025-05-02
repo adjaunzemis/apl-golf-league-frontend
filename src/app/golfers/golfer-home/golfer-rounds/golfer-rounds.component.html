@@ -1,0 +1,87 @@
+<p-card>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-2xl font-semibold">Rounds</span>
+
+    <div class="mx-auto"></div>
+
+    <p-togglebutton
+      class="font-semibold"
+      [onLabel]="labelScoringModeNet"
+      [offLabel]="labelScoringModeGross"
+      (onChange)="onChangeScoringMode($event)"
+    />
+  </div>
+
+  <p-table
+    #dt
+    [value]="rounds"
+    sortField="date_played"
+    stripedRows
+    selectionMode="single"
+    dataKey="round_id"
+    [globalFilterFields]="['golfer_name']"
+  >
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="date_played" class="w-20">Date <p-sortIcon field="date_played" /></th>
+        <th class="w-50">Course</th>
+        <th class="w-10 text-center">Hcp</th>
+        <th class="w-6 text-center" *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+          {{ holeNum }}
+        </th>
+        <th colspan="2" class="text-center">Total</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-round let-expanded="expanded">
+      <tr [pSelectableRow]="round" (click)="dt.toggleRow(round, $event)">
+        <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
+        <td class="font-semibold text-gray-700">{{ round.course_name }}</td>
+        <td class="text-gray-700 text-center">{{ round.golfer_playing_handicap }}</td>
+        <td
+          class="text-gray-700 text-center font-semibold p-0.5"
+          *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+        >
+          <div
+            [class.circle]="isHoleScoreBelowPar(round, holeNum)"
+            [class.box]="isHoleScoreAbovePar(round, holeNum)"
+            [class.crosshatch]="
+              isHoleScoreAbovePar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
+            "
+            [class.bg-blue-100]="
+              isHoleScoreBelowPar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
+            "
+            [class.text-blue-500]="isHoleScoreBelowPar(round, holeNum)"
+          >
+            <span [class.text-blue-700]="isHoleScoreBelowPar(round, holeNum)">{{
+              getScoreForHole(round, holeNum)
+            }}</span>
+          </div>
+        </td>
+        <td
+          class="text-center font-semibold pl-2 pr-0.5"
+          [class.text-blue-700]="isRoundScoreBelowPar(round)"
+        >
+          {{ getRoundScore(round) }}
+        </td>
+        <td class="text-gray-800 text-center font-semibold pr-1">
+          (<span class="px-0.5" [class.text-blue-700]="isRoundScoreBelowPar(round)">{{
+            getRoundScoreToPar(round)
+          }}</span
+          >)
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #expandedrow let-round>
+      <td class="text-center" colspan="13">
+        <span class="text-gray-700 font-semibold">{{ round.course_name }}</span>
+        <span class="text-gray-700 font-normal"> ({{ round.track_name }})</span>
+        <span class="text-gray-700 font-normal">, Tees: {{ round.tee_name }}</span>
+        <span class="text-gray-700 font-normal"
+          >, Par {{ round.tee_par }} ({{ round.tee_rating | number: '1.1-1' }}/{{
+            round.tee_slope
+          }})</span
+        >
+      </td>
+    </ng-template>
+  </p-table>
+</p-card>

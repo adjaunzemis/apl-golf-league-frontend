@@ -20,6 +20,7 @@ import { FlightsService } from 'src/app/flights/flights.service';
 import { TournamentsService } from 'src/app/tournaments/tournaments.service';
 import { TournamentInfo } from 'src/app/shared/tournament.model';
 import { FlightInfo } from 'src/app/shared/flight.model';
+import { GolferRoundsComponent } from './golfer-rounds/golfer-rounds.component';
 
 @Component({
   selector: 'app-golfer-home',
@@ -34,6 +35,7 @@ import { FlightInfo } from 'src/app/shared/flight.model';
     ProgressSpinnerModule,
     GolferInfoComponent,
     GolferTeamsComponent,
+    GolferRoundsComponent,
   ],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
