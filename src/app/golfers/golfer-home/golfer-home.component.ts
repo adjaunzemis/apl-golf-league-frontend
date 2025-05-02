@@ -16,6 +16,10 @@ import { RoundData } from 'src/app/shared/round.model';
 import { RoundsService } from 'src/app/rounds/rounds.service';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
 import { GolferTeamsComponent } from './golfer-teams/golfer-teams.component';
+import { FlightsService } from 'src/app/flights/flights.service';
+import { TournamentsService } from 'src/app/tournaments/tournaments.service';
+import { TournamentInfo } from 'src/app/shared/tournament.model';
+import { FlightInfo } from 'src/app/shared/flight.model';
 
 @Component({
   selector: 'app-golfer-home',
@@ -45,15 +49,22 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   selectedSeason: Season;
 
   private teamsSub: Subscription;
-  flightTeams: TeamGolferData[] = [];
-  tournamentTeams: TeamGolferData[] = [];
+  teams: TeamGolferData[] = [];
 
   private roundsSub: Subscription;
   rounds: RoundData[] = [];
 
+  private flightInfoSub: Subscription;
+  flightInfo: FlightInfo[] = [];
+
+  private tournamentInfoSub: Subscription;
+  tournamentInfo: TournamentInfo[] = [];
+
   private golfersService = inject(GolfersService);
   private roundsService = inject(RoundsService);
   private seasonsService = inject(SeasonsService);
+  private flightsService = inject(FlightsService);
+  private tournamentsService = inject(TournamentsService);
 
   private route = inject(ActivatedRoute);
 
@@ -66,6 +77,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
     this.golferSub = this.golfersService.getGolferUpdateListener().subscribe((result) => {
       this.golfer = result;
+      this.updateIsLoading();
     });
 
     this.roundsSub = this.roundsService.getRoundUpdateListener().subscribe((result) => {
@@ -75,13 +87,23 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       } else {
         this.rounds = [];
       }
-      // this.organizeRoundsByTee();
+      this.updateIsLoading();
     });
 
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} teams`);
-      this.flightTeams = result.filter((team) => team.flight_name);
-      this.tournamentTeams = result.filter((team) => team.tournament_name);
+      this.teams = [...result];
+      this.updateIsLoading();
+    });
+
+    this.flightInfoSub = this.flightsService.getListUpdateListener().subscribe((result) => {
+      this.flightInfo = [...result];
+      this.updateIsLoading();
+    });
+
+    this.tournamentInfoSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
+      this.tournamentInfo = [...result];
+      this.updateIsLoading();
     });
 
     this.route.queryParams.subscribe((params) => {
@@ -100,6 +122,8 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.golferSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.roundsSub.unsubscribe();
+    this.flightInfoSub.unsubscribe();
+    this.tournamentInfoSub.unsubscribe();
   }
 
   onSeasonSelected(): void {
@@ -115,8 +139,16 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
       this.golfersService.getGolferTeamData(this.golferId, this.selectedSeason.year);
       this.roundsService.getRounds(this.golferId, this.selectedSeason.year);
+      this.flightsService.getList(this.selectedSeason.year);
+      this.tournamentsService.getList(this.selectedSeason.year);
+    }
+  }
 
+  private updateIsLoading(): void {
+    if (this.golfer && this.rounds && this.teams && this.flightInfo && this.tournamentInfo) {
       this.isLoading = false;
+    } else {
+      this.isLoading = true;
     }
   }
 }
