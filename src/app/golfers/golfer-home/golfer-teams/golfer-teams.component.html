@@ -31,6 +31,9 @@
                 <div>
                   <div class="text-lg font-semibold text-gray-700 mt-1">{{ item.team_name }}</div>
                   <div class="hidden lg:block font-medium text-gray-600 text-sm">
+                    {{ getType(item) }}
+                  </div>
+                  <div class="hidden lg:block font-medium text-gray-600 text-sm">
                     {{ getSubtitle(item) }}
                   </div>
                 </div>
