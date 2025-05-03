@@ -11,7 +11,7 @@
       </div> -->
     </div>
 
-    <div class="flex flex-col justify-stretch items-center w-full py-4">
+    <div class="flex flex-col justify-stretch items-center w-full pt-6">
       <div class="text-sm font-medium text-gray-700">
         <div *ngIf="golfer.email !== null">
           <a
@@ -23,26 +23,6 @@
             <span class="pl-2">Contact</span>
           </a>
         </div>
-      </div>
-    </div>
-
-    <div
-      class="flex flex-col justify-stretch items-center w-full pt-4"
-      *ngIf="golfer.handicap_index_data"
-    >
-      <div class="text-sm font-semibold text-gray-800">
-        Handicap Index:
-        {{
-          golfer.handicap_index_data.active_handicap_index
-            ? golfer.handicap_index_data.active_handicap_index
-            : '--'
-        }}
-      </div>
-      <div
-        class="text-sm font-medium italic text-gray-700"
-        *ngIf="golfer.handicap_index_data?.pending_handicap_index"
-      >
-        Pending Handicap Index: {{ golfer.handicap_index_data.pending_handicap_index }}
       </div>
     </div>
   </div>
