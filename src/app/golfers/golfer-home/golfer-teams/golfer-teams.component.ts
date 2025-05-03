@@ -60,9 +60,9 @@ export class GolferTeamsComponent implements OnInit {
 
   getType(team: TeamGolferData): string {
     if (team.tournament_id) {
-      return "Tournament";
+      return 'Tournament';
     }
-    return "Flight";
+    return 'Flight';
   }
 
   getSubtitle(team: TeamGolferData): string {

@@ -27,28 +27,26 @@
     <ng-template #header>
       <tr>
         <th pSortableColumn="date_played" class="w-20">Date <p-sortIcon field="date_played" /></th>
-        <th class="w-50">Course</th>
-        <th class="w-30">Track</th>
-        <th class="w-30">Tee</th>
-        <th class="w-10">Par</th>
-        <th class="w-10">Rating</th>
-        <th class="w-10">Slope</th>
+        <th class="w-30">Course</th>
+        <th class="w-20">Tee</th>
+        <th class="w-10 text-center">Par</th>
+        <th class="w-15 text-center">Rating</th>
+        <th class="w-15 text-center">Slope</th>
         <th class="w-10 text-center">Hcp</th>
-        <th class="w-10 text-center">Gross</th>
-        <th class="w-10 text-center">A.G.</th>
-        <th class="w-10 text-center">Net</th>
-        <th class="w-10 text-center">Diff.</th>
+        <th class="w-15 text-center">Gross</th>
+        <th class="w-15 text-center">A.G.</th>
+        <th class="w-15 text-center">Net</th>
+        <th class="w-15 text-center">Diff.</th>
       </tr>
     </ng-template>
     <ng-template #body let-round let-expanded="expanded">
       <tr [pSelectableRow]="round" (click)="dt.toggleRow(round, $event)">
         <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
         <td class="text-gray-700">{{ round.course_name | initials }}</td>
-        <td class="text-gray-700">{{ round.track_name }}</td>
         <td class="text-gray-700">{{ round.tee_name }}</td>
-        <td class="text-gray-700">{{ round.tee_par }}</td>
-        <td class="text-gray-700">{{ round.tee_rating | number: '1.1-1' }}</td>
-        <td class="text-gray-700">{{ round.tee_slope }}</td>
+        <td class="text-gray-700 text-center">{{ round.tee_par }}</td>
+        <td class="text-gray-700 text-center">{{ round.tee_rating | number: '1.1-1' }}</td>
+        <td class="text-gray-700 text-center">{{ round.tee_slope }}</td>
         <td class="text-gray-700 text-center">{{ round.golfer_playing_handicap }}</td>
         <td class="text-gray-700 text-center">{{ round.gross_score }}</td>
         <td class="text-gray-700 text-center">{{ round.adjusted_gross_score }}</td>
