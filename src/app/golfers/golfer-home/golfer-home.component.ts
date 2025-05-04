@@ -127,7 +127,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         this.golferId = params.id;
 
         this.golfersService.getGolfer(this.golferId);
-        this.golfersService.getGolferHandicapScoringRecord(this.golferId);
         this.getSelectedSeasonData();
       }
     });
@@ -155,6 +154,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.isLoading = true;
 
       this.golfersService.getGolferTeamData(this.golferId, this.selectedSeason.year);
+      this.golfersService.getGolferHandicapScoringRecord(this.golferId, this.selectedSeason.year);
       this.roundsService.getRounds(this.golferId, this.selectedSeason.year);
       this.flightsService.getList(this.selectedSeason.year);
       this.tournamentsService.getList(this.selectedSeason.year);

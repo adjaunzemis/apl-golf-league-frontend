@@ -16,12 +16,12 @@
   </div>
 
   <div class="px-4">
-    <p-chart type="line" [data]="getChartData()" />
+    <p-chart type="line" [data]="getChartData()" [options]="chartOptions" />
   </div>
 
   <p-table
     #dt
-    [value]="rounds"
+    [value]="scoringRecord"
     sortField="date_played"
     [sortOrder]="-1"
     stripedRows
@@ -51,7 +51,7 @@
         <td class="text-gray-700 text-center">{{ round.tee_par }}</td>
         <td class="text-gray-700 text-center">{{ round.tee_rating | number: '1.1-1' }}</td>
         <td class="text-gray-700 text-center">{{ round.tee_slope }}</td>
-        <td class="text-gray-700 text-center">{{ round.golfer_playing_handicap }}</td>
+        <td class="text-gray-700 text-center">{{ round.playing_handicap }}</td>
         <td class="text-gray-700 text-center">{{ round.gross_score }}</td>
         <td class="text-gray-700 text-center">{{ round.adjusted_gross_score }}</td>
         <td class="text-gray-700 text-center">{{ round.net_score }}</td>

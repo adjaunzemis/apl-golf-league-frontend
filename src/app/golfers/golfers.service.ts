@@ -117,9 +117,11 @@ export class GolfersService {
     );
   }
 
-  getGolferHandicapScoringRecord(golferId: number): void {
+  getGolferHandicapScoringRecord(golferId: number, year: number): void {
     this.http
-      .get<ScoringRecordRound[]>(environment.apiUrl + `handicaps/scoring-record-rounds/${golferId}`)
+      .get<
+        ScoringRecordRound[]
+      >(environment.apiUrl + `handicaps/scoring-record-rounds/${golferId}?year=${year}`)
       .subscribe((result) => {
         this.golferHandicapScoringRecord = [...result];
         this.golferHandicapScoringRecordUpdated.next([...this.golferHandicapScoringRecord]);

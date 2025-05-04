@@ -19,6 +19,34 @@ export class GolferHandicapComponent implements OnInit {
   @Input() golfer: GolferData;
   @Input() scoringRecord: ScoringRecordRound[];
 
+  // private footer = (tooltipItems: any[]) => {
+  //   let sum = 0;
+  //   tooltipItems.forEach(function(tooltipItem) {
+  //     sum += tooltipItem.parsed.y;
+  //   });
+  //   return 'Sum: ' + sum;
+  // };
+
+  chartOptions = {
+    interaction: {
+      intersect: false,
+      mode: 'index',
+    },
+    scales: {
+      x: {
+        barThickness: 'flex',
+        maxBarThickness: 8, // number (pixels)
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          // footer: this.footer,
+        },
+      },
+    },
+  };
+
   rounds!: RoundSummary[];
   pending_rounds!: RoundSummary[];
 
@@ -68,40 +96,37 @@ export class GolferHandicapComponent implements OnInit {
   }
 
   getChartData(): HandicapChartData | null {
-    if (!this.golfer || !this.golfer.handicap_index_data) {
+    if (!this.golfer || !this.scoringRecord) {
       return null;
     }
 
-    const dates_counting = [];
-    const differentials_counting = [];
-    for (const round of this.golfer.handicap_index_data.active_rounds) {
-      const datePlayed = new Date(round.date_played);
-      dates_counting.push(datePlayed.toLocaleDateString());
-      differentials_counting.push(round.score_differential);
-    }
-
-    const dates_other = [];
-    const differentials_other = [];
-    for (const round of this.golfer.handicap_index_data.active_rounds) {
-      const datePlayed = new Date(round.date_played);
-      dates_other.push(datePlayed.toLocaleDateString());
-      differentials_other.push(round.score_differential);
+    const dates = [];
+    const differentials = [];
+    const handicaps = [];
+    for (let idx = this.scoringRecord.length - 1; idx >= 0; idx--) {
+      const datePlayed = new Date(this.scoringRecord[idx].date_played);
+      dates.push(datePlayed.toLocaleDateString());
+      differentials.push(this.scoringRecord[idx].score_differential);
+      handicaps.push(this.scoringRecord[idx].handicap_index);
     }
 
     return {
-      labels: dates_counting,
+      labels: dates,
       datasets: [
         {
-          type: 'bar',
-          label: 'Counting',
-          data: differentials_counting,
-          backgroundColor: '#1d73b890',
+          type: 'line',
+          label: 'Handicap Index',
+          data: handicaps,
+          order: 0,
+          backgroundColor: '#FFAE42',
+          borderColor: '#FFAE4290',
         },
         {
           type: 'bar',
-          label: 'Others',
-          data: differentials_counting,
-          backgroundColor: '#c2ddf290',
+          label: 'Score Differential',
+          data: differentials,
+          order: 1,
+          backgroundColor: '#1D73B890',
         },
       ],
     };
@@ -116,7 +141,8 @@ interface HandicapChartData {
 interface HandicapChartDataset {
   type: string;
   label: string;
-  data: number[];
+  data: (number | null)[];
+  order?: number;
   backgroundColor?: string;
   borderColor?: string;
   tension?: number;
