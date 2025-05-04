@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
@@ -15,9 +15,11 @@ import { ScoringRecordRound } from 'src/app/shared/handicap.model';
   styleUrl: './golfer-handicap.component.css',
   imports: [CommonModule, CardModule, TableModule, ChartModule, InitialsPipe],
 })
-export class GolferHandicapComponent implements OnInit {
+export class GolferHandicapComponent implements OnInit, OnChanges {
   @Input() golfer: GolferData;
   @Input() scoringRecord: ScoringRecordRound[];
+
+  chartData: HandicapChartData | null = null;
 
   // private footer = (tooltipItems: any[]) => {
   //   let sum = 0;
@@ -62,6 +64,12 @@ export class GolferHandicapComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['scoringRecord']) {
+      this.chartData = this.updateChartData();
+    }
+  }
+
   getActiveIndex(): number | null {
     if (
       this.golfer &&
@@ -95,7 +103,7 @@ export class GolferHandicapComponent implements OnInit {
     return null;
   }
 
-  getChartData(): HandicapChartData | null {
+  updateChartData(): HandicapChartData | null {
     if (!this.golfer || !this.scoringRecord) {
       return null;
     }
@@ -103,11 +111,11 @@ export class GolferHandicapComponent implements OnInit {
     const dates = [];
     const differentials = [];
     const handicaps = [];
-    for (let idx = this.scoringRecord.length - 1; idx >= 0; idx--) {
-      const datePlayed = new Date(this.scoringRecord[idx].date_played);
+    for (const round of this.scoringRecord) {
+      const datePlayed = new Date(round.date_played);
       dates.push(datePlayed.toLocaleDateString());
-      differentials.push(this.scoringRecord[idx].score_differential);
-      handicaps.push(this.scoringRecord[idx].handicap_index);
+      differentials.push(round.score_differential);
+      handicaps.push(round.handicap_index);
     }
 
     return {
