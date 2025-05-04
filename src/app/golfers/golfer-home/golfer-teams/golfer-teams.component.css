@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+
+.listItem:hover {
+  @apply shadow-lg -translate-y-1 transition-all;
+  cursor: pointer;
+}

@@ -62,7 +62,7 @@ const routes: Routes = environment.maintenance
         component: TournamentScorecardCreateComponent,
         canActivate: [AuthGuard],
       },
-      { path: 'golfer', component: GolferHomeComponent, canActivate: [UnderConstructionGuard] },
+      { path: 'golfer', component: GolferHomeComponent },
       { path: 'golfer-search', component: GolferSearchComponent },
       {
         path: 'golfer/qualifying',

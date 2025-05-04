@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { AngularMaterialModule } from '../angular-material.module';
-import { GolferHomeComponent } from './golfer-home/golfer-home.component';
+import { GolferHomeOldComponent } from './golfer-home-old/golfer-home-old.component';
 import { ScoringRecordComponent } from './scoring-record/scoring-record.component';
 import { CombinedRoundsScorecardComponent } from './combined-rounds-scorecard/combined-rounds-scorecard.component';
 import { ScorecardModule } from '../shared/scorecard/scorecard.module';
@@ -13,7 +13,7 @@ import { AddQualifyingScoreComponent } from './add-qualifying-score/add-qualifyi
 
 @NgModule({
   declarations: [
-    GolferHomeComponent,
+    GolferHomeOldComponent,
     ScoringRecordComponent,
     CombinedRoundsScorecardComponent,
     AverageScoreLineComponent,
