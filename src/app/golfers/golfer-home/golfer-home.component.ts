@@ -22,6 +22,7 @@ import { TournamentInfo } from 'src/app/shared/tournament.model';
 import { FlightInfo } from 'src/app/shared/flight.model';
 import { GolferRoundsComponent } from './golfer-rounds/golfer-rounds.component';
 import { GolferHandicapComponent } from './golfer-handicap/golfer-handicap.component';
+import { ScoringRecordRound } from 'src/app/shared/handicap.model';
 
 @Component({
   selector: 'app-golfer-home',
@@ -47,6 +48,9 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   private golferSub: Subscription;
   golfer: GolferData;
+
+  private golferHandicapScoringRecordSub: Subscription;
+  golferHandicapScoringRecord: ScoringRecordRound[];
 
   private seasonsSub: Subscription;
   seasons: Season[];
@@ -84,6 +88,13 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.updateIsLoading();
     });
 
+    this.golferHandicapScoringRecordSub = this.golfersService
+      .getGolferHandicapScoringRecordUpdateListener()
+      .subscribe((result) => {
+        this.golferHandicapScoringRecord = [...result];
+        this.updateIsLoading();
+      });
+
     this.roundsSub = this.roundsService.getRoundUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} rounds`);
       if (result.length > 0) {
@@ -116,6 +127,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         this.golferId = params.id;
 
         this.golfersService.getGolfer(this.golferId);
+        this.golfersService.getGolferHandicapScoringRecord(this.golferId);
         this.getSelectedSeasonData();
       }
     });
@@ -124,6 +136,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.seasonsSub.unsubscribe();
     this.golferSub.unsubscribe();
+    this.golferHandicapScoringRecordSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.roundsSub.unsubscribe();
     this.flightInfoSub.unsubscribe();
@@ -149,7 +162,14 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   }
 
   private updateIsLoading(): void {
-    if (this.golfer && this.rounds && this.teams && this.flightInfo && this.tournamentInfo) {
+    if (
+      this.golfer &&
+      this.golferHandicapScoringRecord &&
+      this.rounds &&
+      this.teams &&
+      this.flightInfo &&
+      this.tournamentInfo
+    ) {
       this.isLoading = false;
     } else {
       this.isLoading = true;

@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { Golfer, GolferAffiliation, GolferData, TeamGolferData } from '../shared/golfer.model';
 import { QualifyingScore } from '../shared/qualifying-score.model';
 import { environment } from './../../environments/environment';
+import { ScoringRecordRound } from '../shared/handicap.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,9 @@ export class GolfersService {
 
   private golferTeamData: TeamGolferData[] = [];
   private golferTeamDataUpdated = new Subject<TeamGolferData[]>();
+
+  private golferHandicapScoringRecord: ScoringRecordRound[];
+  private golferHandicapScoringRecordUpdated = new Subject<ScoringRecordRound[]>();
 
   constructor(
     private http: HttpClient,
@@ -111,5 +115,18 @@ export class GolfersService {
       environment.apiUrl + `handicaps/qualifying-score/?${queryParams}`,
       qualifyingScore,
     );
+  }
+
+  getGolferHandicapScoringRecord(golferId: number): void {
+    this.http
+      .get<ScoringRecordRound[]>(environment.apiUrl + `handicaps/scoring-record-rounds/${golferId}`)
+      .subscribe((result) => {
+        this.golferHandicapScoringRecord = [...result];
+        this.golferHandicapScoringRecordUpdated.next([...this.golferHandicapScoringRecord]);
+      });
+  }
+
+  getGolferHandicapScoringRecordUpdateListener(): Observable<ScoringRecordRound[]> {
+    return this.golferHandicapScoringRecordUpdated.asObservable();
   }
 }

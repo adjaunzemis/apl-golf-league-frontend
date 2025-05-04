@@ -7,6 +7,7 @@ import { TableModule } from 'primeng/table';
 import { GolferData } from 'src/app/shared/golfer.model';
 import { RoundSummary } from 'src/app/shared/round.model';
 import { InitialsPipe } from 'src/app/shared/initials.pipe';
+import { ScoringRecordRound } from 'src/app/shared/handicap.model';
 
 @Component({
   selector: 'app-golfer-handicap',
@@ -16,6 +17,7 @@ import { InitialsPipe } from 'src/app/shared/initials.pipe';
 })
 export class GolferHandicapComponent implements OnInit {
   @Input() golfer: GolferData;
+  @Input() scoringRecord: ScoringRecordRound[];
 
   rounds!: RoundSummary[];
   pending_rounds!: RoundSummary[];
