@@ -88,11 +88,10 @@ export interface GolferStatisticsScoring {
   num_others: number;
 }
 
+
 export interface GolferStatistics {
   golfer_id: number;
   golfer_name: string;
-  golfer_team_id: number;
-  golfer_team_role: string;
   num_rounds: number;
   num_holes: number;
   num_par_3_holes: number;
@@ -100,4 +99,9 @@ export interface GolferStatistics {
   num_par_5_holes: number;
   gross_scoring: GolferStatisticsScoring;
   net_scoring: GolferStatisticsScoring;
+}
+
+export interface TeamGolferStatistics extends GolferStatistics {
+  golfer_team_id: number;
+  golfer_team_role: string;
 }

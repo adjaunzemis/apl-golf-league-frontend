@@ -10,7 +10,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { GolferInfoComponent } from './golfer-info/golfer-info.component';
 import { GolfersService } from '../golfers.service';
-import { GolferData, TeamGolferData } from 'src/app/shared/golfer.model';
+import { GolferData, GolferStatistics, TeamGolferData } from 'src/app/shared/golfer.model';
 import { Season } from 'src/app/shared/season.model';
 import { RoundData } from 'src/app/shared/round.model';
 import { RoundsService } from 'src/app/rounds/rounds.service';
@@ -62,6 +62,9 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   private roundsSub: Subscription;
   rounds: RoundData[] = [];
 
+  private statisticsSub: Subscription;
+  statistics: GolferStatistics;
+
   private flightInfoSub: Subscription;
   flightInfo: FlightInfo[] = [];
 
@@ -105,6 +108,12 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.updateIsLoading();
     });
 
+    this.statisticsSub = this.golfersService.getGolferStatisticsUpdateListener().subscribe((result) => {
+      console.log(`[GolferHomeComponent] Received golfer statistics with ${result.num_rounds} rounds of data`);
+      this.statistics = result;
+      this.updateIsLoading();
+    })
+
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} teams`);
       this.teams = [...result];
@@ -138,6 +147,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.golferHandicapScoringRecordSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.roundsSub.unsubscribe();
+    this.statisticsSub.unsubscribe();
     this.flightInfoSub.unsubscribe();
     this.tournamentInfoSub.unsubscribe();
   }
@@ -155,6 +165,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
       this.golfersService.getGolferTeamData(this.golferId, this.selectedSeason.year);
       this.golfersService.getGolferHandicapScoringRecord(this.golferId, this.selectedSeason.year);
+      this.golfersService.getGolferStatistics(this.golferId, this.selectedSeason.year);
       this.roundsService.getRounds(this.golferId, this.selectedSeason.year);
       this.flightsService.getList(this.selectedSeason.year);
       this.tournamentsService.getList(this.selectedSeason.year);
@@ -162,17 +173,14 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   }
 
   private updateIsLoading(): void {
-    if (
+    this.isLoading = !(
       this.golfer &&
       this.golferHandicapScoringRecord &&
       this.rounds &&
+      this.statistics &&
       this.teams &&
       this.flightInfo &&
       this.tournamentInfo
-    ) {
-      this.isLoading = false;
-    } else {
-      this.isLoading = true;
-    }
+    )
   }
 }
