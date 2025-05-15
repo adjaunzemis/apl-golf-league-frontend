@@ -108,11 +108,15 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.updateIsLoading();
     });
 
-    this.statisticsSub = this.golfersService.getGolferStatisticsUpdateListener().subscribe((result) => {
-      console.log(`[GolferHomeComponent] Received golfer statistics with ${result.num_rounds} rounds of data`);
-      this.statistics = result;
-      this.updateIsLoading();
-    })
+    this.statisticsSub = this.golfersService
+      .getGolferStatisticsUpdateListener()
+      .subscribe((result) => {
+        console.log(
+          `[GolferHomeComponent] Received golfer statistics with ${result.num_rounds} rounds of data`,
+        );
+        this.statistics = result;
+        this.updateIsLoading();
+      });
 
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} teams`);
@@ -181,6 +185,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.teams &&
       this.flightInfo &&
       this.tournamentInfo
-    )
+    );
   }
 }

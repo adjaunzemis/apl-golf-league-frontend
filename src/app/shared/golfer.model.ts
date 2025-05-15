@@ -88,7 +88,6 @@ export interface GolferStatisticsScoring {
   num_others: number;
 }
 
-
 export interface GolferStatistics {
   golfer_id: number;
   golfer_name: string;

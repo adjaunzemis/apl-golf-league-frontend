@@ -3,7 +3,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
-import { Golfer, GolferAffiliation, GolferData, GolferStatistics, TeamGolferData } from '../shared/golfer.model';
+import {
+  Golfer,
+  GolferAffiliation,
+  GolferData,
+  GolferStatistics,
+  TeamGolferData,
+} from '../shared/golfer.model';
 import { QualifyingScore } from '../shared/qualifying-score.model';
 import { environment } from './../../environments/environment';
 import { ScoringRecordRound } from '../shared/handicap.model';
@@ -26,7 +32,7 @@ export class GolfersService {
 
   private golferHandicapScoringRecord: ScoringRecordRound[];
   private golferHandicapScoringRecordUpdated = new Subject<ScoringRecordRound[]>();
-  
+
   private golferStatistics: GolferStatistics;
   private golferStatisticsUpdated = new Subject<GolferStatistics>();
 
@@ -143,7 +149,7 @@ export class GolfersService {
     this.http.get<GolferStatistics>(queryUrl).subscribe((result) => {
       this.golferStatistics = result;
       this.golferStatisticsUpdated.next(this.golferStatistics);
-    })
+    });
   }
 
   getGolferStatisticsUpdateListener(): Observable<GolferStatistics> {

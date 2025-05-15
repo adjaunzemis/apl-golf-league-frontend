@@ -1,14 +1,25 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { CanActivate, Router, UrlTree } from '@angular/router';
+import { map, Observable, take } from 'rxjs';
+
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UnderConstructionGuard implements CanActivate {
-  constructor(private router: Router) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  canActivate(): boolean {
-    this.router.navigate(['/under-construction']);
-    return false;
+  canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    return this.authService.user.pipe(
+      take(1),
+      map((user) => {
+        if (user != null && user.is_admin) {
+          return true;
+        }
+        return this.router.createUrlTree(['/under-construction']);
+      }),
+    );
   }
 }
