@@ -6,12 +6,13 @@ import { TableModule } from 'primeng/table';
 import { ToggleButtonChangeEvent, ToggleButtonModule } from 'primeng/togglebutton';
 
 import { RoundData } from 'src/app/shared/round.model';
+import { InitialsPipe } from 'src/app/shared/initials.pipe';
 
 @Component({
   selector: 'app-golfer-rounds',
   templateUrl: './golfer-rounds.component.html',
   styleUrl: './golfer-rounds.component.css',
-  imports: [CommonModule, CardModule, TableModule, ToggleButtonModule, InputTextModule],
+  imports: [CommonModule, CardModule, TableModule, ToggleButtonModule, InputTextModule, InitialsPipe],
 })
 export class GolferRoundsComponent {
   @Input() rounds!: RoundData[];

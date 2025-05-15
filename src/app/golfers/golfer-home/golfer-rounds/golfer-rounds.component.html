@@ -23,7 +23,7 @@
     <ng-template #header>
       <tr>
         <th pSortableColumn="date_played" class="w-20">Date <p-sortIcon field="date_played" /></th>
-        <th class="w-50">Course</th>
+        <th class="w-20">Course</th>
         <th class="w-10 text-center">Hcp</th>
         <th class="w-6 text-center" *ngFor="let holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
           {{ holeNum }}
@@ -34,7 +34,7 @@
     <ng-template #body let-round let-expanded="expanded">
       <tr [pSelectableRow]="round" (click)="dt.toggleRow(round, $event)">
         <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
-        <td class="font-semibold text-gray-700">{{ round.course_name }}</td>
+        <td class="font-semibold text-gray-700">{{ round.course_name | initials }}</td>
         <td class="text-gray-700 text-center">{{ round.golfer_playing_handicap }}</td>
         <td
           class="text-gray-700 text-center font-semibold p-0.5"
