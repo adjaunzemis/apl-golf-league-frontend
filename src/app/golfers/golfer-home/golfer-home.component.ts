@@ -23,6 +23,7 @@ import { FlightInfo } from 'src/app/shared/flight.model';
 import { GolferRoundsComponent } from './golfer-rounds/golfer-rounds.component';
 import { GolferHandicapComponent } from './golfer-handicap/golfer-handicap.component';
 import { ScoringRecordRound } from 'src/app/shared/handicap.model';
+import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
 
 @Component({
   selector: 'app-golfer-home',
@@ -39,6 +40,7 @@ import { ScoringRecordRound } from 'src/app/shared/handicap.model';
     GolferTeamsComponent,
     GolferRoundsComponent,
     GolferHandicapComponent,
+    GolferStatisticsComponent,
   ],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {

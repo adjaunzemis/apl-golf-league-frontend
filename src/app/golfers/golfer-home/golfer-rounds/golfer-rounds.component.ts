@@ -12,7 +12,14 @@ import { InitialsPipe } from 'src/app/shared/initials.pipe';
   selector: 'app-golfer-rounds',
   templateUrl: './golfer-rounds.component.html',
   styleUrl: './golfer-rounds.component.css',
-  imports: [CommonModule, CardModule, TableModule, ToggleButtonModule, InputTextModule, InitialsPipe],
+  imports: [
+    CommonModule,
+    CardModule,
+    TableModule,
+    ToggleButtonModule,
+    InputTextModule,
+    InitialsPipe,
+  ],
 })
 export class GolferRoundsComponent {
   @Input() rounds!: RoundData[];
