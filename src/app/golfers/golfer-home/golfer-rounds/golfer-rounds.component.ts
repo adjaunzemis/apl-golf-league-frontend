@@ -16,6 +16,7 @@ import { InitialsPipe } from 'src/app/shared/initials.pipe';
 })
 export class GolferRoundsComponent {
   @Input() rounds!: RoundData[];
+  @Input() pagination = true;
 
   scoringMode = 'gross';
   labelScoringModeGross = 'Scoring Mode: Gross';

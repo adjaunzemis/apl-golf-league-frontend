@@ -18,6 +18,7 @@ import { ScoringRecordRound } from 'src/app/shared/handicap.model';
 export class GolferHandicapComponent implements OnInit, OnChanges {
   @Input() golfer: GolferData;
   @Input() scoringRecord: ScoringRecordRound[];
+  @Input() pagination = true;
 
   chartData: HandicapChartData | null = null;
 
