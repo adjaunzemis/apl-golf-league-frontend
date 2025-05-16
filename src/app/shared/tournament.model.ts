@@ -1,5 +1,5 @@
 import { DivisionCreate, DivisionData } from './division.model';
-import { GolferStatistics } from './golfer.model';
+import { TeamGolferStatistics } from './golfer.model';
 import { TournamentTeamData } from './team.model';
 
 export interface TournamentData {
@@ -141,5 +141,5 @@ export interface TournamentStandings {
 
 export interface TournamentStatistics {
   tournament_id: number;
-  golfers: GolferStatistics[];
+  golfers: TeamGolferStatistics[];
 }

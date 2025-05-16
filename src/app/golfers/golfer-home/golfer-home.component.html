@@ -1,122 +1,70 @@
-<mat-spinner *ngIf="isLoadingGolferData"></mat-spinner>
-
-<div class="content full-width" *ngIf="!isLoadingGolferData">
-  <h1>{{ golfer.name }}</h1>
-
-  <div class="card-container">
-    <!-- Re-enable when all historical data has been added -->
-    <!-- <div class="card card-small">
-      <span class="bold">Member Since</span>
-      <span *ngIf="golfer.member_since; else noMemberSince">{{ golfer.member_since }}</span>
-      <ng-template #noMemberSince>
-        <span>--</span>
-      </ng-template>
-    </div> -->
-
-    <div
-      aria-hidden="true"
-      class="card card-small selectable"
-      [ngClass]="showHandicapData ? 'selected' : ''"
-      (click)="toggleShowHandicapData()"
-      (keydown)="toggleShowHandicapData()"
-    >
-      <span class="bold">APL Handicap Index</span>
-      <div *ngIf="golfer.handicap_index_data; else noHandicapData">
-        <span
-          *ngIf="golfer.handicap_index_data.active_handicap_index; else noActiveHandicapIndex"
-          >{{ golfer.handicap_index_data.active_handicap_index | number: '1.1-1' }}</span
+<div class="grid grid-cols-12 place-items-stretch gap-4 p-4" *ngIf="!isLoading; else loading">
+  <div class="col-span-12 flex flex-col items-center gap-2">
+    <app-golfer-info [golfer]="golfer" *ngIf="golfer" />
+    <p-card>
+      <div class="flex flex-1 items-center px-4 py-2">
+        <span class="text-lg font-semibold">Season</span>
+        <div class="mx-auto"></div>
+        <p-select
+          class="ring-1 ring-gray-300 text-center h-8 ml-4 pl-2 py-1"
+          [options]="seasons"
+          [(ngModel)]="selectedSeason"
+          optionLabel="year"
+          placeholder="Season"
+          (onChange)="onSeasonSelected()"
         >
-        <ng-template #noActiveHandicapIndex>--</ng-template>
-        <span *ngIf="golfer.handicap_index_data.pending_handicap_index">
-          <span>, </span>
-          <span class="italic"
-            >Pending:
-            {{ golfer.handicap_index_data.pending_handicap_index | number: '1.1-1' }}</span
-          >
-        </span>
+          <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2" *ngIf="selectedOption">
+              <span>{{ selectedOption.year }}</span>
+              <p-tag
+                class="bg-blue-500 text-white text-sm font-normal px-1"
+                value="Active"
+                *ngIf="selectedOption.is_active"
+              />
+            </div>
+          </ng-template>
+          <ng-template let-option #item>
+            <div class="flex items-center gap-2">
+              <span>{{ option.year }}</span>
+              <p-tag
+                class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
+                value="Active"
+                *ngIf="option.is_active"
+              />
+            </div>
+          </ng-template>
+        </p-select>
       </div>
-      <ng-template #noHandicapData>
-        <span>--</span>
-      </ng-template>
-    </div>
-
-    <div class="card card-small">
-      <span class="bold">Affiliation</span>
-      <span *ngIf="golfer.affiliation; else noAffiliation">{{ golfer.affiliation }}</span>
-      <ng-template #noAffiliation>
-        <span>--</span>
-      </ng-template>
-    </div>
-
-    <a href="mailto:{{ golfer.email }}" class="card card-small selectable">
-      <span class="bold">Contact Golfer</span>
-    </a>
+    </p-card>
   </div>
 
-  <app-scoring-record
-    class="full-width"
-    [activeRounds]="golfer.handicap_index_data?.active_rounds"
-    [pendingRounds]="golfer.handicap_index_data?.pending_rounds"
-    *ngIf="showHandicapData"
-  ></app-scoring-record>
+  <div class="hidden md:block md:col-span-1"></div>
+  <app-golfer-teams
+    class="col-span-3"
+    [teams]="teams"
+    [flightInfo]="flightInfo"
+    [tournamentInfo]="tournamentInfo"
+  />
+  <app-golfer-handicap
+    class="col-span-4"
+    [golfer]="golfer"
+    [scoringRecord]="golferHandicapScoringRecord"
+  />
+  <app-golfer-rounds class="col-span-3" [rounds]="rounds" />
+  <div class="hidden md:block md:col-span-1"></div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Select Season</mat-label>
-    <mat-select [formControl]="yearControl" required>
-      <mat-option
-        *ngFor="let selectedYear of yearOptions"
-        [value]="selectedYear"
-        (click)="onSeasonSelected(selectedYear)"
-        >{{ selectedYear }}</mat-option
-      >
-    </mat-select>
-  </mat-form-field>
-
-  <h2>Teams</h2>
-
-  <mat-spinner *ngIf="isLoadingTeamData"></mat-spinner>
-
-  <p
-    class="italic"
-    *ngIf="!isLoadingTeamData && flightTeams.length === 0 && tournamentTeams.length === 0"
-  >
-    No team data for selected season
-  </p>
-
-  <div class="card-container" *ngIf="!isLoadingTeamData">
-    <a
-      class="card card-small selectable"
-      routerLink="/flight/team"
-      [queryParams]="{ id: team.team_id }"
-      *ngFor="let team of flightTeams"
-    >
-      <span class="bold">{{ team.team_name }} - {{ team.year }}</span>
-      <span>{{ team.flight_name }} - {{ team.division_name }}</span>
-    </a>
-    <a
-      class="card card-small selectable"
-      routerLink="/tournament"
-      [queryParams]="{ id: team.tournament_id }"
-      *ngFor="let team of tournamentTeams"
-    >
-      <span class="bold">{{ team.team_name }} - {{ team.year }}</span>
-      <span>{{ team.tournament_name }} - {{ team.division_name }}</span>
-    </a>
-  </div>
-
-  <h2>Rounds</h2>
-
-  <mat-spinner *ngIf="isLoadingRoundData"></mat-spinner>
-
-  <p class="italic" *ngIf="!isLoadingRoundData && rounds.length === 0">
-    No round data for selected season
-  </p>
-
-  <div class="content full-width" style="margin-top: 0px" *ngIf="!isLoadingRoundData">
-    <app-combined-rounds-scorecard
-      class="full-width"
-      [rounds]="data.value"
-      *ngFor="let data of roundsOrganizedByTee | keyvalue"
-    ></app-combined-rounds-scorecard>
-  </div>
+  <div class="hidden md:block md:col-span-3"></div>
+  <app-golfer-statistics class="col-span-6" [statistics]="statistics" />
+  <div class="hidden md:block md:col-span-3"></div>
 </div>
+
+<ng-template #loading>
+  <div class="flex flex-col items-center w-full p-10">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ widthcs: '100px', height: '100px' }"
+    />
+  </div>
+</ng-template>

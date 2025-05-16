@@ -1,0 +1,74 @@
+<p-card>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-2xl font-semibold">Handicap</span>
+  </div>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+    <span class="text-normal font-semibold" *ngIf="getActiveIndex(); else noIndex">
+      Index: {{ getActiveIndex() }}
+      <!-- (as of {{ getActiveIndexDate() | date: 'shortDate' : 'ET' }}) -->
+    </span>
+    <ng-template #noIndex> Index: -- </ng-template>
+  </div>
+  <div class="flex flex-col sm:flex-row sm:items-center px-4">
+    <span class="text-normal font-semibold italic" *ngIf="getPendingIndex()">
+      Pending: {{ getPendingIndex() }}
+    </span>
+  </div>
+
+  <div class="px-4">
+    <p-chart type="line" [data]="chartData" [options]="chartOptions" />
+  </div>
+
+  <p-table
+    #dt
+    [value]="scoringRecord"
+    sortField="date_played"
+    [sortOrder]="-1"
+    stripedRows
+    selectionMode="single"
+    dataKey="round_id"
+    [paginator]="pagination"
+    [rows]="10"
+  >
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="date_played" class="w-20">Date <p-sortIcon field="date_played" /></th>
+        <th class="pr-2">Course</th>
+        <th class="pr-2">Tee</th>
+        <th class="pr-1">Type</th>
+        <th class="px-1 text-center">Par</th>
+        <th class="px-1 text-center">Hcp</th>
+        <th class="px-1 text-center">Gross</th>
+        <th class="px-1 text-center">Adj Gr</th>
+        <th class="px-1 text-center">Net</th>
+        <th class="px-1 text-center">Diff.</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-round let-expanded="expanded">
+      <tr [pSelectableRow]="round" (click)="dt.toggleRow(round, $event)">
+        <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
+        <td class="text-gray-700">{{ round.course_name | initials }}</td>
+        <td class="text-gray-700">{{ round.tee_name }}</td>
+        <td class="text-gray-700">{{ round.round_type }}</td>
+        <td class="text-gray-700 text-center">{{ round.tee_par }}</td>
+        <td class="text-gray-700 text-center">{{ round.playing_handicap }}</td>
+        <td class="text-gray-700 text-center">{{ round.gross_score }}</td>
+        <td class="text-gray-700 text-center">{{ round.adjusted_gross_score }}</td>
+        <td class="text-gray-700 text-center">{{ round.net_score }}</td>
+        <td class="text-gray-700 text-center">{{ round.score_differential | number: '1.1-1' }}</td>
+      </tr>
+    </ng-template>
+    <ng-template #expandedrow let-round>
+      <td class="text-center" colspan="13">
+        <span class="text-gray-700 font-semibold">{{ round.course_name }}</span>
+        <span class="text-gray-700 font-normal"> ({{ round.track_name }})</span>
+        <span class="text-gray-700 font-normal">, Tees: {{ round.tee_name }}</span>
+        <span class="text-gray-700 font-normal"
+          >, Par {{ round.tee_par }} ({{ round.tee_rating | number: '1.1-1' }}/{{
+            round.tee_slope
+          }})</span
+        >
+      </td>
+    </ng-template>
+  </p-table>
+</p-card>

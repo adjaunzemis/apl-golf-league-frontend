@@ -67,9 +67,9 @@ export interface GolferStatisticsOLD {
 export interface HandicapIndexData {
   active_date: Date;
   active_handicap_index?: number;
-  active_rounds?: RoundSummary[];
+  active_rounds: RoundSummary[];
   pending_handicap_index?: number;
-  pending_rounds?: RoundSummary[];
+  pending_rounds: RoundSummary[];
 }
 
 export interface GolferStatisticsScoring {
@@ -91,8 +91,6 @@ export interface GolferStatisticsScoring {
 export interface GolferStatistics {
   golfer_id: number;
   golfer_name: string;
-  golfer_team_id: number;
-  golfer_team_role: string;
   num_rounds: number;
   num_holes: number;
   num_par_3_holes: number;
@@ -100,4 +98,9 @@ export interface GolferStatistics {
   num_par_5_holes: number;
   gross_scoring: GolferStatisticsScoring;
   net_scoring: GolferStatisticsScoring;
+}
+
+export interface TeamGolferStatistics extends GolferStatistics {
+  golfer_team_id: number;
+  golfer_team_role: string;
 }

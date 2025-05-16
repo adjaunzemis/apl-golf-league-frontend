@@ -83,7 +83,7 @@ const routes: Routes = environment.maintenance
         canActivate: [AuthGuard],
       },
       { path: 'handicaps', component: HandicapsComponent, canActivate: [UnderConstructionGuard] },
-      { path: 'primeng-example', component: PrimeNGExampleComponent },
+      { path: 'primeng-example', component: PrimeNGExampleComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: '' },
     ];
 

@@ -1,75 +1,103 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { UntypedFormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { CardModule } from 'primeng/card';
+import { SelectModule } from 'primeng/select';
+import { TagModule } from 'primeng/tag';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
+import { GolferInfoComponent } from './golfer-info/golfer-info.component';
 import { GolfersService } from '../golfers.service';
-import { RoundsService } from '../../rounds/rounds.service';
-import { GolferData, TeamGolferData } from '../../shared/golfer.model';
-import { RoundData } from '../../shared/round.model';
+import { GolferData, GolferStatistics, TeamGolferData } from 'src/app/shared/golfer.model';
+import { Season } from 'src/app/shared/season.model';
+import { RoundData } from 'src/app/shared/round.model';
+import { RoundsService } from 'src/app/rounds/rounds.service';
 import { SeasonsService } from 'src/app/seasons/seasons.service';
+import { GolferTeamsComponent } from './golfer-teams/golfer-teams.component';
+import { FlightsService } from 'src/app/flights/flights.service';
+import { TournamentsService } from 'src/app/tournaments/tournaments.service';
+import { TournamentInfo } from 'src/app/shared/tournament.model';
+import { FlightInfo } from 'src/app/shared/flight.model';
+import { GolferRoundsComponent } from './golfer-rounds/golfer-rounds.component';
+import { GolferHandicapComponent } from './golfer-handicap/golfer-handicap.component';
+import { ScoringRecordRound } from 'src/app/shared/handicap.model';
+import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics.component';
 
 @Component({
   selector: 'app-golfer-home',
   templateUrl: './golfer-home.component.html',
-  styleUrls: ['./golfer-home.component.css'],
-  standalone: false,
+  styleUrl: './golfer-home.component.css',
+  imports: [
+    CommonModule,
+    FormsModule,
+    CardModule,
+    SelectModule,
+    TagModule,
+    ProgressSpinnerModule,
+    GolferInfoComponent,
+    GolferTeamsComponent,
+    GolferRoundsComponent,
+    GolferHandicapComponent,
+    GolferStatisticsComponent,
+  ],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
-  isLoadingGolferData = true;
-  isLoadingTeamData = false;
-  isLoadingRoundData = false;
-
-  yearControl = new UntypedFormControl('', Validators.required);
+  isLoading = true;
 
   golferId: number;
 
-  year: number;
-  yearOptions: number[];
-  seasonsSub: Subscription;
-
+  private golferSub: Subscription;
   golfer: GolferData;
-  golferSub: Subscription;
 
-  flightTeams: TeamGolferData[] = [];
-  tournamentTeams: TeamGolferData[] = [];
-  teamsSub: Subscription;
+  private golferHandicapScoringRecordSub: Subscription;
+  golferHandicapScoringRecord: ScoringRecordRound[];
 
+  private seasonsSub: Subscription;
+  seasons: Season[];
+  selectedSeason: Season;
+
+  private teamsSub: Subscription;
+  teams: TeamGolferData[] = [];
+
+  private roundsSub: Subscription;
   rounds: RoundData[] = [];
-  roundsSub: Subscription;
 
-  roundsOrganizedByTee: Record<number, RoundData[]>;
+  private statisticsSub: Subscription;
+  statistics: GolferStatistics;
 
-  showHandicapData = false;
+  private flightInfoSub: Subscription;
+  flightInfo: FlightInfo[] = [];
 
-  constructor(
-    private golfersService: GolfersService,
-    private roundsService: RoundsService,
-    private seasonsService: SeasonsService,
-    private route: ActivatedRoute,
-  ) {}
+  private tournamentInfoSub: Subscription;
+  tournamentInfo: TournamentInfo[] = [];
+
+  private golfersService = inject(GolfersService);
+  private roundsService = inject(RoundsService);
+  private seasonsService = inject(SeasonsService);
+  private flightsService = inject(FlightsService);
+  private tournamentsService = inject(TournamentsService);
+
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.golferId = Number(this.route.snapshot.queryParamMap.get('id'));
+    this.seasonsSub = this.seasonsService.getSeasons().subscribe((result) => {
+      this.seasons = [...result];
+      this.selectedSeason = result.filter((season) => season.is_active)[0];
+      this.getSelectedSeasonData();
+    });
 
-    this.golferSub = this.golfersService
-      .getGolferUpdateListener()
-      .subscribe((result: GolferData) => {
-        console.log(`[GolferHomeComponent] Received golfer data`);
-        this.golfer = result;
-        if (result.member_since) {
-          const oldestYear = result.member_since;
-          this.yearOptions = Array.from(
-            { length: this.year - oldestYear + 1 },
-            (v, k) => k + oldestYear,
-          );
-          this.yearOptions.sort((a, b) => b - a); // descending order
-        } else {
-          this.yearOptions = [this.year];
-        }
-        this.isLoadingGolferData = false;
+    this.golferSub = this.golfersService.getGolferUpdateListener().subscribe((result) => {
+      this.golfer = result;
+      this.updateIsLoading();
+    });
 
-        this.getSelectedSeasonData();
+    this.golferHandicapScoringRecordSub = this.golfersService
+      .getGolferHandicapScoringRecordUpdateListener()
+      .subscribe((result) => {
+        this.golferHandicapScoringRecord = [...result];
+        this.updateIsLoading();
       });
 
     this.roundsSub = this.roundsService.getRoundUpdateListener().subscribe((result) => {
@@ -79,75 +107,86 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       } else {
         this.rounds = [];
       }
-      this.organizeRoundsByTee();
-      this.isLoadingRoundData = false;
+      this.updateIsLoading();
     });
+
+    this.statisticsSub = this.golfersService
+      .getGolferStatisticsUpdateListener()
+      .subscribe((result) => {
+        console.log(
+          `[GolferHomeComponent] Received golfer statistics with ${result.num_rounds} rounds of data`,
+        );
+        this.statistics = result;
+        this.updateIsLoading();
+      });
 
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
       console.log(`[GolferHomeComponent] Received ${result.length} teams`);
-      this.flightTeams = result.filter((team) => team.flight_name);
-      this.tournamentTeams = result.filter((team) => team.tournament_name);
-      this.isLoadingTeamData = false;
+      this.teams = [...result];
+      this.updateIsLoading();
     });
 
-    this.seasonsSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-      this.year = result.year;
+    this.flightInfoSub = this.flightsService.getListUpdateListener().subscribe((result) => {
+      this.flightInfo = [...result];
+      this.updateIsLoading();
+    });
 
-      this.yearOptions = [this.year];
-      this.yearControl.setValue(this.year);
+    this.tournamentInfoSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
+      this.tournamentInfo = [...result];
+      this.updateIsLoading();
+    });
 
-      this.getGolferData();
+    this.route.queryParams.subscribe((params) => {
+      if (params && params.id) {
+        console.log('[GolferHomeComponent] Processing route with query parameter: id=' + params.id);
+        this.golferId = params.id;
+
+        this.golfersService.getGolfer(this.golferId);
+        this.getSelectedSeasonData();
+      }
     });
   }
 
   ngOnDestroy(): void {
+    this.seasonsSub.unsubscribe();
     this.golferSub.unsubscribe();
+    this.golferHandicapScoringRecordSub.unsubscribe();
     this.teamsSub.unsubscribe();
     this.roundsSub.unsubscribe();
-    this.seasonsSub.unsubscribe();
+    this.statisticsSub.unsubscribe();
+    this.flightInfoSub.unsubscribe();
+    this.tournamentInfoSub.unsubscribe();
   }
 
-  onSeasonSelected(year: number): void {
-    this.year = year;
+  onSeasonSelected(): void {
     this.getSelectedSeasonData();
   }
 
   private getSelectedSeasonData(): void {
-    console.log(`[GolferHomeComponent] Fetching golfer round data for year=${this.year}`);
+    if (this.golferId && this.selectedSeason) {
+      console.log(
+        `[GolferHomeComponent] Fetching golfer round data for year=${this.selectedSeason.year}`,
+      );
+      this.isLoading = true;
 
-    this.isLoadingTeamData = true;
-    this.golfersService.getGolferTeamData(this.golferId, this.year);
-
-    this.isLoadingRoundData = true;
-    this.roundsService.getRounds(this.golferId, this.year);
-  }
-
-  private getTeamData(): void {
-    // TODO: Implement this!
-  }
-
-  private getGolferData(): void {
-    const prevSunday = this.getActiveHandicapDeadline(new Date());
-    this.golfersService.getGolfer(this.golferId, prevSunday);
-  }
-
-  private getActiveHandicapDeadline(d: Date): Date {
-    const t = new Date(d);
-    t.setDate(t.getDate() - t.getDay()); // previous Sunday
-    return t;
-  }
-
-  toggleShowHandicapData(): void {
-    this.showHandicapData = !this.showHandicapData;
-  }
-
-  private organizeRoundsByTee(): void {
-    this.roundsOrganizedByTee = {};
-    for (const round of this.rounds) {
-      if (!this.roundsOrganizedByTee[round.tee_id]) {
-        this.roundsOrganizedByTee[round.tee_id] = [];
-      }
-      this.roundsOrganizedByTee[round.tee_id].push(round);
+      this.golfersService.getGolferTeamData(this.golferId, this.selectedSeason.year);
+      this.golfersService.getGolferHandicapScoringRecord(this.golferId, this.selectedSeason.year);
+      this.golfersService.getGolferStatistics(this.golferId, this.selectedSeason.year);
+      this.roundsService.getRounds(this.golferId, this.selectedSeason.year);
+      this.flightsService.getList(this.selectedSeason.year);
+      this.tournamentsService.getList(this.selectedSeason.year);
     }
+  }
+
+  private updateIsLoading(): void {
+    this.isLoading = !(
+      this.golfer &&
+      this.golferHandicapScoringRecord &&
+      this.rounds &&
+      this.statistics &&
+      this.teams &&
+      this.flightInfo &&
+      this.tournamentInfo
+    );
   }
 }

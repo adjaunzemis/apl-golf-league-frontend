@@ -1,6 +1,6 @@
 import { DivisionData, DivisionCreate } from './division.model';
 import { FreeAgentCadence } from './free-agent.model';
-import { GolferStatistics } from './golfer.model';
+import { TeamGolferStatistics } from './golfer.model';
 import { MatchSummary } from './match.model';
 import { TeamData } from './team.model';
 
@@ -116,7 +116,7 @@ export interface FlightStandings {
   teams: FlightStandingsTeam[];
 }
 
-export interface FlightGolferStatistics extends GolferStatistics {
+export interface FlightGolferStatistics extends TeamGolferStatistics {
   num_matches: number;
   points_won: number;
   avg_points_won: number;
