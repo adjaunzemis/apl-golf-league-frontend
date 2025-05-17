@@ -63,6 +63,16 @@ export class FlightTeamsComponent {
     return emailList.substring(0, emailList.length - 1);
   }
 
+  getTeamEmailList(team: FlightTeam): string {
+    let emailList = '';
+    for (const golfer of team.golfers) {
+      if (golfer.email) {
+        emailList += golfer.email + ';';
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
   getSubstitutesEmailList(): string {
     let emailList = '';
     for (const golfer of this.substitutes) {
