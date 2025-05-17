@@ -104,6 +104,21 @@ export class GolferHandicapComponent implements OnInit, OnChanges {
     return null;
   }
 
+  isPendingRound(roundId: number): boolean {
+    if (
+      !this.golfer ||
+      !this.golfer.handicap_index_data ||
+      !this.golfer.handicap_index_data.pending_rounds
+    ) {
+      return false;
+    }
+
+    const pendingRoundIds = this.golfer.handicap_index_data?.pending_rounds.map(
+      (round) => round.round_id,
+    );
+    return pendingRoundIds?.includes(roundId);
+  }
+
   updateChartData(): HandicapChartData | null {
     if (!this.golfer || !this.scoringRecord) {
       return null;

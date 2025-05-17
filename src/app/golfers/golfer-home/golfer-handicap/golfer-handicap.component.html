@@ -42,7 +42,11 @@
       </tr>
     </ng-template>
     <ng-template #body let-round let-expanded="expanded">
-      <tr [pSelectableRow]="round" (click)="dt.toggleRow(round, $event)">
+      <tr
+        [ngClass]="isPendingRound(round.round_id) ? 'italic' : ''"
+        [pSelectableRow]="round"
+        (click)="dt.toggleRow(round, $event)"
+      >
         <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
         <td class="text-gray-700">{{ round.course_name | initials }}</td>
         <td class="text-gray-700">{{ round.tee_name }}</td>

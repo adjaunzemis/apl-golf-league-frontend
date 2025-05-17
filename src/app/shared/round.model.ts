@@ -39,6 +39,7 @@ export interface RoundData {
 }
 
 export interface RoundSummary {
+  round_id: number;
   date_played: Date;
   round_type: string;
   golfer_name: string;
