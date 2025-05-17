@@ -59,9 +59,21 @@
         <span>{{ team.name }}</span>
       </p-accordion-header>
       <p-accordion-content>
-        <div class="flex flex-row justify-end w-full py-1" *ngIf="linkTeamHome">
-          <p-button icon="pi pi-home" class="text-sm" (onClick)="onTeamHomeSelected(team)" />
-          <a class="p-button contactButton" href="mailto:{{ getTeamEmailList(team) }}">
+        <div
+          class="flex flex-row justify-end w-full py-1"
+          *ngIf="linkTeamHome || showTeamEmailButton"
+        >
+          <p-button
+            icon="pi pi-home"
+            class="text-sm"
+            (onClick)="onTeamHomeSelected(team)"
+            *ngIf="linkTeamHome"
+          />
+          <a
+            class="p-button contactButton"
+            href="mailto:{{ getTeamEmailList(team) }}"
+            *ngIf="showTeamEmailButton"
+          >
             <span class="text-sm pi pi-send"></span>
           </a>
         </div>

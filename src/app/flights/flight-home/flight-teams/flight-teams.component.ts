@@ -20,7 +20,8 @@ export class FlightTeamsComponent {
   @Input() linkTeamHome = true;
   @Input() linkGolferHome = true;
   @Input() teamMultiSelect = true;
-  @Input() showFlightEmailButton = false;
+  @Input() showFlightEmailButton = true;
+  @Input() showTeamEmailButton = true;
 
   @Output() teamSelected = new EventEmitter<FlightTeam | null>();
 
