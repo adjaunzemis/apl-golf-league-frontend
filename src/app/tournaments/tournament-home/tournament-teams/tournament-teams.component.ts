@@ -17,7 +17,8 @@ export class TournamentTeamsComponent {
   @Input() teams: TournamentTeam[];
   @Input() linkGolferHome = true;
   @Input() teamMultiSelect = true;
-  @Input() showTournamentEmailButton = false;
+  @Input() showTournamentEmailButton = true;
+  @Input() showTeamEmailButton = true;
 
   @Output() teamSelected = new EventEmitter<TournamentTeam | null>();
 
@@ -49,6 +50,16 @@ export class TournamentTeamsComponent {
         if (golfer.email) {
           emailList += golfer.email + ';';
         }
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
+  getTeamEmailList(team: TournamentTeam): string {
+    let emailList = '';
+    for (const golfer of team.golfers) {
+      if (golfer.email) {
+        emailList += golfer.email + ';';
       }
     }
     return emailList.substring(0, emailList.length - 1);
