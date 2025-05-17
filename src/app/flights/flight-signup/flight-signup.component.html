@@ -97,9 +97,10 @@
       <app-flight-info [info]="selectedFlight" />
       <app-flight-teams
         [teams]="selectedFlightTeams"
+        [teamMultiSelect]="false"
         [linkTeamHome]="false"
         [linkGolferHome]="false"
-        [teamMultiSelect]="false"
+        [showFlightEmailButton]="false"
         (teamSelected)="handleTeamSelectionChange($event)"
         *ngIf="selectedFlightTeams"
       />

@@ -20,6 +20,11 @@
     <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
       <p-accordion-header class="font-semibold px-4 py-2">{{ team.name }}</p-accordion-header>
       <p-accordion-content>
+        <div class="flex flex-row justify-end w-full py-1" *ngIf="showTeamEmailButton">
+          <a class="p-button contactButton" href="mailto:{{ getTeamEmailList(team) }}">
+            <span class="text-sm pi pi-send"></span>
+          </a>
+        </div>
         <p-table
           [value]="team.golfers"
           stripedRows

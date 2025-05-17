@@ -20,7 +20,8 @@ export class FlightTeamsComponent {
   @Input() linkTeamHome = true;
   @Input() linkGolferHome = true;
   @Input() teamMultiSelect = true;
-  @Input() showFlightEmailButton = false;
+  @Input() showFlightEmailButton = true;
+  @Input() showTeamEmailButton = true;
 
   @Output() teamSelected = new EventEmitter<FlightTeam | null>();
 
@@ -58,6 +59,16 @@ export class FlightTeamsComponent {
         if (golfer.email) {
           emailList += golfer.email + ';';
         }
+      }
+    }
+    return emailList.substring(0, emailList.length - 1);
+  }
+
+  getTeamEmailList(team: FlightTeam): string {
+    let emailList = '';
+    for (const golfer of team.golfers) {
+      if (golfer.email) {
+        emailList += golfer.email + ';';
       }
     }
     return emailList.substring(0, emailList.length - 1);
