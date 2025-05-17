@@ -141,7 +141,8 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
         console.log('[GolferHomeComponent] Processing route with query parameter: id=' + params.id);
         this.golferId = params.id;
 
-        this.golfersService.getGolfer(this.golferId);
+        const prevSunday = this.getActiveHandicapDeadline(new Date());
+        this.golfersService.getGolfer(this.golferId, prevSunday);
         this.getSelectedSeasonData();
       }
     });
@@ -160,6 +161,12 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
 
   onSeasonSelected(): void {
     this.getSelectedSeasonData();
+  }
+
+  private getActiveHandicapDeadline(d: Date): Date {
+    const t = new Date(d);
+    t.setDate(t.getDate() - t.getDay()); // previous Sunday
+    return t;
   }
 
   private getSelectedSeasonData(): void {
