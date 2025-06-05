@@ -23,7 +23,10 @@ import { HoleData } from 'src/app/shared/hole.model';
   standalone: false,
 })
 export class CourseCreateComponent implements OnInit, OnDestroy {
-  isLoadingCourse = false;
+  isLoading = false;
+
+  courseName = "";
+  courseYear = 0;
 
   courseForm: UntypedFormGroup;
 
@@ -53,7 +56,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
         );
         this.course = courseData;
         this.initFormsFromCourse(this.course);
-        this.isLoadingCourse = false;
+        this.isLoading = false;
       });
 
     this.route.queryParams.subscribe((params) => {
@@ -62,7 +65,7 @@ export class CourseCreateComponent implements OnInit, OnDestroy {
           console.log(
             '[CourseCreateComponent] Processing route with query parameter: id=' + params.id,
           );
-          this.isLoadingCourse = true;
+          this.isLoading = true;
           this.coursesService.getCourse(params.id);
         }
       }

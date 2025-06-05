@@ -88,6 +88,7 @@ mat-form-field {
   width: 2rem;
   margin: 0px;
   text-align: center;
+  color: #000000;
 }
 
 .tee-holes-table tbody tr {
