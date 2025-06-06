@@ -62,6 +62,9 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
   scrambleControl: UntypedFormControl = new UntypedFormControl(this.data.scramble, [
     Validators.required,
   ]);
+  shambleControl: UntypedFormControl = new UntypedFormControl(this.data.shamble, [
+    Validators.required,
+  ]);
   individualControl: UntypedFormControl = new UntypedFormControl(this.data.individual, [
     Validators.required,
   ]);
@@ -257,6 +260,7 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
       shotgun: this.shotgunControl.value,
       strokeplay: this.strokeplayControl.value,
       scramble: this.scrambleControl.value,
+      shamble: this.shambleControl.value,
       ryder_cup: this.ryderCupControl.value,
       individual: this.individualControl.value,
       chachacha: this.chachachaControl.value,

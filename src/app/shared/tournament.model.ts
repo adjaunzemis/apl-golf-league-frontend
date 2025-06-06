@@ -22,6 +22,7 @@ export interface TournamentData {
   strokeplay: boolean;
   bestball: number;
   scramble: boolean;
+  shamble: boolean;
   ryder_cup: boolean;
   individual: boolean;
   chachacha: boolean;
@@ -71,6 +72,7 @@ export interface TournamentCreate {
   shotgun: boolean;
   strokeplay: boolean;
   scramble: boolean;
+  shamble: boolean;
   individual: boolean;
   ryder_cup: boolean;
   chachacha: boolean;
