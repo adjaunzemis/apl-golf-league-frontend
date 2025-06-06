@@ -36,6 +36,9 @@ export class TournamentInfoComponent {
     if (this.info.scramble) {
       modes.push('Scramble');
     }
+    if (this.info.shamble) {
+      modes.push('Shamble');
+    }
     if (this.info.bestball > 0) {
       if (this.info.bestball == 1) {
         modes.push('Best Ball');
