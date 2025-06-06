@@ -46,6 +46,7 @@ export interface TournamentInfo {
   strokeplay: boolean;
   bestball: number;
   scramble: boolean;
+  shamble: boolean;
   ryder_cup: boolean;
   individual: boolean;
   chachacha: boolean;
