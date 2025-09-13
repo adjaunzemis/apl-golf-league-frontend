@@ -33,7 +33,7 @@ jobs:
           echo "Updated version to $NEW_VERSION in $FILE"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
