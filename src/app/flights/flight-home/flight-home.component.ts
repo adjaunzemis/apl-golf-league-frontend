@@ -20,6 +20,7 @@ import {
 } from 'src/app/shared/flight.model';
 import { MatchSummary } from 'src/app/shared/match.model';
 import { FlightStatisticsComponent } from './flight-statistics/flight-statistics.component';
+import { PlayoffBracketComponent } from '../playoff-bracket/playoff-bracket.component';
 
 @Component({
   selector: 'app-flight-home',
@@ -34,6 +35,7 @@ import { FlightStatisticsComponent } from './flight-statistics/flight-statistics
     FlightStatisticsComponent,
     FlightTeamsComponent,
     FlightScheduleComponent,
+    PlayoffBracketComponent,
   ],
 })
 export class FlightHomeComponent implements OnInit, OnDestroy {

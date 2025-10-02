@@ -7,7 +7,8 @@
     [standings]="standings"
     *ngIf="standings"
   />
-  <div class="hidden xl:block xl:col-span-4 bg-transparent" *ngIf="!standings"></div>
+  <app-playoff-bracket class="col-span-12 xl:col-span-4" *ngIf="!standings" />
+  <!-- <div class="hidden xl:block xl:col-span-4 bg-transparent" *ngIf="!standings"></div> -->
   <app-flight-divisions
     class="hidden xl:block xl:col-span-3"
     [divisions]="divisions"
