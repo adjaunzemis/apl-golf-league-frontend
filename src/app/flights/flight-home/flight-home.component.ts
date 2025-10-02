@@ -57,17 +57,15 @@ export class FlightHomeComponent implements OnInit, OnDestroy {
   private divisionsSub: Subscription;
 
   ngOnInit(): void {
-    this.infoSub = this.flightsService
-      .getInfoUpdateListener()
-      .subscribe((result) => {
-        this.info = result;
-        if (this.info.name.toLowerCase().includes("playoff")) {
-          // TODO: Add playoff bracket component
-        } else {
-          this.standingsSub = this.flightsService
-            .getStandingsUpdateListener()
-            .subscribe((standingsResult) => (this.standings = standingsResult));
-        }
+    this.infoSub = this.flightsService.getInfoUpdateListener().subscribe((result) => {
+      this.info = result;
+      if (this.info.name.toLowerCase().includes('playoff')) {
+        // TODO: Add playoff bracket component
+      } else {
+        this.standingsSub = this.flightsService
+          .getStandingsUpdateListener()
+          .subscribe((standingsResult) => (this.standings = standingsResult));
+      }
     });
     this.divisionsSub = this.flightsService
       .getDivisionsUpdateListener()
