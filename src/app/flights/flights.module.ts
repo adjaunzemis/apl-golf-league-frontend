@@ -10,17 +10,11 @@ import { FlightMatchScorecardComponent } from './flight-match-create/flight-matc
 import { DivisionsModule } from '../divisions/divisions.module';
 import { PaymentsModule } from '../payments/payments.module';
 import { ScorecardModule } from '../shared/scorecard/scorecard.module';
-import { PlayoffBracketComponent } from './playoff-bracket/playoff-bracket.component';
 import { FlightCreateComponent } from './flight-create/flight-create.component';
 import { PrimeNGModule } from '../primeng.module';
 
 @NgModule({
-  declarations: [
-    FlightMatchScorecardComponent,
-    FlightMatchCreateComponent,
-    PlayoffBracketComponent,
-    FlightCreateComponent,
-  ],
+  declarations: [FlightMatchScorecardComponent, FlightMatchCreateComponent, FlightCreateComponent],
   imports: [
     CommonModule,
     RouterModule,
