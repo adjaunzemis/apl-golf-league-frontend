@@ -1,4 +1,6 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #2563eb; /* Tailwind Blue-600 */
@@ -48,7 +50,7 @@ body {
 }
 
 .p-carousel-indicator-button {
-  @apply bg-gray-200 rounded-4xl shadow-none;
+  @apply bg-gray-200 rounded-3xl shadow-none;
 }
 
 .p-carousel-indicator-button:hover {
