@@ -44,3 +44,7 @@ body {
 .p-paginator-page-selected {
   @apply text-blue-600 font-semibold;
 }
+
+.p-menubar-item-link {
+  @apply h-12 px-2;
+}
