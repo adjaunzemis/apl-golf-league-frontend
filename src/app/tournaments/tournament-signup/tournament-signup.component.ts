@@ -152,14 +152,50 @@ export class TournamentSignupComponent implements OnInit, OnDestroy {
     return this.currentDate >= info.signup_start_date && this.currentDate <= info.signup_stop_date;
   }
 
-  getDaysUntilSignupStart(info: TournamentInfo): number {
+  private getDaysUntilSignupStart(info: TournamentInfo): number {
     const timeDiff = info.signup_start_date.getTime() - this.currentDate.getTime();
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
 
-  getDaysUntilSignupStop(info: TournamentInfo): number {
+  private getDaysUntilSignupStop(info: TournamentInfo): number {
     const timeDiff = info.signup_stop_date.getTime() - this.currentDate.getTime();
     return Math.ceil(timeDiff / (1000 * 3600 * 24));
+  }
+
+  getSignupStatusText(flightInfo: TournamentInfo) {
+    const daysToStart = this.getDaysUntilSignupStart(flightInfo);
+    const daysToStop = this.getDaysUntilSignupStop(flightInfo);
+    if (daysToStart > 1) {
+      return `Opens in ${daysToStart} days`;
+    }
+    if (daysToStart == 1) {
+      return 'Opens tomorrow!';
+    }
+    if (daysToStop > 2) {
+      return `Open`;
+    }
+    if (daysToStop == 2) {
+      return `Closes tomorrow!`;
+    }
+    if (daysToStop == 1) {
+      return `Closes today!`;
+    }
+    return 'Closed';
+  }
+
+  getSignupStatusColor(flightInfo: TournamentInfo) {
+    const daysToStart = this.getDaysUntilSignupStart(flightInfo);
+    const daysToStop = this.getDaysUntilSignupStop(flightInfo);
+    if (daysToStart > 0) {
+      return 'info';
+    }
+    if (daysToStop > 2) {
+      return 'success';
+    }
+    if (daysToStop > 0) {
+      return 'warn';
+    }
+    return 'danger';
   }
 
   selectTournament(info: TournamentInfo): void {
