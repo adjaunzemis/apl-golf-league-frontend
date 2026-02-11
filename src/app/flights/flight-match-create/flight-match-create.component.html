@@ -77,7 +77,7 @@
       />
 
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 ml-2 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55 ml-2"
         [options]="flightOptions"
         [(ngModel)]="selectedFlightInfo"
         (onChange)="onSelectedFlightChanged($event)"
@@ -96,7 +96,7 @@
       </p-select>
 
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-70 ml-2 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-70 ml-2"
         [options]="courseOptions"
         [(ngModel)]="selectedCourseInfo"
         (onChange)="onSelectedCourseChanged($event)"
@@ -115,7 +115,7 @@
       </p-select>
 
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-25 ml-2 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-25 ml-2"
         [options]="selectedCourse.tracks"
         [(ngModel)]="selectedTrack"
         (onChange)="onSelectedTrackChanged($event)"
@@ -138,14 +138,14 @@
 
     <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-45 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-45"
         [options]="weekOptions"
         (onChange)="onSelectedWeekChanged($event)"
         placeholder="Week"
       />
 
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-100 ml-2 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-100 ml-2"
         [(ngModel)]="selectedMatch"
         [options]="selectedWeekMatches"
         (onChange)="onMatchSelected()"
@@ -183,7 +183,7 @@
 
     <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4" *ngIf="selectedFlight">
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55"
         [(ngModel)]="selectedTeam1"
         [options]="selectedFlight.teams"
         placeholder="Team 1"
@@ -203,7 +203,7 @@
 
       <div class="flex flex-col gap-2">
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam1Golfer1"
           [options]="selectedTeam1.golfers"
           placeholder="Team 1 Golfer 1"
@@ -229,7 +229,7 @@
         </p-select>
 
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam1Golfer1Tee"
           [options]="selectedTrack.tees"
           placeholder="Team 1 Golfer 1 Tees"
@@ -256,7 +256,7 @@
 
       <div class="flex flex-col gap-2">
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam1Golfer2"
           [options]="selectedTeam1.golfers"
           placeholder="Team 1 Golfer 2"
@@ -282,7 +282,7 @@
         </p-select>
 
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam1Golfer2Tee"
           [options]="selectedTrack.tees"
           placeholder="Team 1 Golfer 2 Tees"
@@ -312,7 +312,7 @@
 
     <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4" *ngIf="selectedFlight">
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-55 pl-2 py-1"
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55"
         [(ngModel)]="selectedTeam2"
         [options]="selectedFlight.teams"
         (onChange)="onSelectedTeamChanged($event, 2)"
@@ -332,7 +332,7 @@
 
       <div class="flex flex-col gap-2">
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam2Golfer1"
           [options]="selectedTeam2.golfers"
           placeholder="Team 2 Golfer 1"
@@ -358,7 +358,7 @@
         </p-select>
 
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam2Golfer1Tee"
           [options]="selectedTrack.tees"
           placeholder="Team 2 Golfer 1 Tees"
@@ -387,7 +387,7 @@
 
       <div class="flex flex-col gap-2">
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam2Golfer2"
           [options]="selectedTeam2.golfers"
           placeholder="Team 2 Golfer 2"
@@ -413,7 +413,7 @@
         </p-select>
 
         <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left h-8 w-50 ml-2 pl-2 py-1"
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
           [(ngModel)]="selectedTeam2Golfer2Tee"
           [options]="selectedTrack.tees"
           placeholder="Team 2 Golfer 2 Tees"
