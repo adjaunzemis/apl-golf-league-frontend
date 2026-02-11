@@ -1,17 +1,4 @@
 p-image {
   cursor: pointer;
   width: 60px;
-  @apply mx-2 my-1;
-}
-
-.p-menubar-item-link {
-  @apply py-2.5;
-}
-
-.p-menubar-item-link span:first-of-type {
-  @apply ml-2;
-}
-
-.p-menubar-item-link span:last-of-type {
-  @apply mr-2;
 }

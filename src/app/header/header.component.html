@@ -1,63 +1,61 @@
-<p-card>
-  <p-menubar [model]="items">
-    <ng-template #start>
-      <p-image src="assets/apl_golf_logo.png" alt="APL Golf League" routerLink="/" />
+<p-menubar [model]="items">
+  <ng-template #start>
+    <p-image src="assets/apl_golf_logo.png" alt="APL Golf League" routerLink="/" />
+  </ng-template>
+
+  <ng-template #item let-item>
+    <ng-container *ngIf="item.visible && item.route; else urlRef">
+      <a [routerLink]="item.route" class="p-menubar-item-link">
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
+      </a>
+    </ng-container>
+    <ng-template #urlRef>
+      <a
+        *ngIf="item.visible && item.url; else callback"
+        [href]="item.url"
+        class="p-menubar-item-link"
+      >
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
+      </a>
     </ng-template>
-
-    <ng-template #item let-item>
-      <ng-container *ngIf="item.visible && item.route; else urlRef">
-        <a [routerLink]="item.route" class="p-menubar-item-link">
-          <span [class]="item.icon"></span>
-          <span>{{ item.label }}</span>
-        </a>
-      </ng-container>
-      <ng-template #urlRef>
-        <a
-          *ngIf="item.visible && item.url; else callback"
-          [href]="item.url"
-          class="p-menubar-item-link"
-        >
-          <span [class]="item.icon"></span>
-          <span>{{ item.label }}</span>
-        </a>
-      </ng-template>
-      <ng-template #callback>
-        <button
-          *ngIf="item.visible && item.callback; else noLink"
-          (click)="item.callback()"
-          class="p-menubar-item-link"
-        >
-          <span [class]="item.icon"></span>
-          <span>{{ item.label }}</span>
-        </button>
-      </ng-template>
-      <ng-template #noLink>
-        <div *ngIf="item.visible" class="p-menubar-item-link">
-          <span [class]="item.icon"></span>
-          <span>{{ item.label }}</span>
-          <span class="pi pi-fw pi-angle-down"></span>
-        </div>
-      </ng-template>
+    <ng-template #callback>
+      <button
+        *ngIf="item.visible && item.callback; else noLink"
+        (click)="item.callback()"
+        class="p-menubar-item-link"
+      >
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
+      </button>
     </ng-template>
-
-    <ng-template *ngIf="!maintenance" #end>
-      <div class="flex flex-row items-center ml-4">
-        <ng-container *ngIf="isAuthenticated; else loginRef">
-          <!-- TODO: Add profile page here? Routerlink: /auth/user -->
-
-          <button (click)="onLogout()" class="p-menubar-item-link">
-            <span class="pi pi-sign-out"></span>
-            <span>Logout</span>
-          </button>
-        </ng-container>
-
-        <ng-template #loginRef>
-          <a routerLink="/auth/login" class="p-menubar-item-link">
-            <span class="pi pi-sign-in"></span>
-            <span>Login</span>
-          </a>
-        </ng-template>
+    <ng-template #noLink>
+      <div *ngIf="item.visible" class="p-menubar-item-link">
+        <span [class]="item.icon"></span>
+        <span>{{ item.label }}</span>
+        <span class="pi pi-fw pi-angle-down"></span>
       </div>
     </ng-template>
-  </p-menubar>
-</p-card>
+  </ng-template>
+
+  <ng-template *ngIf="!maintenance" #end>
+    <div class="flex flex-row items-center ml-4">
+      <ng-container *ngIf="isAuthenticated; else loginRef">
+        <!-- TODO: Add profile page here? Routerlink: /auth/user -->
+
+        <button (click)="onLogout()" class="p-menubar-item-link">
+          <span class="pi pi-sign-out"></span>
+          <span>Logout</span>
+        </button>
+      </ng-container>
+
+      <ng-template #loginRef>
+        <a routerLink="/auth/login" class="p-menubar-item-link">
+          <span class="pi pi-sign-in"></span>
+          <span>Login</span>
+        </a>
+      </ng-template>
+    </div>
+  </ng-template>
+</p-menubar>

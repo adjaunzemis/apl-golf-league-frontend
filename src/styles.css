@@ -37,10 +37,6 @@ body {
   @apply bg-transparent ring-0 shadow-none p-0 m-0;
 }
 
-.p-menubar {
-  /* @apply bg-gray-50 ring-1 ring-gray-200 text-black; */
-}
-
 .p-inputtext {
   @apply bg-gray-50 ring-1 ring-gray-200 rounded-md px-2 py-1;
 }
@@ -130,12 +126,6 @@ a.link-text {
     height: 100%;
     text-align: center;
   }
-}
-
-/* Angular Material styling */
-mat-spinner {
-  margin: auto;
-  margin-top: 36px;
 }
 
 /* Custom styles */

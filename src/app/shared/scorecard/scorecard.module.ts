@@ -7,7 +7,6 @@ import { ScorecardHoleLineComponent } from './scorecard-hole-line/scorecard-hole
 import { ScorecardTeeInfoComponent } from './scorecard-tee-info/scorecard-tee-info.component';
 import { ScorecardScoreLineComponent } from './scorecard-score-line/scorecard-score-line.component';
 import { ScorecardTitleLineComponent } from './scorecard-title-line/scorecard-title-line.component';
-import { AngularMaterialModule } from 'src/app/angular-material.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +15,7 @@ import { AngularMaterialModule } from 'src/app/angular-material.module';
     ScorecardScoreLineComponent,
     ScorecardTitleLineComponent,
   ],
-  imports: [CommonModule, FormsModule, RouterModule, AngularMaterialModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   exports: [
     ScorecardHoleLineComponent,
     ScorecardTeeInfoComponent,

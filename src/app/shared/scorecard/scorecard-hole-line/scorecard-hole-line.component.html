@@ -2,7 +2,7 @@
   <thead>
     <tr class="hole">
       <td class="label">
-        <mat-select
+        <!-- <mat-select
           class="score-mode-selector"
           [(ngModel)]="selectedScoreMode"
           (selectionChange)="onChangeScoreMode()"
@@ -11,7 +11,7 @@
           <mat-option value="gross">Gross</mat-option>
           <mat-option value="adjusted gross">Adj. Gross</mat-option>
           <mat-option value="net">Net</mat-option>
-        </mat-select>
+        </mat-select> -->
       </td>
       <td class="hole" *ngFor="let hole of holes">{{ hole.number }}</td>
       <td class="total">TOT</td>
