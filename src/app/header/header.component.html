@@ -41,7 +41,12 @@
   </ng-template>
 
   <ng-template *ngIf="!maintenance" #end>
-    <div class="flex flex-row items-center ml-4">
+    <div class="flex flex-row items-center mx-4">
+      <p-button class="pr-4" (click)="themeService.toggleTheme()">
+        <span class="pi pi-moon" *ngIf="themeService.isDark()"></span>
+        <span class="pi pi-sun" *ngIf="!themeService.isDark()"></span>
+      </p-button>
+      
       <ng-container *ngIf="isAuthenticated; else loginRef">
         <!-- TODO: Add profile page here? Routerlink: /auth/user -->
 

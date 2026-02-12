@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { SeasonsService } from '../seasons/seasons.service';
 import { Season } from '../shared/season.model';
 import { TeamCreateComponent } from '../teams/team-create/team-create.component';
+import { ThemeService } from '../theme/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   items: MenuItem[] | undefined;
 
+  public themeService = inject(ThemeService);
   private authService = inject(AuthService);
   private notificationService = inject(NotificationService);
   private flightsService = inject(FlightsService);
