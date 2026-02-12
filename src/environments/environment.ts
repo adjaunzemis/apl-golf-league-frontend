@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'https://localhost/',
-  apiUrl: 'https://aplgolfapi.staging.jaunzenet.com/',
+  apiUrl: 'https://localhost/',
   title: 'APL Golf League - DEVELOPMENT',
   version: 'DEVELOPMENT',
   maintenance: false,
