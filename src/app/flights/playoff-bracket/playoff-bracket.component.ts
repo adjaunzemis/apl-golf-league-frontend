@@ -32,11 +32,11 @@ export interface Bracket {
   template: `
     <div class="overflow-x-auto p-4">
       <div class="grid gap-8" [ngClass]="'grid-cols-' + bracket.rounds.length">
-        <ng-container *ngFor="let round of bracket.rounds; let r = index">
+        @for (round of bracket.rounds; track round; let r = $index) {
           <div class="flex flex-col gap-6 items-center">
             <h3 class="text-lg font-semibold text-gray-700">Round {{ r + 1 }}</h3>
 
-            <ng-container *ngFor="let match of round.matches">
+            @for (match of round.matches; track match) {
               <p-card class="w-48 relative group">
                 <div class="flex flex-col gap-2">
                   <div
@@ -60,9 +60,9 @@ export interface Bracket {
                   <button class="px-2 py-1 bg-white rounded shadow">Details</button>
                 </div>
               </p-card>
-            </ng-container>
+            }
           </div>
-        </ng-container>
+        }
       </div>
     </div>
   `,
