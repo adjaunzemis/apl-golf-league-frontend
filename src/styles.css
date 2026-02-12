@@ -23,7 +23,7 @@ body {
   @apply dark:bg-zinc-800 dark:ring-zinc-600 dark:text-white;
   @apply bg-gray-50 dark:bg-zinc-800;
   @apply ring-gray-200 dark:ring-zinc-700;
-  @apply text-gray-800 dark:text-white; 
+  @apply text-gray-800 dark:text-white;
 }
 
 .p-button:hover:not(:disabled),
@@ -42,7 +42,7 @@ body {
 .p-inputtext {
   @apply ring-1 rounded-md px-2 py-1;
   @apply bg-gray-50 dark:bg-zinc-800;
-  @apply ring-gray-200 dark:ring-zinc-700
+  @apply ring-gray-200 dark:ring-zinc-700;
 }
 
 .p-carousel-indicator-button {

@@ -35,12 +35,7 @@ import { AnnouncementsDashboardComponent } from './announcements-dashboard/annou
 import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    HandicapsComponent,
-  ],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HandicapsComponent],
   bootstrap: [AppComponent],
   imports: [
     CommonModule,

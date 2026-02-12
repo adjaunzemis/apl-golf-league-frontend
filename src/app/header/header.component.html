@@ -22,10 +22,7 @@
     </ng-template>
     <ng-template #callback>
       <div *ngIf="item.visible" class="p-menubar-item-link">
-        <button
-          *ngIf="item.visible && item.callback; else noLink"
-          (click)="item.callback()"
-        >
+        <button *ngIf="item.visible && item.callback; else noLink" (click)="item.callback()">
           <span [class]="item.icon"></span>
           <span class="pl-2">{{ item.label }}</span>
         </button>
@@ -46,7 +43,7 @@
         <span class="pi pi-moon" *ngIf="themeService.isDark()"></span>
         <span class="pi pi-sun" *ngIf="!themeService.isDark()"></span>
       </p-button>
-      
+
       <ng-container *ngIf="isAuthenticated; else loginRef">
         <!-- TODO: Add profile page here? Routerlink: /auth/user -->
 
