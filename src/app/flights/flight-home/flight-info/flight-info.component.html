@@ -7,7 +7,7 @@
             class="block xl:block mx-auto rounded-border"
             [src]="'assets/' + info.logo_url"
             [alt]="info.name"
-            />
+          />
         </div>
         <div class="flex flex-row flex-2 justify-between items-center ml-4">
           <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
@@ -39,13 +39,13 @@
       @if (info.tee_times) {
         <div
           class="flex flex-row flex-1 justify-center items-center text-sm font-medium text-gray-700 pt-4 w-full"
-          >
+        >
           <span>Tee Times: {{ info.tee_times }}</span>
         </div>
       }
       <div
         class="flex flex-row flex-1 items-center gap-6 text-sm font-medium text-gray-700 pt-4 w-full"
-        >
+      >
         <div class="flex flex-col flex-2 justify-between items-center pl-4">
           <span>Sign-Ups: {{ info.signup_start_date | date: 'longDate' : 'ET' }}</span>
           <span>Start Date: {{ info.start_date | date: 'longDate' : 'ET' }}</span>
@@ -64,7 +64,7 @@
                 <a
                   class="p-button contactButton"
                   href="mailto:{{ info.secretary_email | lowercase }}"
-                  >
+                >
                   <span class="text-sm pi pi-send"></span>
                   <span>{{ info.secretary }}</span>
                 </a>

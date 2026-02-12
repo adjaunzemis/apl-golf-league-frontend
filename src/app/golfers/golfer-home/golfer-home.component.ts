@@ -39,8 +39,8 @@ import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics
     GolferTeamsComponent,
     GolferRoundsComponent,
     GolferHandicapComponent,
-    GolferStatisticsComponent
-],
+    GolferStatisticsComponent,
+  ],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoading = true;

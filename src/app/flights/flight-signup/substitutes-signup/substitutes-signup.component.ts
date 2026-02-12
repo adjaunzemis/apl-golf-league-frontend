@@ -36,8 +36,8 @@ import { NotificationService } from 'src/app/notifications/notification.service'
     SelectModule,
     ButtonModule,
     TableModule,
-    AccordionModule
-],
+    AccordionModule,
+  ],
 })
 export class SubstitutesSignupComponent implements OnInit, OnChanges {
   @Output() refreshTeamsForFlight = new EventEmitter<number>();

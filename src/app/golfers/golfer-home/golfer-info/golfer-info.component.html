@@ -9,24 +9,21 @@
       <!-- <div class="font-medium text-gray-700 text-sm" *ngIf="golfer.member_since">
       Member Since: {{ golfer.member_since }}
     </div> -->
-  </div>
+    </div>
 
-  <div class="flex flex-col justify-stretch items-center w-full pt-6">
-    <div class="text-sm font-medium text-gray-700">
-      @if (golfer.email !== null) {
-        <div>
-          @if (golfer.email) {
-            <a
-              class="p-button contactButton"
-              href="mailto:{{ golfer.email | lowercase }}"
-              >
-              <span class="text-sm pi pi-send"></span>
-              <span class="pl-2">Contact</span>
-            </a>
-          }
-        </div>
-      }
+    <div class="flex flex-col justify-stretch items-center w-full pt-6">
+      <div class="text-sm font-medium text-gray-700">
+        @if (golfer.email !== null) {
+          <div>
+            @if (golfer.email) {
+              <a class="p-button contactButton" href="mailto:{{ golfer.email | lowercase }}">
+                <span class="text-sm pi pi-send"></span>
+                <span class="pl-2">Contact</span>
+              </a>
+            }
+          </div>
+        }
+      </div>
     </div>
   </div>
-</div>
 </p-card>

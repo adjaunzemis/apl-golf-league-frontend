@@ -1,17 +1,11 @@
 <div class="content">
   @if (
-    (!activeRounds || activeRounds.length === 0) &&
-    (!pendingRounds || pendingRounds.length === 0)) {
-    <p
-      class="italic"
-      >
-      No scoring record data!
-    </p>
+    (!activeRounds || activeRounds.length === 0) && (!pendingRounds || pendingRounds.length === 0)
+  ) {
+    <p class="italic">No scoring record data!</p>
   } @else {
     @if (pendingRounds && pendingRounds.length > 0) {
-      <p class="italic">
-        *Pending rounds do not contribute to active handicap index
-      </p>
+      <p class="italic">*Pending rounds do not contribute to active handicap index</p>
     }
     <div class="card scoring-record-card">
       <table>
@@ -65,5 +59,4 @@
       </table>
     </div>
   }
-
 </div>

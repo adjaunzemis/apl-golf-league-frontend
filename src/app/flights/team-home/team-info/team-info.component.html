@@ -7,7 +7,7 @@
             class="block xl:block mx-auto rounded-border"
             [src]="'assets/' + flightInfo.logo_url"
             [alt]="flightInfo.name"
-            />
+          />
         </a>
       </div>
 
@@ -44,10 +44,7 @@
           <div>
             <span>Captain: </span>
             @if (getCaptainEmail()) {
-              <a
-                class="p-button contactButton"
-                href="mailto:{{ getCaptainEmail() | lowercase }}"
-                >
+              <a class="p-button contactButton" href="mailto:{{ getCaptainEmail() | lowercase }}">
                 <span class="text-sm pi pi-send"></span>
                 <span>{{ getCaptainName() }}</span>
               </a>

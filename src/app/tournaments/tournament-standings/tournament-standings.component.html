@@ -9,7 +9,7 @@
       [ngClass]="selectedScoreOption === scoreOption ? 'selected' : ''"
       (click)="toggleScoreOption(scoreOption)"
       (keydown)="toggleScoreOption(scoreOption)"
-      >
+    >
       {{ scoreOption }}
     </div>
   }
@@ -24,19 +24,15 @@
           <th>Gross</th>
           @if (
             selectedScoreOption === 'Individual Gross' || selectedScoreOption === 'Individual Net'
-            ) {
-            <th
-              >
-              Hcp
-            </th>
+          ) {
+            <th>Hcp</th>
           }
           <th>Net</th>
         </tr>
         @if (
           selectedScoreOption === 'Individual Gross' || selectedScoreOption === 'Individual Net'
-          ) {
-          <tbody
-            >
+        ) {
+          <tbody>
             @for (data of individualStandingsData; track data) {
               <tr>
                 <td>{{ data.position }}</td>

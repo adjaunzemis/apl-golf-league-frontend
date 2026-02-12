@@ -3,10 +3,7 @@
     <span class="text-2xl font-semibold">Roster</span>
     <div class="mx-auto"></div>
     @if (showTeamEmailButton) {
-      <a
-        class="p-button hidden md:block"
-        href="mailto:{{ getTeamEmailList() }}"
-        >
+      <a class="p-button hidden md:block" href="mailto:{{ getTeamEmailList() }}">
         <span class="text-sm pi pi-send pr-2"></span>
         <span>Team</span>
       </a>
@@ -20,7 +17,7 @@
     dataKey="golfer_id"
     [(selection)]="selectedGolfer"
     (onRowSelect)="onGolferSelected()"
-    >
+  >
     <ng-template #header>
       <tr>
         <th class="w-50">Golfer</th>

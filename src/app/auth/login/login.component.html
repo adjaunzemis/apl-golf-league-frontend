@@ -6,10 +6,7 @@
     </div>
 
     @if (!isLoggedIn()) {
-      <div
-        class="flex flex-col flex-2 w-full items-center p-4"
-        [formGroup]="loginFormGroup"
-        >
+      <div class="flex flex-col flex-2 w-full items-center p-4" [formGroup]="loginFormGroup">
         <p-floatlabel variant="on">
           <input
             pInputText
@@ -17,7 +14,7 @@
             formControlName="usernameControl"
             autocomplete="off"
             (keydown.enter)="onLogin()"
-            />
+          />
           <label for="username">Username</label>
         </p-floatlabel>
         <div class="py-4">
@@ -29,7 +26,7 @@
               formControlName="passwordControl"
               autocomplete="off"
               (keydown.enter)="onLogin()"
-              />
+            />
             <label for="password">Password</label>
           </p-floatlabel>
         </div>
@@ -39,12 +36,11 @@
       <div class="flex flex-col flex-2 w-full items-center p-4">
         <span class="font-semibold"
           >Currently logged in as '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</span
-          >
-          <p-button class="font-semibold pt-4" [disabled]="!isLoggedIn()" (click)="onLogout()">
-            Logout
-          </p-button>
-        </div>
-      }
-
-    </p-card>
-  </div>
+        >
+        <p-button class="font-semibold pt-4" [disabled]="!isLoggedIn()" (click)="onLogout()">
+          Logout
+        </p-button>
+      </div>
+    }
+  </p-card>
+</div>

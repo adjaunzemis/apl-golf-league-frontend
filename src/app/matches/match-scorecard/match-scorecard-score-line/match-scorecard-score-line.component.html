@@ -5,11 +5,11 @@
       @for (score of holeWinningTeamIds; track score; let holeIdx = $index) {
         <td class="hole">
           <div
-          [ngClass]="{
-            'arrow-up': holeWinningTeamIds[holeIdx] === topTeamId,
-            'arrow-down': holeWinningTeamIds[holeIdx] === bottomTeamId,
-            dash: holeWinningTeamIds[holeIdx] === -1,
-          }"
+            [ngClass]="{
+              'arrow-up': holeWinningTeamIds[holeIdx] === topTeamId,
+              'arrow-down': holeWinningTeamIds[holeIdx] === bottomTeamId,
+              dash: holeWinningTeamIds[holeIdx] === -1,
+            }"
           ></div>
         </td>
       }

@@ -17,7 +17,7 @@
             (click)="selectTee(tee)"
             (keydown)="selectTee(tee)"
             [ngClass]="selectedTee === tee ? 'selected' : ''"
-            >
+          >
             <span>{{ tee.name }} - {{ tee.gender[0] }}</span>
             <span>{{ tee.rating }} / {{ tee.slope }}</span>
           </div>

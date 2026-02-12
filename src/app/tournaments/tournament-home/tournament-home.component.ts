@@ -31,8 +31,8 @@ import { RoundData } from 'src/app/shared/round.model';
     TournamentStandingsComponent,
     TournamentStatisticsComponent,
     TournamentTeamsComponent,
-    TournamentScorecardComponent
-],
+    TournamentScorecardComponent,
+  ],
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   info: TournamentInfo | undefined;

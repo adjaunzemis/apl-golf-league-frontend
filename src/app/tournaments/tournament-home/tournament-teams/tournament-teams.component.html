@@ -3,10 +3,7 @@
     <span class="text-2xl font-semibold">Teams</span>
     <div class="mx-auto"></div>
     @if (showTournamentEmailButton) {
-      <a
-        class="p-button hidden md:block"
-        href="mailto:{{ getTournamentEmailList() }}"
-        >
+      <a class="p-button hidden md:block" href="mailto:{{ getTournamentEmailList() }}">
         <span class="text-sm pi pi-send pr-2"></span>
         <span>Participants</span>
       </a>
@@ -17,7 +14,7 @@
     [multiple]="teamMultiSelect"
     (onOpen)="onTeamSelected($event)"
     (onClose)="onTeamDeselected()"
-    >
+  >
     @for (team of teams; track team; let idx = $index) {
       <p-accordion-panel [value]="idx">
         <p-accordion-header class="font-semibold px-4 py-2">{{ team.name }}</p-accordion-header>
@@ -36,7 +33,7 @@
             dataKey="golfer_id"
             [(selection)]="selectedGolfer"
             (onRowSelect)="onGolferSelected()"
-            >
+          >
             <ng-template #header>
               <tr>
                 <th>Golfer</th>

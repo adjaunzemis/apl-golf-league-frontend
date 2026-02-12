@@ -11,10 +11,7 @@
       </a>
     } @else {
       @if (item.visible && item.url) {
-        <a
-          [href]="item.url"
-          class="p-menubar-item-link"
-          >
+        <a [href]="item.url" class="p-menubar-item-link">
           <span [class]="item.icon"></span>
           <span class="pl-2">{{ item.label }}</span>
         </a>

@@ -32,8 +32,8 @@ import { FlightStatisticsComponent } from './flight-statistics/flight-statistics
     FlightStandingsComponent,
     FlightStatisticsComponent,
     FlightTeamsComponent,
-    FlightScheduleComponent
-],
+    FlightScheduleComponent,
+  ],
 })
 export class FlightHomeComponent implements OnInit, OnDestroy {
   info: FlightInfo | undefined;

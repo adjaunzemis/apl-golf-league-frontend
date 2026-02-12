@@ -7,7 +7,7 @@
             class="block xl:block mx-auto rounded-border"
             [src]="'assets/' + info.logo_url"
             [alt]="info.name"
-            />
+          />
         </div>
         <div class="flex flex-row flex-2 justify-between items-center ml-4">
           <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
@@ -38,52 +38,52 @@
       </div>
       <div
         class="flex flex-col flex-1 justify-center items-center text-sm font-medium text-gray-700 pt-4 w-full"
-        >
+      >
         @if (info.date) {
           <span
             >Date: {{ info.date | date: 'longDate' : 'ET' }},
             {{ info.date | date: 'shortTime' : 'ET' }}</span
-            >
-          } @else {
-            <span>Date: TBD</span>
-          }
-          <span
-            >Fees: ${{ info.members_entry_fee }} (Members), ${{
+          >
+        } @else {
+          <span>Date: TBD</span>
+        }
+        <span
+          >Fees: ${{ info.members_entry_fee }} (Members), ${{
             info.non_members_entry_fee
-            }}
-            (Non-Members)</span
-            >
-          </div>
-          <div
-            class="flex flex-row flex-1 items-center gap-6 text-sm font-medium text-gray-700 pt-4 w-full"
-            >
-            <div class="flex flex-col flex-2 justify-between items-center">
-              <span>{{ getScoringModes() }}</span>
-              <span>Sign-Ups: {{ info.signup_start_date | date: 'longDate' : 'ET' }}</span>
-              <span>Teams: {{ info.num_teams }}</span>
-            </div>
-          </div>
-          <div class="flex flex-col justify-stretch items-center w-full pt-4">
-            <div class="text-sm font-medium text-gray-700">
-              @if (info.secretary_email) {
-                <div>
-                  <span>Tournament Secretary: </span>
-                  @if (info.secretary_email) {
-                    <a
-                      class="p-button contactButton"
-                      href="mailto:{{ info.secretary_email | lowercase }}"
-                      >
-                      <span class="text-sm pi pi-send pr-2"></span>
-                      <span>{{ info.secretary }}</span>
-                    </a>
-                  }
-                </div>
-              }
-              @if (!info.secretary_email) {
-                <span>Tournament Secretary: {{ info.secretary }}</span>
-              }
-            </div>
-          </div>
+          }}
+          (Non-Members)</span
+        >
+      </div>
+      <div
+        class="flex flex-row flex-1 items-center gap-6 text-sm font-medium text-gray-700 pt-4 w-full"
+      >
+        <div class="flex flex-col flex-2 justify-between items-center">
+          <span>{{ getScoringModes() }}</span>
+          <span>Sign-Ups: {{ info.signup_start_date | date: 'longDate' : 'ET' }}</span>
+          <span>Teams: {{ info.num_teams }}</span>
         </div>
-      </p-card>
-    }
+      </div>
+      <div class="flex flex-col justify-stretch items-center w-full pt-4">
+        <div class="text-sm font-medium text-gray-700">
+          @if (info.secretary_email) {
+            <div>
+              <span>Tournament Secretary: </span>
+              @if (info.secretary_email) {
+                <a
+                  class="p-button contactButton"
+                  href="mailto:{{ info.secretary_email | lowercase }}"
+                >
+                  <span class="text-sm pi pi-send pr-2"></span>
+                  <span>{{ info.secretary }}</span>
+                </a>
+              }
+            </div>
+          }
+          @if (!info.secretary_email) {
+            <span>Tournament Secretary: {{ info.secretary }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </p-card>
+}

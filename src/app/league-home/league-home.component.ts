@@ -28,8 +28,8 @@ import { Season } from '../shared/season.model';
     TournamentsDashboardComponent,
     OfficersDashboardComponent,
     RulesDashboardComponent,
-    AnnouncementsDashboardComponent
-],
+    AnnouncementsDashboardComponent,
+  ],
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
   seasons: Season[];

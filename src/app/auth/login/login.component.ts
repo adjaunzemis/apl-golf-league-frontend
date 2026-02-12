@@ -13,13 +13,7 @@ import { NotificationService } from 'src/app/notifications/notification.service'
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [
-    ReactiveFormsModule,
-    CardModule,
-    ButtonModule,
-    InputTextModule,
-    FloatLabel
-],
+  imports: [ReactiveFormsModule, CardModule, ButtonModule, InputTextModule, FloatLabel],
 })
 export class LoginComponent {
   loginFormGroup = new FormGroup({

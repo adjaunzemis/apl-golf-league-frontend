@@ -15,16 +15,13 @@
             optionLabel="year"
             placeholder="Season"
             (onChange)="onSeasonSelected()"
-            >
+          >
             <ng-template #selectedItem let-selectedOption>
               @if (selectedOption) {
                 <div class="flex items-center gap-2">
                   <span>{{ selectedOption.year }}</span>
                   @if (selectedOption.is_active) {
-                    <p-tag
-                      class="bg-blue-500 text-white text-sm font-normal px-1"
-                      value="Active"
-                      />
+                    <p-tag class="bg-blue-500 text-white text-sm font-normal px-1" value="Active" />
                   }
                 </div>
               }
@@ -36,7 +33,7 @@
                   <p-tag
                     class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
                     value="Active"
-                    />
+                  />
                 }
               </div>
             </ng-template>
@@ -50,26 +47,25 @@
       [teams]="teams"
       [flightInfo]="flightInfo"
       [tournamentInfo]="tournamentInfo"
-      />
-      <app-golfer-handicap
-        class="col-span-4"
-        [golfer]="golfer"
-        [scoringRecord]="golferHandicapScoringRecord"
-        />
-        <app-golfer-rounds class="col-span-3" [rounds]="rounds" />
-        <div class="hidden md:block md:col-span-1"></div>
-        <div class="hidden md:block md:col-span-3"></div>
-        <app-golfer-statistics class="col-span-6" [statistics]="statistics" />
-        <div class="hidden md:block md:col-span-3"></div>
-      </div>
-    } @else {
-      <div class="flex flex-col items-center w-full p-10">
-        <p-progress-spinner
-          strokeWidth="4"
-          fill="transparent"
-          animationDuration="2s"
-          [style]="{ widthcs: '100px', height: '100px' }"
-          />
-        </div>
-      }
-
+    />
+    <app-golfer-handicap
+      class="col-span-4"
+      [golfer]="golfer"
+      [scoringRecord]="golferHandicapScoringRecord"
+    />
+    <app-golfer-rounds class="col-span-3" [rounds]="rounds" />
+    <div class="hidden md:block md:col-span-1"></div>
+    <div class="hidden md:block md:col-span-3"></div>
+    <app-golfer-statistics class="col-span-6" [statistics]="statistics" />
+    <div class="hidden md:block md:col-span-3"></div>
+  </div>
+} @else {
+  <div class="flex flex-col items-center w-full p-10">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ widthcs: '100px', height: '100px' }"
+    />
+  </div>
+}

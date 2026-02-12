@@ -6,12 +6,12 @@
       [flightInfo]="flightInfo"
       [teamData]="teamData"
       [teamStandings]="teamStandings"
-      />
+    />
     <app-team-roster class="col-span-12 md:col-span-4 xl:col-span-3" [teamData]="teamData" />
     <app-team-rounds
       class="col-span-12 row-span-2 md:col-span-6 xl:col-span-4 xl:row-span-3"
       [rounds]="getRounds()"
-      />
+    />
     <div class="hidden xl:block xl:col-span-1 xl:row-span-3 bg-transparent"></div>
     <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
     @if (teamMatches) {
@@ -19,7 +19,7 @@
         class="col-span-12 md:col-span-6"
         [flightInfo]="flightInfo"
         [matches]="teamMatches"
-        />
+      />
     }
     <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
     @if (statistics) {
@@ -29,7 +29,7 @@
         [matchCountLimit]="0"
         [hideSubstitutesToggle]="true"
         [pagination]="false"
-        />
+      />
     }
   </div>
 } @else {
@@ -39,7 +39,6 @@
       fill="transparent"
       animationDuration="2s"
       [style]="{ widthcs: '100px', height: '100px' }"
-      />
+    />
   </div>
 }
-

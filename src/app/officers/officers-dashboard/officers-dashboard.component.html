@@ -15,7 +15,7 @@
         fill="transparent"
         animationDuration="2s"
         [style]="{ width: '100px', height: '100px' }"
-        />
+      />
     </div>
   }
 
@@ -26,12 +26,10 @@
           @for (item of items; track item) {
             <div class="col-span-2 listItem">
               @if (item.committee === 'LEAGUE') {
-                <div
-                  class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
-                  >
+                <div class="flex flex-col sm:flex-row sm:items-center p-2 gap-4">
                   <div
                     class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
-                    >
+                  >
                     <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                       <div>
                         <div class="text-lg font-semibold text-gray-700 mt-1">{{ item.name }}</div>

@@ -43,8 +43,8 @@ import { GolfersService } from 'src/app/golfers/golfers.service';
     InputTextModule,
     SelectModule,
     ButtonModule,
-    TableModule
-],
+    TableModule,
+  ],
   providers: [DialogService],
 })
 export class TournamentTeamCreateComponent implements OnInit, OnChanges {
@@ -246,7 +246,7 @@ export class TournamentTeamCreateComponent implements OnInit, OnChanges {
       modal: true,
     });
     if (this.dialogRef === null) {
-      return
+      return;
     }
 
     this.dialogRef.onClose.subscribe((golferData) => {

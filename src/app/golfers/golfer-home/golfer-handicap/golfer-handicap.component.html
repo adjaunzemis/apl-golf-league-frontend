@@ -4,9 +4,7 @@
   </div>
   <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4 pb-2">
     @if (getActiveIndex()) {
-      <span class="text-normal font-semibold">
-        Index: {{ getActiveIndex() }}
-      </span>
+      <span class="text-normal font-semibold"> Index: {{ getActiveIndex() }} </span>
     } @else {
       Index: --
     }
@@ -31,7 +29,7 @@
     dataKey="round_id"
     [paginator]="pagination"
     [rows]="10"
-    >
+  >
     <ng-template #header>
       <tr>
         <th pSortableColumn="date_played" class="w-20">Date <p-sortIcon field="date_played" /></th>
@@ -51,7 +49,7 @@
         [ngClass]="isPendingRound(round.round_id) ? 'italic' : ''"
         [pSelectableRow]="round"
         (click)="dt.toggleRow(round, $event)"
-        >
+      >
         <td class="text-gray-700">{{ round.date_played | date: 'shortDate' }}</td>
         <td class="text-gray-700">{{ round.course_name | initials }}</td>
         <td class="text-gray-700">{{ round.tee_name }}</td>
@@ -71,10 +69,10 @@
         <span class="text-gray-700 font-normal">, Tees: {{ round.tee_name }}</span>
         <span class="text-gray-700 font-normal"
           >, Par {{ round.tee_par }} ({{ round.tee_rating | number: '1.1-1' }}/{{
-          round.tee_slope
+            round.tee_slope
           }})</span
-          >
-        </td>
-      </ng-template>
-    </p-table>
-  </p-card>
+        >
+      </td>
+    </ng-template>
+  </p-table>
+</p-card>

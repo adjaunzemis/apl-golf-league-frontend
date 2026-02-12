@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
-
 import { MatchData } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
 import { ScorecardModule } from 'src/app/shared/scorecard/scorecard.module';

@@ -9,7 +9,7 @@
       [onLabel]="labelScoringModeNet"
       [offLabel]="labelScoringModeGross"
       (onChange)="onChangeScoringMode($event)"
-      />
+    />
   </div>
 
   <p-table
@@ -21,7 +21,7 @@
     dataKey="round_id"
     [paginator]="pagination"
     [rows]="20"
-    >
+  >
     <ng-template #header>
       <tr>
         <th pSortableColumn="date_played" class="w-20">Date <p-sortIcon field="date_played" /></th>
@@ -41,20 +41,18 @@
         <td class="font-semibold text-gray-700">{{ round.course_name | initials }}</td>
         <td class="text-gray-700 text-center">{{ round.golfer_playing_handicap }}</td>
         @for (holeNum of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track holeNum) {
-          <td
-            class="text-gray-700 text-center font-semibold p-0.5"
-            >
+          <td class="text-gray-700 text-center font-semibold p-0.5">
             <div
               [class.circle]="isHoleScoreBelowPar(round, holeNum)"
               [class.box]="isHoleScoreAbovePar(round, holeNum)"
-            [class.crosshatch]="
-              isHoleScoreAbovePar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
-            "
-            [class.bg-blue-100]="
-              isHoleScoreBelowPar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
-            "
+              [class.crosshatch]="
+                isHoleScoreAbovePar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
+              "
+              [class.bg-blue-100]="
+                isHoleScoreBelowPar(round, holeNum) && isHoleScoreAtLeastTwoFromPar(round, holeNum)
+              "
               [class.text-blue-500]="isHoleScoreBelowPar(round, holeNum)"
-              >
+            >
               <span [class.text-blue-700]="isHoleScoreBelowPar(round, holeNum)">{{
                 getScoreForHole(round, holeNum)
               }}</span>
@@ -64,12 +62,12 @@
         <td
           class="text-center font-semibold pl-2 pr-0.5"
           [class.text-blue-700]="isRoundScoreBelowPar(round)"
-          >
+        >
           {{ getRoundScore(round) }}
         </td>
         <td class="text-gray-800 text-center font-semibold pr-1">
           (<span class="px-0.5" [class.text-blue-700]="isRoundScoreBelowPar(round)">{{
-          getRoundScoreToPar(round)
+            getRoundScoreToPar(round)
           }}</span
           >)
         </td>
@@ -82,10 +80,10 @@
         <span class="text-gray-700 font-normal">, Tees: {{ round.tee_name }}</span>
         <span class="text-gray-700 font-normal"
           >, Par {{ round.tee_par }} ({{ round.tee_rating | number: '1.1-1' }}/{{
-          round.tee_slope
+            round.tee_slope
           }})</span
-          >
-        </td>
-      </ng-template>
-    </p-table>
-  </p-card>
+        >
+      </td>
+    </ng-template>
+  </p-table>
+</p-card>

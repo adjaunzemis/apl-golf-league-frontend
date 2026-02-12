@@ -26,8 +26,8 @@ import { MatchSummary } from 'src/app/shared/match.model';
     TeamRosterComponent,
     TeamRoundsComponent,
     TeamScheduleComponent,
-    FlightStatisticsComponent
-],
+    FlightStatisticsComponent,
+  ],
 })
 export class TeamHomeComponent implements OnInit, OnDestroy {
   isLoading = true;

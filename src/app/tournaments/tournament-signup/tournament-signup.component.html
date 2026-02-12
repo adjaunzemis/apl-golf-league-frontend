@@ -11,111 +11,112 @@
           fill="transparent"
           animationDuration="2s"
           [style]="{ width: '100px', height: '100px' }"
-          />
-        </div>
-      }
+        />
+      </div>
+    }
 
-      @if (!isLoading) {
-        <p-dataview #dv [value]="tournaments">
-          <ng-template #list let-items>
-            <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
-              @for (item of items; track item; let first = $first) {
+    @if (!isLoading) {
+      <p-dataview #dv [value]="tournaments">
+        <ng-template #list let-items>
+          <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
+            @for (item of items; track item; let first = $first) {
+              <div
+                class="col-span-12"
+                [ngClass]="{
+                  listItem: isSignupOpen(item) || isUserAdmin() || canUserEditTournaments(),
+                }"
+              >
                 <div
-                  class="col-span-12"
-            [ngClass]="{
-              listItem: isSignupOpen(item) || isUserAdmin() || canUserEditTournaments(),
-            }"
-                  >
+                  class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
+                  [ngClass]="{ 'border-t border-gray-300': !first }"
+                  (click)="selectTournament(item)"
+                  (keyup)="selectTournament(item)"
+                  aria-hidden="true"
+                >
+                  <div class="md:w-20 relative ml-4">
+                    <img
+                      class="block xl:block mx-auto rounded-border"
+                      [src]="'assets/' + item.logo_url"
+                      [alt]="item.name"
+                      width="75px"
+                    />
+                  </div>
                   <div
-                    class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
-                    [ngClass]="{ 'border-t border-gray-300': !first }"
-                    (click)="selectTournament(item)"
-                    (keyup)="selectTournament(item)"
-                    aria-hidden="true"
-                    >
-                    <div class="md:w-20 relative ml-4">
-                      <img
-                        class="block xl:block mx-auto rounded-border"
-                        [src]="'assets/' + item.logo_url"
-                        [alt]="item.name"
-                        width="75px"
-                        />
-                      </div>
-                      <div
-                        class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
-                        >
-                        <div class="flex flex-row md:flex-col justify-center items-start gap-2">
-                          <div>
-                            <div class="text-lg font-semibold text-gray-700 mt-1">
-                              {{ item.name }} ({{ season.year }})
-                            </div>
-                            <div class="hidden md:block font-medium text-gray-600 text-sm">
-                              {{ item.course }}
-                            </div>
-                            <div class="hidden lg:block text-sm font-medium text-gray-600">
-                              {{ item.date | date: 'longDate' : 'ET' }}
-                            </div>
-                            <div class="hidden lg:block text-sm font-medium text-gray-600">
-                              Sign-ups: {{ item.signup_start_date | date: 'shortDate' : 'ET' }} -
-                              {{ item.signup_stop_date | date: 'shortDate' : 'ET' }}
-                            </div>
-                          </div>
+                    class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
+                  >
+                    <div class="flex flex-row md:flex-col justify-center items-start gap-2">
+                      <div>
+                        <div class="text-lg font-semibold text-gray-700 mt-1">
+                          {{ item.name }} ({{ season.year }})
+                        </div>
+                        <div class="hidden md:block font-medium text-gray-600 text-sm">
+                          {{ item.course }}
+                        </div>
+                        <div class="hidden lg:block text-sm font-medium text-gray-600">
+                          {{ item.date | date: 'longDate' : 'ET' }}
+                        </div>
+                        <div class="hidden lg:block text-sm font-medium text-gray-600">
+                          Sign-ups: {{ item.signup_start_date | date: 'shortDate' : 'ET' }} -
+                          {{ item.signup_stop_date | date: 'shortDate' : 'ET' }}
                         </div>
                       </div>
-                      <p-tag [value]="getSignupStatusText(item)" [severity]="getSignupStatusColor(item)" />
                     </div>
                   </div>
-                }
+                  <p-tag
+                    [value]="getSignupStatusText(item)"
+                    [severity]="getSignupStatusColor(item)"
+                  />
+                </div>
               </div>
-            </ng-template>
-          </p-dataview>
-        }
-      </p-card>
+            }
+          </div>
+        </ng-template>
+      </p-dataview>
+    }
+  </p-card>
 
-      @if (selectedTournament) {
-        <div
-          class="flex flex-col lg:flex-row flex-stretch justify-center gap-4"
-          >
-          <div class="flex flex-col flex-stretch gap-4">
-            <app-tournament-info [info]="selectedTournament" />
-            @if (selectedTournamentTeams) {
-              <app-tournament-teams
-                [teams]="selectedTournamentTeams"
-                [linkGolferHome]="false"
-                [teamMultiSelect]="false"
-                [showTournamentEmailButton]="false"
-                (teamSelected)="handleTeamSelectionChange($event)"
-                />
-            }
-          </div>
-          <div class="flex flex-col flex-stretch gap-4">
-            @if (selectedTournamentDivisions) {
-              <app-tournament-divisions
-                class="hidden lg:block"
-                [divisions]="selectedTournamentDivisions"
-                />
-            }
-            @if (selectedTournamentDivisions && golfers) {
-              <app-tournament-team-create
-                [allowDelete]="isUserAdmin()"
-                [golferOptions]="golfers"
-                [tournamentId]="selectedTournament.id"
-                [divisionOptions]="selectedTournamentDivisions"
-                [initialTeam]="selectedTeam"
-                (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
-                />
-            }
-            @if (selectedTournamentFreeAgents && selectedTournamentDivisions && golfers) {
-              <app-free-agents-signup
-                [allowDelete]="isUserAdmin()"
-                [freeAgents]="selectedTournamentFreeAgents"
-                [golferOptions]="golfers"
-                [tournamentId]="selectedTournament.id"
-                [divisionOptions]="selectedTournamentDivisions"
-                (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
-                />
-            }
-          </div>
-        </div>
-      }
+  @if (selectedTournament) {
+    <div class="flex flex-col lg:flex-row flex-stretch justify-center gap-4">
+      <div class="flex flex-col flex-stretch gap-4">
+        <app-tournament-info [info]="selectedTournament" />
+        @if (selectedTournamentTeams) {
+          <app-tournament-teams
+            [teams]="selectedTournamentTeams"
+            [linkGolferHome]="false"
+            [teamMultiSelect]="false"
+            [showTournamentEmailButton]="false"
+            (teamSelected)="handleTeamSelectionChange($event)"
+          />
+        }
+      </div>
+      <div class="flex flex-col flex-stretch gap-4">
+        @if (selectedTournamentDivisions) {
+          <app-tournament-divisions
+            class="hidden lg:block"
+            [divisions]="selectedTournamentDivisions"
+          />
+        }
+        @if (selectedTournamentDivisions && golfers) {
+          <app-tournament-team-create
+            [allowDelete]="isUserAdmin()"
+            [golferOptions]="golfers"
+            [tournamentId]="selectedTournament.id"
+            [divisionOptions]="selectedTournamentDivisions"
+            [initialTeam]="selectedTeam"
+            (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
+          />
+        }
+        @if (selectedTournamentFreeAgents && selectedTournamentDivisions && golfers) {
+          <app-free-agents-signup
+            [allowDelete]="isUserAdmin()"
+            [freeAgents]="selectedTournamentFreeAgents"
+            [golferOptions]="golfers"
+            [tournamentId]="selectedTournament.id"
+            [divisionOptions]="selectedTournamentDivisions"
+            (refreshTeamsForTournament)="refreshSelectedTournamentTeams($event)"
+          />
+        }
+      </div>
     </div>
+  }
+</div>
