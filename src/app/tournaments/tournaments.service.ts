@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { TournamentInput } from '../shared/match.model';
@@ -21,6 +21,9 @@ import { environment } from './../../environments/environment';
   providedIn: 'root',
 })
 export class TournamentsService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private tournamentsList: TournamentInfo[] = [];
   private tournamentsListUpdated = new Subject<TournamentInfo[]>();
 
@@ -47,11 +50,6 @@ export class TournamentsService {
 
   private tournamentData: TournamentData;
   private tournamentDataUpdated = new Subject<TournamentData>();
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   getList(year?: number): void {
     let queryParams = ``;

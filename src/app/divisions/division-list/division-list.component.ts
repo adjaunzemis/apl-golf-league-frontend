@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CoursesService } from 'src/app/courses/courses.service';
 import { Tee } from '../../shared/tee.model';
@@ -12,6 +12,8 @@ import { DivisionData } from '../../shared/division.model';
   standalone: false,
 })
 export class DivisionListComponent implements OnInit, OnDestroy {
+  private coursesService = inject(CoursesService);
+
   isLoading = false;
   private loadedPrimaryTee = false;
   private loadedSecondaryTee = false;
@@ -25,8 +27,6 @@ export class DivisionListComponent implements OnInit, OnDestroy {
   selectedSecondaryTee: Tee;
 
   showScorecard = false;
-
-  constructor(private coursesService: CoursesService) {}
 
   ngOnInit(): void {
     this.divisionSub = this.coursesService.getSelectedTeeUpdated().subscribe((tee) => {

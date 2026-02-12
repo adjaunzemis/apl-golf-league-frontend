@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -31,6 +31,12 @@ import { SelectChangeEvent } from 'primeng/select';
   standalone: false,
 })
 export class FlightMatchCreateComponent implements OnInit, OnDestroy {
+  private flightsService = inject(FlightsService);
+  private coursesService = inject(CoursesService);
+  private matchesService = inject(MatchesService);
+  private seasonsService = inject(SeasonsService);
+  private route = inject(ActivatedRoute);
+
   isLoading = true;
   isSubmittingRounds = false;
 
@@ -88,14 +94,6 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
   roundIdx = 0;
 
   editMode = true;
-
-  constructor(
-    private flightsService: FlightsService,
-    private coursesService: CoursesService,
-    private matchesService: MatchesService,
-    private seasonsService: SeasonsService,
-    private route: ActivatedRoute,
-  ) {}
 
   ngOnInit(): void {
     const paramsFlightId = this.route.snapshot.queryParamMap.get('flight_id');

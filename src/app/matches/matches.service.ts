@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
@@ -10,16 +10,14 @@ import { MatchData, MatchInput } from '../shared/match.model';
   providedIn: 'root',
 })
 export class MatchesService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private matchesData: MatchData[] = [];
   private matchesDataUpdated = new Subject<{ numMatches: number; matches: MatchData[] }>();
 
   private matchData: MatchData;
   private matchDataUpdated = new Subject<MatchData>();
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   getMatches(offset: number, limit: number, teamId?: number): void {
     let queryParams = `?`;

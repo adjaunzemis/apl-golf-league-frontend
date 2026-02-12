@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -9,10 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this.authService.user.pipe(

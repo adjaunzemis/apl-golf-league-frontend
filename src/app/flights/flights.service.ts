@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
@@ -21,6 +21,9 @@ import { MatchSummary } from '../shared/match.model';
   providedIn: 'root',
 })
 export class FlightsService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private flightsList: FlightInfo[] = [];
   private flightsListUpdated = new Subject<FlightInfo[]>();
 
@@ -50,11 +53,6 @@ export class FlightsService {
 
   private flightData: FlightData;
   private flightDataUpdated = new Subject<FlightData>();
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   getList(year?: number): void {
     let queryParams = ``;

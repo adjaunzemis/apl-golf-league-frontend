@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
@@ -11,12 +11,12 @@ import { APIService } from 'src/app/api/api.service';
   standalone: false,
 })
 export class FooterComponent implements OnInit, OnDestroy {
+  private apiService = inject(APIService);
+
   websiteVersion: string = environment.version;
   apiVersion = '--';
 
   private apiInfoSub: Subscription;
-
-  constructor(private apiService: APIService) {}
 
   ngOnInit(): void {
     if (environment.maintenance) {
