@@ -2,11 +2,11 @@
   <div class="col-span-12 flex flex-col items-center gap-2">
     <app-golfer-info [golfer]="golfer" *ngIf="golfer" />
     <p-card>
-      <div class="flex flex-1 items-center px-4 py-2">
+      <div class="flex flex-1 items-center">
         <span class="text-lg font-semibold">Season</span>
         <div class="mx-auto"></div>
         <p-select
-          class="ring-1 ring-gray-300 text-center h-8 ml-4 pl-2 py-1"
+          class="ring-1 ring-gray-300 text-center ml-4"
           [options]="seasons"
           [(ngModel)]="selectedSeason"
           optionLabel="year"

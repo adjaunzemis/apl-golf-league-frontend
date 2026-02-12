@@ -7,11 +7,10 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import Material from '@primeng/themes/material';
+import Aura from '@primeng/themes/aura';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AngularMaterialModule } from './angular-material.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LeagueHomeComponent } from './league-home/league-home.component';
@@ -26,7 +25,6 @@ import { AuthModule } from './auth/auth.module';
 import { ErrorInterceptor } from './shared/error/error-interceptor';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { PaymentsModule } from './payments/payments.module';
-import { SignupComponent } from './signup/signup.component'; // TODO: Move to signup module
 import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { PrimeNGModule } from './primeng.module';
 import { FlightsDashboardComponent } from './flights/flights-dashboard/flights-dashboard.component';
@@ -37,13 +35,7 @@ import { AnnouncementsDashboardComponent } from './announcements-dashboard/annou
 import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    HandicapsComponent,
-    SignupComponent,
-  ],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HandicapsComponent],
   bootstrap: [AppComponent],
   imports: [
     CommonModule,
@@ -52,7 +44,6 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
     BrowserAnimationsModule,
     ToastModule,
     AppRoutingModule,
-    AngularMaterialModule,
     CoursesModule,
     RoundsModule,
     FlightsModule,
@@ -85,10 +76,10 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
     provideHttpClient(withInterceptorsFromDi()),
     providePrimeNG({
       theme: {
-        preset: Material,
+        preset: Aura,
         options: {
           prefix: 'p',
-          darkModeSelector: false,
+          darkModeSelector: '.dark',
           cssLayer: {
             name: 'primeng',
             order: 'tailwind-base, primeng, tailwind-utilities',

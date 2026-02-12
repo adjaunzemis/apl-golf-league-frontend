@@ -59,34 +59,7 @@
                   </div>
                 </div>
               </div>
-              <p-tag
-                class="flex flex-col gap-0 text-sm text-center px-2 py-1 bg-blue-400"
-                *ngIf="getDaysUntilSignupStart(item) > 0"
-              >
-                <div>Opens:</div>
-                <p *ngIf="getDaysUntilSignupStart(item) > 1">
-                  {{ getDaysUntilSignupStart(item) }} days
-                </p>
-                <p *ngIf="getDaysUntilSignupStart(item) === 1">tomorrow!</p>
-              </p-tag>
-              <p-tag
-                class="text-sm text-center pl-1 py-1 bg-green-500"
-                *ngIf="isSignupOpen(item) && getDaysUntilSignupStop(item) > 2"
-                >Open</p-tag
-              >
-              <p-tag
-                class="flex flex-col gap-0 text-sm text-center px-2 py-1 bg-orange-400"
-                *ngIf="isSignupOpen(item) && getDaysUntilSignupStop(item) <= 2"
-              >
-                <p>Closes:</p>
-                <p *ngIf="getDaysUntilSignupStop(item) === 2">tomorrow!</p>
-                <p *ngIf="getDaysUntilSignupStop(item) === 1">today!</p>
-              </p-tag>
-              <p-tag
-                class="text-sm text-center pl-1 py-1 bg-red-400"
-                *ngIf="getDaysUntilSignupStop(item) <= 0"
-                >Closed</p-tag
-              >
+              <p-tag [value]="getSignupStatusText(item)" [severity]="getSignupStatusColor(item)" />
             </div>
           </div>
         </div>

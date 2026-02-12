@@ -1,4 +1,6 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --primary-color: #2563eb; /* Tailwind Blue-600 */
@@ -6,49 +8,45 @@
 }
 
 body {
-  @apply bg-gray-100;
-}
-
-.p-toast .p-toast-message {
-  @apply mb-2 p-2;
+  @apply bg-gray-100 transition-colors duration-200;
+  @apply dark:bg-zinc-800;
 }
 
 .p-button,
 .p-togglebutton {
-  @apply bg-gray-50 ring-1 ring-gray-200 text-gray-800 text-sm py-2 px-4 mx-2 rounded-md shadow-md transition;
+  @apply ring-1 text-sm py-2 px-4 mx-2 rounded-md shadow-md transition;
+}
+
+.p-button,
+.p-togglebutton,
+.p-select {
+  @apply dark:bg-zinc-800 dark:ring-zinc-600 dark:text-white;
+  @apply bg-gray-50 dark:bg-zinc-800;
+  @apply ring-gray-200 dark:ring-zinc-700;
+  @apply text-gray-800 dark:text-white;
 }
 
 .p-button:hover:not(:disabled),
-.p-togglebutton:hover:not(:disabled) {
-  @apply text-blue-600 shadow-lg;
+.p-togglebutton:hover:not(:disabled),
+.p-select:hover:not(:disabled) {
+  @apply shadow-lg;
+  @apply text-blue-600 dark:text-blue-400;
 }
 
-.p-button:disabled {
+.p-button:disabled,
+.p-togglebutton:disabled,
+.p-select:disabled {
   @apply bg-gray-300 text-gray-500;
 }
 
-.p-datepicker-panel .p-button {
-  @apply bg-transparent ring-0 shadow-none p-0 m-0;
-}
-
-.p-dialog-close-button {
-  @apply bg-transparent ring-0 shadow-none p-0 m-0;
-}
-
-.p-menubar {
-  /* @apply bg-gray-50 ring-1 ring-gray-200 text-black; */
-}
-
 .p-inputtext {
-  @apply bg-gray-50 ring-1 ring-gray-200 rounded-md px-2 py-1;
-}
-
-.p-datatable {
-  @apply px-4 py-4;
+  @apply ring-1 rounded-md px-2 py-1;
+  @apply bg-gray-50 dark:bg-zinc-800;
+  @apply ring-gray-200 dark:ring-zinc-700;
 }
 
 .p-carousel-indicator-button {
-  @apply bg-gray-200 rounded-4xl shadow-none;
+  @apply bg-gray-200 rounded-3xl shadow-none;
 }
 
 .p-carousel-indicator-button:hover {
@@ -63,98 +61,6 @@ body {
   @apply text-blue-600 font-semibold;
 }
 
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  .print-target,
-  .print-target * {
-    visibility: visible;
-  }
-
-  .print-target {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-}
-
-a {
-  color: #252525;
-  text-decoration: none;
-}
-
-a.link-text {
-  color: #1976d2;
-}
-
-.circle-link {
-  height: 40px;
-  width: 40px;
-  border-radius: 40px;
-  margin: 8px;
-  background-color: white;
-  border: 1px solid #eeeeee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: 1s ease-out;
-}
-
-.circle-link:hover {
-  transform: translateY(-0.25rem);
-  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 767px) {
-  .card-container > *:not(.circle-link),
-  .terminal {
-    width: 100%;
-  }
-
-  .card:not(.announcements-card) {
-    height: 16px;
-    margin: 8px 0;
-  }
-
-  .card.announcements-card {
-    height: 100%;
-    text-align: center;
-  }
-}
-
-/* Angular Material styling */
-mat-spinner {
-  margin: auto;
-  margin-top: 36px;
-}
-
-/* Custom styles */
-.full-width {
-  width: 100%;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-.italic {
-  font-style: italic;
-}
-
-.scorecard {
-  margin-top: 12px;
-  border-bottom: 2px solid #3f51b5;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+.p-menubar-item-link {
+  @apply h-12 px-2;
 }
