@@ -22,7 +22,7 @@
     "@angular/platform-browser": "^19.2.18",
     "@angular/platform-browser-dynamic": "^19.2.18",
     "@angular/router": "^19.2.18",
-    "@primeng/themes": "^19.0.6",
+    "@primeng/themes": "^21.0.4",
     "chart.js": "^4.4.7",
     "d3": "^7.9.0",
     "primeicons": "^7.0.0",
