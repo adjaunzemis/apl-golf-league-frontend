@@ -51,7 +51,8 @@
   </div>
 
   <p-accordion class="shadow-md rounded-lg overflow-hidden">
-    <p-accordionTab header="📜 Match History">
+    <p-accordion-header>📜 Match History</p-accordion-header>
+    <p-accordion-content>
       <ul class="divide-y divide-gray-300">
         @for (match of matchHistory; track match) {
           <li
@@ -64,7 +65,7 @@
             </li>
           }
         </ul>
-      </p-accordionTab>
+      </p-accordion-content>
     </p-accordion>
 
     <div class="grid md:grid-cols-2 gap-6">

@@ -69,7 +69,7 @@ export class TeamCreateComponent implements OnInit, OnChanges {
 
   private teamsService = inject(TeamsService);
 
-  dialogRef: DynamicDialogRef | undefined;
+  dialogRef: DynamicDialogRef | null;
   public dialogService = inject(DialogService);
   private golfersService = inject(GolfersService);
 
@@ -241,6 +241,9 @@ export class TeamCreateComponent implements OnInit, OnChanges {
       width: '300px',
       modal: true,
     });
+    if (this.dialogRef === null) {
+      return
+    }
 
     this.dialogRef.onClose.subscribe((golferData) => {
       if (golferData !== null && golferData !== undefined) {
