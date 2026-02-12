@@ -8,7 +8,7 @@ import {
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
@@ -23,7 +23,7 @@ import { Season } from 'src/app/shared/season.model';
   selector: 'app-officers-dashboard',
   templateUrl: './officers-dashboard.component.html',
   styleUrls: ['./officers-dashboard.component.css'],
-  imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
+  imports: [RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
 })
 export class OfficersDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;

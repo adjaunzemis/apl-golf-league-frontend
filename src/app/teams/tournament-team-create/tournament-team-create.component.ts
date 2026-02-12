@@ -20,7 +20,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
-import { CommonModule } from '@angular/common';
+
 import {
   TournamentDivision,
   TournamentTeam,
@@ -36,7 +36,6 @@ import { GolfersService } from 'src/app/golfers/golfers.service';
   templateUrl: './tournament-team-create.component.html',
   styleUrls: ['./tournament-team-create.component.css'],
   imports: [
-    CommonModule,
     FormsModule,
     CardModule,
     InputGroupModule,
@@ -44,8 +43,8 @@ import { GolfersService } from 'src/app/golfers/golfers.service';
     InputTextModule,
     SelectModule,
     ButtonModule,
-    TableModule,
-  ],
+    TableModule
+],
   providers: [DialogService],
 })
 export class TournamentTeamCreateComponent implements OnInit, OnChanges {

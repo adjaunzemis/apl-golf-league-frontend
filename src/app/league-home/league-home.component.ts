@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,6 @@ import { Season } from '../shared/season.model';
   templateUrl: './league-home.component.html',
   styleUrls: ['./league-home.component.css'],
   imports: [
-    CommonModule,
     FormsModule,
     CardModule,
     SelectModule,
@@ -29,8 +28,8 @@ import { Season } from '../shared/season.model';
     TournamentsDashboardComponent,
     OfficersDashboardComponent,
     RulesDashboardComponent,
-    AnnouncementsDashboardComponent,
-  ],
+    AnnouncementsDashboardComponent
+],
 })
 export class LeagueHomeComponent implements OnInit, OnDestroy {
   seasons: Season[];

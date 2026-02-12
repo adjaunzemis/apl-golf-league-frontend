@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -25,15 +25,14 @@ import { RoundData } from 'src/app/shared/round.model';
   templateUrl: './tournament-home.component.html',
   styleUrl: './tournament-home.component.css',
   imports: [
-    CommonModule,
     ProgressSpinnerModule,
     TournamentInfoComponent,
     TournamentDivisionsComponent,
     TournamentStandingsComponent,
     TournamentStatisticsComponent,
     TournamentTeamsComponent,
-    TournamentScorecardComponent,
-  ],
+    TournamentScorecardComponent
+],
 })
 export class TournamentHomeComponent implements OnInit, OnDestroy {
   info: TournamentInfo | undefined;

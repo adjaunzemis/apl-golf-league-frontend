@@ -8,55 +8,60 @@
     </a>
   </div>
 
-  <div class="flex flex-col items-center py-4" *ngIf="isLoading">
-    <p-progress-spinner
-      strokeWidth="4"
-      fill="transparent"
-      animationDuration="2s"
-      [style]="{ width: '100px', height: '100px' }"
-    />
-  </div>
+  @if (isLoading) {
+    <div class="flex flex-col items-center py-4">
+      <p-progress-spinner
+        strokeWidth="4"
+        fill="transparent"
+        animationDuration="2s"
+        [style]="{ width: '100px', height: '100px' }"
+        />
+    </div>
+  }
 
-  <p-dataview #dv [value]="tournaments()" *ngIf="!isLoading">
-    <ng-template #list let-items>
-      <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
-        <div
-          class="col-span-12 listItem"
-          *ngFor="let item of items; let first = first"
-          routerLink="/tournament"
-          [queryParams]="{ id: item.id }"
-        >
-          <div
-            class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
-            [ngClass]="{ 'border-t border-gray-300': !first }"
-          >
-            <div class="md:w-20 relative ml-4">
-              <img
-                class="block xl:block mx-auto rounded-border"
-                [src]="'assets/' + item.logo_url"
-                [alt]="item.name"
-                width="75px"
-              />
-            </div>
+  @if (!isLoading) {
+    <p-dataview #dv [value]="tournaments()">
+      <ng-template #list let-items>
+        <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
+          @for (item of items; track item; let first = $first) {
             <div
-              class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
-            >
-              <div class="flex flex-row md:flex-col justify-center items-start gap-2">
-                <div>
-                  <div class="text-lg font-semibold text-gray-700 mt-1">{{ getName(item) }}</div>
-                  <div class="hidden lg:block font-medium text-gray-600 text-sm">
-                    {{ item.course }}
-                  </div>
-                  <div class="hidden lg:block text-sm font-medium text-gray-600">
-                    {{ item.date | date: 'mediumDate' : 'ET' }}
-                    {{ item.date | date: 'shortTime' : 'ET' }}
+              class="col-span-12 listItem"
+              routerLink="/tournament"
+              [queryParams]="{ id: item.id }"
+              >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
+                [ngClass]="{ 'border-t border-gray-300': !first }"
+                >
+                <div class="md:w-20 relative ml-4">
+                  <img
+                    class="block xl:block mx-auto rounded-border"
+                    [src]="'assets/' + item.logo_url"
+                    [alt]="item.name"
+                    width="75px"
+                    />
+                </div>
+                <div
+                  class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
+                  >
+                  <div class="flex flex-row md:flex-col justify-center items-start gap-2">
+                    <div>
+                      <div class="text-lg font-semibold text-gray-700 mt-1">{{ getName(item) }}</div>
+                      <div class="hidden lg:block font-medium text-gray-600 text-sm">
+                        {{ item.course }}
+                      </div>
+                      <div class="hidden lg:block text-sm font-medium text-gray-600">
+                        {{ item.date | date: 'mediumDate' : 'ET' }}
+                        {{ item.date | date: 'shortTime' : 'ET' }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          }
         </div>
-      </div>
-    </ng-template>
-  </p-dataview>
+      </ng-template>
+    </p-dataview>
+  }
 </p-card>

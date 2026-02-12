@@ -1,20 +1,18 @@
 <div class="content">
-  <p
-    class="italic"
-    *ngIf="
-      (!activeRounds || activeRounds.length === 0) &&
-        (!pendingRounds || pendingRounds.length === 0);
-      else hasScoringRecordData
-    "
-  >
-    No scoring record data!
-  </p>
-
-  <ng-template #hasScoringRecordData>
-    <p class="italic" *ngIf="pendingRounds && pendingRounds.length > 0">
-      *Pending rounds do not contribute to active handicap index
+  @if (
+    (!activeRounds || activeRounds.length === 0) &&
+    (!pendingRounds || pendingRounds.length === 0)) {
+    <p
+      class="italic"
+      >
+      No scoring record data!
     </p>
-
+  } @else {
+    @if (pendingRounds && pendingRounds.length > 0) {
+      <p class="italic">
+        *Pending rounds do not contribute to active handicap index
+      </p>
+    }
     <div class="card scoring-record-card">
       <table>
         <tr>
@@ -29,36 +27,43 @@
           <th>Adj. Gross</th>
           <th>Diff.</th>
         </tr>
-
-        <tr class="pending-rounds" *ngFor="let round of pendingRounds; let idx = index">
-          <td>*{{ round.date_played | date }}</td>
-          <td>{{ round.course_name }} - {{ round.track_name }}</td>
-          <td>{{ round.tee_name }}</td>
-          <td>{{ round.tee_par | number: '1.0-0' }}</td>
-          <td>{{ round.tee_rating | number: '1.2-2' }}</td>
-          <td>{{ round.tee_slope | number: '1.0-0' }}</td>
-          <td *ngIf="round.golfer_playing_handicap || round.golfer_playing_handicap === 0">
-            {{ round.golfer_playing_handicap | number: '1.0-0' }}
-          </td>
-          <td *ngIf="!round.golfer_playing_handicap && round.golfer_playing_handicap !== 0">--</td>
-          <td>{{ round.gross_score | number: '1.0-0' }}</td>
-          <td>{{ round.adjusted_gross_score | number: '1.0-0' }}</td>
-          <td class="bold">{{ round.score_differential | number: '1.1-1' }}*</td>
-        </tr>
-
-        <tr *ngFor="let round of activeRounds; let idx = index">
-          <td>{{ round.date_played | date }}</td>
-          <td>{{ round.course_name }} - {{ round.track_name }}</td>
-          <td>{{ round.tee_name }}</td>
-          <td>{{ round.tee_par | number: '1.0-0' }}</td>
-          <td>{{ round.tee_rating | number: '1.2-2' }}</td>
-          <td>{{ round.tee_slope | number: '1.0-0' }}</td>
-          <td>{{ round.golfer_playing_handicap | number: '1.0-0' }}</td>
-          <td>{{ round.gross_score | number: '1.0-0' }}</td>
-          <td>{{ round.adjusted_gross_score | number: '1.0-0' }}</td>
-          <td class="bold">{{ round.score_differential | number: '1.1-1' }}</td>
-        </tr>
+        @for (round of pendingRounds; track round; let idx = $index) {
+          <tr class="pending-rounds">
+            <td>*{{ round.date_played | date }}</td>
+            <td>{{ round.course_name }} - {{ round.track_name }}</td>
+            <td>{{ round.tee_name }}</td>
+            <td>{{ round.tee_par | number: '1.0-0' }}</td>
+            <td>{{ round.tee_rating | number: '1.2-2' }}</td>
+            <td>{{ round.tee_slope | number: '1.0-0' }}</td>
+            @if (round.golfer_playing_handicap || round.golfer_playing_handicap === 0) {
+              <td>
+                {{ round.golfer_playing_handicap | number: '1.0-0' }}
+              </td>
+            }
+            @if (!round.golfer_playing_handicap && round.golfer_playing_handicap !== 0) {
+              <td>--</td>
+            }
+            <td>{{ round.gross_score | number: '1.0-0' }}</td>
+            <td>{{ round.adjusted_gross_score | number: '1.0-0' }}</td>
+            <td class="bold">{{ round.score_differential | number: '1.1-1' }}*</td>
+          </tr>
+        }
+        @for (round of activeRounds; track round; let idx = $index) {
+          <tr>
+            <td>{{ round.date_played | date }}</td>
+            <td>{{ round.course_name }} - {{ round.track_name }}</td>
+            <td>{{ round.tee_name }}</td>
+            <td>{{ round.tee_par | number: '1.0-0' }}</td>
+            <td>{{ round.tee_rating | number: '1.2-2' }}</td>
+            <td>{{ round.tee_slope | number: '1.0-0' }}</td>
+            <td>{{ round.golfer_playing_handicap | number: '1.0-0' }}</td>
+            <td>{{ round.gross_score | number: '1.0-0' }}</td>
+            <td>{{ round.adjusted_gross_score | number: '1.0-0' }}</td>
+            <td class="bold">{{ round.score_differential | number: '1.1-1' }}</td>
+          </tr>
+        }
       </table>
     </div>
-  </ng-template>
+  }
+
 </div>

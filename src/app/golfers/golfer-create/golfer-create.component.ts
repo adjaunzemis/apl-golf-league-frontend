@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -13,13 +13,12 @@ import { SelectModule } from 'primeng/select';
   templateUrl: './golfer-create.component.html',
   styleUrls: ['./golfer-create.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
     FloatLabel,
-    SelectModule,
-  ],
+    SelectModule
+],
 })
 export class GolferCreateComponent {
   newGolferFormGroup = new FormGroup({

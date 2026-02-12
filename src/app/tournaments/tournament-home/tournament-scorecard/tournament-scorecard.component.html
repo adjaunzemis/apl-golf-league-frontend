@@ -14,26 +14,28 @@
     [holeResultData]="frontRounds[roundIdx].holes"
     [showDetails]="true"
   ></app-scorecard-tee-info>
-  <ng-container *ngIf="!info.scramble">
+  @if (!info.scramble) {
+    @for (round of frontRounds; track round) {
+      <app-scorecard-score-line
+        [round]="round"
+        [scoreMode]="scoreMode"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="true"
+      ></app-scorecard-score-line>
+    }
+  }
+  @if (info.bestball || info.scramble) {
     <app-scorecard-score-line
-      [round]="round"
+      class="team-score-line"
+      [round]="getTeamRoundFront()"
       [scoreMode]="scoreMode"
-      [title]="round.golfer_name"
-      [subtitle]="getRoundSubtitle(round)"
-      [linkToGolferHome]="true"
-      *ngFor="let round of frontRounds"
+      [showScores]="true"
+      [title]="getTeamRoundTitle()"
+      subtitle="{{ getTeamRoundFrontSubtitle() | titlecase }}"
+      [linkToGolferHome]="false"
     ></app-scorecard-score-line>
-  </ng-container>
-  <app-scorecard-score-line
-    class="team-score-line"
-    [round]="getTeamRoundFront()"
-    [scoreMode]="scoreMode"
-    [showScores]="true"
-    [title]="getTeamRoundTitle()"
-    subtitle="{{ getTeamRoundFrontSubtitle() | titlecase }}"
-    [linkToGolferHome]="false"
-    *ngIf="info.bestball || info.scramble"
-  ></app-scorecard-score-line>
+  }
 
   <app-scorecard-hole-line
     [holeResultData]="backRounds[roundIdx].holes"
@@ -43,24 +45,26 @@
     [holeResultData]="backRounds[roundIdx].holes"
     [showDetails]="true"
   ></app-scorecard-tee-info>
-  <ng-container *ngIf="!info.scramble">
+  @if (!info.scramble) {
+    @for (round of backRounds; track round) {
+      <app-scorecard-score-line
+        [round]="round"
+        [scoreMode]="scoreMode"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="true"
+      ></app-scorecard-score-line>
+    }
+  }
+  @if (info.bestball || info.scramble) {
     <app-scorecard-score-line
-      [round]="round"
+      class="team-score-line"
+      [round]="getTeamRoundBack()"
       [scoreMode]="scoreMode"
-      [title]="round.golfer_name"
-      [subtitle]="getRoundSubtitle(round)"
-      [linkToGolferHome]="true"
-      *ngFor="let round of backRounds"
+      [showScores]="true"
+      [title]="getTeamRoundTitle()"
+      subtitle="{{ getTeamRoundBackSubtitle() | titlecase }}"
+      [linkToGolferHome]="false"
     ></app-scorecard-score-line>
-  </ng-container>
-  <app-scorecard-score-line
-    class="team-score-line"
-    [round]="getTeamRoundBack()"
-    [scoreMode]="scoreMode"
-    [showScores]="true"
-    [title]="getTeamRoundTitle()"
-    subtitle="{{ getTeamRoundBackSubtitle() | titlecase }}"
-    [linkToGolferHome]="false"
-    *ngIf="info.bestball || info.scramble"
-  ></app-scorecard-score-line>
+  }
 </div>

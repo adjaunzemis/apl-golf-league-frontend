@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -30,7 +30,6 @@ import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics
   templateUrl: './golfer-home.component.html',
   styleUrl: './golfer-home.component.css',
   imports: [
-    CommonModule,
     FormsModule,
     CardModule,
     SelectModule,
@@ -40,8 +39,8 @@ import { GolferStatisticsComponent } from './golfer-statistics/golfer-statistics
     GolferTeamsComponent,
     GolferRoundsComponent,
     GolferHandicapComponent,
-    GolferStatisticsComponent,
-  ],
+    GolferStatisticsComponent
+],
 })
 export class GolferHomeComponent implements OnInit, OnDestroy {
   isLoading = true;

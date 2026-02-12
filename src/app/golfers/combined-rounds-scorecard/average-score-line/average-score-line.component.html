@@ -4,10 +4,12 @@
       <td class="label" rowspan="2">
         <span>{{ title }}</span>
       </td>
-      <td class="hole" rowspan="2" *ngFor="let holeScore of holeScores; let holeIdx = index">
-        <div>{{ holeScore | number: '1.1-1' }}</div>
-        <div>({{ getRelativeScoreString(holeScore, rounds[0].holes[holeIdx].par) }})</div>
-      </td>
+      @for (holeScore of holeScores; track holeScore; let holeIdx = $index) {
+        <td class="hole" rowspan="2">
+          <div>{{ holeScore | number: '1.1-1' }}</div>
+          <div>({{ getRelativeScoreString(holeScore, rounds[0].holes[holeIdx].par) }})</div>
+        </td>
+      }
       <td class="total" rowspan="2">
         <div>{{ roundScore | number: '1.1-1' }}</div>
         <div>({{ getRelativeScoreString(roundScore, rounds[0].tee_par) }})</div>

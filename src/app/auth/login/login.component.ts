@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormGroup, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -14,13 +14,12 @@ import { NotificationService } from 'src/app/notifications/notification.service'
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     CardModule,
     ButtonModule,
     InputTextModule,
-    FloatLabel,
-  ],
+    FloatLabel
+],
 })
 export class LoginComponent {
   loginFormGroup = new FormGroup({

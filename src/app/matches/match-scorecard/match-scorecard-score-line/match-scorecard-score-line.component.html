@@ -2,17 +2,19 @@
   <tbody>
     <tr class="score">
       <td class="label"></td>
-      <td class="hole" *ngFor="let score of holeWinningTeamIds; let holeIdx = index">
-        <div
+      @for (score of holeWinningTeamIds; track score; let holeIdx = $index) {
+        <td class="hole">
+          <div
           [ngClass]="{
             'arrow-up': holeWinningTeamIds[holeIdx] === topTeamId,
             'arrow-down': holeWinningTeamIds[holeIdx] === bottomTeamId,
             dash: holeWinningTeamIds[holeIdx] === -1,
           }"
-        ></div>
-      </td>
+          ></div>
+        </td>
+      }
       <td class="total">
-        <ng-container *ngIf="winningTeamId !== -1; else tie">
+        @if (winningTeamId !== -1) {
           <div class="total-score">
             <div
               [ngClass]="{
@@ -27,13 +29,12 @@
               }"
             ></div>
           </div>
-        </ng-container>
-        <ng-template #tie>
+        } @else {
           <div class="total-score">
             <div class="arrow-up"></div>
             <div class="arrow-down"></div>
           </div>
-        </ng-template>
+        }
       </td>
     </tr>
   </tbody>

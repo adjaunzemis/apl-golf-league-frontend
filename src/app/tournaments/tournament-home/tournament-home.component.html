@@ -1,51 +1,61 @@
-<div
-  class="grid grid-cols-12 place-items-stretch gap-4 p-4"
-  *ngIf="info && divisions && teams && standings && statistics; else loading"
->
-  <div class="hidden md:block md:col-span-2 xl:col-span-1 bg-transparent"></div>
-  <app-tournament-info class="col-span-12 md:col-span-8 xl:col-span-3" [info]="info" *ngIf="info" />
-  <div class="hidden md:block md:col-span-2 lg:hidden bg-transparent"></div>
-  <app-tournament-standings
-    class="col-span-12 xl:col-span-4"
-    [standings]="standings"
-    (teamSelected)="onTeamSelected($event)"
-    *ngIf="standings"
-  />
-  <app-tournament-divisions
-    class="hidden xl:block xl:col-span-3"
-    [divisions]="divisions"
-    *ngIf="divisions"
-  />
-  <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
-
-  <div class="hidden xl:block xl:col-span-3 bg-transparent" *ngIf="selectedTeamRounds"></div>
-  <div class="col-span-12 xl:col-span-6" *ngIf="selectedTeamRounds">
-    <app-tournament-scorecard [info]="info" [rounds]="selectedTeamRounds" />
+@if (info && divisions && teams && standings && statistics) {
+  <div
+    class="grid grid-cols-12 place-items-stretch gap-4 p-4"
+    >
+    <div class="hidden md:block md:col-span-2 xl:col-span-1 bg-transparent"></div>
+    @if (info) {
+      <app-tournament-info class="col-span-12 md:col-span-8 xl:col-span-3" [info]="info" />
+    }
+    <div class="hidden md:block md:col-span-2 lg:hidden bg-transparent"></div>
+    @if (standings) {
+      <app-tournament-standings
+        class="col-span-12 xl:col-span-4"
+        [standings]="standings"
+        (teamSelected)="onTeamSelected($event)"
+        />
+    }
+    @if (divisions) {
+      <app-tournament-divisions
+        class="hidden xl:block xl:col-span-3"
+        [divisions]="divisions"
+        />
+    }
+    <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
+    @if (selectedTeamRounds) {
+      <div class="hidden xl:block xl:col-span-3 bg-transparent"></div>
+    }
+    @if (selectedTeamRounds) {
+      <div class="col-span-12 xl:col-span-6">
+        <app-tournament-scorecard [info]="info" [rounds]="selectedTeamRounds" />
+      </div>
+    }
+    @if (selectedTeamRounds) {
+      <div class="hidden xl:block xl:col-span-3 bg-transparent"></div>
+    }
+    <div class="hidden md:block md:col-span-2 xl:col-span-1 bg-transparent"></div>
+    @if (teams) {
+      <app-tournament-teams
+        class="col-span-12 md:col-span-8 xl:col-span-3"
+        [teams]="teams"
+        />
+    }
+    <div class="hidden md:block md:col-span-2 lg:hidden"></div>
+    @if (statistics) {
+      <app-tournament-statistics
+        class="col-span-12 xl:col-span-7"
+        [statistics]="statistics"
+        />
+    }
+    <div class="hidden md:block md:col-span-2 xl:col-span-1 bg-transparent"></div>
   </div>
-  <div class="hidden xl:block xl:col-span-3 bg-transparent" *ngIf="selectedTeamRounds"></div>
-
-  <div class="hidden md:block md:col-span-2 xl:col-span-1 bg-transparent"></div>
-  <app-tournament-teams
-    class="col-span-12 md:col-span-8 xl:col-span-3"
-    [teams]="teams"
-    *ngIf="teams"
-  />
-  <div class="hidden md:block md:col-span-2 lg:hidden"></div>
-  <app-tournament-statistics
-    class="col-span-12 xl:col-span-7"
-    [statistics]="statistics"
-    *ngIf="statistics"
-  />
-  <div class="hidden md:block md:col-span-2 xl:col-span-1 bg-transparent"></div>
-</div>
-
-<ng-template #loading>
+} @else {
   <div class="flex flex-col items-center w-full p-10">
     <p-progress-spinner
       strokeWidth="4"
       fill="transparent"
       animationDuration="2s"
       [style]="{ widthcs: '100px', height: '100px' }"
-    />
+      />
   </div>
-</ng-template>
+}
+

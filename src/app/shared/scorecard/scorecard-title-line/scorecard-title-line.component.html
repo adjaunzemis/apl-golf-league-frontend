@@ -4,21 +4,24 @@
       <td>
         <div class="info">
           <span class="title">{{ title }}</span>
-          <span class="subtitle" *ngIf="subtitle">{{ subtitle }}</span>
+          @if (subtitle) {
+            <span class="subtitle">{{ subtitle }}</span>
+          }
         </div>
       </td>
       <td class="tee-list">
-        <div
-          aria-hidden="true"
-          class="card card-small tee-card selectable"
-          *ngFor="let tee of tees"
-          (click)="selectTee(tee)"
-          (keydown)="selectTee(tee)"
-          [ngClass]="selectedTee === tee ? 'selected' : ''"
-        >
-          <span>{{ tee.name }} - {{ tee.gender[0] }}</span>
-          <span>{{ tee.rating }} / {{ tee.slope }}</span>
-        </div>
+        @for (tee of tees; track tee) {
+          <div
+            aria-hidden="true"
+            class="card card-small tee-card selectable"
+            (click)="selectTee(tee)"
+            (keydown)="selectTee(tee)"
+            [ngClass]="selectedTee === tee ? 'selected' : ''"
+            >
+            <span>{{ tee.name }} - {{ tee.gender[0] }}</span>
+            <span>{{ tee.rating }} / {{ tee.slope }}</span>
+          </div>
+        }
       </td>
     </tr>
   </tbody>

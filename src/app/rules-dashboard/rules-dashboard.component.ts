@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 
 import { AccordionModule } from 'primeng/accordion';
@@ -10,6 +10,6 @@ import { TabsModule } from 'primeng/tabs';
   selector: 'app-rules-dashboard',
   templateUrl: './rules-dashboard.component.html',
   styleUrl: './rules-dashboard.component.css',
-  imports: [CommonModule, RouterModule, AccordionModule, CardModule, TabsModule],
+  imports: [RouterModule, AccordionModule, CardModule, TabsModule],
 })
 export class RulesDashboardComponent {}
