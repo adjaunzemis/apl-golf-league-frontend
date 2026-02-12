@@ -7,10 +7,8 @@
       </div>
 
       <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
-          @if (!editMode) {
-          <p-button
-            class="font-semibold"
-            (click)="showInstructions = !showInstructions"
+        @if (!editMode) {
+          <p-button class="font-semibold" (click)="showInstructions = !showInstructions"
             >Instructions</p-button
           >
         }
@@ -64,7 +62,8 @@
             the higher combined playing handicap.
           </span>
           <span
-            >Click "Print Scorecard" for a printable version (recommend printing in landscape).</span
+            >Click "Print Scorecard" for a printable version (recommend printing in
+            landscape).</span
           >
         </div>
       </p-dialog>
@@ -159,9 +158,11 @@
               <div class="flex items-center gap-2">
                 <span>{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
                 @if (editMode && (match.home_score || match.away_score)) {
-                  <span>{{ match.home_score | number: '1.1-1' }} - {{ match.away_score | number: '1.1-1' }}</span>
-                }
-                @else if (editMode && !match.home_score && !match.away_score) {
+                  <span
+                    >{{ match.home_score | number: '1.1-1' }} -
+                    {{ match.away_score | number: '1.1-1' }}</span
+                  >
+                } @else if (editMode && !match.home_score && !match.away_score) {
                   <span class="italic">TBD</span>
                 }
               </div>
@@ -170,7 +171,10 @@
               <div class="flex items-center gap-2">
                 <span>{{ matchOption.home_team_name }} vs. {{ matchOption.away_team_name }}</span>
                 @if (editMode && (matchOption.home_score || matchOption.away_score)) {
-                  <span>{{ matchOption.home_score | number: '1.1-1' }} - {{ matchOption.away_score | number: '1.1-1' }}</span>
+                  <span
+                    >{{ matchOption.home_score | number: '1.1-1' }} -
+                    {{ matchOption.away_score | number: '1.1-1' }}</span
+                  >
                 }
                 @if (editMode && !matchOption.home_score && !matchOption.away_score) {
                   <span class="italic">TBD</span>
@@ -461,16 +465,30 @@
         </div>
       }
 
-      @if (editMode && !isSubmittingRounds && team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round) {
+      @if (
+        editMode &&
+        !isSubmittingRounds &&
+        team1Golfer1Round &&
+        team1Golfer2Round &&
+        team2Golfer1Round &&
+        team2Golfer2Round
+      ) {
         <div class="flex flex-col items-center pb-4">
           @if (!isMatchDataInvalid()) {
-            <span class="bold" style="margin-bottom: 12px">Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span>
+            <span class="bold" style="margin-bottom: 12px"
+              >Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span
+            >
           }
           @if (!selectedMatch) {
-            <span class="italic" style="color: red; margin-bottom: 12px">Match card must be selected before generating scorecard!</span>
+            <span class="italic" style="color: red; margin-bottom: 12px"
+              >Match card must be selected before generating scorecard!</span
+            >
           }
           @if (!isMatchDataInvalid()) {
-            <span class="italic" style="color: red; margin-bottom: 12px">Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par + handicap strokes)</span>
+            <span class="italic" style="color: red; margin-bottom: 12px"
+              >Check hole-by-hole scores: must be greater than zero and less than league maximum (2
+              x par + handicap strokes)</span
+            >
           }
           <p-button [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">
             Post Scores
@@ -483,7 +501,15 @@
 
   <div class="print-target px-4">
     <p-card>
-      @if (!isSubmittingRounds && selectedTeam1 && team1Golfer1Round && team1Golfer2Round && selectedTeam2 && team2Golfer1Round && team2Golfer2Round) {
+      @if (
+        !isSubmittingRounds &&
+        selectedTeam1 &&
+        team1Golfer1Round &&
+        team1Golfer2Round &&
+        selectedTeam2 &&
+        team2Golfer1Round &&
+        team2Golfer2Round
+      ) {
         <div class="flex flex-col p-4 text-sm">
           <app-scorecard-title-line
             [rounds]="getRounds()"

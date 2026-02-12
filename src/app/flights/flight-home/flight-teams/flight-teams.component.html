@@ -3,10 +3,7 @@
     <span class="text-2xl font-semibold">Teams</span>
     <div class="mx-auto"></div>
     @if (showFlightEmailButton) {
-      <a
-        class="p-button hidden md:block"
-        href="mailto:{{ getFlightEmailList() }}"
-      >
+      <a class="p-button hidden md:block" href="mailto:{{ getFlightEmailList() }}">
         <span class="text-sm pi pi-send pr-2"></span>
         <span>Flight</span>
       </a>
@@ -64,21 +61,12 @@
         </p-accordion-header>
         <p-accordion-content>
           @if (linkTeamHome || showTeamEmailButton) {
-            <div
-              class="flex flex-row justify-end w-full py-1"
-            >
+            <div class="flex flex-row justify-end w-full py-1">
               @if (linkTeamHome) {
-                <p-button
-                  icon="pi pi-home"
-                  class="text-sm"
-                  (onClick)="onTeamHomeSelected(team)"
-                />
+                <p-button icon="pi pi-home" class="text-sm" (onClick)="onTeamHomeSelected(team)" />
               }
               @if (showTeamEmailButton) {
-                <a
-                  class="p-button contactButton"
-                  href="mailto:{{ getTeamEmailList(team) }}"
-                >
+                <a class="p-button contactButton" href="mailto:{{ getTeamEmailList(team) }}">
                   <span class="text-sm pi pi-send"></span>
                 </a>
               }
