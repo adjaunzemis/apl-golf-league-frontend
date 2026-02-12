@@ -7,22 +7,22 @@
       </div>
       <!-- TODO: Re-enable when historical data is added -->
       <!-- <div class="font-medium text-gray-700 text-sm" *ngIf="golfer.member_since">
-        Member Since: {{ golfer.member_since }}
-      </div> -->
+      Member Since: {{ golfer.member_since }}
+    </div> -->
     </div>
 
     <div class="flex flex-col justify-stretch items-center w-full pt-6">
       <div class="text-sm font-medium text-gray-700">
-        <div *ngIf="golfer.email !== null">
-          <a
-            class="p-button contactButton"
-            href="mailto:{{ golfer.email | lowercase }}"
-            *ngIf="golfer.email"
-          >
-            <span class="text-sm pi pi-send"></span>
-            <span class="pl-2">Contact</span>
-          </a>
-        </div>
+        @if (golfer.email !== null) {
+          <div>
+            @if (golfer.email) {
+              <a class="p-button contactButton" href="mailto:{{ golfer.email | lowercase }}">
+                <span class="text-sm pi pi-send"></span>
+                <span class="pl-2">Contact</span>
+              </a>
+            }
+          </div>
+        }
       </div>
     </div>
   </div>

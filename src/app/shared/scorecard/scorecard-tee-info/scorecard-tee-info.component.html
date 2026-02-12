@@ -2,24 +2,44 @@
   <tbody>
     <tr class="par" (click)="toggleDetails()">
       <td class="label" [ngStyle]="{ 'background-color': color }">Par</td>
-      <td class="hole" *ngFor="let hole of holes">{{ hole.par }}</td>
+      @for (hole of holes; track hole) {
+        <td class="hole">{{ hole.par }}</td>
+      }
       <td class="total">{{ totalPar }}</td>
     </tr>
-    <tr class="stroke-index" *ngIf="showDetails">
-      <td class="label" [ngStyle]="{ 'background-color': color }">Hcp</td>
-      <td class="hole" *ngFor="let hole of holes">{{ hole.stroke_index }}</td>
-      <td class="total">--</td>
-    </tr>
-    <tr class="yardage" *ngIf="showDetails">
-      <td class="label" [ngStyle]="{ 'background-color': color }">Yds</td>
-      <td class="hole" *ngFor="let hole of holes">
-        <div *ngIf="hole.yardage">{{ hole.yardage }}</div>
-        <div *ngIf="!hole.yardage">--</div>
-      </td>
-      <td class="total" *ngIf="showDetails">
-        <div *ngIf="totalYardage !== 0">{{ totalYardage }}</div>
-        <div *ngIf="totalYardage === 0">--</div>
-      </td>
-    </tr>
+    @if (showDetails) {
+      <tr class="stroke-index">
+        <td class="label" [ngStyle]="{ 'background-color': color }">Hcp</td>
+        @for (hole of holes; track hole) {
+          <td class="hole">{{ hole.stroke_index }}</td>
+        }
+        <td class="total">--</td>
+      </tr>
+    }
+    @if (showDetails) {
+      <tr class="yardage">
+        <td class="label" [ngStyle]="{ 'background-color': color }">Yds</td>
+        @for (hole of holes; track hole) {
+          <td class="hole">
+            @if (hole.yardage) {
+              <div>{{ hole.yardage }}</div>
+            }
+            @if (!hole.yardage) {
+              <div>--</div>
+            }
+          </td>
+        }
+        @if (showDetails) {
+          <td class="total">
+            @if (totalYardage !== 0) {
+              <div>{{ totalYardage }}</div>
+            }
+            @if (totalYardage === 0) {
+              <div>--</div>
+            }
+          </td>
+        }
+      </tr>
+    }
   </tbody>
 </table>

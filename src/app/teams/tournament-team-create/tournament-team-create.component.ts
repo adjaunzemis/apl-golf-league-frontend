@@ -20,7 +20,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 import { NotificationService } from '../../notifications/notification.service';
 import { Golfer } from '../../shared/golfer.model';
-import { CommonModule } from '@angular/common';
+
 import {
   TournamentDivision,
   TournamentTeam,
@@ -36,7 +36,6 @@ import { GolfersService } from 'src/app/golfers/golfers.service';
   templateUrl: './tournament-team-create.component.html',
   styleUrls: ['./tournament-team-create.component.css'],
   imports: [
-    CommonModule,
     FormsModule,
     CardModule,
     InputGroupModule,
@@ -74,7 +73,7 @@ export class TournamentTeamCreateComponent implements OnInit, OnChanges {
 
   private teamsService = inject(TeamsService);
 
-  dialogRef: DynamicDialogRef | undefined;
+  dialogRef: DynamicDialogRef | null;
   public dialogService = inject(DialogService);
   private golfersService = inject(GolfersService);
 
@@ -246,6 +245,9 @@ export class TournamentTeamCreateComponent implements OnInit, OnChanges {
       width: '300px',
       modal: true,
     });
+    if (this.dialogRef === null) {
+      return;
+    }
 
     this.dialogRef.onClose.subscribe((golferData) => {
       if (golferData !== null && golferData !== undefined) {

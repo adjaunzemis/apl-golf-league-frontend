@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -26,7 +26,6 @@ import { FlightStatisticsComponent } from './flight-statistics/flight-statistics
   templateUrl: './flight-home.component.html',
   styleUrl: './flight-home.component.css',
   imports: [
-    CommonModule,
     ProgressSpinnerModule,
     FlightInfoComponent,
     FlightDivisionsComponent,

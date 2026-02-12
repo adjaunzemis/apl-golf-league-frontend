@@ -5,49 +5,42 @@
       <span class="italic pt-2">Only enabled for flight and tournament secretaries</span>
     </div>
 
-    <div
-      class="flex flex-col flex-2 w-full items-center p-4"
-      [formGroup]="loginFormGroup"
-      *ngIf="!isLoggedIn(); else loggedIn"
-    >
-      <p-floatlabel variant="on">
-        <input
-          pInputText
-          id="username"
-          formControlName="usernameControl"
-          autocomplete="off"
-          (keydown.enter)="onLogin()"
-        />
-        <label for="username">Username</label>
-      </p-floatlabel>
-
-      <div class="py-4">
+    @if (!isLoggedIn()) {
+      <div class="flex flex-col flex-2 w-full items-center p-4" [formGroup]="loginFormGroup">
         <p-floatlabel variant="on">
           <input
-            type="password"
             pInputText
-            id="password"
-            formControlName="passwordControl"
+            id="username"
+            formControlName="usernameControl"
             autocomplete="off"
             (keydown.enter)="onLogin()"
           />
-          <label for="password">Password</label>
+          <label for="username">Username</label>
         </p-floatlabel>
+        <div class="py-4">
+          <p-floatlabel variant="on">
+            <input
+              type="password"
+              pInputText
+              id="password"
+              formControlName="passwordControl"
+              autocomplete="off"
+              (keydown.enter)="onLogin()"
+            />
+            <label for="password">Password</label>
+          </p-floatlabel>
+        </div>
+        <p-button class="font-semibold" (click)="onLogin()">Login</p-button>
       </div>
-
-      <p-button class="font-semibold" (click)="onLogin()">Login</p-button>
-    </div>
-
-    <ng-template #loggedIn>
+    } @else {
       <div class="flex flex-col flex-2 w-full items-center p-4">
         <span class="font-semibold"
           >Currently logged in as '{{ getLoggedInName() }}' ({{ getLoggedInUsername() }})</span
         >
-
         <p-button class="font-semibold pt-4" [disabled]="!isLoggedIn()" (click)="onLogout()">
           Logout
         </p-button>
       </div>
-    </ng-template>
+    }
   </p-card>
 </div>

@@ -36,18 +36,26 @@
       </div>
 
       <div class="flex flex-row gap-8 text-center">
-        <div class="flex flex-col" *ngIf="statistics.gross_scoring.num_aces > 0">
-          <span class="text-4xl font-semibold">{{ statistics.gross_scoring.num_aces }}</span>
-          <span>Aces</span>
-        </div>
-        <div class="flex flex-col" *ngIf="statistics.gross_scoring.num_albatrosses > 0">
-          <span class="text-4xl font-semibold">{{ statistics.gross_scoring.num_albatrosses }}</span>
-          <span>Albatrosses</span>
-        </div>
-        <div class="flex flex-col" *ngIf="statistics.gross_scoring.num_eagles > 0">
-          <span class="text-4xl font-semibold">{{ statistics.gross_scoring.num_eagles }}</span>
-          <span>Eagles</span>
-        </div>
+        @if (statistics.gross_scoring.num_aces > 0) {
+          <div class="flex flex-col">
+            <span class="text-4xl font-semibold">{{ statistics.gross_scoring.num_aces }}</span>
+            <span>Aces</span>
+          </div>
+        }
+        @if (statistics.gross_scoring.num_albatrosses > 0) {
+          <div class="flex flex-col">
+            <span class="text-4xl font-semibold">{{
+              statistics.gross_scoring.num_albatrosses
+            }}</span>
+            <span>Albatrosses</span>
+          </div>
+        }
+        @if (statistics.gross_scoring.num_eagles > 0) {
+          <div class="flex flex-col">
+            <span class="text-4xl font-semibold">{{ statistics.gross_scoring.num_eagles }}</span>
+            <span>Eagles</span>
+          </div>
+        }
         <div class="flex flex-col">
           <span class="text-4xl font-semibold">{{ statistics.gross_scoring.num_birdies }}</span>
           <span>Birdies</span>

@@ -2,14 +2,12 @@
   <div class="flex flex-row px-4 py-4">
     <span class="text-2xl font-semibold">Roster</span>
     <div class="mx-auto"></div>
-    <a
-      class="p-button hidden md:block"
-      href="mailto:{{ getTeamEmailList() }}"
-      *ngIf="showTeamEmailButton"
-    >
-      <span class="text-sm pi pi-send pr-2"></span>
-      <span>Team</span>
-    </a>
+    @if (showTeamEmailButton) {
+      <a class="p-button hidden md:block" href="mailto:{{ getTeamEmailList() }}">
+        <span class="text-sm pi pi-send pr-2"></span>
+        <span>Team</span>
+      </a>
+    }
   </div>
 
   <p-table

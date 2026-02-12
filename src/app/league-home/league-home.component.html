@@ -15,23 +15,24 @@
           (onChange)="updateUrl()"
         >
           <ng-template #selectedItem let-selectedOption>
-            <div class="flex items-center gap-2" *ngIf="selectedOption">
-              <span>{{ selectedOption.year }}</span>
-              <p-tag
-                class="bg-blue-500 text-white text-sm font-normal px-1"
-                value="Active"
-                *ngIf="selectedOption.is_active"
-              />
-            </div>
+            @if (selectedOption) {
+              <div class="flex items-center gap-2">
+                <span>{{ selectedOption.year }}</span>
+                @if (selectedOption.is_active) {
+                  <p-tag class="bg-blue-500 text-white text-sm font-normal px-1" value="Active" />
+                }
+              </div>
+            }
           </ng-template>
           <ng-template let-option #item>
             <div class="flex items-center gap-2">
               <span>{{ option.year }}</span>
-              <p-tag
-                class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
-                value="Active"
-                *ngIf="option.is_active"
-              />
+              @if (option.is_active) {
+                <p-tag
+                  class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
+                  value="Active"
+                />
+              }
             </div>
           </ng-template>
         </p-select>

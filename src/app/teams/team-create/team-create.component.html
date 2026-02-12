@@ -9,10 +9,12 @@
       <span class="font-semibold">Register Golfer</span>
     </p-button>
 
-    <p-button class="hidden md:block" (click)="deleteTeam()" *ngIf="allowDelete && teamId">
-      <span class="text-sm pi pi-times"></span>
-      <span class="font-semibold">Delete</span>
-    </p-button>
+    @if (allowDelete && teamId) {
+      <p-button class="hidden md:block" (click)="deleteTeam()">
+        <span class="text-sm pi pi-times"></span>
+        <span class="font-semibold">Delete</span>
+      </p-button>
+    }
   </div>
 
   <p-inputgroup class="px-4 pt-2 w-92">
@@ -72,26 +74,28 @@
     </p-button>
   </p-inputgroup>
 
-  <p-table [value]="teamGolfers" dataKey="golfer_id" *ngIf="teamGolfers.length > 0">
-    <ng-template #header>
-      <tr>
-        <th>Golfer</th>
-        <th>Role</th>
-        <th>Division</th>
-        <th class="w-4"></th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-golfer>
-      <tr [pSelectableRow]="golfer">
-        <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-        <td class="text-gray-700">{{ golfer.role }}</td>
-        <td class="text-gray-700">{{ golfer.division }}</td>
-        <td>
-          <p-button icon="pi pi-minus text-sm" (click)="removeGolferFromTeam(golfer)" rounded />
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+  @if (teamGolfers.length > 0) {
+    <p-table [value]="teamGolfers" dataKey="golfer_id">
+      <ng-template #header>
+        <tr>
+          <th>Golfer</th>
+          <th>Role</th>
+          <th>Division</th>
+          <th class="w-4"></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-golfer>
+        <tr [pSelectableRow]="golfer">
+          <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+          <td class="text-gray-700">{{ golfer.role }}</td>
+          <td class="text-gray-700">{{ golfer.division }}</td>
+          <td>
+            <p-button icon="pi pi-minus text-sm" (click)="removeGolferFromTeam(golfer)" rounded />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
 
   <p-inputgroup class="flex items-center justify-center py-4">
     <p-button class="font-semibold" (click)="submitTeam()">Submit</p-button>

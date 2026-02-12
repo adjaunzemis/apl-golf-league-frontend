@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
@@ -18,6 +18,9 @@ import { ScoringRecordRound } from '../shared/handicap.model';
   providedIn: 'root',
 })
 export class GolfersService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private allGolfers: Golfer[] = [];
   private allGolfersUpdated = new Subject<Golfer[]>();
 
@@ -35,11 +38,6 @@ export class GolfersService {
 
   private golferStatistics: GolferStatistics;
   private golferStatisticsUpdated = new Subject<GolferStatistics>();
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   getAllGolfers(): void {
     this.http.get<Golfer[]>(environment.apiUrl + 'golfers/info').subscribe((result) => {

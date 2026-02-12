@@ -42,13 +42,14 @@
       placeholder="Division"
     />
 
-    <p-select
-      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-28 ml-2"
-      [options]="cadenceOptions"
-      [(ngModel)]="newGolferCadence"
-      placeholder="Cadence"
-      *ngIf="flightId"
-    />
+    @if (flightId) {
+      <p-select
+        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-28 ml-2"
+        [options]="cadenceOptions"
+        [(ngModel)]="newGolferCadence"
+        placeholder="Cadence"
+      />
+    }
 
     <p-button (click)="addGolfer()">
       <span class="pi pi-plus text-sm"></span>
@@ -63,41 +64,42 @@
         }})</p-accordion-header
       >
       <p-accordion-content>
-        <p-table [value]="freeAgents" dataKey="golfer_id" *ngIf="freeAgents.length > 0">
-          <ng-template #header>
-            <tr>
-              <th>Golfer</th>
-              <th>Division</th>
-              <th *ngIf="flightId">Cadence</th>
-              <th class="w-4"></th>
-              <th class="w-4"></th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-golfer>
-            <tr [pSelectableRow]="golfer">
-              <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-              <td class="text-gray-700">{{ golfer.division }}</td>
-              <td class="text-gray-700" *ngIf="flightId">{{ golfer.cadence }}</td>
-              <td class="w-4">
-                <a
-                  class="p-button"
-                  href="mailto:{{ golfer.email | lowercase }}"
-                  *ngIf="golfer.email"
-                >
-                  <span class="pi pi-send"></span>
-                </a>
-              </td>
-              <td>
-                <p-button
-                  icon="pi pi-minus text-sm"
-                  (click)="removeGolfer(golfer)"
-                  rounded
-                  *ngIf="allowDelete"
-                />
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+        @if (freeAgents.length > 0) {
+          <p-table [value]="freeAgents" dataKey="golfer_id">
+            <ng-template #header>
+              <tr>
+                <th>Golfer</th>
+                <th>Division</th>
+                @if (flightId) {
+                  <th>Cadence</th>
+                }
+                <th class="w-4"></th>
+                <th class="w-4"></th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-golfer>
+              <tr [pSelectableRow]="golfer">
+                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+                <td class="text-gray-700">{{ golfer.division }}</td>
+                @if (flightId) {
+                  <td class="text-gray-700">{{ golfer.cadence }}</td>
+                }
+                <td class="w-4">
+                  @if (golfer.email) {
+                    <a class="p-button" href="mailto:{{ golfer.email | lowercase }}">
+                      <span class="pi pi-send"></span>
+                    </a>
+                  }
+                </td>
+                <td>
+                  @if (allowDelete) {
+                    <p-button icon="pi pi-minus text-sm" (click)="removeGolfer(golfer)" rounded />
+                  }
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        }
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>

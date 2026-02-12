@@ -1,480 +1,507 @@
-<div class="grid grid-cols-12 place-items-stretch gap-4 p-4" *ngIf="!isLoading; else loading">
-  <div class="hidden md:block md:col-span-1 bg-transparent"></div>
-  <p-card class="col-span-12 md:col-span-10">
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
-      <span class="text-2xl font-semibold">Match Scorecard</span>
-    </div>
-
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
-      <p-button
-        class="font-semibold"
-        *ngIf="!editMode"
-        (click)="showInstructions = !showInstructions"
-        >Instructions</p-button
-      >
-      <p-button
-        class="font-semibold"
-        (click)="createMatchRounds()"
-        [disabled]="!checkValidSelections()"
-        >Generate Scorecard</p-button
-      >
-      <p-button
-        class="font-semibold"
-        (click)="printScorecard()"
-        [disabled]="
-          !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
-        "
-        >Print Scorecard</p-button
-      >
-    </div>
-
-    <p-dialog [modal]="true" [(visible)]="showInstructions">
-      <ng-template #header>
-        <span class="font-semibold text-2xl px-4">Scorecard Instructions</span>
-      </ng-template>
-      <div class="flex flex-col px-4 pb-4">
-        <span>Select the anticipated date of the match.</span>
-        <span>
-          Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be
-          played.
-        </span>
-        <span> Select the week and match, or manually select teams. </span>
-        <span>Select the two golfers who will play for the first team.</span>
-        <span>
-          - If the selected course is the home course for the flight, tee selection will populate
-          automatically.
-        </span>
-        <span>- Otherwise, select the tees each golfer will play.</span>
-        <span>Repeat the process for the second team.</span>
-        <span>Once all required information has been entered, click "Generate Scorecard".</span>
-        <span>- If unable to click the button, double-check the selected form entries.</span>
-        <span>
-          - The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
-          handicap index and the tee rating/slope.
-        </span>
-        <span
-          >- Black dots indicate handicap strokes given to a greater-than-zero handicap
-          golfer.</span
-        >
-        <span>- Red dots indicate handicap strokes taken from a scratch-or-better golfer.</span>
-        <span>
-          - On the team score line, black dots indicate handicap strokes received by the team with
-          the higher combined playing handicap.
-        </span>
-        <span
-          >Click "Print Scorecard" for a printable version (recommend printing in landscape).</span
-        >
-      </div>
-    </p-dialog>
-
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
-      <p-datepicker
-        [(ngModel)]="selectedDate"
-        [iconDisplay]="'input'"
-        [showIcon]="true"
-        [showTime]="true"
-        [showButtonBar]="true"
-      />
-
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55 ml-2"
-        [options]="flightOptions"
-        [(ngModel)]="selectedFlightInfo"
-        (onChange)="onSelectedFlightChanged($event)"
-        placeholder="Flight"
-      >
-        <ng-template #selectedItem let-selectedFlight>
-          <div class="flex items-center gap-2">
-            <div>{{ selectedFlight.name }} ({{ selectedFlight.year }})</div>
-          </div>
-        </ng-template>
-        <ng-template let-flightOption #item>
-          <div class="flex items-center gap-2">
-            <div>{{ flightOption.name }} ({{ flightOption.year }})</div>
-          </div>
-        </ng-template>
-      </p-select>
-
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-70 ml-2"
-        [options]="courseOptions"
-        [(ngModel)]="selectedCourseInfo"
-        (onChange)="onSelectedCourseChanged($event)"
-        placeholder="Course"
-      >
-        <ng-template #selectedItem let-selectedCourse>
-          <div class="flex items-center gap-2">
-            <div>{{ selectedCourse.name }}</div>
-          </div>
-        </ng-template>
-        <ng-template let-courseOption #item>
-          <div class="flex items-center gap-2">
-            <div>{{ courseOption.name }}</div>
-          </div>
-        </ng-template>
-      </p-select>
-
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-25 ml-2"
-        [options]="selectedCourse.tracks"
-        [(ngModel)]="selectedTrack"
-        (onChange)="onSelectedTrackChanged($event)"
-        [disabled]="!selectedCourse"
-        *ngIf="selectedCourse"
-        placeholder="Track"
-      >
-        <ng-template #selectedItem let-selectedTrack>
-          <div class="flex items-center gap-2">
-            <div>{{ selectedTrack.name }}</div>
-          </div>
-        </ng-template>
-        <ng-template let-trackOption #item>
-          <div class="flex items-center gap-2">
-            <div>{{ trackOption.name }}</div>
-          </div>
-        </ng-template>
-      </p-select>
-    </div>
-
-    <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-45"
-        [options]="weekOptions"
-        (onChange)="onSelectedWeekChanged($event)"
-        placeholder="Week"
-      />
-
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-100 ml-2"
-        [(ngModel)]="selectedMatch"
-        [options]="selectedWeekMatches"
-        (onChange)="onMatchSelected()"
-        placeholder="Select match"
-        *ngIf="selectedFlight"
-      >
-        <ng-template #selectedItem let-match>
-          <div class="flex items-center gap-2">
-            <span>{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
-            <span *ngIf="editMode && (match.home_score || match.away_score)"
-              >{{ match.home_score | number: '1.1-1' }} -
-              {{ match.away_score | number: '1.1-1' }}</span
-            >
-            <span class="italic" *ngIf="editMode && !match.home_score && !match.away_score"
-              >TBD</span
-            >
-          </div>
-        </ng-template>
-        <ng-template let-matchOption #item>
-          <div class="flex items-center gap-2">
-            <span>{{ matchOption.home_team_name }} vs. {{ matchOption.away_team_name }}</span>
-            <span *ngIf="editMode && (matchOption.home_score || matchOption.away_score)"
-              >{{ matchOption.home_score | number: '1.1-1' }} -
-              {{ matchOption.away_score | number: '1.1-1' }}</span
-            >
-            <span
-              class="italic"
-              *ngIf="editMode && !matchOption.home_score && !matchOption.away_score"
-              >TBD</span
-            >
-          </div>
-        </ng-template>
-      </p-select>
-    </div>
-
-    <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4" *ngIf="selectedFlight">
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55"
-        [(ngModel)]="selectedTeam1"
-        [options]="selectedFlight.teams"
-        placeholder="Team 1"
-        (onChange)="onSelectedTeamChanged($event, 1)"
-      >
-        <ng-template #selectedItem let-selectedTeam>
-          <div class="flex items-center gap-2">
-            <div>{{ selectedTeam.name }}</div>
-          </div>
-        </ng-template>
-        <ng-template let-teamOption #item>
-          <div class="flex items-center gap-2">
-            <div>{{ teamOption.name }}</div>
-          </div>
-        </ng-template>
-      </p-select>
-
-      <div class="flex flex-col gap-2">
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam1Golfer1"
-          [options]="selectedTeam1.golfers"
-          placeholder="Team 1 Golfer 1"
-          [disabled]="!selectedTeam1"
-          (onChange)="onSelectedGolferChanged($event, 1, 1)"
-          *ngIf="selectedTeam1"
-        >
-          <ng-template #selectedItem let-selectedGolfer>
-            <span>{{ selectedGolfer.golfer_name }}</span>
-            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
-          </ng-template>
-          <ng-template let-golferOption #item>
-            <span
-              [ngClass]="
-                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
-              "
-              >{{ golferOption.golfer_name }}</span
-            >
-            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
-              (substitute)</span
-            >
-          </ng-template>
-        </p-select>
-
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam1Golfer1Tee"
-          [options]="selectedTrack.tees"
-          placeholder="Team 1 Golfer 1 Tees"
-          [disabled]="!selectedTrack"
-          (onChange)="onSelectedTeeChanged($event, 1, 1)"
-          *ngIf="selectedTrack && selectedTeam1Golfer1"
-        >
-          <ng-template #selectedItem let-selectedTee>
-            <div>
-              {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
-              {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
-            </div>
-          </ng-template>
-          <ng-template let-teeOption #item>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
-              </div>
-            </div>
-          </ng-template>
-        </p-select>
+@if (!isLoading) {
+  <div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
+    <div class="hidden md:block md:col-span-1 bg-transparent"></div>
+    <p-card class="col-span-12 md:col-span-10">
+      <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
+        <span class="text-2xl font-semibold">Match Scorecard</span>
       </div>
 
-      <div class="flex flex-col gap-2">
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam1Golfer2"
-          [options]="selectedTeam1.golfers"
-          placeholder="Team 1 Golfer 2"
-          [disabled]="!selectedTeam1"
-          (onChange)="onSelectedGolferChanged($event, 1, 2)"
-          *ngIf="selectedTeam1"
+      <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
+        @if (!editMode) {
+          <p-button class="font-semibold" (click)="showInstructions = !showInstructions"
+            >Instructions</p-button
+          >
+        }
+        <p-button
+          class="font-semibold"
+          (click)="createMatchRounds()"
+          [disabled]="!checkValidSelections()"
+          >Generate Scorecard</p-button
         >
-          <ng-template #selectedItem let-selectedGolfer>
-            <span>{{ selectedGolfer.golfer_name }}</span>
-            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
-          </ng-template>
-          <ng-template let-golferOption #item>
-            <span
-              [ngClass]="
-                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
-              "
-              >{{ golferOption.golfer_name }}</span
-            >
-            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
-              (substitute)</span
-            >
-          </ng-template>
-        </p-select>
-
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam1Golfer2Tee"
-          [options]="selectedTrack.tees"
-          placeholder="Team 1 Golfer 2 Tees"
-          [disabled]="!selectedTrack"
-          (onChange)="onSelectedTeeChanged($event, 1, 2)"
-          *ngIf="selectedTrack && selectedTeam1Golfer2"
+        <p-button
+          class="font-semibold"
+          (click)="printScorecard()"
+          [disabled]="
+            !(team1Golfer1Round && team1Golfer2Round && team2Golfer1Round && team2Golfer2Round)
+          "
+          >Print Scorecard</p-button
         >
-          <ng-template #selectedItem let-selectedTee>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
-                {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
-              </div>
-            </div>
-          </ng-template>
-          <ng-template let-teeOption #item>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
-              </div>
-            </div>
-          </ng-template>
-        </p-select>
       </div>
-    </div>
 
-    <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4" *ngIf="selectedFlight">
-      <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55"
-        [(ngModel)]="selectedTeam2"
-        [options]="selectedFlight.teams"
-        (onChange)="onSelectedTeamChanged($event, 2)"
-        placeholder="Team 2"
-      >
-        <ng-template #selectedItem let-selectedTeam>
-          <div class="flex items-center gap-2">
-            <div>{{ selectedTeam.name }}</div>
-          </div>
+      <p-dialog [modal]="true" [(visible)]="showInstructions">
+        <ng-template #header>
+          <span class="font-semibold text-2xl px-4">Scorecard Instructions</span>
         </ng-template>
-        <ng-template let-teamOption #item>
-          <div class="flex items-center gap-2">
-            <div>{{ teamOption.name }}</div>
+        <div class="flex flex-col px-4 pb-4">
+          <span>Select the anticipated date of the match.</span>
+          <span>
+            Select the flight, course (e.g. Diamond Ridge) and track (e.g. Front or Back) to be
+            played.
+          </span>
+          <span> Select the week and match, or manually select teams. </span>
+          <span>Select the two golfers who will play for the first team.</span>
+          <span>
+            - If the selected course is the home course for the flight, tee selection will populate
+            automatically.
+          </span>
+          <span>- Otherwise, select the tees each golfer will play.</span>
+          <span>Repeat the process for the second team.</span>
+          <span>Once all required information has been entered, click "Generate Scorecard".</span>
+          <span>- If unable to click the button, double-check the selected form entries.</span>
+          <span>
+            - The "Hcp" below a golfer's name is the playing handicap computed from the golfer's APL
+            handicap index and the tee rating/slope.
+          </span>
+          <span
+            >- Black dots indicate handicap strokes given to a greater-than-zero handicap
+            golfer.</span
+          >
+          <span>- Red dots indicate handicap strokes taken from a scratch-or-better golfer.</span>
+          <span>
+            - On the team score line, black dots indicate handicap strokes received by the team with
+            the higher combined playing handicap.
+          </span>
+          <span
+            >Click "Print Scorecard" for a printable version (recommend printing in
+            landscape).</span
+          >
+        </div>
+      </p-dialog>
+
+      <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
+        <p-datepicker
+          [(ngModel)]="selectedDate"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          [showTime]="true"
+          [showButtonBar]="true"
+        />
+
+        <p-select
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55 ml-2"
+          [options]="flightOptions"
+          [(ngModel)]="selectedFlightInfo"
+          (onChange)="onSelectedFlightChanged($event)"
+          placeholder="Flight"
+        >
+          <ng-template #selectedItem let-selectedFlight>
+            <div class="flex items-center gap-2">
+              <div>{{ selectedFlight.name }} ({{ selectedFlight.year }})</div>
+            </div>
+          </ng-template>
+          <ng-template let-flightOption #item>
+            <div class="flex items-center gap-2">
+              <div>{{ flightOption.name }} ({{ flightOption.year }})</div>
+            </div>
+          </ng-template>
+        </p-select>
+
+        <p-select
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-70 ml-2"
+          [options]="courseOptions"
+          [(ngModel)]="selectedCourseInfo"
+          (onChange)="onSelectedCourseChanged($event)"
+          placeholder="Course"
+        >
+          <ng-template #selectedItem let-selectedCourse>
+            <div class="flex items-center gap-2">
+              <div>{{ selectedCourse.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-courseOption #item>
+            <div class="flex items-center gap-2">
+              <div>{{ courseOption.name }}</div>
+            </div>
+          </ng-template>
+        </p-select>
+
+        @if (selectedCourse) {
+          <p-select
+            class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-25 ml-2"
+            [options]="selectedCourse.tracks"
+            [(ngModel)]="selectedTrack"
+            (onChange)="onSelectedTrackChanged($event)"
+            [disabled]="!selectedCourse"
+            placeholder="Track"
+          >
+            <ng-template #selectedItem let-selectedTrack>
+              <div class="flex items-center gap-2">
+                <div>{{ selectedTrack.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-trackOption #item>
+              <div class="flex items-center gap-2">
+                <div>{{ trackOption.name }}</div>
+              </div>
+            </ng-template>
+          </p-select>
+        }
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4">
+        <p-select
+          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-45"
+          [options]="weekOptions"
+          (onChange)="onSelectedWeekChanged($event)"
+          placeholder="Week"
+        />
+
+        @if (selectedFlight) {
+          <p-select
+            class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-100 ml-2"
+            [(ngModel)]="selectedMatch"
+            [options]="selectedWeekMatches"
+            (onChange)="onMatchSelected()"
+            placeholder="Select match"
+          >
+            <ng-template #selectedItem let-match>
+              <div class="flex items-center gap-2">
+                <span>{{ match.home_team_name }} vs. {{ match.away_team_name }}</span>
+                @if (editMode && (match.home_score || match.away_score)) {
+                  <span
+                    >{{ match.home_score | number: '1.1-1' }} -
+                    {{ match.away_score | number: '1.1-1' }}</span
+                  >
+                } @else if (editMode && !match.home_score && !match.away_score) {
+                  <span class="italic">TBD</span>
+                }
+              </div>
+            </ng-template>
+            <ng-template let-matchOption #item>
+              <div class="flex items-center gap-2">
+                <span>{{ matchOption.home_team_name }} vs. {{ matchOption.away_team_name }}</span>
+                @if (editMode && (matchOption.home_score || matchOption.away_score)) {
+                  <span
+                    >{{ matchOption.home_score | number: '1.1-1' }} -
+                    {{ matchOption.away_score | number: '1.1-1' }}</span
+                  >
+                }
+                @if (editMode && !matchOption.home_score && !matchOption.away_score) {
+                  <span class="italic">TBD</span>
+                }
+              </div>
+            </ng-template>
+          </p-select>
+        }
+      </div>
+
+      @if (selectedFlight) {
+        <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4">
+          <p-select
+            class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55"
+            [(ngModel)]="selectedTeam1"
+            [options]="selectedFlight.teams"
+            placeholder="Team 1"
+            (onChange)="onSelectedTeamChanged($event, 1)"
+          >
+            <ng-template #selectedItem let-selectedTeam>
+              <div class="flex items-center gap-2">
+                <div>{{ selectedTeam.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-teamOption #item>
+              <div class="flex items-center gap-2">
+                <div>{{ teamOption.name }}</div>
+              </div>
+            </ng-template>
+          </p-select>
+
+          <div class="flex flex-col gap-2">
+            @if (selectedTeam1) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam1Golfer1"
+                [options]="selectedTeam1.golfers"
+                placeholder="Team 1 Golfer 1"
+                [disabled]="!selectedTeam1"
+                (onChange)="onSelectedGolferChanged($event, 1, 1)"
+              >
+                <ng-template #selectedItem let-selectedGolfer>
+                  <span>{{ selectedGolfer.golfer_name }}</span>
+                  @if (selectedGolfer.role === 'Substitute') {
+                    <span class="italic"> (sub.)</span>
+                  }
+                </ng-template>
+                <ng-template let-golferOption #item>
+                  <span
+                    [ngClass]="
+                      golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+                    "
+                    >{{ golferOption.golfer_name }}</span
+                  >
+                  @if (golferOption.role === 'Substitute') {
+                    <span class="italic text-gray-700 pl-1"> (substitute)</span>
+                  }
+                </ng-template>
+              </p-select>
+            }
+
+            @if (selectedTrack && selectedTeam1Golfer1) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam1Golfer1Tee"
+                [options]="selectedTrack.tees"
+                placeholder="Team 1 Golfer 1 Tees"
+                [disabled]="!selectedTrack"
+                (onChange)="onSelectedTeeChanged($event, 1, 1)"
+              >
+                <ng-template #selectedItem let-selectedTee>
+                  <div>
+                    {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+                    {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+                  </div>
+                </ng-template>
+                <ng-template let-teeOption #item>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                      {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+              </p-select>
+            }
           </div>
-        </ng-template>
-      </p-select>
 
-      <div class="flex flex-col gap-2">
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam2Golfer1"
-          [options]="selectedTeam2.golfers"
-          placeholder="Team 2 Golfer 1"
-          [disabled]="!selectedTeam2"
-          (onChange)="onSelectedGolferChanged($event, 2, 1)"
-          *ngIf="selectedTeam2"
-        >
-          <ng-template #selectedItem let-selectedGolfer>
-            <span>{{ selectedGolfer.golfer_name }}</span>
-            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
-          </ng-template>
-          <ng-template let-golferOption #item>
-            <span
-              [ngClass]="
-                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
-              "
-              >{{ golferOption.golfer_name }}</span
-            >
-            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
-              (substitute)</span
-            >
-          </ng-template>
-        </p-select>
+          <div class="flex flex-col gap-2">
+            @if (selectedTeam1) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam1Golfer2"
+                [options]="selectedTeam1.golfers"
+                placeholder="Team 1 Golfer 2"
+                [disabled]="!selectedTeam1"
+                (onChange)="onSelectedGolferChanged($event, 1, 2)"
+              >
+                <ng-template #selectedItem let-selectedGolfer>
+                  <span>{{ selectedGolfer.golfer_name }}</span>
+                  @if (selectedGolfer.role === 'Substitute') {
+                    <span class="italic"> (sub.)</span>
+                  }
+                </ng-template>
+                <ng-template let-golferOption #item>
+                  <span
+                    [ngClass]="
+                      golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+                    "
+                    >{{ golferOption.golfer_name }}</span
+                  >
+                  @if (golferOption.role === 'Substitute') {
+                    <span class="italic text-gray-700 pl-1"> (substitute)</span>
+                  }
+                </ng-template>
+              </p-select>
+            }
 
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam2Golfer1Tee"
-          [options]="selectedTrack.tees"
-          placeholder="Team 2 Golfer 1 Tees"
-          [disabled]="!selectedTrack"
-          (onChange)="onSelectedTeeChanged($event, 2, 1)"
-          *ngIf="selectedTrack && selectedTeam2Golfer1"
-        >
-          <ng-template #selectedItem let-selectedTee>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
-                {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+            @if (selectedTrack && selectedTeam1Golfer2) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam1Golfer2Tee"
+                [options]="selectedTrack.tees"
+                placeholder="Team 1 Golfer 2 Tees"
+                [disabled]="!selectedTrack"
+                (onChange)="onSelectedTeeChanged($event, 1, 2)"
+              >
+                <ng-template #selectedItem let-selectedTee>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+                      {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template let-teeOption #item>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                      {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+              </p-select>
+            }
+          </div>
+        </div>
+      }
+
+      @if (selectedFlight) {
+        <div class="flex flex-col sm:flex-row sm:items-start px-4 pb-4">
+          <p-select
+            class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-55"
+            [(ngModel)]="selectedTeam2"
+            [options]="selectedFlight.teams"
+            (onChange)="onSelectedTeamChanged($event, 2)"
+            placeholder="Team 2"
+          >
+            <ng-template #selectedItem let-selectedTeam>
+              <div class="flex items-center gap-2">
+                <div>{{ selectedTeam.name }}</div>
               </div>
-            </div>
-          </ng-template>
-          <ng-template let-teeOption #item>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+            </ng-template>
+            <ng-template let-teamOption #item>
+              <div class="flex items-center gap-2">
+                <div>{{ teamOption.name }}</div>
               </div>
-            </div>
-          </ng-template>
-        </p-select>
-      </div>
+            </ng-template>
+          </p-select>
 
-      <div class="flex flex-col gap-2">
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam2Golfer2"
-          [options]="selectedTeam2.golfers"
-          placeholder="Team 2 Golfer 2"
-          [disabled]="!selectedTeam2"
-          (onChange)="onSelectedGolferChanged($event, 2, 2)"
-          *ngIf="selectedTeam2"
-        >
-          <ng-template #selectedItem let-selectedGolfer>
-            <span>{{ selectedGolfer.golfer_name }}</span>
-            <span class="italic" *ngIf="selectedGolfer.role === 'Substitute'"> (sub.)</span>
-          </ng-template>
-          <ng-template let-golferOption #item>
-            <span
-              [ngClass]="
-                golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
-              "
-              >{{ golferOption.golfer_name }}</span
-            >
-            <span class="italic text-gray-700 pl-1" *ngIf="golferOption.role === 'Substitute'">
-              (substitute)</span
-            >
-          </ng-template>
-        </p-select>
+          <div class="flex flex-col gap-2">
+            @if (selectedTeam2) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam2Golfer1"
+                [options]="selectedTeam2.golfers"
+                placeholder="Team 2 Golfer 1"
+                [disabled]="!selectedTeam2"
+                (onChange)="onSelectedGolferChanged($event, 2, 1)"
+              >
+                <ng-template #selectedItem let-selectedGolfer>
+                  <span>{{ selectedGolfer.golfer_name }}</span>
+                  @if (selectedGolfer.role === 'Substitute') {
+                    <span class="italic"> (sub.)</span>
+                  }
+                </ng-template>
+                <ng-template let-golferOption #item>
+                  <span
+                    [ngClass]="
+                      golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+                    "
+                    >{{ golferOption.golfer_name }}</span
+                  >
+                  @if (golferOption.role === 'Substitute') {
+                    <span class="italic text-gray-700 pl-1"> (substitute)</span>
+                  }
+                </ng-template>
+              </p-select>
+            }
 
-        <p-select
-          class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
-          [(ngModel)]="selectedTeam2Golfer2Tee"
-          [options]="selectedTrack.tees"
-          placeholder="Team 2 Golfer 2 Tees"
-          [disabled]="!selectedTrack"
-          (onChange)="onSelectedTeeChanged($event, 2, 2)"
-          *ngIf="selectedTrack && selectedTeam2Golfer2"
-        >
-          <ng-template #selectedItem let-selectedTee>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
-                {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
-              </div>
-            </div>
-          </ng-template>
-          <ng-template let-teeOption #item>
-            <div class="flex items-center gap-2">
-              <div>
-                {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
-                {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
-              </div>
-            </div>
-          </ng-template>
-        </p-select>
-      </div>
-    </div>
+            @if (selectedTrack && selectedTeam2Golfer1) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam2Golfer1Tee"
+                [options]="selectedTrack.tees"
+                placeholder="Team 2 Golfer 1 Tees"
+                [disabled]="!selectedTrack"
+                (onChange)="onSelectedTeeChanged($event, 2, 1)"
+              >
+                <ng-template #selectedItem let-selectedTee>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+                      {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template let-teeOption #item>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                      {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+              </p-select>
+            }
+          </div>
 
-    <div
-      class="flex flex-col items-center pb-4"
-      *ngIf="
+          <div class="flex flex-col gap-2">
+            @if (selectedTeam2) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam2Golfer2"
+                [options]="selectedTeam2.golfers"
+                placeholder="Team 2 Golfer 2"
+                [disabled]="!selectedTeam2"
+                (onChange)="onSelectedGolferChanged($event, 2, 2)"
+              >
+                <ng-template #selectedItem let-selectedGolfer>
+                  <span>{{ selectedGolfer.golfer_name }}</span>
+                  @if (selectedGolfer.role === 'Substitute') {
+                    <span class="italic"> (sub.)</span>
+                  }
+                </ng-template>
+                <ng-template let-golferOption #item>
+                  <span
+                    [ngClass]="
+                      golferOption.role === 'Substitute' ? 'italic text-gray-700' : 'font-normal'
+                    "
+                    >{{ golferOption.golfer_name }}</span
+                  >
+                  @if (golferOption.role === 'Substitute') {
+                    <span class="italic text-gray-700 pl-1"> (substitute)</span>
+                  }
+                </ng-template>
+              </p-select>
+            }
+
+            @if (selectedTrack && selectedTeam2Golfer2) {
+              <p-select
+                class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-50 ml-2"
+                [(ngModel)]="selectedTeam2Golfer2Tee"
+                [options]="selectedTrack.tees"
+                placeholder="Team 2 Golfer 2 Tees"
+                [disabled]="!selectedTrack"
+                (onChange)="onSelectedTeeChanged($event, 2, 2)"
+              >
+                <ng-template #selectedItem let-selectedTee>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ selectedTee.name }} ({{ selectedTee.gender | slice: 0 : 1 }}:
+                      {{ selectedTee.rating | number: '1.1-1' }}/{{ selectedTee.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template let-teeOption #item>
+                  <div class="flex items-center gap-2">
+                    <div>
+                      {{ teeOption.name }} ({{ teeOption.gender | slice: 0 : 1 }}:
+                      {{ teeOption.rating | number: '1.1-1' }}/{{ teeOption.slope }})
+                    </div>
+                  </div>
+                </ng-template>
+              </p-select>
+            }
+          </div>
+        </div>
+      }
+
+      @if (
         editMode &&
         !isSubmittingRounds &&
         team1Golfer1Round &&
         team1Golfer2Round &&
         team2Golfer1Round &&
         team2Golfer2Round
-      "
-    >
-      <span class="bold" style="margin-bottom: 12px" *ngIf="!isMatchDataInvalid()"
-        >Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span
-      >
-      <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="!selectedMatch"
-        >Match card must be selected before generating scorecard!</span
-      >
-      <span class="italic" style="color: red; margin-bottom: 12px" *ngIf="isMatchDataInvalid()"
-        >Check hole-by-hole scores: must be greater than zero and less than league maximum (2 x par
-        + handicap strokes)</span
-      >
-      <p-button [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">
-        Post Scores
-      </p-button>
-    </div>
-  </p-card>
-  <div class="hidden md:block md:col-span-1 bg-transparent"></div>
-</div>
+      ) {
+        <div class="flex flex-col items-center pb-4">
+          @if (!isMatchDataInvalid()) {
+            <span class="bold" style="margin-bottom: 12px"
+              >Score: {{ computeTeam1Score() }} - {{ computeTeam2Score() }}</span
+            >
+          }
+          @if (!selectedMatch) {
+            <span class="italic" style="color: red; margin-bottom: 12px"
+              >Match card must be selected before generating scorecard!</span
+            >
+          }
+          @if (!isMatchDataInvalid()) {
+            <span class="italic" style="color: red; margin-bottom: 12px"
+              >Check hole-by-hole scores: must be greater than zero and less than league maximum (2
+              x par + handicap strokes)</span
+            >
+          }
+          <p-button [disabled]="isMatchDataInvalid()" (click)="postMatchRounds()">
+            Post Scores
+          </p-button>
+        </div>
+      }
+    </p-card>
+    <div class="hidden md:block md:col-span-1 bg-transparent"></div>
+  </div>
 
-<div class="print-target px-4">
-  <p-card>
-    <div
-      class="flex flex-col p-4 text-sm"
-      *ngIf="
+  <div class="print-target px-4">
+    <p-card>
+      @if (
         !isSubmittingRounds &&
         selectedTeam1 &&
         team1Golfer1Round &&
@@ -482,73 +509,72 @@
         selectedTeam2 &&
         team2Golfer1Round &&
         team2Golfer2Round
-      "
-    >
-      <app-scorecard-title-line
-        [rounds]="getRounds()"
-        [title]="getMatchTitle()"
-        [subtitle]="getMatchSubtitle()"
-      ></app-scorecard-title-line>
+      ) {
+        <div class="flex flex-col p-4 text-sm">
+          <app-scorecard-title-line
+            [rounds]="getRounds()"
+            [title]="getMatchTitle()"
+            [subtitle]="getMatchSubtitle()"
+          ></app-scorecard-title-line>
 
-      <app-scorecard-hole-line
-        [holeResultData]="getRounds()[roundIdx].holes"
-        [showScoreModeButtons]="false"
-      ></app-scorecard-hole-line>
-      <app-scorecard-tee-info
-        [holeResultData]="getRounds()[roundIdx].holes"
-        [showDetails]="true"
-      ></app-scorecard-tee-info>
+          <app-scorecard-hole-line
+            [holeResultData]="getRounds()[roundIdx].holes"
+            [showScoreModeButtons]="false"
+          ></app-scorecard-hole-line>
+          <app-scorecard-tee-info
+            [holeResultData]="getRounds()[roundIdx].holes"
+            [showDetails]="true"
+          ></app-scorecard-tee-info>
 
-      <ng-container *ngFor="let round of getRoundsForTeam(1); let roundIdx = index">
-        <app-scorecard-score-line
-          [(round)]="getRoundsForTeam(1)[roundIdx]"
-          scoreMode="gross"
-          [enterScores]="editMode"
-          [showScores]="false"
-          [title]="round.golfer_name"
-          [subtitle]="getRoundSubtitle(round)"
-          [linkToGolferHome]="false"
-        ></app-scorecard-score-line>
-      </ng-container>
+          @for (round of getRoundsForTeam(1); track round; let roundIdx = $index) {
+            <app-scorecard-score-line
+              [(round)]="getRoundsForTeam(1)[roundIdx]"
+              scoreMode="gross"
+              [enterScores]="editMode"
+              [showScores]="false"
+              [title]="round.golfer_name"
+              [subtitle]="getRoundSubtitle(round)"
+              [linkToGolferHome]="false"
+            ></app-scorecard-score-line>
+          }
+          <app-scorecard-score-line
+            class="team-score-line"
+            [round]="getTeamRound(1)"
+            scoreMode="gross"
+            [teamScore]="true"
+            [showScores]="editMode"
+            [title]="selectedTeam1.name"
+            [subtitle]="getTeamRoundSubtitle(1)"
+            [linkToGolferHome]="false"
+          ></app-scorecard-score-line>
 
-      <app-scorecard-score-line
-        class="team-score-line"
-        [round]="getTeamRound(1)"
-        scoreMode="gross"
-        [teamScore]="true"
-        [showScores]="editMode"
-        [title]="selectedTeam1.name"
-        [subtitle]="getTeamRoundSubtitle(1)"
-        [linkToGolferHome]="false"
-      ></app-scorecard-score-line>
+          <app-scorecard-score-line
+            class="team-score-line"
+            [round]="getTeamRound(2)"
+            scoreMode="gross"
+            [teamScore]="true"
+            [showScores]="editMode"
+            [title]="selectedTeam2.name"
+            [subtitle]="getTeamRoundSubtitle(2)"
+            [linkToGolferHome]="false"
+          ></app-scorecard-score-line>
 
-      <app-scorecard-score-line
-        class="team-score-line"
-        [round]="getTeamRound(2)"
-        scoreMode="gross"
-        [teamScore]="true"
-        [showScores]="editMode"
-        [title]="selectedTeam2.name"
-        [subtitle]="getTeamRoundSubtitle(2)"
-        [linkToGolferHome]="false"
-      ></app-scorecard-score-line>
-
-      <ng-container *ngFor="let round of getRoundsForTeam(2); let roundIdx = index">
-        <app-scorecard-score-line
-          [round]="getRoundsForTeam(2)[roundIdx]"
-          scoreMode="gross"
-          [enterScores]="editMode"
-          [showScores]="false"
-          [title]="round.golfer_name"
-          [subtitle]="getRoundSubtitle(round)"
-          [linkToGolferHome]="false"
-        ></app-scorecard-score-line>
-      </ng-container>
-    </div>
-  </p-card>
-</div>
-
-<ng-template #loading>
+          @for (round of getRoundsForTeam(2); track round; let roundIdx = $index) {
+            <app-scorecard-score-line
+              [round]="getRoundsForTeam(2)[roundIdx]"
+              scoreMode="gross"
+              [enterScores]="editMode"
+              [showScores]="false"
+              [title]="round.golfer_name"
+              [subtitle]="getRoundSubtitle(round)"
+              [linkToGolferHome]="false"
+            ></app-scorecard-score-line>
+          }
+        </div>
+      }
+    </p-card>
+  </div>
+} @else {
   <div class="flex flex-col items-center w-full p-10">
     <p-progress-spinner
       strokeWidth="4"
@@ -557,4 +583,4 @@
       [style]="{ widthcs: '100px', height: '100px' }"
     />
   </div>
-</ng-template>
+}

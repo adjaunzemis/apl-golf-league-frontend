@@ -4,61 +4,64 @@
   </ng-template>
 
   <ng-template #item let-item>
-    <ng-container *ngIf="item.visible && item.route; else urlRef">
+    @if (item.visible && item.route) {
       <a [routerLink]="item.route" class="p-menubar-item-link">
         <span [class]="item.icon"></span>
         <span>{{ item.label }}</span>
       </a>
-    </ng-container>
-    <ng-template #urlRef>
-      <a
-        *ngIf="item.visible && item.url; else callback"
-        [href]="item.url"
-        class="p-menubar-item-link"
-      >
-        <span [class]="item.icon"></span>
-        <span class="pl-2">{{ item.label }}</span>
-      </a>
-    </ng-template>
-    <ng-template #callback>
-      <div *ngIf="item.visible" class="p-menubar-item-link">
-        <button *ngIf="item.visible && item.callback; else noLink" (click)="item.callback()">
+    } @else {
+      @if (item.visible && item.url) {
+        <a [href]="item.url" class="p-menubar-item-link">
           <span [class]="item.icon"></span>
           <span class="pl-2">{{ item.label }}</span>
-        </button>
-      </div>
-    </ng-template>
-    <ng-template #noLink>
-      <div *ngIf="item.visible" class="p-menubar-item-link">
-        <span [class]="item.icon"></span>
-        <span class="pl-2">{{ item.label }}</span>
-        <span class="pi pi-fw pi-angle-down"></span>
-      </div>
-    </ng-template>
-  </ng-template>
-
-  <ng-template *ngIf="!maintenance" #end>
-    <div class="flex flex-row items-center mx-4">
-      <p-button class="pr-4" (click)="themeService.toggleTheme()">
-        <span class="pi pi-moon" *ngIf="themeService.isDark()"></span>
-        <span class="pi pi-sun" *ngIf="!themeService.isDark()"></span>
-      </p-button>
-
-      <ng-container *ngIf="isAuthenticated; else loginRef">
-        <!-- TODO: Add profile page here? Routerlink: /auth/user -->
-
-        <button (click)="onLogout()" class="p-menubar-item-link">
-          <span class="pi pi-sign-out"></span>
-          <span>Logout</span>
-        </button>
-      </ng-container>
-
-      <ng-template #loginRef>
-        <a routerLink="/auth/login" class="p-menubar-item-link">
-          <span class="pi pi-sign-in"></span>
-          <span>Login</span>
         </a>
-      </ng-template>
-    </div>
+      } @else {
+        @if (item.visible) {
+          <div class="p-menubar-item-link">
+            @if (item.visible && item.callback) {
+              <button (click)="item.callback()">
+                <span [class]="item.icon"></span>
+                <span class="pl-2">{{ item.label }}</span>
+              </button>
+            } @else {
+              @if (item.visible) {
+                <div class="p-menubar-item-link">
+                  <span [class]="item.icon"></span>
+                  <span class="pl-2">{{ item.label }}</span>
+                  <span class="pi pi-fw pi-angle-down"></span>
+                </div>
+              }
+            }
+          </div>
+        }
+      }
+    }
   </ng-template>
+
+  @if (!maintenance) {
+    <ng-template #end>
+      <div class="flex flex-row items-center mx-4">
+        <p-button class="pr-4" (click)="themeService.toggleTheme()">
+          @if (themeService.isDark()) {
+            <span class="pi pi-moon"></span>
+          }
+          @if (!themeService.isDark()) {
+            <span class="pi pi-sun"></span>
+          }
+        </p-button>
+        @if (isAuthenticated) {
+          <!-- TODO: Add profile page here? Routerlink: /auth/user -->
+          <button (click)="onLogout()" class="p-menubar-item-link">
+            <span class="pi pi-sign-out"></span>
+            <span>Logout</span>
+          </button>
+        } @else {
+          <a routerLink="/auth/login" class="p-menubar-item-link">
+            <span class="pi pi-sign-in"></span>
+            <span>Login</span>
+          </a>
+        }
+      </div>
+    </ng-template>
+  }
 </p-menubar>

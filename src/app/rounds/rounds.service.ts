@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
@@ -10,16 +10,14 @@ import { environment } from './../../environments/environment';
   providedIn: 'root',
 })
 export class RoundsService {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   private roundsData: RoundData[] = [];
   private roundsDataUpdated = new Subject<RoundData[]>();
 
   private selectedRound: Round;
   private selectedRoundUpdated = new Subject<Round>();
-
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
 
   getRounds(golferId?: number, year?: number): void {
     let queryParams = `?`;

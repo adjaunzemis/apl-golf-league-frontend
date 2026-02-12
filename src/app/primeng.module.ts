@@ -4,8 +4,9 @@ import { ButtonModule } from 'primeng/button';
 import { ImageModule } from 'primeng/image';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { MenubarModule } from 'primeng/menubar';
-import { TabViewModule } from 'primeng/tabview';
+import { TabsModule } from 'primeng/tabs';
 import { BadgeModule } from 'primeng/badge';
 import { DrawerModule } from 'primeng/drawer';
 import { SelectModule } from 'primeng/select';
@@ -20,8 +21,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     ImageModule,
     CardModule,
     DialogModule,
+    DynamicDialogModule,
     MenubarModule,
-    TabViewModule,
+    TabsModule,
     BadgeModule,
     DrawerModule,
     SelectModule,

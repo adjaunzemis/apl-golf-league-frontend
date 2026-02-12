@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
@@ -33,10 +33,8 @@ export class PaymentsService {
   private tournamentEntryFeePaymentInfoList: TournamentEntryFeePaymentInfo[] = [];
   private tournamentEntryFeePaymentInfoListUpdated = new Subject<TournamentEntryFeePaymentInfo[]>();
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   /** LEAGUE DUES */
   getLeagueDuesList(year?: number): void {

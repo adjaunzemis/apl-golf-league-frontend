@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
@@ -10,6 +10,8 @@ import { Tee } from '../shared/tee.model';
   providedIn: 'root',
 })
 export class CoursesService {
+  private http = inject(HttpClient);
+
   private courses: Course[] = [];
   private coursesUpdated = new Subject<{ courses: Course[]; courseCount: number }>();
 
@@ -18,8 +20,6 @@ export class CoursesService {
 
   private selectedTee: Tee;
   private selectedTeeUpdated = new Subject<Tee>();
-
-  constructor(private http: HttpClient) {}
 
   getCourses(include_inactive = false): void {
     this.http

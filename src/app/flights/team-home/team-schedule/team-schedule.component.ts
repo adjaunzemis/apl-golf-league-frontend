@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { FlightScheduleWeeklyComponent } from '../../flight-home/flight-schedule/flight-schedule-weekly/flight-schedule-weekly.component';
 import { MatchSummary } from 'src/app/shared/match.model';
-import { CommonModule } from '@angular/common';
+
 import { CardModule } from 'primeng/card';
 import { FlightInfo } from 'src/app/shared/flight.model';
 
@@ -10,7 +10,7 @@ import { FlightInfo } from 'src/app/shared/flight.model';
   selector: 'app-team-schedule',
   templateUrl: './team-schedule.component.html',
   styleUrl: './team-schedule.component.css',
-  imports: [CommonModule, CardModule, FlightScheduleWeeklyComponent],
+  imports: [CardModule, FlightScheduleWeeklyComponent],
 })
 export class TeamScheduleComponent implements OnInit {
   @Input() flightInfo!: FlightInfo;

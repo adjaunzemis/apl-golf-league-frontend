@@ -24,63 +24,63 @@
   <div class="p-6 bg-white shadow-md rounded-lg">
     <h2 class="text-lg font-semibold text-gray-700 mb-4">🏆 Leaderboard</h2>
     <ul>
-      <li
-        *ngFor="let player of leaderboard"
-        class="flex justify-between items-center py-3 border-b hover:bg-gray-100 transition"
-      >
-        <span class="font-medium">{{ player.rank }}. {{ player.name }}</span>
-        <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">
-          {{ player.points }} pts
-        </span>
-      </li>
+      @for (player of leaderboard; track player) {
+        <li class="flex justify-between items-center py-3 border-b hover:bg-gray-100 transition">
+          <span class="font-medium">{{ player.rank }}. {{ player.name }}</span>
+          <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">
+            {{ player.points }} pts
+          </span>
+        </li>
+      }
     </ul>
   </div>
 
   <div class="p-6 bg-gray-100 rounded-lg shadow-md">
     <h2 class="text-lg font-semibold text-gray-700 mb-4">🏌️‍♂️ Tournament Bracket</h2>
     <div class="grid md:grid-cols-4 gap-4">
-      <div
-        class="p-4 bg-white rounded-lg shadow-md text-center font-medium"
-        *ngFor="let match of matches"
-      >
-        {{ match.player1 }} <span class="text-gray-400">vs</span> {{ match.player2 }}
-      </div>
+      @for (match of matches; track match) {
+        <div class="p-4 bg-white rounded-lg shadow-md text-center font-medium">
+          {{ match.player1 }} <span class="text-gray-400">vs</span> {{ match.player2 }}
+        </div>
+      }
     </div>
   </div>
 
   <p-accordion class="shadow-md rounded-lg overflow-hidden">
-    <p-accordionTab header="📜 Match History">
+    <p-accordion-header>📜 Match History</p-accordion-header>
+    <p-accordion-content>
       <ul class="divide-y divide-gray-300">
-        <li
-          *ngFor="let match of matchHistory"
-          class="py-3 px-4 flex justify-between hover:bg-gray-100 transition"
-        >
-          <span class="text-gray-700"
-            >{{ match.date }}: {{ match.player1 }} vs {{ match.player2 }}</span
-          >
-          <span class="font-semibold text-green-600">Winner: {{ match.winner }}</span>
-        </li>
+        @for (match of matchHistory; track match) {
+          <li class="py-3 px-4 flex justify-between hover:bg-gray-100 transition">
+            <span class="text-gray-700"
+              >{{ match.date }}: {{ match.player1 }} vs {{ match.player2 }}</span
+            >
+            <span class="font-semibold text-green-600">Winner: {{ match.winner }}</span>
+          </li>
+        }
       </ul>
-    </p-accordionTab>
+    </p-accordion-content>
   </p-accordion>
 
   <div class="grid md:grid-cols-2 gap-6">
-    <p-card *ngFor="let player of playerProfiles" class="shadow-lg rounded-lg overflow-hidden">
-      <ng-template pTemplate="header">
-        <img src="{{ player.image }}" alt="{{ player.name }}" class="w-full h-36 object-cover" />
-      </ng-template>
-      <ng-template pTemplate="title">
-        <span class="font-semibold text-lg">{{ player.name }}</span>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <p class="text-gray-600">
-          Handicap: <span class="font-semibold">{{ player.handicap }}</span>
-        </p>
-        <p class="text-gray-600">
-          Wins: <span class="font-semibold text-green-500">{{ player.wins }}</span>
-        </p>
-      </ng-template>
-    </p-card>
+    @for (player of playerProfiles; track player) {
+      <p-card class="shadow-lg rounded-lg overflow-hidden">
+        <ng-template pTemplate="header">
+          <img src="{{ player.image }}" alt="{{ player.name }}" class="w-full h-36 object-cover" />
+        </ng-template>
+        <ng-template pTemplate="title">
+          <span class="font-semibold text-lg">{{ player.name }}</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <p class="text-gray-600">
+            Handicap: <span class="font-semibold">{{ player.handicap }}</span>
+          </p>
+          <p class="text-gray-600">
+            Wins: <span class="font-semibold text-green-500">{{ player.wins }}</span>
+          </p>
+        </ng-template>
+      </p-card>
+    }
   </div>
 
   <p-chart

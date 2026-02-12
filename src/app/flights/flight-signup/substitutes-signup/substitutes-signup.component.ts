@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -29,7 +29,6 @@ import { NotificationService } from 'src/app/notifications/notification.service'
   templateUrl: './substitutes-signup.component.html',
   styleUrl: './substitutes-signup.component.css',
   imports: [
-    CommonModule,
     FormsModule,
     CardModule,
     InputGroupModule,

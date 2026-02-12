@@ -7,7 +7,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import Aura from '@primeng/themes/aura';
+import Aura from '@primeuix/themes/aura';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';

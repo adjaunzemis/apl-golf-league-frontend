@@ -15,16 +15,17 @@
     [showDetails]="true"
   ></app-scorecard-tee-info>
 
-  <ng-container *ngFor="let round of match.rounds">
-    <app-scorecard-score-line
-      [round]="round"
-      [scoreMode]="scoreMode"
-      [title]="round.golfer_name"
-      [subtitle]="getRoundSubtitle(round)"
-      [linkToGolferHome]="true"
-      *ngIf="round.team_id === topTeamId"
-    ></app-scorecard-score-line>
-  </ng-container>
+  @for (round of match.rounds; track round) {
+    @if (round.team_id === topTeamId) {
+      <app-scorecard-score-line
+        [round]="round"
+        [scoreMode]="scoreMode"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="true"
+      ></app-scorecard-score-line>
+    }
+  }
 
   <app-match-scorecard-score-line
     [match]="match"
@@ -32,14 +33,15 @@
     [bottomTeamId]="bottomTeamId"
   ></app-match-scorecard-score-line>
 
-  <ng-container *ngFor="let round of match.rounds">
-    <app-scorecard-score-line
-      [round]="round"
-      [scoreMode]="scoreMode"
-      [title]="round.golfer_name"
-      [subtitle]="getRoundSubtitle(round)"
-      [linkToGolferHome]="true"
-      *ngIf="round.team_id === bottomTeamId"
-    ></app-scorecard-score-line>
-  </ng-container>
+  @for (round of match.rounds; track round) {
+    @if (round.team_id === bottomTeamId) {
+      <app-scorecard-score-line
+        [round]="round"
+        [scoreMode]="scoreMode"
+        [title]="round.golfer_name"
+        [subtitle]="getRoundSubtitle(round)"
+        [linkToGolferHome]="true"
+      ></app-scorecard-score-line>
+    }
+  }
 </div>

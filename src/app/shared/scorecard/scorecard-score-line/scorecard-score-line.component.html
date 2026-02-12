@@ -2,64 +2,71 @@
   <tbody>
     <tr class="score">
       <td class="label" rowspan="1">
-        <a routerLink="/golfer" [queryParams]="{ id: round.golfer_id }" *ngIf="linkToGolferHome">{{
-          title
-        }}</a>
-        <span *ngIf="!linkToGolferHome">{{ title }}</span>
+        @if (linkToGolferHome) {
+          <a routerLink="/golfer" [queryParams]="{ id: round.golfer_id }">{{ title }}</a>
+        }
+        @if (!linkToGolferHome) {
+          <span>{{ title }}</span>
+        }
       </td>
-      <td
-        class="hole"
-        rowspan="2"
-        [ngClass]="showScores ? '' : 'border-sides'"
-        *ngFor="let hole of round.holes; let holeIdx = index"
-      >
-        <div class="handicap-strokes" *ngIf="scoreMode !== 'net'">
-          <div
-            [ngClass]="hole.handicap_strokes > 0 ? 'black-dot' : 'red-dot'"
-            *ngFor="let hs of [].constructor(abs(hole.handicap_strokes))"
-          ></div>
-        </div>
-        <div class="hole-score">
-          <div
-            [ngClass]="{
-              circle: !teamScore && getHoleRelativeScore(hole) < 0,
-              square: !teamScore && getHoleRelativeScore(hole) > 0,
-              crosshatch:
-                !teamScore && (getHoleRelativeScore(hole) > 1 || getHoleRelativeScore(hole) < -1),
-            }"
-            *ngIf="showScores"
-          >
-            {{ getHoleScore(hole) }}
+      @for (hole of round.holes; track hole; let holeIdx = $index) {
+        <td class="hole" rowspan="2" [ngClass]="showScores ? '' : 'border-sides'">
+          @if (scoreMode !== 'net') {
+            <div class="handicap-strokes">
+              @for (hs of [].constructor(abs(hole.handicap_strokes)); track hs) {
+                <div [ngClass]="hole.handicap_strokes > 0 ? 'black-dot' : 'red-dot'"></div>
+              }
+            </div>
+          }
+          <div class="hole-score">
+            @if (showScores) {
+              <div
+                [ngClass]="{
+                  circle: !teamScore && getHoleRelativeScore(hole) < 0,
+                  square: !teamScore && getHoleRelativeScore(hole) > 0,
+                  crosshatch:
+                    !teamScore &&
+                    (getHoleRelativeScore(hole) > 1 || getHoleRelativeScore(hole) < -1),
+                }"
+              >
+                {{ getHoleScore(hole) }}
+              </div>
+            }
+            @if (enterScores) {
+              <div>
+                <input
+                  class="score-entry-field"
+                  type="number"
+                  min="0"
+                  [(ngModel)]="hole.gross_score"
+                  (input)="onHoleScoreChanged()"
+                />
+              </div>
+            }
           </div>
-          <div *ngIf="enterScores">
-            <input
-              class="score-entry-field"
-              type="number"
-              min="0"
-              [(ngModel)]="hole.gross_score"
-              (input)="onHoleScoreChanged()"
-            />
-          </div>
-        </div>
-      </td>
+        </td>
+      }
       <td class="total" rowspan="2">
-        <span *ngIf="showScores || enterScores">{{ getRoundScore() }}</span>
-        <span *ngIf="!teamScore && (showScores || enterScores)">
-          ({{ getRelativeScoreString() }})</span
-        >
+        @if (showScores || enterScores) {
+          <span>{{ getRoundScore() }}</span>
+        }
+        @if (!teamScore && (showScores || enterScores)) {
+          <span> ({{ getRelativeScoreString() }})</span>
+        }
       </td>
     </tr>
     <tr>
       <td class="detail" rowspan="1">
         <span>
           {{ subtitle }}
-          <input
-            class="handicap-entry-field"
-            type="text"
-            [(ngModel)]="round.golfer_playing_handicap"
-            (input)="onGolferHandicapChanged()"
-            *ngIf="editHandicap"
-          />
+          @if (editHandicap) {
+            <input
+              class="handicap-entry-field"
+              type="text"
+              [(ngModel)]="round.golfer_playing_handicap"
+              (input)="onGolferHandicapChanged()"
+            />
+          }
         </span>
       </td>
     </tr>

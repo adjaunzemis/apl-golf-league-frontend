@@ -4,21 +4,23 @@
 
     <div class="mx-auto"></div>
 
-    <p-togglebutton
-      class="font-semibold"
-      [onLabel]="labelFilterLowMatchCountDisabled"
-      [offLabel]="labelFilterLowMatchCountEnabled"
-      (onChange)="onChangeFilterLowMatchCount($event)"
-      *ngIf="matchCountLimit !== 0"
-    />
+    @if (matchCountLimit !== 0) {
+      <p-togglebutton
+        class="font-semibold"
+        [onLabel]="labelFilterLowMatchCountDisabled"
+        [offLabel]="labelFilterLowMatchCountEnabled"
+        (onChange)="onChangeFilterLowMatchCount($event)"
+      />
+    }
 
-    <p-togglebutton
-      class="font-semibold"
-      [onLabel]="labelShowSubstitutesOn"
-      [offLabel]="labelShowSubstitutesOff"
-      (onChange)="onChangeShowSubstitutes($event)"
-      *ngIf="!hideSubstitutesToggle"
-    />
+    @if (!hideSubstitutesToggle) {
+      <p-togglebutton
+        class="font-semibold"
+        [onLabel]="labelShowSubstitutesOn"
+        [offLabel]="labelShowSubstitutesOff"
+        (onChange)="onChangeShowSubstitutes($event)"
+      />
+    }
 
     <p-togglebutton
       class="font-semibold"

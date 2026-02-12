@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { Officer } from './../shared/officer.model';
@@ -9,10 +9,10 @@ import { environment } from './../../environments/environment';
   providedIn: 'root',
 })
 export class OfficersService {
+  private http = inject(HttpClient);
+
   private officersList: Officer[] = [];
   private officersListUpdated = new Subject<Officer[]>();
-
-  constructor(private http: HttpClient) {}
 
   getOfficersList(year?: number): void {
     let queryParams = ``;

@@ -55,29 +55,28 @@
         }})</p-accordion-header
       >
       <p-accordion-content>
-        <p-table [value]="substitutes" dataKey="golfer_id" *ngIf="substitutes.length > 0">
-          <ng-template #header>
-            <tr>
-              <th>Golfer</th>
-              <th>Division</th>
-              <th class="w-4"></th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-golfer>
-            <tr [pSelectableRow]="golfer">
-              <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-              <td class="text-gray-700">{{ golfer.division }}</td>
-              <td>
-                <p-button
-                  icon="pi pi-minus text-sm"
-                  (click)="removeGolfer(golfer)"
-                  rounded
-                  *ngIf="allowDelete"
-                />
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+        @if (substitutes.length > 0) {
+          <p-table [value]="substitutes" dataKey="golfer_id">
+            <ng-template #header>
+              <tr>
+                <th>Golfer</th>
+                <th>Division</th>
+                <th class="w-4"></th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-golfer>
+              <tr [pSelectableRow]="golfer">
+                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+                <td class="text-gray-700">{{ golfer.division }}</td>
+                <td>
+                  @if (allowDelete) {
+                    <p-button icon="pi pi-minus text-sm" (click)="removeGolfer(golfer)" rounded />
+                  }
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        }
       </p-accordion-content>
     </p-accordion-panel>
   </p-accordion>

@@ -13,13 +13,14 @@
     [holeResultData]="rounds[0].holes"
     [showDetails]="true"
   ></app-scorecard-tee-info>
-  <app-scorecard-score-line
-    [round]="round"
-    [scoreMode]="scoreMode"
-    [title]="getRoundTitle(round)"
-    [subtitle]="getRoundSubtitle(round)"
-    *ngFor="let round of rounds"
-  ></app-scorecard-score-line>
+  @for (round of rounds; track round) {
+    <app-scorecard-score-line
+      [round]="round"
+      [scoreMode]="scoreMode"
+      [title]="getRoundTitle(round)"
+      [subtitle]="getRoundSubtitle(round)"
+    ></app-scorecard-score-line>
+  }
   <app-average-score-line
     [rounds]="rounds"
     [scoreMode]="scoreMode"

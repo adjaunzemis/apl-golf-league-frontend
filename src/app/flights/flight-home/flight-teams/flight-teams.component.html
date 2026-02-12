@@ -2,14 +2,12 @@
   <div class="flex flex-row px-4 py-4">
     <span class="text-2xl font-semibold">Teams</span>
     <div class="mx-auto"></div>
-    <a
-      class="p-button hidden md:block"
-      href="mailto:{{ getFlightEmailList() }}"
-      *ngIf="showFlightEmailButton"
-    >
-      <span class="text-sm pi pi-send pr-2"></span>
-      <span>Flight</span>
-    </a>
+    @if (showFlightEmailButton) {
+      <a class="p-button hidden md:block" href="mailto:{{ getFlightEmailList() }}">
+        <span class="text-sm pi pi-send pr-2"></span>
+        <span>Flight</span>
+      </a>
+    }
   </div>
 
   <p-accordion
@@ -17,94 +15,92 @@
     (onOpen)="onTeamSelected($event)"
     (onClose)="onTeamDeselected()"
   >
-    <p-accordion-panel [value]="-1" *ngIf="substitutes.length > 0">
-      <p-accordion-header class="font-semibold px-4 py-2">Substitutes</p-accordion-header>
-      <p-accordion-content>
-        <div class="flex flex-col items-end w-full py-1">
-          <a class="p-button contactButton" href="mailto:{{ getSubstitutesEmailList() }}">
-            <span class="text-sm pi pi-send"></span>
-          </a>
-        </div>
-        <p-table
-          [value]="substitutes"
-          stripedRows
-          selectionMode="single"
-          dataKey="golfer_id"
-          [(selection)]="selectedGolfer"
-          (onRowSelect)="onGolferSelected()"
-        >
-          <ng-template #header>
-            <tr>
-              <th>Golfer</th>
-              <th>Role</th>
-              <th>Division</th>
-              <th>Hcp</th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-golfer>
-            <tr [pSelectableRow]="golfer">
-              <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-              <td class="text-gray-700">{{ golfer.role }}</td>
-              <td class="text-gray-700">{{ golfer.division }}</td>
-              <td class="text-gray-700">
-                {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-accordion-content>
-    </p-accordion-panel>
-    <p-accordion-panel [value]="idx" *ngFor="let team of teams; let idx = index">
-      <p-accordion-header class="font-semibold px-4 py-2">
-        <span>{{ team.name }}</span>
-      </p-accordion-header>
-      <p-accordion-content>
-        <div
-          class="flex flex-row justify-end w-full py-1"
-          *ngIf="linkTeamHome || showTeamEmailButton"
-        >
-          <p-button
-            icon="pi pi-home"
-            class="text-sm"
-            (onClick)="onTeamHomeSelected(team)"
-            *ngIf="linkTeamHome"
-          />
-          <a
-            class="p-button contactButton"
-            href="mailto:{{ getTeamEmailList(team) }}"
-            *ngIf="showTeamEmailButton"
+    @if (substitutes.length > 0) {
+      <p-accordion-panel [value]="-1">
+        <p-accordion-header class="font-semibold px-4 py-2">Substitutes</p-accordion-header>
+        <p-accordion-content>
+          <div class="flex flex-col items-end w-full py-1">
+            <a class="p-button contactButton" href="mailto:{{ getSubstitutesEmailList() }}">
+              <span class="text-sm pi pi-send"></span>
+            </a>
+          </div>
+          <p-table
+            [value]="substitutes"
+            stripedRows
+            selectionMode="single"
+            dataKey="golfer_id"
+            [(selection)]="selectedGolfer"
+            (onRowSelect)="onGolferSelected()"
           >
-            <span class="text-sm pi pi-send"></span>
-          </a>
-        </div>
-        <p-table
-          [value]="team.golfers"
-          stripedRows
-          selectionMode="single"
-          dataKey="golfer_id"
-          [(selection)]="selectedGolfer"
-          (onRowSelect)="onGolferSelected()"
-        >
-          <ng-template #header>
-            <tr>
-              <th>Golfer</th>
-              <th>Role</th>
-              <th>Division</th>
-              <th>Hcp</th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-golfer>
-            <tr [pSelectableRow]="golfer">
-              <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-              <td class="text-gray-700">{{ golfer.role }}</td>
-              <td class="text-gray-700">{{ golfer.division }}</td>
-              <td class="text-gray-700">
-                {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-accordion-content>
-    </p-accordion-panel>
+            <ng-template #header>
+              <tr>
+                <th>Golfer</th>
+                <th>Role</th>
+                <th>Division</th>
+                <th>Hcp</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-golfer>
+              <tr [pSelectableRow]="golfer">
+                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+                <td class="text-gray-700">{{ golfer.role }}</td>
+                <td class="text-gray-700">{{ golfer.division }}</td>
+                <td class="text-gray-700">
+                  {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-accordion-content>
+      </p-accordion-panel>
+    }
+    @for (team of teams; track team; let idx = $index) {
+      <p-accordion-panel [value]="idx">
+        <p-accordion-header class="font-semibold px-4 py-2">
+          <span>{{ team.name }}</span>
+        </p-accordion-header>
+        <p-accordion-content>
+          @if (linkTeamHome || showTeamEmailButton) {
+            <div class="flex flex-row justify-end w-full py-1">
+              @if (linkTeamHome) {
+                <p-button icon="pi pi-home" class="text-sm" (onClick)="onTeamHomeSelected(team)" />
+              }
+              @if (showTeamEmailButton) {
+                <a class="p-button contactButton" href="mailto:{{ getTeamEmailList(team) }}">
+                  <span class="text-sm pi pi-send"></span>
+                </a>
+              }
+            </div>
+          }
+          <p-table
+            [value]="team.golfers"
+            stripedRows
+            selectionMode="single"
+            dataKey="golfer_id"
+            [(selection)]="selectedGolfer"
+            (onRowSelect)="onGolferSelected()"
+          >
+            <ng-template #header>
+              <tr>
+                <th>Golfer</th>
+                <th>Role</th>
+                <th>Division</th>
+                <th>Hcp</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-golfer>
+              <tr [pSelectableRow]="golfer">
+                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
+                <td class="text-gray-700">{{ golfer.role }}</td>
+                <td class="text-gray-700">{{ golfer.division }}</td>
+                <td class="text-gray-700">
+                  {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-accordion-content>
+      </p-accordion-panel>
+    }
   </p-accordion>
 </p-card>

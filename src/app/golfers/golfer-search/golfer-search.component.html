@@ -41,17 +41,20 @@
       <tr [pSelectableRow]="golfer">
         <td>{{ golfer.name }}</td>
         <td>
-          <p-tag
-            [value]="golfer.affiliation"
-            [severity]="getAffiliationColor(golfer.affiliation)"
-            *ngIf="golfer.affiliation"
-          />
+          @if (golfer.affiliation) {
+            <p-tag
+              [value]="golfer.affiliation"
+              [severity]="getAffiliationColor(golfer.affiliation)"
+            />
+          }
         </td>
         <td>{{ golfer.handicap_index }}</td>
         <td>
-          <a class="p-button" href="mailto:{{ golfer.email | lowercase }}" *ngIf="golfer.email">
-            <span class="pi pi-send"></span>
-          </a>
+          @if (golfer.email) {
+            <a class="p-button" href="mailto:{{ golfer.email | lowercase }}">
+              <span class="pi pi-send"></span>
+            </a>
+          }
         </td>
       </tr>
     </ng-template>
