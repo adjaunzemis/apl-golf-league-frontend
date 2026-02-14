@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost/',
+  apiUrl: 'https://aplgolfapi.staging.jaunzenet.com/',
   title: 'APL Golf League - DEVELOPMENT',
   version: 'DEVELOPMENT',
-  maintenance: false,
+  maintenance: true,
 };
 
 /*

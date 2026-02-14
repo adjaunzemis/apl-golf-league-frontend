@@ -38,30 +38,28 @@
     }
   </ng-template>
 
-  @if (!maintenance) {
-    <ng-template #end>
-      <div class="flex flex-row items-center mx-4">
-        <p-button class="pr-4" (click)="themeService.toggleTheme()">
-          @if (themeService.isDark()) {
-            <span class="pi pi-moon"></span>
-          }
-          @if (!themeService.isDark()) {
-            <span class="pi pi-sun"></span>
-          }
-        </p-button>
-        @if (isAuthenticated) {
-          <!-- TODO: Add profile page here? Routerlink: /auth/user -->
-          <button (click)="onLogout()" class="p-menubar-item-link">
-            <span class="pi pi-sign-out"></span>
-            <span>Logout</span>
-          </button>
-        } @else {
-          <a routerLink="/auth/login" class="p-menubar-item-link">
-            <span class="pi pi-sign-in"></span>
-            <span>Login</span>
-          </a>
+  <ng-template #end>
+    <div class="flex flex-row items-center mx-4">
+      <p-button class="pr-4" (click)="themeService.toggleTheme()">
+        @if (themeService.isDark()) {
+          <span class="pi pi-moon"></span>
         }
-      </div>
-    </ng-template>
-  }
+        @if (!themeService.isDark()) {
+          <span class="pi pi-sun"></span>
+        }
+      </p-button>
+      @if (isAuthenticated) {
+        <!-- TODO: Add profile page here? Routerlink: /auth/user -->
+        <button (click)="onLogout()" class="p-menubar-item-link">
+          <span class="pi pi-sign-out"></span>
+          <span>Logout</span>
+        </button>
+      } @else {
+        <a routerLink="/auth/login" class="p-menubar-item-link">
+          <span class="pi pi-sign-in"></span>
+          <span>Login</span>
+        </a>
+      }
+    </div>
+  </ng-template>
 </p-menubar>
