@@ -3,5 +3,5 @@ export const environment = {
   apiUrl: 'https://aplgolfapi.staging.jaunzenet.com/',
   title: 'APL Golf League - STAGING',
   version: 'STAGING',
-  maintenance: false,
+  maintenance: true,
 };
