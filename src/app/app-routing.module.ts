@@ -22,7 +22,7 @@ import { MaintenanceGuard } from './maintenance/maintenance.guard';
 
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
-  { path: 'maintenance', component: MaintenanceComponent},
+  { path: 'maintenance', component: MaintenanceComponent },
   {
     path: '',
     canActivateChild: [MaintenanceGuard],
@@ -77,10 +77,10 @@ const routes: Routes = [
       // },
       { path: 'handicaps', component: HandicapsComponent, canActivate: [UnderConstructionGuard] },
       { path: 'primeng-example', component: PrimeNGExampleComponent, canActivate: [AuthGuard] },
-    ]
+    ],
   },
   { path: '**', redirectTo: '' },
-]
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

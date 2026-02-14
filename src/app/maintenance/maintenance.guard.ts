@@ -12,7 +12,11 @@ export class MaintenanceGuard implements CanActivateChild {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  canActivateChild(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivateChild():
+    | boolean
+    | UrlTree
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree> {
     return this.authService.user.pipe(
       take(1),
       map((user) => {
