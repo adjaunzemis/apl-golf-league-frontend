@@ -51,10 +51,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private teamCreateComponent = inject(TeamCreateComponent);
 
   ngOnInit(): void {
-    if (this.maintenance) {
-      return;
-    }
-
     this.updateMenuItems();
 
     this.userSub = this.authService.user.subscribe((user) => {
@@ -91,7 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Search',
         icon: 'pi pi-search',
-        visible: true,
+        visible: this.currentUser?.is_admin || !this.maintenance,
         items: [
           {
             label: 'Golfers',
@@ -110,7 +106,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Sign-Ups',
         icon: 'pi pi-clipboard',
-        visible: true,
+        visible: this.currentUser?.is_admin || !this.maintenance,
         items: [
           {
             label: 'Register Golfer',
@@ -135,7 +131,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Payments',
         icon: 'pi pi-dollar',
-        visible: true,
+        visible: this.currentUser?.is_admin || !this.maintenance,
         items: [
           {
             label: 'League Dues',
@@ -154,7 +150,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Scorecards',
         icon: 'pi pi-pen-to-square',
-        visible: true,
+        visible: this.currentUser?.is_admin || !this.maintenance,
         items: [
           {
             label: 'Flight Match',
@@ -179,7 +175,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: 'Legacy Website',
         icon: 'pi pi-history',
-        visible: true,
+        visible: this.currentUser?.is_admin || !this.maintenance,
         url: 'http://aplgolfleague.com/cgi-bin/golf_cgi/aplgolf.pl',
       },
       {

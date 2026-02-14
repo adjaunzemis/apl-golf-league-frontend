@@ -19,10 +19,6 @@ export class FooterComponent implements OnInit, OnDestroy {
   private apiInfoSub: Subscription;
 
   ngOnInit(): void {
-    if (environment.maintenance) {
-      return;
-    }
-
     this.apiInfoSub = this.apiService.getInfoUpdateListener().subscribe((result) => {
       console.log(`[FooterComponent] Received API info`);
       this.apiVersion = result.version;
