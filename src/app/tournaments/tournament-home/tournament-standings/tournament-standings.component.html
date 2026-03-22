@@ -39,10 +39,10 @@
             </ng-template>
             <ng-template #body let-team>
               <tr [pSelectableRow]="team">
-                <!-- <td class="text-gray-800">{{ team.position }}</td> -->
-                <td class="text-gray-800">{{ team.team_name }}</td>
-                <td class="text-gray-800">{{ team.gross_score }}</td>
-                <td class="text-gray-800">{{ team.net_score }}</td>
+                <!-- <td>{{ team.position }}</td> -->
+                <td>{{ team.team_name }}</td>
+                <td>{{ team.gross_score }}</td>
+                <td>{{ team.net_score }}</td>
               </tr>
             </ng-template>
           </p-table>
@@ -74,11 +74,11 @@
             </ng-template>
             <ng-template #body let-golfer>
               <tr [pSelectableRow]="golfer">
-                <!-- <td class="text-gray-800">{{ golfer.position }}</td> -->
-                <td class="text-gray-800">{{ golfer.golfer_name }}</td>
-                <td class="text-gray-800">{{ golfer.golfer_playing_handicap }}</td>
-                <td class="text-gray-800">{{ golfer.gross_score }}</td>
-                <td class="text-gray-800">{{ golfer.net_score }}</td>
+                <!-- <td>{{ golfer.position }}</td> -->
+                <td>{{ golfer.golfer_name }}</td>
+                <td>{{ golfer.golfer_playing_handicap }}</td>
+                <td>{{ golfer.gross_score }}</td>
+                <td>{{ golfer.net_score }}</td>
               </tr>
             </ng-template>
           </p-table></p-tabpanel

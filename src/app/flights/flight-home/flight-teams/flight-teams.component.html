@@ -42,10 +42,10 @@
             </ng-template>
             <ng-template #body let-golfer>
               <tr [pSelectableRow]="golfer">
-                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-                <td class="text-gray-700">{{ golfer.role }}</td>
-                <td class="text-gray-700">{{ golfer.division }}</td>
-                <td class="text-gray-700">
+                <td class="font-semibold">{{ golfer.name }}</td>
+                <td>{{ golfer.role }}</td>
+                <td>{{ golfer.division }}</td>
+                <td>
                   {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
                 </td>
               </tr>
@@ -90,10 +90,10 @@
             </ng-template>
             <ng-template #body let-golfer>
               <tr [pSelectableRow]="golfer">
-                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-                <td class="text-gray-700">{{ golfer.role }}</td>
-                <td class="text-gray-700">{{ golfer.division }}</td>
-                <td class="text-gray-700">
+                <td class="font-semibold">{{ golfer.name }}</td>
+                <td>{{ golfer.role }}</td>
+                <td>{{ golfer.division }}</td>
+                <td>
                   {{ golfer.handicap_index ? (golfer.handicap_index | number: '1.1-1') : '--' }}
                 </td>
               </tr>

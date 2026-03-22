@@ -64,15 +64,15 @@
           </ng-template>
           <ng-template #body let-golfer>
             <tr [pSelectableRow]="golfer">
-              <td class="text-gray-800">{{ golfer.golfer_name }}</td>
-              <td class="text-gray-800">{{ golfer.num_aces }}</td>
-              <td class="text-gray-800">{{ golfer.num_albatrosses }}</td>
-              <td class="text-gray-800">{{ golfer.num_eagles }}</td>
-              <td class="text-gray-800">{{ golfer.num_birdies }}</td>
-              <td class="text-gray-800">{{ golfer.num_pars }}</td>
-              <td class="text-gray-800">{{ golfer.num_bogeys }}</td>
-              <td class="text-gray-800">{{ golfer.num_double_bogeys }}</td>
-              <td class="text-gray-800">{{ golfer.num_others }}</td>
+              <td>{{ golfer.golfer_name }}</td>
+              <td>{{ golfer.num_aces }}</td>
+              <td>{{ golfer.num_albatrosses }}</td>
+              <td>{{ golfer.num_eagles }}</td>
+              <td>{{ golfer.num_birdies }}</td>
+              <td>{{ golfer.num_pars }}</td>
+              <td>{{ golfer.num_bogeys }}</td>
+              <td>{{ golfer.num_double_bogeys }}</td>
+              <td>{{ golfer.num_others }}</td>
             </tr>
           </ng-template>
         </p-table>
@@ -115,18 +115,18 @@
           </ng-template>
           <ng-template #body let-golfer>
             <tr [pSelectableRow]="golfer">
-              <td class="text-gray-800">{{ golfer.golfer_name }}</td>
-              <td class="text-gray-800">
+              <td>{{ golfer.golfer_name }}</td>
+              <td>
                 {{ golfer.avg_par_3_score | number: '1.2-2' }} ({{
                   golfer.avg_par_3_score >= 3 ? '+' : ''
                 }}{{ golfer.avg_par_3_score - 3 | number: '1.2-2' }})
               </td>
-              <td class="text-gray-800">
+              <td>
                 {{ golfer.avg_par_4_score | number: '1.2-2' }} ({{
                   golfer.avg_par_4_score >= 4 ? '+' : ''
                 }}{{ golfer.avg_par_4_score - 4 | number: '1.2-2' }})
               </td>
-              <td class="text-gray-800">
+              <td>
                 {{ golfer.avg_par_5_score | number: '1.2-2' }} ({{
                   golfer.avg_par_5_score >= 5 ? '+' : ''
                 }}{{ golfer.avg_par_5_score - 5 | number: '1.2-2' }})
