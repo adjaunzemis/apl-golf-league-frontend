@@ -1,6 +1,7 @@
 # AGENTS.md (Frontend)
 
 ## Purpose
+
 Defines architecture, UI patterns, and expectations for the Angular frontend.
 
 ---

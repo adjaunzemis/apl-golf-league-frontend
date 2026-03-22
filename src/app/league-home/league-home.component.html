@@ -19,7 +19,7 @@
               <div class="flex items-center gap-2">
                 <span>{{ selectedOption.year }}</span>
                 @if (selectedOption.is_active) {
-                  <p-tag class="bg-blue-500 text-white text-sm font-normal px-1" value="Active" />
+                  <p-tag value="Active" severity="info" />
                 }
               </div>
             }
@@ -28,10 +28,7 @@
             <div class="flex items-center gap-2">
               <span>{{ option.year }}</span>
               @if (option.is_active) {
-                <p-tag
-                  class="bg-blue-500 text-white text-sm font-normal px-1 mr-1"
-                  value="Active"
-                />
+                <p-tag value="Active" severity="info" />
               }
             </div>
           </ng-template>

@@ -4,7 +4,7 @@
       <div class="w-30">
         <a routerLink="/flight" [queryParams]="{ id: flightInfo.id }">
           <img
-            class="block xl:block mx-auto rounded-border"
+            class="course-logo"
             [src]="'assets/' + flightInfo.logo_url"
             [alt]="flightInfo.name"
           />
@@ -14,22 +14,20 @@
       <div class="flex flex-row flex-2 justify-between items-center ml-4">
         <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
           <div class="flex flex-col justify-stretch items-center w-full">
-            <div class="text-xl font-semibold text-black">{{ teamData.name }}</div>
-            <div class="font-medium text-gray-700 text-sm">
-              {{ flightInfo.name }} ({{ flightInfo.year }})
-            </div>
+            <div class="text-xl font-semibold">{{ teamData.name }}</div>
+            <div class="font-medium text-sm">{{ flightInfo.name }} ({{ flightInfo.year }})</div>
             @if (teamStandings) {
-              <div class="font-semibold text-gray-700 text-sm pt-1">
+              <div class="font-semibold text-sm pt-1">
                 Position: {{ teamStandings.position }} of {{ flightInfo.num_teams }}
               </div>
             }
             @if (teamStandings) {
-              <div class="font-normal text-gray-700 text-sm">
+              <div class="font-normal text-sm">
                 Avg. Points: {{ teamStandings.avg_points | number: '1.2-2' }}
               </div>
             }
             @if (teamStandings) {
-              <div class="font-normal text-gray-700 text-sm">
+              <div class="font-normal text-sm">
                 Matches Played: {{ teamStandings.matches_played }}
               </div>
             }
@@ -39,7 +37,7 @@
     </div>
 
     <div class="flex flex-col justify-stretch items-center w-full pt-4">
-      <div class="text-sm font-medium text-gray-700">
+      <div class="text-sm font-medium">
         @if (getCaptainEmail() !== null) {
           <div>
             <span>Captain: </span>

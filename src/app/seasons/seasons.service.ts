@@ -29,12 +29,26 @@ export class SeasonsService {
   }
 
   getSeason(year: number): Observable<Season> {
+    if (this.seasons) {
+      const found = this.seasons.find((s) => s.year === +year);
+      if (found) {
+        return of(found);
+      }
+    }
     return this.http.get<Season>(environment.apiUrl + `seasons/${year}`);
   }
 
   getActiveSeason(): Observable<Season> {
     if (this.activeSeason) {
       return of(this.activeSeason);
+    }
+
+    if (this.seasons) {
+      const found = this.seasons.find((s) => s.is_active);
+      if (found) {
+        this.activeSeason = found;
+        return of(found);
+      }
     }
 
     return this.http.get<Season>(environment.apiUrl + 'seasons/active/').pipe(

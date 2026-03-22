@@ -51,19 +51,18 @@ export class LeagueHomeComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe((params) => {
       if (!params['year']) {
         this.activeSeasonSub = this.seasonsService.getActiveSeason().subscribe((result) => {
-          if (!this.selectedSeason) {
+          if (!this.selectedSeason || this.selectedSeason.year !== result.year) {
             this.selectedSeason = result;
             this.updateUrl();
           }
         });
-        this.seasonsService.getActiveSeason();
       } else {
-        this.specificSeasonSub = this.seasonsService
-          .getSeason(params['year'])
-          .subscribe((result) => {
+        const year = +params['year'];
+        if (!this.selectedSeason || this.selectedSeason.year !== year) {
+          this.specificSeasonSub = this.seasonsService.getSeason(year).subscribe((result) => {
             this.selectedSeason = result;
-            this.updateUrl();
           });
+        }
       }
     });
   }

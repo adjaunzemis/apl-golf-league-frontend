@@ -64,3 +64,8 @@ body {
 .p-menubar-item-link {
   @apply h-12 px-2;
 }
+
+.course-logo {
+  @apply block xl:block mx-auto rounded-border p-1;
+  @apply dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)];
+}

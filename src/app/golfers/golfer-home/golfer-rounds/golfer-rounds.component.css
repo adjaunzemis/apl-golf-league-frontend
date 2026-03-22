@@ -13,7 +13,7 @@
 }
 
 .box {
-  @apply ring-1 rounded-none;
+  @apply ring-1 ring-gray-500 rounded-none;
 }
 
 .circle {

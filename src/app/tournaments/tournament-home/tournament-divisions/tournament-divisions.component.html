@@ -16,20 +16,18 @@
     </ng-template>
     <ng-template #body let-division>
       <tr>
-        <td rowspan="2" class="text-gray-800 text-center">
-          {{ division.name }} ({{ division.gender[0] }})
-        </td>
-        <td rowspan="2" class="text-gray-800">{{ division.primary_tee_name }}</td>
-        <td class="text-gray-800">{{ division.primary_track_name }}</td>
-        <td class="text-gray-800">{{ division.primary_tee_par | number: '1.0-0' }}</td>
-        <td class="text-gray-800">{{ division.primary_tee_rating | number: '1.1-1' }}</td>
-        <td class="text-gray-800">{{ division.primary_tee_slope | number: '1.0-0' }}</td>
+        <td rowspan="2" class="text-center">{{ division.name }} ({{ division.gender[0] }})</td>
+        <td rowspan="2">{{ division.primary_tee_name }}</td>
+        <td>{{ division.primary_track_name }}</td>
+        <td>{{ division.primary_tee_par | number: '1.0-0' }}</td>
+        <td>{{ division.primary_tee_rating | number: '1.1-1' }}</td>
+        <td>{{ division.primary_tee_slope | number: '1.0-0' }}</td>
       </tr>
       <tr>
-        <td class="text-gray-800">{{ division.secondary_track_name }}</td>
-        <td class="text-gray-800">{{ division.secondary_tee_par | number: '1.0-0' }}</td>
-        <td class="text-gray-800">{{ division.secondary_tee_rating | number: '1.1-1' }}</td>
-        <td class="text-gray-800">{{ division.secondary_tee_slope | number: '1.0-0' }}</td>
+        <td>{{ division.secondary_track_name }}</td>
+        <td>{{ division.secondary_tee_par | number: '1.0-0' }}</td>
+        <td>{{ division.secondary_tee_rating | number: '1.1-1' }}</td>
+        <td>{{ division.secondary_tee_slope | number: '1.0-0' }}</td>
       </tr>
     </ng-template>
   </p-table>

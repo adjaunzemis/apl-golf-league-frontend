@@ -3,31 +3,27 @@
     <div class="flex flex-col justify-center p-4">
       <div class="flex flex-row flex-1 items-center ml-2">
         <div class="w-30">
-          <img
-            class="block xl:block mx-auto rounded-border"
-            [src]="'assets/' + info.logo_url"
-            [alt]="info.name"
-          />
+          <img class="course-logo" [src]="'assets/' + info.logo_url" [alt]="info.name" />
         </div>
         <div class="flex flex-row flex-2 justify-between items-center ml-4">
           <div class="flex flex-row md:flex-col justify-center items-center gap-2 w-full">
             <div class="flex flex-col justify-stretch items-center w-full">
-              <div class="text-xl font-semibold text-black">{{ info.name }} ({{ info.year }})</div>
-              <div class="font-medium text-gray-700 text-sm">
+              <div class="text-xl font-semibold">{{ info.name }} ({{ info.year }})</div>
+              <div class="font-medium text-sm">
                 {{ info.course }}
               </div>
               @if (info.address) {
-                <div class="font-medium text-gray-600 text-sm">
+                <div class="font-medium text-sm">
                   {{ getAddressLine1() }}
                 </div>
               }
               @if (info.address) {
-                <div class="font-medium text-gray-600 text-sm">
+                <div class="font-medium text-sm">
                   {{ getAddressLine2() }}
                 </div>
               }
               @if (info.phone) {
-                <div class="font-medium text-gray-600 text-sm">
+                <div class="font-medium text-sm">
                   <span class="pi pi-phone text-xs pr-1"></span>
                   {{ info.phone }}
                 </div>
@@ -36,9 +32,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="flex flex-col flex-1 justify-center items-center text-sm font-medium text-gray-700 pt-4 w-full"
-      >
+      <div class="flex flex-col flex-1 justify-center items-center text-sm font-medium pt-4 w-full">
         @if (info.date) {
           <span
             >Date: {{ info.date | date: 'longDate' : 'ET' }},
@@ -55,7 +49,7 @@
         >
       </div>
       <div
-        class="flex flex-row flex-1 items-center gap-6 text-sm font-medium text-gray-700 pt-4 w-full"
+        class="flex flex-row flex-1 justify-center items-center gap-6 text-sm font-medium pt-4 w-full"
       >
         <div class="flex flex-col flex-2 justify-between items-center">
           <span>{{ getScoringModes() }}</span>
@@ -64,7 +58,7 @@
         </div>
       </div>
       <div class="flex flex-col justify-stretch items-center w-full pt-4">
-        <div class="text-sm font-medium text-gray-700">
+        <div class="text-sm font-medium">
           @if (info.secretary_email) {
             <div>
               <span>Tournament Secretary: </span>
