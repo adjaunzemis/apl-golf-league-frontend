@@ -46,22 +46,23 @@
                   >
                     <div class="flex flex-row md:flex-col justify-center items-start gap-2">
                       <div>
-                        <div class="text-lg font-semibold text-gray-700 mt-1">
+                        <div class="text-lg font-semibold mt-1">
                           {{ item.name }} ({{ season.year }})
                         </div>
-                        <div class="hidden md:block font-medium text-gray-600 text-sm">
+                        <div class="hidden md:block font-medium text-sm">
                           {{ item.course }}
                         </div>
-                        <div class="hidden lg:block text-sm font-medium text-gray-600">
+                        <div class="hidden lg:block text-sm font-medium">
                           {{ item.date | date: 'longDate' : 'ET' }}
                         </div>
-                        <div class="hidden lg:block text-sm font-medium text-gray-600">
+                        <div class="hidden lg:block text-sm font-medium">
                           Sign-ups: {{ item.signup_start_date | date: 'shortDate' : 'ET' }} -
                           {{ item.signup_stop_date | date: 'shortDate' : 'ET' }}
                         </div>
                       </div>
                     </div>
                   </div>
+
                   <p-tag
                     [value]="getSignupStatusText(item)"
                     [severity]="getSignupStatusColor(item)"

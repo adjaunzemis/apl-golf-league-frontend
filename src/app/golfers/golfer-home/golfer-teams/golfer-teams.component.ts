@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
+import { TagModule } from 'primeng/tag';
 
 import { TeamGolferData } from 'src/app/shared/golfer.model';
 import { TournamentInfo } from 'src/app/shared/tournament.model';
@@ -13,7 +14,7 @@ import { FlightInfo } from 'src/app/shared/flight.model';
   selector: 'app-golfer-teams',
   templateUrl: './golfer-teams.component.html',
   styleUrl: './golfer-teams.component.css',
-  imports: [CommonModule, FormsModule, RouterModule, CardModule, DataViewModule],
+  imports: [CommonModule, FormsModule, RouterModule, CardModule, DataViewModule, TagModule],
 })
 export class GolferTeamsComponent implements OnInit {
   @Input() teams: TeamGolferData[];

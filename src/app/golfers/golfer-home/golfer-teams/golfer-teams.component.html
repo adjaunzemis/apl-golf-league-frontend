@@ -29,11 +29,11 @@
               >
                 <div class="flex flex-row md:flex-col justify-center items-start gap-2">
                   <div>
-                    <div class="text-lg font-semibold text-gray-700 mt-1">{{ item.team_name }}</div>
-                    <div class="hidden lg:block font-medium text-gray-600 text-sm">
-                      {{ getType(item) }}
+                    <div class="text-lg font-semibold mt-1">
+                      {{ item.team_name }}
                     </div>
-                    <div class="hidden lg:block font-medium text-gray-600 text-sm">
+                    <p-tag [value]="getType(item)" [severity]="getType(item) === 'Flight' ? 'success' : 'info'" />
+                    <div class="font-medium text-sm">
                       {{ getSubtitle(item) }}
                     </div>
                   </div>
@@ -46,4 +46,5 @@
     </ng-template>
   </p-dataview>
 </p-card>
+
 
