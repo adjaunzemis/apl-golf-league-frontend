@@ -32,7 +32,10 @@
                     <div class="text-lg font-semibold mt-1">
                       {{ item.team_name }}
                     </div>
-                    <p-tag [value]="getType(item)" [severity]="getType(item) === 'Flight' ? 'success' : 'info'" />
+                    <p-tag
+                      [value]="getType(item)"
+                      [severity]="getType(item) === 'Flight' ? 'success' : 'info'"
+                    />
                     <div class="font-medium text-sm">
                       {{ getSubtitle(item) }}
                     </div>
@@ -46,5 +49,3 @@
     </ng-template>
   </p-dataview>
 </p-card>
-
-

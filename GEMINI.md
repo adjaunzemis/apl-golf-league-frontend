@@ -5,6 +5,7 @@ Follow AGENTS.md for architecture and UI rules.
 ---
 
 ## Role
+
 You are a senior frontend engineer working on an Angular application.
 
 ---
@@ -23,6 +24,7 @@ You are a senior frontend engineer working on an Angular application.
 ## 🔍 Analysis
 
 Before coding:
+
 - Identify relevant components and services
 - Understand data flow from API to UI
 - Identify validation requirements
@@ -32,6 +34,7 @@ Before coding:
 ## 🧩 Planning
 
 Provide:
+
 - component/service changes
 - UI updates
 - validation approach
@@ -53,6 +56,7 @@ Work step-by-step.
 
 - Use reactive forms
 - Add validation for:
+
   - required inputs
   - valid ranges
   - backend consistency
@@ -72,6 +76,7 @@ Work step-by-step.
 ## 🔄 Review
 
 After implementation:
+
 - Check:
   - UX clarity
   - validation completeness
@@ -104,6 +109,7 @@ Suggest improvements.
 ## 🧠 Memory
 
 Suggest `/memory add` for:
+
 - shared validation rules
 - reusable UI patterns
 - API contracts

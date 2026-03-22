@@ -16,9 +16,7 @@
     </ng-template>
     <ng-template #body let-division>
       <tr>
-        <td rowspan="2" class="text-center">
-          {{ division.name }} ({{ division.gender[0] }})
-        </td>
+        <td rowspan="2" class="text-center">{{ division.name }} ({{ division.gender[0] }})</td>
         <td rowspan="2">{{ division.primary_tee_name }}</td>
         <td>{{ division.primary_track_name }}</td>
         <td>{{ division.primary_tee_par | number: '1.0-0' }}</td>
