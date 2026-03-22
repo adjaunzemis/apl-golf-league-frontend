@@ -30,29 +30,17 @@
           @if (weekMatchData.matches.length > 0) {
             <ng-template #body let-match>
               <tr [pSelectableRow]="match">
-                <td
-                  class="text-center w-1/15"
-                  [ngClass]="{ winner: isWinnerHome(match) }"
-                >
+                <td class="text-center w-1/15" [ngClass]="{ winner: isWinnerHome(match) }">
                   {{ match.home_score }}
                 </td>
-                <td
-                  class="text-center w-2/5"
-                  [ngClass]="{ winner: isWinnerHome(match) }"
-                >
+                <td class="text-center w-2/5" [ngClass]="{ winner: isWinnerHome(match) }">
                   {{ match.home_team_name }}
                 </td>
                 <td class="text-center w-1/15">vs</td>
-                <td
-                  class="text-center w-2/5"
-                  [ngClass]="{ winner: isWinnerAway(match) }"
-                >
+                <td class="text-center w-2/5" [ngClass]="{ winner: isWinnerAway(match) }">
                   {{ match.away_team_name }}
                 </td>
-                <td
-                  class="text-center w-1/15"
-                  [ngClass]="{ winner: isWinnerAway(match) }"
-                >
+                <td class="text-center w-1/15" [ngClass]="{ winner: isWinnerAway(match) }">
                   {{ match.away_score }}
                 </td>
               </tr>
