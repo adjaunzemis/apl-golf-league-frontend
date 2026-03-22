@@ -1,8 +1,8 @@
 <div class="flex flex-col justify-items-center px-8 py-4">
-  <table class="text-center">
+  <table class="text-center w-full">
     <thead>
       <tr class="font-semibold">
-        <td class="w-30"></td>
+        <td class="w-32"></td>
         <td class="w-12 border-r-1"></td>
         @for (week of weeks; track week) {
           <td class="w-12">{{ week }}</td>
@@ -19,10 +19,10 @@
     <tbody>
       @for (teamName of teamNames; track teamName) {
         <tr>
-          <td class="text-right">{{ teamName }}</td>
+          <td class="text-right font-semibold">{{ teamName }}</td>
           <td class="border-r-1">{{ teamNumbers[teamName] }}</td>
           @for (week of weeks; track week) {
-            <td [ngClass]="week === currentWeek ? 'font-semibold bg-blue-50' : ''">
+            <td [ngClass]="week === currentWeek ? 'font-semibold bg-blue-50 dark:bg-zinc-700' : ''">
               {{
                 teamOpponents[teamName][week - 1] === '' ? '-' : teamOpponents[teamName][week - 1]
               }}
