@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import {
   Golfer,
@@ -27,19 +28,24 @@ export class GolfersService {
   private golfersData: GolferData[] = [];
   private golfersDataUpdated = new Subject<{ numGolfers: number; golfers: GolferData[] }>();
 
-  private golferData: GolferData;
+  // Caching
+  private golferDataCache = new Map<string, GolferData>();
   private golferDataUpdated = new Subject<GolferData>();
 
-  private golferTeamData: TeamGolferData[] = [];
+  private golferTeamDataCache = new Map<string, TeamGolferData[]>();
   private golferTeamDataUpdated = new Subject<TeamGolferData[]>();
 
-  private golferHandicapScoringRecord: ScoringRecordRound[];
+  private golferHandicapScoringRecordCache = new Map<string, ScoringRecordRound[]>();
   private golferHandicapScoringRecordUpdated = new Subject<ScoringRecordRound[]>();
 
-  private golferStatistics: GolferStatistics;
+  private golferStatisticsCache = new Map<string, GolferStatistics>();
   private golferStatisticsUpdated = new Subject<GolferStatistics>();
 
   getAllGolfers(): void {
+    if (this.allGolfers.length > 0) {
+      this.allGolfersUpdated.next([...this.allGolfers]);
+      return;
+    }
     this.http.get<Golfer[]>(environment.apiUrl + 'golfers/info').subscribe((result) => {
       this.allGolfers = result;
       this.allGolfersUpdated.next([...this.allGolfers]);
@@ -53,7 +59,7 @@ export class GolfersService {
   getGolfers(offset: number, limit: number, year?: number): void {
     let queryParams = `?`;
     if (year) {
-      queryParams = `?year=${year}&`;
+      queryParams = `year=${year}&`;
     }
     queryParams += `offset=${offset}&limit=${limit}`;
     this.http
@@ -75,13 +81,21 @@ export class GolfersService {
   }
 
   getGolfer(id: number, max_date?: Date): void {
+    const dateStr = max_date ? max_date.toISOString().split('T')[0] : 'no-date';
+    const cacheKey = `${id}-${dateStr}`;
+
+    if (this.golferDataCache.has(cacheKey)) {
+      this.golferDataUpdated.next(this.golferDataCache.get(cacheKey)!);
+      return;
+    }
+
     let params = `${id}`;
     if (max_date) {
       params += `?max_date=${max_date.toISOString().split('T')[0]}`;
     }
     this.http.get<GolferData>(environment.apiUrl + `golfers/` + params).subscribe((result) => {
-      this.golferData = result;
-      this.golferDataUpdated.next(this.golferData);
+      this.golferDataCache.set(cacheKey, result);
+      this.golferDataUpdated.next(result);
     });
   }
 
@@ -104,11 +118,17 @@ export class GolfersService {
   }
 
   getGolferTeamData(id: number, year: number): void {
+    const cacheKey = `${id}-${year}`;
+    if (this.golferTeamDataCache.has(cacheKey)) {
+      this.golferTeamDataUpdated.next([...this.golferTeamDataCache.get(cacheKey)!]);
+      return;
+    }
+
     this.http
       .get<TeamGolferData[]>(environment.apiUrl + `golfers/${id}/teams?year=${year}`)
       .subscribe((result) => {
-        this.golferTeamData = result;
-        this.golferTeamDataUpdated.next([...this.golferTeamData]);
+        this.golferTeamDataCache.set(cacheKey, result);
+        this.golferTeamDataUpdated.next([...result]);
       });
   }
 
@@ -125,13 +145,21 @@ export class GolfersService {
   }
 
   getGolferHandicapScoringRecord(golferId: number, year: number): void {
+    const cacheKey = `${golferId}-${year}`;
+    if (this.golferHandicapScoringRecordCache.has(cacheKey)) {
+      this.golferHandicapScoringRecordUpdated.next([
+        ...this.golferHandicapScoringRecordCache.get(cacheKey)!,
+      ]);
+      return;
+    }
+
     this.http
       .get<
         ScoringRecordRound[]
       >(environment.apiUrl + `handicaps/scoring-record-rounds/${golferId}?year=${year}`)
       .subscribe((result) => {
-        this.golferHandicapScoringRecord = [...result];
-        this.golferHandicapScoringRecordUpdated.next([...this.golferHandicapScoringRecord]);
+        this.golferHandicapScoringRecordCache.set(cacheKey, result);
+        this.golferHandicapScoringRecordUpdated.next([...result]);
       });
   }
 
@@ -140,13 +168,19 @@ export class GolfersService {
   }
 
   getGolferStatistics(golferId: number, year?: number): void {
+    const cacheKey = `${golferId}-${year || 'no-year'}`;
+    if (this.golferStatisticsCache.has(cacheKey)) {
+      this.golferStatisticsUpdated.next(this.golferStatisticsCache.get(cacheKey)!);
+      return;
+    }
+
     let queryUrl = environment.apiUrl + `golfers/${golferId}/statistics`;
     if (year !== undefined) {
       queryUrl += `?year=${year}`;
     }
     this.http.get<GolferStatistics>(queryUrl).subscribe((result) => {
-      this.golferStatistics = result;
-      this.golferStatisticsUpdated.next(this.golferStatistics);
+      this.golferStatisticsCache.set(cacheKey, result);
+      this.golferStatisticsUpdated.next(result);
     });
   }
 

@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
@@ -53,9 +53,9 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   private golferHandicapScoringRecordSub: Subscription;
   golferHandicapScoringRecord: ScoringRecordRound[];
 
-  private seasonsSub: Subscription;
+  private dataSub: Subscription;
   seasons: Season[];
-  selectedSeason: Season;
+  selectedSeason: Season | undefined;
 
   private teamsSub: Subscription;
   teams: TeamGolferData[] = [];
@@ -81,10 +81,41 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.seasonsSub = this.seasonsService.getSeasons().subscribe((result) => {
-      this.seasons = [...result];
-      this.selectedSeason = result.filter((season) => season.is_active)[0];
-      this.getSelectedSeasonData();
+    this.dataSub = combineLatest([
+      this.seasonsService.getSeasons(),
+      this.route.queryParams,
+    ]).subscribe(([seasons, params]) => {
+      this.seasons = [...seasons];
+
+      const newGolferId = params['id'] ? +params['id'] : null;
+      const yearFromUrl = params['year'] ? +params['year'] : null;
+
+      let seasonChanged = false;
+      let golferChanged = false;
+
+      if (newGolferId && this.golferId !== newGolferId) {
+        this.golferId = newGolferId;
+        golferChanged = true;
+      }
+
+      if (yearFromUrl) {
+        if (!this.selectedSeason || this.selectedSeason.year !== yearFromUrl) {
+          this.selectedSeason = this.seasons.find((s) => s.year === yearFromUrl);
+          seasonChanged = true;
+        }
+      } else if (!this.selectedSeason) {
+        this.selectedSeason = this.seasons.find((s) => s.is_active);
+        seasonChanged = true;
+      }
+
+      if (golferChanged) {
+        const prevSunday = this.getActiveHandicapDeadline(new Date());
+        this.golfersService.getGolfer(this.golferId, prevSunday);
+      }
+
+      if (golferChanged || seasonChanged) {
+        this.getSelectedSeasonData();
+      }
     });
 
     this.golferSub = this.golfersService.getGolferUpdateListener().subscribe((result) => {
@@ -100,7 +131,6 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       });
 
     this.roundsSub = this.roundsService.getRoundUpdateListener().subscribe((result) => {
-      console.log(`[GolferHomeComponent] Received ${result.length} rounds`);
       if (result.length > 0) {
         this.rounds = result;
       } else {
@@ -112,15 +142,11 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
     this.statisticsSub = this.golfersService
       .getGolferStatisticsUpdateListener()
       .subscribe((result) => {
-        console.log(
-          `[GolferHomeComponent] Received golfer statistics with ${result.num_rounds} rounds of data`,
-        );
         this.statistics = result;
         this.updateIsLoading();
       });
 
     this.teamsSub = this.golfersService.getGolferTeamDataUpdateListener().subscribe((result) => {
-      console.log(`[GolferHomeComponent] Received ${result.length} teams`);
       this.teams = [...result];
       this.updateIsLoading();
     });
@@ -134,21 +160,10 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
       this.tournamentInfo = [...result];
       this.updateIsLoading();
     });
-
-    this.route.queryParams.subscribe((params) => {
-      if (params && params.id) {
-        console.log('[GolferHomeComponent] Processing route with query parameter: id=' + params.id);
-        this.golferId = params.id;
-
-        const prevSunday = this.getActiveHandicapDeadline(new Date());
-        this.golfersService.getGolfer(this.golferId, prevSunday);
-        this.getSelectedSeasonData();
-      }
-    });
   }
 
   ngOnDestroy(): void {
-    this.seasonsSub.unsubscribe();
+    if (this.dataSub) this.dataSub.unsubscribe();
     this.golferSub.unsubscribe();
     this.golferHandicapScoringRecordSub.unsubscribe();
     this.teamsSub.unsubscribe();
@@ -171,7 +186,7 @@ export class GolferHomeComponent implements OnInit, OnDestroy {
   private getSelectedSeasonData(): void {
     if (this.golferId && this.selectedSeason) {
       console.log(
-        `[GolferHomeComponent] Fetching golfer round data for year=${this.selectedSeason.year}`,
+        `[GolferHomeComponent] Fetching golfer data for year=${this.selectedSeason.year}`,
       );
       this.isLoading = true;
 
