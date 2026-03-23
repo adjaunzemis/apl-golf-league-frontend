@@ -4,6 +4,7 @@ import { MatchData } from '../../shared/match.model';
 import { RoundData } from '../../shared/round.model';
 import { ScorecardModule } from 'src/app/shared/scorecard/scorecard.module';
 import { MatchScorecardScoreLineComponent } from './match-scorecard-score-line/match-scorecard-score-line.component';
+import { ScoreMode } from 'src/app/shared/score-mode.model';
 
 @Component({
   selector: 'app-match-scorecard',
@@ -16,7 +17,7 @@ export class MatchScorecardComponent implements OnInit, OnChanges {
   @Input() topTeamId: number;
   bottomTeamId: number;
 
-  scoreMode = 'gross';
+  scoreMode = ScoreMode.GROSS;
 
   roundIdx = 0;
 

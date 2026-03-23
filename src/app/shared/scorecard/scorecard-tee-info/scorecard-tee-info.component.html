@@ -2,7 +2,7 @@
   <tbody>
     <tr class="par" (click)="toggleDetails()">
       <td class="label" [ngStyle]="{ 'background-color': color }">Par</td>
-      @for (hole of holes; track hole) {
+      @for (hole of holes; track hole.number) {
         <td class="hole">{{ hole.par }}</td>
       }
       <td class="total">{{ totalPar }}</td>
@@ -10,7 +10,7 @@
     @if (showDetails) {
       <tr class="stroke-index">
         <td class="label" [ngStyle]="{ 'background-color': color }">Hcp</td>
-        @for (hole of holes; track hole) {
+        @for (hole of holes; track hole.number) {
           <td class="hole">{{ hole.stroke_index }}</td>
         }
         <td class="total">--</td>
@@ -19,7 +19,7 @@
     @if (showDetails) {
       <tr class="yardage">
         <td class="label" [ngStyle]="{ 'background-color': color }">Yds</td>
-        @for (hole of holes; track hole) {
+        @for (hole of holes; track hole.number) {
           <td class="hole">
             @if (hole.yardage) {
               <div>{{ hole.yardage }}</div>

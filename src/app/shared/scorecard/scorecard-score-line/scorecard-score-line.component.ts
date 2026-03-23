@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { HoleResultData } from '../../hole-result.model';
 import { RoundData } from '../../round.model';
+import { ScoreMode } from '../../score-mode.model';
 
 @Component({
   selector: 'app-scorecard-score-line',
@@ -13,7 +14,7 @@ export class ScorecardScoreLineComponent {
   @Input() round: RoundData;
   @Output() roundChange = new EventEmitter<RoundData>();
 
-  @Input() scoreMode = 'gross';
+  @Input() scoreMode: string = ScoreMode.GROSS;
 
   @Input() title: string;
   @Input() subtitle: string;
@@ -39,11 +40,11 @@ export class ScorecardScoreLineComponent {
   }
 
   getRoundScore(): number {
-    if (this.scoreMode === 'adjusted gross') {
+    if (this.scoreMode === ScoreMode.ADJ_GROSS) {
       return this.round.holes
         .map((hole) => hole.adjusted_gross_score)
         .reduce((prev, next) => prev + next);
-    } else if (this.scoreMode === 'net') {
+    } else if (this.scoreMode === ScoreMode.NET) {
       return this.round.holes.map((hole) => hole.net_score).reduce((prev, next) => prev + next);
     } else {
       return this.round.holes.map((hole) => hole.gross_score).reduce((prev, next) => prev + next);
@@ -51,9 +52,9 @@ export class ScorecardScoreLineComponent {
   }
 
   getHoleScore(hole: HoleResultData): number {
-    if (this.scoreMode === 'adjusted gross') {
+    if (this.scoreMode === ScoreMode.ADJ_GROSS) {
       return hole.adjusted_gross_score;
-    } else if (this.scoreMode === 'net') {
+    } else if (this.scoreMode === ScoreMode.NET) {
       return hole.net_score;
     } else {
       return hole.gross_score;

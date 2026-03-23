@@ -529,7 +529,7 @@
           @for (round of getRoundsForTeam(1); track round; let roundIdx = $index) {
             <app-scorecard-score-line
               [(round)]="getRoundsForTeam(1)[roundIdx]"
-              scoreMode="gross"
+              scoreMode="Gross"
               [enterScores]="editMode"
               [showScores]="false"
               [title]="round.golfer_name"
@@ -540,7 +540,7 @@
           <app-scorecard-score-line
             class="team-score-line"
             [round]="getTeamRound(1)"
-            scoreMode="gross"
+            scoreMode="Gross"
             [teamScore]="true"
             [showScores]="editMode"
             [title]="selectedTeam1.name"
@@ -551,7 +551,7 @@
           <app-scorecard-score-line
             class="team-score-line"
             [round]="getTeamRound(2)"
-            scoreMode="gross"
+            scoreMode="Gross"
             [teamScore]="true"
             [showScores]="editMode"
             [title]="selectedTeam2.name"
@@ -562,7 +562,7 @@
           @for (round of getRoundsForTeam(2); track round; let roundIdx = $index) {
             <app-scorecard-score-line
               [round]="getRoundsForTeam(2)[roundIdx]"
-              scoreMode="gross"
+              scoreMode="Gross"
               [enterScores]="editMode"
               [showScores]="false"
               [title]="round.golfer_name"

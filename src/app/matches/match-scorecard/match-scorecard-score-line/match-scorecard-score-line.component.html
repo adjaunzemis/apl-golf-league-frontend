@@ -2,7 +2,7 @@
   <tbody>
     <tr class="score">
       <td class="label"></td>
-      @for (score of holeWinningTeamIds; track score; let holeIdx = $index) {
+      @for (score of holeWinningTeamIds; track $index; let holeIdx = $index) {
         <td class="hole">
           <div
             [ngClass]="{

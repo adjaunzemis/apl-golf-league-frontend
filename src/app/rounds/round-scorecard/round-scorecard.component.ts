@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { RoundData } from 'src/app/shared/round.model';
+import { ScoreMode } from 'src/app/shared/score-mode.model';
 
 @Component({
   selector: 'app-round-scorecard',
@@ -10,7 +11,7 @@ import { RoundData } from 'src/app/shared/round.model';
 })
 export class RoundScorecardComponent {
   @Input() round: RoundData;
-  scoreMode = 'gross';
+  scoreMode = ScoreMode.GROSS;
 
   onScoreModeChanged(scoreMode: string): void {
     this.scoreMode = scoreMode;

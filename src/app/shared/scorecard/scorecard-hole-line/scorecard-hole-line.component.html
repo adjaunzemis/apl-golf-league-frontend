@@ -2,18 +2,15 @@
   <thead>
     <tr class="hole">
       <td class="label">
-        <!-- <mat-select
-        class="score-mode-selector"
-        [(ngModel)]="selectedScoreMode"
-        (selectionChange)="onChangeScoreMode()"
-        *ngIf="showScoreModeButtons"
-        >
-        <mat-option value="gross">Gross</mat-option>
-        <mat-option value="adjusted gross">Adj. Gross</mat-option>
-        <mat-option value="net">Net</mat-option>
-      </mat-select> -->
+        @if (showScoreModeButtons) {
+        <p-select
+          [(ngModel)]="selectedScoreMode"
+          (onChange)="onChangeScoreMode()"
+          [options]="scoreModes"
+          size="small" />
+        }
       </td>
-      @for (hole of holes; track hole) {
+      @for (hole of holes; track hole.number) {
         <td class="hole">{{ hole.number }}</td>
       }
       <td class="total">TOT</td>
