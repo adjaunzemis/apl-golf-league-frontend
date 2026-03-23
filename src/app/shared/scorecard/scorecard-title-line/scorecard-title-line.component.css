@@ -12,10 +12,6 @@
   border-bottom: thin solid #dddddd;
 }
 
-.styled-table tbody tr:first-of-type {
-  border-top: 2px solid #3f51b5;
-}
-
 .styled-table .info {
   text-align: left;
   padding-top: 4px;

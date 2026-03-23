@@ -20,7 +20,8 @@
 }
 
 .styled-table tbody tr {
-  border-bottom: thin solid #dddddd;
+  border-bottom: thin solid;
+  @apply border-zinc-200 dark:border-zinc-700;
 }
 
 .styled-table tbody tr:last-of-type {
@@ -30,14 +31,11 @@
 .styled-table tbody tr.hole,
 .styled-table tbody tr.par {
   height: 25px;
-  background-color: #f3f3f3;
-  color: black;
 }
 
 .styled-table tbody tr.yardage,
 .styled-table tbody tr.stroke-index {
   font-size: 0.8em;
-  background-color: #f3f3f3;
 }
 
 .styled-table .label,
