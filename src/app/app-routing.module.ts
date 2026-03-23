@@ -13,6 +13,7 @@ import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { FlightHomeComponent } from './flights/flight-home/flight-home.component';
 import { TeamHomeComponent } from './flights/team-home/team-home.component';
 import { FlightSignupComponent } from './flights/flight-signup/flight-signup.component';
+import { FlightCreateComponent } from './flights/flight-create/flight-create.component';
 import { TournamentSignupComponent } from './tournaments/tournament-signup/tournament-signup.component';
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
 import { UnderConstructionComponent } from './maintenance/under-construction/under-construction.component';
@@ -30,6 +31,11 @@ const routes: Routes = [
       { path: '', component: LeagueHomeComponent },
       { path: 'under-construction', component: UnderConstructionComponent },
       { path: 'flight', component: FlightHomeComponent },
+      {
+        path: 'flight/create',
+        component: FlightCreateComponent,
+        canActivate: [AuthGuard],
+      },
       { path: 'flight-signup', component: FlightSignupComponent },
       { path: 'flight-team', component: TeamHomeComponent },
       { path: 'flight-scorecard', component: FlightMatchScorecardComponent },

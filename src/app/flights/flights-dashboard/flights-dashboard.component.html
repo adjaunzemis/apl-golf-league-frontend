@@ -2,10 +2,21 @@
   <div class="flex flex-row items-center px-4 pt-4">
     <span class="text-2xl font-semibold">Flights</span>
     <div class="mx-auto"></div>
-    <a class="p-button hidden md:block" href="mailto:{{ getSecretariesEmailList() }}">
-      <span class="text-sm pi pi-send pr-2"></span>
-      <span>Secretaries</span>
-    </a>
+    <div class="flex gap-2">
+      @if (canEdit()) {
+        <p-button
+          label="Create"
+          icon="pi pi-plus"
+          size="small"
+          routerLink="/flight/create"
+          class="hidden md:block"
+        />
+      }
+      <a class="p-button hidden md:block" href="mailto:{{ getSecretariesEmailList() }}">
+        <span class="text-sm pi pi-send pr-2"></span>
+        <span>Secretaries</span>
+      </a>
+    </div>
   </div>
 
   @if (isLoading) {
