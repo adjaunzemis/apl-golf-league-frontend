@@ -51,8 +51,8 @@ export class FlightCreateComponent implements OnInit {
   isLoading = signal(false);
 
   genderOptions = [
-    { label: 'Male', value: 'Male' },
-    { label: 'Female', value: 'Female' }
+    { label: 'Men\'s', value: 'Men\'s' },
+    { label: 'Ladies\'', value: 'Ladies\'' }
   ];
 
   constructor() {
