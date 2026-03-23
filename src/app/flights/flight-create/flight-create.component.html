@@ -53,18 +53,27 @@
         <div class="flex flex-col gap-2">
           <label for="signup_start_date" class="font-semibold">Signup Start Date</label>
           <p-datepicker id="signup_start_date" formControlName="signup_start_date" [showIcon]="true" appendTo="body" />
+          @if (flightForm.get('signup_start_date')?.touched && flightForm.get('signup_start_date')?.invalid) {
+            <p-message severity="error" text="Signup start date is required" />
+          }
         </div>
 
         <!-- Signup Stop Date -->
         <div class="flex flex-col gap-2">
           <label for="signup_stop_date" class="font-semibold">Signup Stop Date</label>
           <p-datepicker id="signup_stop_date" formControlName="signup_stop_date" [showIcon]="true" appendTo="body" />
+          @if (flightForm.get('signup_stop_date')?.touched && flightForm.get('signup_stop_date')?.invalid) {
+            <p-message severity="error" text="Signup stop date is required" />
+          }
         </div>
 
         <!-- Start Date -->
         <div class="flex flex-col gap-2">
           <label for="start_date" class="font-semibold">League Start Date</label>
           <p-datepicker id="start_date" formControlName="start_date" [showIcon]="true" appendTo="body" />
+          @if (flightForm.get('start_date')?.touched && flightForm.get('start_date')?.invalid) {
+            <p-message severity="error" text="League start date is required" />
+          }
         </div>
       </div>
 
@@ -73,18 +82,27 @@
         <div class="flex flex-col gap-2">
           <label for="secretary" class="font-semibold">Secretary Name</label>
           <input pInputText id="secretary" formControlName="secretary" />
+          @if (flightForm.get('secretary')?.touched && flightForm.get('secretary')?.invalid) {
+            <p-message severity="error" text="Secretary name is required" />
+          }
         </div>
 
         <!-- Secretary Email -->
         <div class="flex flex-col gap-2">
           <label for="secretary_email" class="font-semibold">Secretary Email</label>
           <input pInputText id="secretary_email" formControlName="secretary_email" />
+          @if (flightForm.get('secretary_email')?.touched && flightForm.get('secretary_email')?.invalid) {
+            <p-message severity="error" text="Valid email is required" />
+          }
         </div>
 
         <!-- Secretary Phone -->
         <div class="flex flex-col gap-2">
           <label for="secretary_phone" class="font-semibold">Secretary Phone</label>
           <input pInputText id="secretary_phone" formControlName="secretary_phone" />
+          @if (flightForm.get('secretary_phone')?.touched && flightForm.get('secretary_phone')?.invalid) {
+            <p-message severity="error" text="Phone is required" />
+          }
         </div>
 
         <!-- Tee Times -->
@@ -109,7 +127,7 @@
 
         <div formArrayName="divisions" class="flex flex-col gap-6">
           @for (division of divisions.controls; track division; let i = $index) {
-            <div [formGroupName]="i" class="p-4 border rounded-lg bg-gray-50 relative">
+            <div [formGroupName]="i" class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-700 relative">
               @if (divisions.length > 1) {
                 <p-button
                   icon="pi pi-times"
@@ -126,6 +144,9 @@
                 <div class="flex flex-col gap-2">
                   <label [for]="'div-name-' + i" class="font-semibold">Division Name</label>
                   <input pInputText [id]="'div-name-' + i" formControlName="name" placeholder="e.g. Championship" />
+                  @if (division.get('name')?.touched && division.get('name')?.invalid) {
+                    <p-message severity="error" text="Division name is required" />
+                  }
                 </div>
 
                 <div class="flex flex-col gap-2">
@@ -136,36 +157,46 @@
                     formControlName="gender"
                     optionLabel="label"
                     optionValue="value"
+                    placeholder="Select Gender"
                     class="w-full"
                   />
+                  @if (division.get('gender')?.touched && division.get('gender')?.invalid) {
+                    <p-message severity="error" text="Gender is required" />
+                  }
                 </div>
 
                 <div class="flex flex-col gap-2">
                   <label [for]="'div-primary-' + i" class="font-semibold">Primary Tee</label>
                   <p-select
                     [id]="'div-primary-' + i"
-                    [options]="tees()"
+                    [options]="getFilteredTees(division.get('gender')?.value)"
                     formControlName="primary_tee_id"
                     optionLabel="name"
                     optionValue="id"
                     placeholder="Select Primary Tee"
                     class="w-full"
-                    [disabled]="tees().length === 0"
+                    [disabled]="!division.get('gender')?.value || tees().length === 0"
                   />
+                  @if (division.get('primary_tee_id')?.touched && division.get('primary_tee_id')?.invalid) {
+                    <p-message severity="error" text="Primary tee is required" />
+                  }
                 </div>
 
                 <div class="flex flex-col gap-2">
                   <label [for]="'div-secondary-' + i" class="font-semibold">Secondary Tee</label>
                   <p-select
                     [id]="'div-secondary-' + i"
-                    [options]="tees()"
+                    [options]="getFilteredTees(division.get('gender')?.value)"
                     formControlName="secondary_tee_id"
                     optionLabel="name"
                     optionValue="id"
                     placeholder="Select Secondary Tee"
                     class="w-full"
-                    [disabled]="tees().length === 0"
+                    [disabled]="!division.get('gender')?.value || tees().length === 0"
                   />
+                  @if (division.get('secondary_tee_id')?.touched && division.get('secondary_tee_id')?.invalid) {
+                    <p-message severity="error" text="Secondary tee is required" />
+                  }
                 </div>
               </div>
             </div>

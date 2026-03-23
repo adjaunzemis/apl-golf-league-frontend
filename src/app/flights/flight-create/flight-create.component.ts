@@ -17,6 +17,7 @@ import { Course } from '../../shared/course.model';
 import { FlightCreate } from '../../shared/flight.model';
 import { Tee } from '../../shared/tee.model';
 import { Track } from '../../shared/track.model';
+import { NotificationService } from '../../notifications/notification.service';
 
 @Component({
   selector: 'app-flight-create',
@@ -41,6 +42,7 @@ export class FlightCreateComponent implements OnInit {
   private fb = inject(FormBuilder);
   private flightsService = inject(FlightsService);
   private coursesService = inject(CoursesService);
+  private notificationService = inject(NotificationService);
   private router = inject(Router);
 
   flightForm!: FormGroup;
@@ -71,7 +73,7 @@ export class FlightCreateComponent implements OnInit {
       signup_start_date: [null, Validators.required],
       signup_stop_date: [null, Validators.required],
       start_date: [null, Validators.required],
-      weeks: [16, [Validators.required, Validators.min(1)]],
+      weeks: [18, [Validators.required, Validators.min(1)]],
       tee_times: [''],
       locked: [false],
       divisions: this.fb.array([])
@@ -79,6 +81,7 @@ export class FlightCreateComponent implements OnInit {
 
     // Watch course changes to load tees
     this.flightForm.get('course_id')?.valueChanges.subscribe(courseId => {
+      console.log('Course changed to:', courseId);
       if (courseId) {
         this.loadCourseTees(courseId);
       } else {
@@ -97,15 +100,29 @@ export class FlightCreateComponent implements OnInit {
   addDivision() {
     const division = this.fb.group({
       name: ['', Validators.required],
-      gender: ['Male', Validators.required],
+      gender: [null, Validators.required],
       primary_tee_id: [null, Validators.required],
       secondary_tee_id: [null, Validators.required]
     });
+
+    // Clear tee selections if gender changes
+    division.get('gender')?.valueChanges.subscribe(() => {
+      division.get('primary_tee_id')?.setValue(null);
+      division.get('secondary_tee_id')?.setValue(null);
+    });
+
     this.divisions.push(division);
   }
 
   removeDivision(index: number) {
     this.divisions.removeAt(index);
+  }
+
+  getFilteredTees(gender: string): Tee[] {
+    if (!gender) {
+      return [];
+    }
+    return this.tees().filter((tee) => tee.gender === gender);
   }
 
   private loadCourses() {
@@ -134,26 +151,30 @@ export class FlightCreateComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('onSubmit called');
     if (this.flightForm.invalid) {
+      console.log('Form is invalid', this.flightForm.errors);
       this.flightForm.markAllAsTouched();
+      this.notificationService.showWarning('Invalid Form', 'Please check all required fields.');
       return;
     }
 
     this.isLoading.set(true);
     const flightData: FlightCreate = this.flightForm.value;
-    
-    // API expects dates in a certain format or ISO strings usually works
-    // PrimeNG DatePicker returns Date objects
+    console.log('Submitting flight data:', flightData);
     
     this.flightsService.createFlight(flightData).subscribe({
       next: (res) => {
+        console.log('Flight created successfully:', res);
         this.isLoading.set(false);
+        this.notificationService.showSuccess('Success', 'Flight created successfully!');
         this.router.navigate(['/flight'], { queryParams: { id: res.id } });
       },
       error: (err) => {
         this.isLoading.set(false);
-        console.error('Error creating flight', err);
-        // In a real app we would show a toast/message
+        console.error('Error creating flight:', err);
+        const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
+        this.notificationService.showError('Error', `Failed to create flight: ${errorMsg}`);
       }
     });
   }

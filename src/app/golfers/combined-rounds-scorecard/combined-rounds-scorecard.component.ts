@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 import { RoundData } from '../../shared/round.model';
+import { ScoreMode } from '../../shared/score-mode.model';
 
 @Component({
   selector: 'app-combined-rounds-scorecard',
@@ -11,7 +12,7 @@ import { RoundData } from '../../shared/round.model';
 export class CombinedRoundsScorecardComponent {
   @Input() rounds: RoundData[];
 
-  scoreMode = 'gross';
+  scoreMode: string = ScoreMode.GROSS;
 
   getScorecardTitle(round: RoundData): string {
     return round.course_name + ' - ' + round.track_name;
