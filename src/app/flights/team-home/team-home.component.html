@@ -1,36 +1,37 @@
 @if (!isLoading) {
-  <div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
-    <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
-    <app-team-info
-      class="col-span-12 md:col-span-8 xl:col-span-3"
-      [flightInfo]="flightInfo"
-      [teamData]="teamData"
-      [teamStandings]="teamStandings"
-    />
-    <app-team-roster class="col-span-12 md:col-span-4 xl:col-span-3" [teamData]="teamData" />
-    <app-team-rounds
-      class="col-span-12 row-span-2 md:col-span-6 xl:col-span-4 xl:row-span-3"
-      [rounds]="getRounds()"
-    />
-    <div class="hidden xl:block xl:col-span-1 xl:row-span-3 bg-transparent"></div>
-    <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
-    @if (teamMatches) {
-      <app-team-schedule
-        class="col-span-12 md:col-span-6"
-        [flightInfo]="flightInfo"
-        [matches]="teamMatches"
-      />
-    }
-    <div class="hidden xl:block xl:col-span-1 bg-transparent"></div>
-    @if (statistics) {
-      <app-flight-statistics
-        class="col-span-12 md:col-span-6"
-        [statistics]="statistics"
-        [matchCountLimit]="0"
-        [hideSubstitutesToggle]="true"
-        [pagination]="false"
-      />
-    }
+  <div class="flex flex-col xl:flex-row gap-4 p-4">
+    <!-- Left Column: 60% width on XL -->
+    <div class="flex flex-col gap-4 w-full xl:w-[calc(60%-0.5rem)]">
+      <!-- Row 1: Info (25% of total) and Roster (35% of total) -->
+      <div class="flex flex-col xl:flex-row gap-4 items-stretch">
+        <app-team-info
+          class="w-full xl:w-[calc(41.666%-0.5rem)]"
+          [flightInfo]="flightInfo"
+          [teamData]="teamData"
+          [teamStandings]="teamStandings"
+        />
+        <app-team-roster class="w-full xl:w-[calc(58.333%-0.5rem)]" [teamData]="teamData" />
+      </div>
+
+      <!-- Row 2: Schedule (60% of total) -->
+      @if (teamMatches) {
+        <app-team-schedule class="w-full" [flightInfo]="flightInfo" [matches]="teamMatches" />
+      }
+
+      <!-- Row 3: Statistics (60% of total) -->
+      @if (statistics) {
+        <app-flight-statistics
+          class="w-full"
+          [statistics]="statistics"
+          [matchCountLimit]="0"
+          [hideSubstitutesToggle]="true"
+          [pagination]="false"
+        />
+      }
+    </div>
+
+    <!-- Right Column: Rounds (40% width on XL) -->
+    <app-team-rounds class="w-full xl:w-[calc(40%-0.5rem)]" [rounds]="getRounds()" />
   </div>
 } @else {
   <div class="flex flex-col items-center w-full p-10">
@@ -38,7 +39,7 @@
       strokeWidth="4"
       fill="transparent"
       animationDuration="2s"
-      [style]="{ widthcs: '100px', height: '100px' }"
+      [style]="{ width: '100px', height: '100px' }"
     />
   </div>
 }

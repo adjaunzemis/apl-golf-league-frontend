@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { TournamentInfo } from '../../../shared/tournament.model';
 import { RoundData } from '../../../shared/round.model';
 import { HoleResultData } from '../../../shared/hole-result.model';
-import { ScorecardModule } from 'src/app/shared/scorecard/scorecard.module';
+import { ScorecardModule } from '../../../shared/scorecard/scorecard.module';
+import { ScoreMode } from '../../../shared/score-mode.model';
 
 @Component({
   selector: 'app-tournament-scorecard',
@@ -16,7 +17,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
   @Input() info: TournamentInfo;
   @Input() rounds: RoundData[];
 
-  scoreMode = 'gross';
+  scoreMode = ScoreMode.GROSS;
 
   roundIdx = 0;
 

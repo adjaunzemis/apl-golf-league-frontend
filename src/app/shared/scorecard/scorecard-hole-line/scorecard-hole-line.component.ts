@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 
 import { HoleResultData } from '../../hole-result.model';
 import { Hole } from '../../hole.model';
+import { ScoreMode } from '../../score-mode.model';
 
 @Component({
   selector: 'app-scorecard-hole-line',
@@ -15,6 +16,7 @@ export class ScorecardHoleLineComponent implements OnInit, OnChanges {
 
   @Input() selectedScoreMode!: string;
   @Output() selectedScoreModeChange = new EventEmitter<string>();
+  scoreModes = [ScoreMode.GROSS, ScoreMode.ADJ_GROSS, ScoreMode.NET];
 
   @Input() showScoreModeButtons = true;
 

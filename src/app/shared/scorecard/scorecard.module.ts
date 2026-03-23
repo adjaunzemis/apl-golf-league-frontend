@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { SelectModule } from 'primeng/select';
 
 import { ScorecardHoleLineComponent } from './scorecard-hole-line/scorecard-hole-line.component';
 import { ScorecardTeeInfoComponent } from './scorecard-tee-info/scorecard-tee-info.component';
@@ -15,7 +16,7 @@ import { ScorecardTitleLineComponent } from './scorecard-title-line/scorecard-ti
     ScorecardScoreLineComponent,
     ScorecardTitleLineComponent,
   ],
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, SelectModule],
   exports: [
     ScorecardHoleLineComponent,
     ScorecardTeeInfoComponent,

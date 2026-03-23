@@ -21,7 +21,8 @@
 }
 
 .styled-table tbody tr {
-  border-bottom: thin solid #dddddd;
+  border-bottom: thin solid;
+  @apply border-zinc-200 dark:border-zinc-700;
 }
 
 .styled-table .label,
@@ -35,7 +36,6 @@
 
 .styled-table tbody tr.score {
   height: 5px;
-  background-color: #ffffff;
 }
 
 .styled-table tr.score td {
@@ -67,7 +67,8 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid black;
+  border-bottom: 5px solid;
+  @apply border-b-black dark:border-b-white;
 }
 
 .arrow-down {
@@ -75,7 +76,8 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid black;
+  border-top: 5px solid;
+  @apply border-b-black dark:border-b-white;
 }
 
 .arrow-right {
@@ -83,7 +85,8 @@
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 5px solid black;
+  border-left: 5px solid;
+  @apply border-b-black dark:border-b-white;
 }
 
 .arrow-left {
@@ -91,7 +94,8 @@
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-right: 5px solid black;
+  border-right: 5px solid;
+  @apply border-b-black dark:border-b-white;
 }
 
 .dash {
@@ -101,6 +105,7 @@
   border-bottom: 1px solid black;
   border-left: 5px solid black;
   border-right: 5px solid black;
+  @apply border-black dark:border-white;
 }
 
 .hole .arrow-up,

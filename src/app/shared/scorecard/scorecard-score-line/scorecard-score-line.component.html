@@ -9,11 +9,11 @@
           <span>{{ title }}</span>
         }
       </td>
-      @for (hole of round.holes; track hole; let holeIdx = $index) {
+      @for (hole of round.holes; track hole.number; let holeIdx = $index) {
         <td class="hole" rowspan="2" [ngClass]="showScores ? '' : 'border-sides'">
-          @if (scoreMode !== 'net') {
+          @if (scoreMode !== 'Net') {
             <div class="handicap-strokes">
-              @for (hs of [].constructor(abs(hole.handicap_strokes)); track hs) {
+              @for (hs of [].constructor(abs(hole.handicap_strokes)); track $index) {
                 <div [ngClass]="hole.handicap_strokes > 0 ? 'black-dot' : 'red-dot'"></div>
               }
             </div>

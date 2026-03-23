@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 
 import { HoleResultData } from '../../../shared/hole-result.model';
 import { RoundData } from '../../../shared/round.model';
+import { ScoreMode } from '../../../shared/score-mode.model';
 
 @Component({
   selector: 'app-average-score-line',
@@ -11,7 +12,7 @@ import { RoundData } from '../../../shared/round.model';
 })
 export class AverageScoreLineComponent implements OnInit, OnChanges {
   @Input() rounds: RoundData[];
-  @Input() scoreMode = 'gross';
+  @Input() scoreMode = ScoreMode.GROSS;
 
   @Input() title: string;
 
@@ -50,9 +51,9 @@ export class AverageScoreLineComponent implements OnInit, OnChanges {
   }
 
   private getHoleScore(hole: HoleResultData): number {
-    if (this.scoreMode === 'adjusted gross') {
+    if (this.scoreMode === ScoreMode.ADJ_GROSS) {
       return hole.adjusted_gross_score;
-    } else if (this.scoreMode === 'net') {
+    } else if (this.scoreMode === ScoreMode.NET) {
       return hole.net_score;
     } else {
       return hole.gross_score;

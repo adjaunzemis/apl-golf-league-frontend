@@ -30,8 +30,6 @@
 .styled-table tbody tr.hole,
 .styled-table tbody tr.par {
   height: 25px;
-  background-color: #f3f3f3;
-  color: black;
 }
 
 .styled-table .label,
@@ -41,9 +39,4 @@
 
 .styled-table .hole {
   width: 8.333%;
-}
-
-.score-mode-selector {
-  background-color: #b8cefd8c;
-  border-radius: 5px;
 }

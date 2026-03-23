@@ -9,7 +9,6 @@
 }
 
 .styled-table thead tr {
-  background-color: #3f51b5;
   color: #ffffff;
   font-weight: bold;
 }
@@ -20,20 +19,18 @@
 }
 
 .styled-table tbody tr {
-  border-bottom: thin solid #dddddd;
+  border-bottom: thin solid;
+  @apply border-zinc-200 dark:border-zinc-700;
 }
 
 .styled-table tbody tr.hole,
 .styled-table tbody tr.par {
   height: 25px;
-  background-color: #f3f3f3;
-  color: black;
 }
 
 .styled-table tbody tr.yardage,
 .styled-table tbody tr.stroke-index {
   font-size: 0.8em;
-  background-color: #f3f3f3;
 }
 
 .styled-table .label,
@@ -55,7 +52,6 @@
 
 .styled-table tbody tr.score {
   height: 25px;
-  background-color: #ffffff;
 }
 
 .styled-table tr.score td {
@@ -102,13 +98,13 @@ a:hover {
 }
 
 .black-dot {
-  @apply h-1 w-1 bg-black rounded-full;
+  @apply h-1 w-1 rounded-full bg-black dark:bg-white;
   -webkit-print-color-adjust: exact; /* Chrome, Safari */
   print-color-adjust: exact !important; /* Firefox */
 }
 
 .red-dot {
-  @apply h-1 w-1 bg-red-600 rounded-full;
+  @apply h-1 w-1 rounded-full bg-red-600;
   -webkit-print-color-adjust: exact; /* Chrome, Safari */
   print-color-adjust: exact !important; /* Firefox */
 }
@@ -128,14 +124,14 @@ a:hover {
 
 .circle {
   border-radius: 50%;
-  border: 1px solid rgb(114, 122, 218);
-  background-color: rgb(200, 202, 228);
+  @apply border border-blue-400 dark:border-blue-600;
+  @apply bg-blue-100 dark:bg-blue-900;
 }
 
 .square {
   border-radius: 0%;
-  border: 1px solid rgb(160, 160, 160);
-  background-color: rgb(231, 231, 231);
+  @apply border border-zinc-400 dark:border-zinc-400;
+  @apply bg-zinc-200 dark:bg-zinc-600;
 }
 
 .crosshatch {
