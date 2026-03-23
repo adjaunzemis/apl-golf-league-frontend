@@ -189,7 +189,19 @@ export class FlightCreateComponent implements OnInit {
 
     this.isLoading.set(true);
     const flightData: FlightCreate = this.flightForm.getRawValue();
-    console.log('Submitting flight data:', flightData);
+
+    // Adjust dates to appropriate Eastern Time values
+    if (flightData.signup_start_date) {
+      flightData.signup_start_date = this.setETTime(flightData.signup_start_date, 0, 0);
+    }
+    if (flightData.signup_stop_date) {
+      flightData.signup_stop_date = this.setETTime(flightData.signup_stop_date, 23, 55);
+    }
+    if (flightData.start_date) {
+      flightData.start_date = this.setETTime(flightData.start_date, 0, 0);
+    }
+
+    console.log('Submitting flight data (with ET adjusted dates):', flightData);
     
     this.flightsService.createFlight(flightData).subscribe({
       next: (res) => {
@@ -205,6 +217,15 @@ export class FlightCreateComponent implements OnInit {
         this.notificationService.showError('Error', `Failed to create flight: ${errorMsg}`);
       }
     });
+  }
+
+  private setETTime(date: Date, hour: number, minute: number): Date {
+    const localDate = new Date(date);
+    localDate.setHours(hour, minute, 0, 0);
+    const nyDateStr = localDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
+    const nyDate = new Date(nyDateStr);
+    const offset = localDate.getTime() - nyDate.getTime();
+    return new Date(localDate.getTime() + offset);
   }
 
   cancel() {
