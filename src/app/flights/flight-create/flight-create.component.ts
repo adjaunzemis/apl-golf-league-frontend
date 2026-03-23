@@ -82,7 +82,7 @@ export class FlightCreateComponent implements OnInit {
       logo_url: ['apl_golf_logo.png', Validators.required],
       secretary: ['', Validators.required],
       secretary_email: ['', [Validators.required, Validators.email]],
-      secretary_phone: ['', Validators.required],
+      secretary_phone: [''],
       signup_start_date: [null, Validators.required],
       signup_stop_date: [null, Validators.required],
       start_date: [null, Validators.required],
