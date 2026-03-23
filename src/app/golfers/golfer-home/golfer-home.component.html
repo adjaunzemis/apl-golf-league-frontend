@@ -50,17 +50,11 @@
       @if (statistics) {
         <app-golfer-statistics [statistics]="statistics" />
       }
-      <app-golfer-handicap
-        [golfer]="golfer"
-        [scoringRecord]="golferHandicapScoringRecord"
-      />
+      <app-golfer-handicap [golfer]="golfer" [scoringRecord]="golferHandicapScoringRecord" />
     </div>
 
     <!-- Column 3: Rounds (40% total width on XL) -->
-    <app-golfer-rounds
-      class="w-full xl:w-[calc(40%-0.5rem)]"
-      [rounds]="rounds"
-    />
+    <app-golfer-rounds class="w-full xl:w-[calc(40%-0.5rem)]" [rounds]="rounds" />
   </div>
 } @else {
   <div class="flex flex-col items-center w-full p-10">
