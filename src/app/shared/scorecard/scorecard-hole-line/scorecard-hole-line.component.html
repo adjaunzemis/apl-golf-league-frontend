@@ -3,11 +3,12 @@
     <tr class="hole">
       <td class="label">
         @if (showScoreModeButtons) {
-        <p-select
-          [(ngModel)]="selectedScoreMode"
-          (onChange)="onChangeScoreMode()"
-          [options]="scoreModes"
-          size="small" />
+          <p-select
+            [(ngModel)]="selectedScoreMode"
+            (onChange)="onChangeScoreMode()"
+            [options]="scoreModes"
+            size="small"
+          />
         }
       </td>
       @for (hole of holes; track hole.number) {

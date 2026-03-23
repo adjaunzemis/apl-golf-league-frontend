@@ -1,5 +1,5 @@
 export const ScoreMode = {
-    GROSS: 'Gross',
-    ADJ_GROSS: 'Adj. Gross',
-    NET: 'Net'
+  GROSS: 'Gross',
+  ADJ_GROSS: 'Adj. Gross',
+  NET: 'Net',
 };

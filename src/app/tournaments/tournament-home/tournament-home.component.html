@@ -3,10 +3,7 @@
     <!-- Row 1: Info (30%), Standings (40%), Divisions (30%) -->
     <div class="flex flex-col xl:flex-row gap-4 items-stretch justify-center">
       @if (info) {
-        <app-tournament-info
-          class="w-full xl:w-[calc(30%-0.5rem)]"
-          [info]="info"
-        />
+        <app-tournament-info class="w-full xl:w-[calc(30%-0.5rem)]" [info]="info" />
       }
       @if (standings) {
         <app-tournament-standings
@@ -27,10 +24,7 @@
     @if (selectedTeamRounds) {
       <div class="flex justify-center w-full">
         <div class="w-full xl:w-2/3">
-          <app-tournament-scorecard
-            [info]="info"
-            [rounds]="selectedTeamRounds"
-          />
+          <app-tournament-scorecard [info]="info" [rounds]="selectedTeamRounds" />
         </div>
       </div>
     }
@@ -38,10 +32,7 @@
     <!-- Row 3: Teams (33%), Statistics (67%) -->
     <div class="flex flex-col xl:flex-row gap-4 items-stretch justify-center">
       @if (teams) {
-        <app-tournament-teams
-          class="w-full xl:w-[calc(33.333%-0.333rem)]"
-          [teams]="teams"
-        />
+        <app-tournament-teams class="w-full xl:w-[calc(33.333%-0.333rem)]" [teams]="teams" />
       }
       @if (statistics) {
         <app-tournament-statistics

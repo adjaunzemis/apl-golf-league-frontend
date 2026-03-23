@@ -3,16 +3,10 @@
     <!-- Row 1: Info (30%), Standings (40%), Divisions (30%) -->
     <div class="flex flex-col xl:flex-row gap-4 items-stretch justify-center">
       @if (info) {
-        <app-flight-info
-          class="w-full xl:w-[calc(30%-0.5rem)]"
-          [info]="info"
-        />
+        <app-flight-info class="w-full xl:w-[calc(30%-0.5rem)]" [info]="info" />
       }
       @if (standings) {
-        <app-flight-standings
-          class="w-full xl:w-[calc(40%-1rem)]"
-          [standings]="standings"
-        />
+        <app-flight-standings class="w-full xl:w-[calc(40%-1rem)]" [standings]="standings" />
       }
       @if (divisions) {
         <app-flight-divisions
@@ -25,11 +19,7 @@
     <!-- Row 2: Schedule (Full Width) -->
     @if (matches && info) {
       <div class="flex justify-center w-full">
-        <app-flight-schedule
-          class="w-full"
-          [info]="info"
-          [matches]="matches"
-        />
+        <app-flight-schedule class="w-full" [info]="info" [matches]="matches" />
       </div>
     }
 
