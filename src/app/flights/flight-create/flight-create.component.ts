@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -55,6 +55,19 @@ export class FlightCreateComponent implements OnInit {
     { label: 'Female', value: 'Female' }
   ];
 
+  constructor() {
+    // When tees are loaded or cleared, update all division tee controls
+    effect(() => {
+      const currentTees = this.tees();
+      if (this.flightForm) {
+        this.divisions.controls.forEach(control => {
+          const division = control as FormGroup;
+          this.updateTeeControlsState(division, currentTees);
+        });
+      }
+    });
+  }
+
   ngOnInit() {
     this.initForm();
     this.loadCourses();
@@ -101,17 +114,32 @@ export class FlightCreateComponent implements OnInit {
     const division = this.fb.group({
       name: ['', Validators.required],
       gender: [null, Validators.required],
-      primary_tee_id: [null, Validators.required],
-      secondary_tee_id: [null, Validators.required]
+      primary_tee_id: [{ value: null, disabled: true }, Validators.required],
+      secondary_tee_id: [{ value: null, disabled: true }, Validators.required]
     });
 
-    // Clear tee selections if gender changes
+    // Handle gender changes for this specific division
     division.get('gender')?.valueChanges.subscribe(() => {
+      this.updateTeeControlsState(division, this.tees());
       division.get('primary_tee_id')?.setValue(null);
       division.get('secondary_tee_id')?.setValue(null);
     });
 
     this.divisions.push(division);
+  }
+
+  private updateTeeControlsState(division: FormGroup, availableTees: Tee[]) {
+    const gender = division.get('gender')?.value;
+    const primaryTee = division.get('primary_tee_id');
+    const secondaryTee = division.get('secondary_tee_id');
+
+    if (gender && availableTees.length > 0) {
+      primaryTee?.enable({ emitEvent: false });
+      secondaryTee?.enable({ emitEvent: false });
+    } else {
+      primaryTee?.disable({ emitEvent: false });
+      secondaryTee?.disable({ emitEvent: false });
+    }
   }
 
   removeDivision(index: number) {
@@ -160,7 +188,7 @@ export class FlightCreateComponent implements OnInit {
     }
 
     this.isLoading.set(true);
-    const flightData: FlightCreate = this.flightForm.value;
+    const flightData: FlightCreate = this.flightForm.getRawValue();
     console.log('Submitting flight data:', flightData);
     
     this.flightsService.createFlight(flightData).subscribe({

@@ -175,7 +175,6 @@
                     optionValue="id"
                     placeholder="Select Primary Tee"
                     class="w-full"
-                    [disabled]="!division.get('gender')?.value || tees().length === 0"
                   />
                   @if (division.get('primary_tee_id')?.touched && division.get('primary_tee_id')?.invalid) {
                     <p-message severity="error" text="Primary tee is required" />
@@ -192,7 +191,6 @@
                     optionValue="id"
                     placeholder="Select Secondary Tee"
                     class="w-full"
-                    [disabled]="!division.get('gender')?.value || tees().length === 0"
                   />
                   @if (division.get('secondary_tee_id')?.touched && division.get('secondary_tee_id')?.invalid) {
                     <p-message severity="error" text="Secondary tee is required" />
