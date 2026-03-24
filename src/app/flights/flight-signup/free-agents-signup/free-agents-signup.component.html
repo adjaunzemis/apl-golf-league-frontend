@@ -14,7 +14,7 @@
     <p-inputgroup-addon><i class="pi pi-user"></i></p-inputgroup-addon>
 
     <p-select
-      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-40 ml-2"
+      class="w-40 ml-2"
       [options]="golferOptions"
       [(ngModel)]="newGolfer"
       optionLabel="name"
@@ -35,7 +35,7 @@
     </p-select>
 
     <p-select
-      class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-28 ml-2"
+      class="w-28 ml-2"
       [options]="divisionOptions"
       [(ngModel)]="newGolferDivision"
       optionLabel="name"
@@ -44,7 +44,7 @@
 
     @if (flightId) {
       <p-select
-        class="ring-1 ring-gray-200 bg-gray-50 rounded-md text-left w-28 ml-2"
+        class="w-28 ml-2"
         [options]="cadenceOptions"
         [(ngModel)]="newGolferCadence"
         placeholder="Cadence"
@@ -79,10 +79,10 @@
             </ng-template>
             <ng-template #body let-golfer>
               <tr [pSelectableRow]="golfer">
-                <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-                <td class="text-gray-700">{{ golfer.division }}</td>
+                <td class="font-semibold">{{ golfer.name }}</td>
+                <td>{{ golfer.division }}</td>
                 @if (flightId) {
-                  <td class="text-gray-700">{{ golfer.cadence }}</td>
+                  <td>{{ golfer.cadence }}</td>
                 }
                 <td class="w-4">
                   @if (golfer.email) {

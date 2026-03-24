@@ -86,9 +86,9 @@
       </ng-template>
       <ng-template #body let-golfer>
         <tr [pSelectableRow]="golfer">
-          <td class="font-semibold text-gray-700">{{ golfer.name }}</td>
-          <td class="text-gray-700">{{ golfer.role }}</td>
-          <td class="text-gray-700">{{ golfer.division }}</td>
+          <td class="font-semibold">{{ golfer.name }}</td>
+          <td>{{ golfer.role }}</td>
+          <td>{{ golfer.division }}</td>
           <td>
             <p-button icon="pi pi-minus text-sm" (click)="removeGolferFromTeam(golfer)" rounded />
           </td>
