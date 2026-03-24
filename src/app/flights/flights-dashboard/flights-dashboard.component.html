@@ -40,7 +40,11 @@
                 class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
                 [ngClass]="{ 'border-t border-gray-300': !first }"
               >
-                <div class="md:w-20 relative ml-4 cursor-pointer" routerLink="/flight" [queryParams]="{ id: item.id }">
+                <div
+                  class="md:w-20 relative ml-4 cursor-pointer"
+                  routerLink="/flight"
+                  [queryParams]="{ id: item.id }"
+                >
                   <img
                     class="course-logo"
                     [src]="'assets/' + item.logo_url"
@@ -51,7 +55,11 @@
                 <div
                   class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
                 >
-                  <div class="flex flex-row md:flex-col justify-center items-start gap-2 cursor-pointer" routerLink="/flight" [queryParams]="{ id: item.id }">
+                  <div
+                    class="flex flex-row md:flex-col justify-center items-start gap-2 cursor-pointer"
+                    routerLink="/flight"
+                    [queryParams]="{ id: item.id }"
+                  >
                     <div>
                       <div class="text-lg font-semibold mt-1">
                         {{ getName(item) }}

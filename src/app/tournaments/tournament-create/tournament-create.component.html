@@ -1,7 +1,9 @@
 <div class="p-4 flex justify-center">
-  <p-card [header]="isEditMode() ? 'Edit Tournament' : 'Create New Tournament'" [style]="{ width: '100%', maxWidth: '900px' }">
+  <p-card
+    [header]="isEditMode() ? 'Edit Tournament' : 'Create New Tournament'"
+    [style]="{ width: '100%', maxWidth: '900px' }"
+  >
     <form [formGroup]="tournamentForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-      
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Name -->
         <div class="flex flex-col gap-2">
@@ -33,7 +35,9 @@
             placeholder="Select a Course"
             class="w-full"
           />
-          @if (tournamentForm.get('course_id')?.touched && tournamentForm.get('course_id')?.invalid) {
+          @if (
+            tournamentForm.get('course_id')?.touched && tournamentForm.get('course_id')?.invalid
+          ) {
             <p-message severity="error" text="Course is required" />
           }
         </div>
@@ -52,8 +56,16 @@
         <!-- Signup Start Date -->
         <div class="flex flex-col gap-2">
           <label for="signup_start_date" class="font-semibold">Signup Start Date</label>
-          <p-datepicker id="signup_start_date" formControlName="signup_start_date" [showIcon]="true" appendTo="body" />
-          @if (tournamentForm.get('signup_start_date')?.touched && tournamentForm.get('signup_start_date')?.invalid) {
+          <p-datepicker
+            id="signup_start_date"
+            formControlName="signup_start_date"
+            [showIcon]="true"
+            appendTo="body"
+          />
+          @if (
+            tournamentForm.get('signup_start_date')?.touched &&
+            tournamentForm.get('signup_start_date')?.invalid
+          ) {
             <p-message severity="error" text="Signup start date is required" />
           }
         </div>
@@ -61,8 +73,16 @@
         <!-- Signup Stop Date -->
         <div class="flex flex-col gap-2">
           <label for="signup_stop_date" class="font-semibold">Signup Stop Date</label>
-          <p-datepicker id="signup_stop_date" formControlName="signup_stop_date" [showIcon]="true" appendTo="body" />
-          @if (tournamentForm.get('signup_stop_date')?.touched && tournamentForm.get('signup_stop_date')?.invalid) {
+          <p-datepicker
+            id="signup_stop_date"
+            formControlName="signup_stop_date"
+            [showIcon]="true"
+            appendTo="body"
+          />
+          @if (
+            tournamentForm.get('signup_stop_date')?.touched &&
+            tournamentForm.get('signup_stop_date')?.invalid
+          ) {
             <p-message severity="error" text="Signup stop date is required" />
           }
         </div>
@@ -72,13 +92,25 @@
         <!-- Members Fee -->
         <div class="flex flex-col gap-2">
           <label for="members_entry_fee" class="font-semibold">Members Fee ($)</label>
-          <p-inputNumber id="members_entry_fee" formControlName="members_entry_fee" mode="currency" currency="USD" locale="en-US" />
+          <p-inputNumber
+            id="members_entry_fee"
+            formControlName="members_entry_fee"
+            mode="currency"
+            currency="USD"
+            locale="en-US"
+          />
         </div>
 
         <!-- Non-Members Fee -->
         <div class="flex flex-col gap-2">
           <label for="non_members_entry_fee" class="font-semibold">Non-Members Fee ($)</label>
-          <p-inputNumber id="non_members_entry_fee" formControlName="non_members_entry_fee" mode="currency" currency="USD" locale="en-US" />
+          <p-inputNumber
+            id="non_members_entry_fee"
+            formControlName="non_members_entry_fee"
+            mode="currency"
+            currency="USD"
+            locale="en-US"
+          />
         </div>
 
         <!-- Bestball -->
@@ -93,7 +125,9 @@
         <div class="flex flex-col gap-2">
           <label for="secretary" class="font-semibold">Secretary Name</label>
           <input pInputText id="secretary" formControlName="secretary" />
-          @if (tournamentForm.get('secretary')?.touched && tournamentForm.get('secretary')?.invalid) {
+          @if (
+            tournamentForm.get('secretary')?.touched && tournamentForm.get('secretary')?.invalid
+          ) {
             <p-message severity="error" text="Secretary name is required" />
           }
         </div>
@@ -102,7 +136,10 @@
         <div class="flex flex-col gap-2">
           <label for="secretary_email" class="font-semibold">Secretary Email</label>
           <input pInputText id="secretary_email" formControlName="secretary_email" />
-          @if (tournamentForm.get('secretary_email')?.touched && tournamentForm.get('secretary_email')?.invalid) {
+          @if (
+            tournamentForm.get('secretary_email')?.touched &&
+            tournamentForm.get('secretary_email')?.invalid
+          ) {
             <p-message severity="error" text="Valid email is required" />
           }
         </div>
@@ -119,25 +156,74 @@
         <h3 class="text-xl font-bold mb-4">Tournament Format</h3>
         <div class="flex flex-wrap gap-4">
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="shotgun" onLabel="Shotgun" offLabel="Tee Times" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="shotgun"
+              onLabel="Shotgun"
+              offLabel="Tee Times"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="strokeplay" onLabel="Strokeplay" offLabel="Not Strokeplay" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="strokeplay"
+              onLabel="Strokeplay"
+              offLabel="Not Strokeplay"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="scramble" onLabel="Scramble" offLabel="Not Scramble" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="scramble"
+              onLabel="Scramble"
+              offLabel="Not Scramble"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="shamble" onLabel="Shamble" offLabel="Not Shamble" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="shamble"
+              onLabel="Shamble"
+              offLabel="Not Shamble"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="individual" onLabel="Individual" offLabel="Not Individual" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="individual"
+              onLabel="Individual"
+              offLabel="Not Individual"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="ryder_cup" onLabel="Ryder Cup" offLabel="Not Ryder Cup" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="ryder_cup"
+              onLabel="Ryder Cup"
+              offLabel="Not Ryder Cup"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
           <div class="flex items-center gap-2">
-            <p-toggleButton formControlName="chachacha" onLabel="Cha Cha Cha" offLabel="Not Cha Cha Cha" onIcon="pi pi-check" offIcon="pi pi-times" class="w-40" />
+            <p-toggleButton
+              formControlName="chachacha"
+              onLabel="Cha Cha Cha"
+              offLabel="Not Cha Cha Cha"
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              class="w-40"
+            />
           </div>
         </div>
       </div>
@@ -146,12 +232,21 @@
       <div class="mt-4 border-t pt-4">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">Divisions</h3>
-          <p-button label="Add Division" icon="pi pi-plus" size="small" (click)="addDivision()" type="button" />
+          <p-button
+            label="Add Division"
+            icon="pi pi-plus"
+            size="small"
+            (click)="addDivision()"
+            type="button"
+          />
         </div>
 
         <div formArrayName="divisions" class="flex flex-col gap-6">
           @for (division of divisions.controls; track division; let i = $index) {
-            <div [formGroupName]="i" class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-700 relative">
+            <div
+              [formGroupName]="i"
+              class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-700 relative"
+            >
               @if (divisions.length > 1) {
                 <p-button
                   icon="pi pi-times"
@@ -163,11 +258,16 @@
                   type="button"
                 />
               }
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="flex flex-col gap-2">
                   <label [for]="'div-name-' + i" class="font-semibold">Division Name</label>
-                  <input pInputText [id]="'div-name-' + i" formControlName="name" placeholder="e.g. Championship" />
+                  <input
+                    pInputText
+                    [id]="'div-name-' + i"
+                    formControlName="name"
+                    placeholder="e.g. Championship"
+                  />
                   @if (division.get('name')?.touched && division.get('name')?.invalid) {
                     <p-message severity="error" text="Division name is required" />
                   }
@@ -200,7 +300,10 @@
                     placeholder="Select Primary Tee"
                     class="w-full"
                   />
-                  @if (division.get('primary_tee_id')?.touched && division.get('primary_tee_id')?.invalid) {
+                  @if (
+                    division.get('primary_tee_id')?.touched &&
+                    division.get('primary_tee_id')?.invalid
+                  ) {
                     <p-message severity="error" text="Primary tee is required" />
                   }
                 </div>
@@ -216,7 +319,10 @@
                     placeholder="Select Secondary Tee"
                     class="w-full"
                   />
-                  @if (division.get('secondary_tee_id')?.touched && division.get('secondary_tee_id')?.invalid) {
+                  @if (
+                    division.get('secondary_tee_id')?.touched &&
+                    division.get('secondary_tee_id')?.invalid
+                  ) {
                     <p-message severity="error" text="Secondary tee is required" />
                   }
                 </div>
@@ -229,9 +335,13 @@
       <!-- Actions -->
       <div class="flex justify-end gap-2 mt-6">
         <p-button label="Cancel" severity="secondary" (click)="cancel()" type="button" />
-        <p-button [label]="isEditMode() ? 'Update Tournament' : 'Create Tournament'" icon="pi pi-check" [loading]="isLoading()" type="submit" />
+        <p-button
+          [label]="isEditMode() ? 'Update Tournament' : 'Create Tournament'"
+          icon="pi pi-check"
+          [loading]="isLoading()"
+          type="submit"
+        />
       </div>
-
     </form>
   </p-card>
 </div>

@@ -36,10 +36,10 @@ import { NotificationService } from '../../notifications/notification.service';
     InputNumberModule,
     CheckboxModule,
     MessageModule,
-    ToggleButtonModule
+    ToggleButtonModule,
   ],
   templateUrl: './tournament-create.component.html',
-  styleUrls: ['./tournament-create.component.css']
+  styleUrls: ['./tournament-create.component.css'],
 })
 export class TournamentCreateComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
@@ -57,8 +57,8 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
   tournamentId: number | null = null;
 
   genderOptions = [
-    { label: 'Men\'s', value: 'Men\'s' },
-    { label: 'Ladies\'', value: 'Ladies\'' }
+    { label: "Men's", value: "Men's" },
+    { label: "Ladies'", value: "Ladies'" },
   ];
 
   private subscriptions = new Subscription();
@@ -68,7 +68,7 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
     effect(() => {
       const currentTees = this.tees();
       if (this.tournamentForm) {
-        this.divisions.controls.forEach(control => {
+        this.divisions.controls.forEach((control) => {
           const division = control as FormGroup;
           this.updateTeeControlsState(division, currentTees);
         });
@@ -119,18 +119,18 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
       ryder_cup: [false],
       chachacha: [false],
       locked: [false],
-      divisions: this.fb.array([])
+      divisions: this.fb.array([]),
     });
 
     // Watch course changes to load tees
     this.subscriptions.add(
-      this.tournamentForm.get('course_id')?.valueChanges.subscribe(courseId => {
+      this.tournamentForm.get('course_id')?.valueChanges.subscribe((courseId) => {
         if (courseId) {
           this.loadCourseTees(courseId);
         } else {
           this.tees.set([]);
         }
-      })
+      }),
     );
   }
 
@@ -149,8 +149,8 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
           this.isLoading.set(false);
           this.notificationService.showError('Error', 'Failed to load tournament data');
           console.error(err);
-        }
-      })
+        },
+      }),
     );
   }
 
@@ -175,7 +175,7 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
       individual: tournament.individual,
       ryder_cup: tournament.ryder_cup,
       chachacha: tournament.chachacha,
-      locked: false
+      locked: false,
     });
 
     // Clear existing divisions and add from data
@@ -183,13 +183,13 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
       this.divisions.removeAt(0);
     }
 
-    tournament.divisions.forEach(div => {
+    tournament.divisions.forEach((div) => {
       const divisionForm = this.fb.group({
         id: [div.id],
         name: [div.name, Validators.required],
         gender: [div.gender, Validators.required],
         primary_tee_id: [div.primary_tee_id, Validators.required],
-        secondary_tee_id: [div.secondary_tee_id, Validators.required]
+        secondary_tee_id: [div.secondary_tee_id, Validators.required],
       });
 
       divisionForm.get('gender')?.valueChanges.subscribe(() => {
@@ -212,7 +212,7 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       gender: [null, Validators.required],
       primary_tee_id: [{ value: null, disabled: true }, Validators.required],
-      secondary_tee_id: [{ value: null, disabled: true }, Validators.required]
+      secondary_tee_id: [{ value: null, disabled: true }, Validators.required],
     });
 
     division.get('gender')?.valueChanges.subscribe(() => {
@@ -252,29 +252,29 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
   private loadCourses() {
     this.coursesService.getCourses();
     this.subscriptions.add(
-      this.coursesService.getCoursesUpdateListener().subscribe(data => {
+      this.coursesService.getCoursesUpdateListener().subscribe((data) => {
         this.courses.set(data.courses.sort((a, b) => a.name.localeCompare(b.name)));
-      })
+      }),
     );
   }
 
   private loadCourseTees(courseId: number) {
     this.coursesService.getCourse(courseId);
     this.subscriptions.add(
-      this.coursesService.getSelectedCourseUpdateListener().subscribe(course => {
+      this.coursesService.getSelectedCourseUpdateListener().subscribe((course) => {
         if (course && course.id === courseId) {
           const allTees: Tee[] = [];
           course.tracks.forEach((track: Track) => {
             track.tees.forEach((tee: Tee) => {
               allTees.push({
                 ...tee,
-                name: `${track.name} - ${tee.name} (${tee.color})`
+                name: `${track.name} - ${tee.name} (${tee.color})`,
               });
             });
           });
           this.tees.set(allTees);
         }
-      })
+      }),
     );
   }
 
@@ -315,7 +315,7 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
           this.isLoading.set(false);
           const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
           this.notificationService.showError('Error', `Failed to update tournament: ${errorMsg}`);
-        }
+        },
       });
     } else {
       this.tournamentsService.createTournament(tournamentData).subscribe({
@@ -328,7 +328,7 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
           this.isLoading.set(false);
           const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
           this.notificationService.showError('Error', `Failed to create tournament: ${errorMsg}`);
-        }
+        },
       });
     }
   }

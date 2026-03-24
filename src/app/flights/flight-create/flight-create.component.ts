@@ -37,7 +37,7 @@ import { NotificationService } from '../../notifications/notification.service';
     MessageModule,
   ],
   templateUrl: './flight-create.component.html',
-  styleUrls: ['./flight-create.component.css']
+  styleUrls: ['./flight-create.component.css'],
 })
 export class FlightCreateComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
@@ -55,8 +55,8 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
   flightId: number | null = null;
 
   genderOptions = [
-    { label: 'Men\'s', value: 'Men\'s' },
-    { label: 'Ladies\'', value: 'Ladies\'' }
+    { label: "Men's", value: "Men's" },
+    { label: "Ladies'", value: "Ladies'" },
   ];
 
   private subscriptions = new Subscription();
@@ -66,7 +66,7 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
     effect(() => {
       const currentTees = this.tees();
       if (this.flightForm) {
-        this.divisions.controls.forEach(control => {
+        this.divisions.controls.forEach((control) => {
           const division = control as FormGroup;
           this.updateTeeControlsState(division, currentTees);
         });
@@ -110,19 +110,19 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
       weeks: [18, [Validators.required, Validators.min(1)]],
       tee_times: [''],
       locked: [false],
-      divisions: this.fb.array([])
+      divisions: this.fb.array([]),
     });
 
     // Watch course changes to load tees
     this.subscriptions.add(
-      this.flightForm.get('course_id')?.valueChanges.subscribe(courseId => {
+      this.flightForm.get('course_id')?.valueChanges.subscribe((courseId) => {
         console.log('Course changed to:', courseId);
         if (courseId) {
           this.loadCourseTees(courseId);
         } else {
           this.tees.set([]);
         }
-      })
+      }),
     );
   }
 
@@ -141,8 +141,8 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
           this.isLoading.set(false);
           this.notificationService.showError('Error', 'Failed to load flight data');
           console.error(err);
-        }
-      })
+        },
+      }),
     );
   }
 
@@ -160,7 +160,7 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
       start_date: new Date(flight.start_date),
       weeks: flight.weeks,
       tee_times: flight.tee_times || '',
-      locked: false // Assuming default or fetch if available
+      locked: false, // Assuming default or fetch if available
     });
 
     // Clear existing divisions and add from flight data
@@ -168,13 +168,13 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
       this.divisions.removeAt(0);
     }
 
-    flight.divisions.forEach(div => {
+    flight.divisions.forEach((div) => {
       const divisionForm = this.fb.group({
         id: [div.id],
         name: [div.name, Validators.required],
         gender: [div.gender, Validators.required],
         primary_tee_id: [div.primary_tee_id, Validators.required],
-        secondary_tee_id: [div.secondary_tee_id, Validators.required]
+        secondary_tee_id: [div.secondary_tee_id, Validators.required],
       });
 
       // Handle gender changes for this specific division
@@ -198,7 +198,7 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       gender: [null, Validators.required],
       primary_tee_id: [{ value: null, disabled: true }, Validators.required],
-      secondary_tee_id: [{ value: null, disabled: true }, Validators.required]
+      secondary_tee_id: [{ value: null, disabled: true }, Validators.required],
     });
 
     // Handle gender changes for this specific division
@@ -239,29 +239,29 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
   private loadCourses() {
     this.coursesService.getCourses();
     this.subscriptions.add(
-      this.coursesService.getCoursesUpdateListener().subscribe(data => {
+      this.coursesService.getCoursesUpdateListener().subscribe((data) => {
         this.courses.set(data.courses.sort((a, b) => a.name.localeCompare(b.name)));
-      })
+      }),
     );
   }
 
   private loadCourseTees(courseId: number) {
     this.coursesService.getCourse(courseId);
     this.subscriptions.add(
-      this.coursesService.getSelectedCourseUpdateListener().subscribe(course => {
+      this.coursesService.getSelectedCourseUpdateListener().subscribe((course) => {
         if (course && course.id === courseId) {
           const allTees: Tee[] = [];
           course.tracks.forEach((track: Track) => {
             track.tees.forEach((tee: Tee) => {
               allTees.push({
                 ...tee,
-                name: `${track.name} - ${tee.name} (${tee.color})`
+                name: `${track.name} - ${tee.name} (${tee.color})`,
               });
             });
           });
           this.tees.set(allTees);
         }
-      })
+      }),
     );
   }
 
@@ -298,7 +298,7 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
           this.isLoading.set(false);
           const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
           this.notificationService.showError('Error', `Failed to update flight: ${errorMsg}`);
-        }
+        },
       });
     } else {
       this.flightsService.createFlight(flightData).subscribe({
@@ -311,7 +311,7 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
           this.isLoading.set(false);
           const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
           this.notificationService.showError('Error', `Failed to create flight: ${errorMsg}`);
-        }
+        },
       });
     }
   }
