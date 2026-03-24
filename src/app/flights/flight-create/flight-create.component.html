@@ -1,5 +1,5 @@
 <div class="p-4 flex justify-center">
-  <p-card header="Create New Flight" [style]="{ width: '100%', maxWidth: '800px' }">
+  <p-card [header]="isEditMode() ? 'Edit Flight' : 'Create New Flight'" [style]="{ width: '100%', maxWidth: '800px' }">
     <form [formGroup]="flightForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -205,7 +205,7 @@
       <!-- Actions -->
       <div class="flex justify-end gap-2 mt-6">
         <p-button label="Cancel" severity="secondary" (click)="cancel()" type="button" />
-        <p-button label="Create Flight" icon="pi pi-check" [loading]="isLoading()" type="submit" />
+        <p-button [label]="isEditMode() ? 'Update Flight' : 'Create Flight'" icon="pi pi-check" [loading]="isLoading()" type="submit" />
       </div>
 
     </form>

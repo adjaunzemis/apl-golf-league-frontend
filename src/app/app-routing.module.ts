@@ -36,6 +36,11 @@ const routes: Routes = [
         component: FlightCreateComponent,
         canActivate: [AuthGuard],
       },
+      {
+        path: 'flight/edit/:id',
+        component: FlightCreateComponent,
+        canActivate: [AuthGuard],
+      },
       { path: 'flight-signup', component: FlightSignupComponent },
       { path: 'flight-team', component: TeamHomeComponent },
       { path: 'flight-scorecard', component: FlightMatchScorecardComponent },

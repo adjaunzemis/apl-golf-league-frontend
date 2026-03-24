@@ -1,7 +1,8 @@
-import { Component, OnInit, inject, signal, effect } from '@angular/core';
+import { Component, OnInit, inject, signal, effect, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -14,7 +15,7 @@ import { MessageModule } from 'primeng/message';
 import { FlightsService } from '../flights.service';
 import { CoursesService } from '../../courses/courses.service';
 import { Course } from '../../shared/course.model';
-import { FlightCreate } from '../../shared/flight.model';
+import { FlightCreate, FlightData } from '../../shared/flight.model';
 import { Tee } from '../../shared/tee.model';
 import { Track } from '../../shared/track.model';
 import { NotificationService } from '../../notifications/notification.service';
@@ -38,22 +39,27 @@ import { NotificationService } from '../../notifications/notification.service';
   templateUrl: './flight-create.component.html',
   styleUrls: ['./flight-create.component.css']
 })
-export class FlightCreateComponent implements OnInit {
+export class FlightCreateComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private flightsService = inject(FlightsService);
   private coursesService = inject(CoursesService);
   private notificationService = inject(NotificationService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   flightForm!: FormGroup;
   courses = signal<Course[]>([]);
   tees = signal<Tee[]>([]);
   isLoading = signal(false);
+  isEditMode = signal(false);
+  flightId: number | null = null;
 
   genderOptions = [
     { label: 'Men\'s', value: 'Men\'s' },
     { label: 'Ladies\'', value: 'Ladies\'' }
   ];
+
+  private subscriptions = new Subscription();
 
   constructor() {
     // When tees are loaded or cleared, update all division tee controls
@@ -71,6 +77,21 @@ export class FlightCreateComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.loadCourses();
+
+    // Check for edit mode
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.flightId = +id;
+      this.isEditMode.set(true);
+      this.loadFlightData(this.flightId);
+    } else {
+      // Add at least one division by default for create mode
+      this.addDivision();
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   private initForm() {
@@ -93,17 +114,78 @@ export class FlightCreateComponent implements OnInit {
     });
 
     // Watch course changes to load tees
-    this.flightForm.get('course_id')?.valueChanges.subscribe(courseId => {
-      console.log('Course changed to:', courseId);
-      if (courseId) {
-        this.loadCourseTees(courseId);
-      } else {
-        this.tees.set([]);
-      }
+    this.subscriptions.add(
+      this.flightForm.get('course_id')?.valueChanges.subscribe(courseId => {
+        console.log('Course changed to:', courseId);
+        if (courseId) {
+          this.loadCourseTees(courseId);
+        } else {
+          this.tees.set([]);
+        }
+      })
+    );
+  }
+
+  private loadFlightData(id: number) {
+    this.isLoading.set(true);
+    this.flightsService.getData(id);
+    this.subscriptions.add(
+      this.flightsService.getDataUpdateListener().subscribe({
+        next: (flightData: FlightData) => {
+          if (flightData && flightData.id === id) {
+            this.populateForm(flightData);
+            this.isLoading.set(false);
+          }
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          this.notificationService.showError('Error', 'Failed to load flight data');
+          console.error(err);
+        }
+      })
+    );
+  }
+
+  private populateForm(flight: FlightData) {
+    this.flightForm.patchValue({
+      name: flight.name,
+      year: flight.year,
+      course_id: flight.course_id,
+      logo_url: flight.logo_url || 'apl_golf_logo.png',
+      secretary: flight.secretary,
+      secretary_email: flight.secretary_email,
+      secretary_phone: flight.secretary_phone || '',
+      signup_start_date: new Date(flight.signup_start_date),
+      signup_stop_date: new Date(flight.signup_stop_date),
+      start_date: new Date(flight.start_date),
+      weeks: flight.weeks,
+      tee_times: flight.tee_times || '',
+      locked: false // Assuming default or fetch if available
     });
 
-    // Add at least one division by default
-    this.addDivision();
+    // Clear existing divisions and add from flight data
+    while (this.divisions.length) {
+      this.divisions.removeAt(0);
+    }
+
+    flight.divisions.forEach(div => {
+      const divisionForm = this.fb.group({
+        id: [div.id],
+        name: [div.name, Validators.required],
+        gender: [div.gender, Validators.required],
+        primary_tee_id: [div.primary_tee_id, Validators.required],
+        secondary_tee_id: [div.secondary_tee_id, Validators.required]
+      });
+
+      // Handle gender changes for this specific division
+      divisionForm.get('gender')?.valueChanges.subscribe(() => {
+        this.updateTeeControlsState(divisionForm, this.tees());
+        divisionForm.get('primary_tee_id')?.setValue(null);
+        divisionForm.get('secondary_tee_id')?.setValue(null);
+      });
+
+      this.divisions.push(divisionForm);
+    });
   }
 
   get divisions() {
@@ -112,6 +194,7 @@ export class FlightCreateComponent implements OnInit {
 
   addDivision() {
     const division = this.fb.group({
+      id: [null],
       name: ['', Validators.required],
       gender: [null, Validators.required],
       primary_tee_id: [{ value: null, disabled: true }, Validators.required],
@@ -155,33 +238,35 @@ export class FlightCreateComponent implements OnInit {
 
   private loadCourses() {
     this.coursesService.getCourses();
-    this.coursesService.getCoursesUpdateListener().subscribe(data => {
-      this.courses.set(data.courses.sort((a, b) => a.name.localeCompare(b.name)));
-    });
+    this.subscriptions.add(
+      this.coursesService.getCoursesUpdateListener().subscribe(data => {
+        this.courses.set(data.courses.sort((a, b) => a.name.localeCompare(b.name)));
+      })
+    );
   }
 
   private loadCourseTees(courseId: number) {
     this.coursesService.getCourse(courseId);
-    this.coursesService.getSelectedCourseUpdateListener().subscribe(course => {
-      if (course && course.id === courseId) {
-        const allTees: Tee[] = [];
-        course.tracks.forEach((track: Track) => {
-          track.tees.forEach((tee: Tee) => {
-            allTees.push({
-              ...tee,
-              name: `${track.name} - ${tee.name} (${tee.color})`
+    this.subscriptions.add(
+      this.coursesService.getSelectedCourseUpdateListener().subscribe(course => {
+        if (course && course.id === courseId) {
+          const allTees: Tee[] = [];
+          course.tracks.forEach((track: Track) => {
+            track.tees.forEach((tee: Tee) => {
+              allTees.push({
+                ...tee,
+                name: `${track.name} - ${tee.name} (${tee.color})`
+              });
             });
           });
-        });
-        this.tees.set(allTees);
-      }
-    });
+          this.tees.set(allTees);
+        }
+      })
+    );
   }
 
   onSubmit() {
-    console.log('onSubmit called');
     if (this.flightForm.invalid) {
-      console.log('Form is invalid', this.flightForm.errors);
       this.flightForm.markAllAsTouched();
       this.notificationService.showWarning('Invalid Form', 'Please check all required fields.');
       return;
@@ -201,22 +286,34 @@ export class FlightCreateComponent implements OnInit {
       flightData.start_date = this.setETTime(flightData.start_date, 0, 0);
     }
 
-    console.log('Submitting flight data (with ET adjusted dates):', flightData);
-    
-    this.flightsService.createFlight(flightData).subscribe({
-      next: (res) => {
-        console.log('Flight created successfully:', res);
-        this.isLoading.set(false);
-        this.notificationService.showSuccess('Success', 'Flight created successfully!');
-        this.router.navigate(['/flight'], { queryParams: { id: res.id } });
-      },
-      error: (err) => {
-        this.isLoading.set(false);
-        console.error('Error creating flight:', err);
-        const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
-        this.notificationService.showError('Error', `Failed to create flight: ${errorMsg}`);
-      }
-    });
+    if (this.isEditMode()) {
+      flightData.id = this.flightId!;
+      this.flightsService.updateFlight(flightData).subscribe({
+        next: (res) => {
+          this.isLoading.set(false);
+          this.notificationService.showSuccess('Success', 'Flight updated successfully!');
+          this.router.navigate(['/flight'], { queryParams: { id: res.id } });
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
+          this.notificationService.showError('Error', `Failed to update flight: ${errorMsg}`);
+        }
+      });
+    } else {
+      this.flightsService.createFlight(flightData).subscribe({
+        next: (res) => {
+          this.isLoading.set(false);
+          this.notificationService.showSuccess('Success', 'Flight created successfully!');
+          this.router.navigate(['/flight'], { queryParams: { id: res.id } });
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          const errorMsg = err.error?.detail || err.message || 'An unknown error occurred';
+          this.notificationService.showError('Error', `Failed to create flight: ${errorMsg}`);
+        }
+      });
+    }
   }
 
   private setETTime(date: Date, hour: number, minute: number): Date {

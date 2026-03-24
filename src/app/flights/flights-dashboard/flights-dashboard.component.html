@@ -35,12 +35,12 @@
       <ng-template #list let-items>
         <div class="grid grid-cols-12 gap-0 grid-nogutter p-4">
           @for (item of items; track item; let first = $first) {
-            <div class="col-span-12 listItem" routerLink="/flight" [queryParams]="{ id: item.id }">
+            <div class="col-span-12 listItem">
               <div
                 class="flex flex-col sm:flex-row sm:items-center p-2 gap-4"
                 [ngClass]="{ 'border-t border-gray-300': !first }"
               >
-                <div class="md:w-20 relative ml-4">
+                <div class="md:w-20 relative ml-4 cursor-pointer" routerLink="/flight" [queryParams]="{ id: item.id }">
                   <img
                     class="course-logo"
                     [src]="'assets/' + item.logo_url"
@@ -51,7 +51,7 @@
                 <div
                   class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6 ml-4"
                 >
-                  <div class="flex flex-row md:flex-col justify-center items-start gap-2">
+                  <div class="flex flex-row md:flex-col justify-center items-start gap-2 cursor-pointer" routerLink="/flight" [queryParams]="{ id: item.id }">
                     <div>
                       <div class="text-lg font-semibold mt-1">
                         {{ getName(item) }}
@@ -63,6 +63,25 @@
                         {{ item.tee_times }}
                       </div>
                     </div>
+                  </div>
+                  <div class="flex gap-2 mr-4">
+                    @if (canEdit()) {
+                      <p-button
+                        icon="pi pi-pencil"
+                        [rounded]="true"
+                        [text]="true"
+                        severity="secondary"
+                        [routerLink]="['/flight/edit', item.id]"
+                        pTooltip="Edit Flight"
+                      />
+                    }
+                    <p-button
+                      icon="pi pi-chevron-right"
+                      [rounded]="true"
+                      [text]="true"
+                      routerLink="/flight"
+                      [queryParams]="{ id: item.id }"
+                    />
                   </div>
                 </div>
               </div>

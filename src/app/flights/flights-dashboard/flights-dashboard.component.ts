@@ -16,6 +16,7 @@ import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from '../../shared/flight.model';
@@ -33,6 +34,7 @@ import { AuthService } from 'src/app/auth/auth.service';
     DataViewModule,
     ProgressSpinnerModule,
     ButtonModule,
+    TooltipModule,
   ],
 })
 export class FlightsDashboardComponent implements OnInit, OnDestroy, OnChanges {
