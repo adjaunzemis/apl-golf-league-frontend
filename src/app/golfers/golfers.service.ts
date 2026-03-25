@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 import {
   Golfer,
@@ -41,10 +41,7 @@ export class GolfersService {
   private golferStatisticsUpdated = new Subject<GolferStatistics>();
 
   getAllGolfers(): void {
-    if (this.allGolfers.length > 0) {
-      this.allGolfersUpdated.next([...this.allGolfers]);
-      return;
-    }
+    // We always want to fetch the latest list of golfers from the server
     this.http.get<Golfer[]>(environment.apiUrl + 'golfers/info').subscribe((result) => {
       this.allGolfers = result;
       this.allGolfersUpdated.next([...this.allGolfers]);
@@ -108,12 +105,26 @@ export class GolfersService {
     email: string,
     phone?: string,
   ): Observable<Golfer> {
-    return this.http.post<Golfer>(environment.apiUrl + `golfers/`, {
-      name: name,
-      affiliation: affiliation,
-      email: email,
-      phone: phone,
-    });
+    return this.http
+      .post<Golfer>(environment.apiUrl + `golfers/`, {
+        name: name,
+        affiliation: affiliation,
+        email: email,
+        phone: phone,
+      })
+      .pipe(
+        tap(() => {
+          this.clearCache();
+        }),
+      );
+  }
+
+  private clearCache(): void {
+    this.allGolfers = [];
+    this.golferDataCache.clear();
+    this.golferTeamDataCache.clear();
+    this.golferHandicapScoringRecordCache.clear();
+    this.golferStatisticsCache.clear();
   }
 
   getGolferTeamData(id: number, year: number): void {
