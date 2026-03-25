@@ -21,6 +21,7 @@ import { UnderConstructionComponent } from './maintenance/under-construction/und
 import { UnderConstructionGuard } from './maintenance/under-construction/under-construction.guard';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MaintenanceGuard } from './maintenance/maintenance.guard';
+import { SeasonSetupComponent } from './seasons/season-setup/season-setup.component';
 
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
@@ -99,6 +100,11 @@ const routes: Routes = [
       // },
       { path: 'handicaps', component: HandicapsComponent, canActivate: [UnderConstructionGuard] },
       { path: 'primeng-example', component: PrimeNGExampleComponent, canActivate: [AuthGuard] },
+      {
+        path: 'season/setup',
+        component: SeasonSetupComponent,
+        canActivate: [AuthGuard],
+      },
     ],
   },
   { path: '**', redirectTo: '' },
