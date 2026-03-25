@@ -3,7 +3,8 @@
     <p-tabs [value]="0">
       <p-tablist>
         <p-tab [value]="0">Manage Seasons</p-tab>
-        <p-tab [value]="1">League Dues (Stub)</p-tab>
+        <p-tab [value]="1">Officers</p-tab>
+        <p-tab [value]="2">League Dues (Stub)</p-tab>
       </p-tablist>
       <p-tabpanels>
         <p-tabpanel [value]="0">
@@ -67,6 +68,63 @@
 
         <p-tabpanel [value]="1">
           <div class="flex flex-col gap-4 pt-4">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex items-center gap-2">
+                <label for="officerYear" class="font-bold">Select Year:</label>
+                <p-select
+                  [options]="seasons"
+                  [(ngModel)]="selectedYearForOfficers"
+                  optionLabel="year"
+                  optionValue="year"
+                  id="officerYear"
+                  (onChange)="loadOfficers()"
+                ></p-select>
+              </div>
+              <p-button
+                label="Add Officer"
+                icon="pi pi-plus"
+                (onClick)="showAddOfficerDialog()"
+              ></p-button>
+            </div>
+
+            <p-table [value]="officers" [loading]="loading" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Name</th>
+                  <th>Committee</th>
+                  <th>Role</th>
+                  <th>Contact</th>
+                  <th>Action</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-officer>
+                <tr>
+                  <td>{{ officer.name }}</td>
+                  <td>
+                    <p-tag [value]="officer.committee" severity="info"></p-tag>
+                  </td>
+                  <td>{{ officer.role }}</td>
+                  <td>
+                    <div class="text-xs">
+                      <div>{{ officer.email }}</div>
+                      <div>{{ officer.phone }}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <p-button
+                      icon="pi pi-pencil"
+                      size="small"
+                      (onClick)="showEditOfficerDialog(officer)"
+                    ></p-button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </p-tabpanel>
+
+        <p-tabpanel [value]="2">
+          <div class="flex flex-col gap-4 pt-4">
             <p class="text-gray-500 italic text-sm">
               League Dues entries for the selected season (UI Stub)
             </p>
@@ -97,3 +155,68 @@
     </p-tabs>
   </p-card>
 </div>
+
+<!-- Officer Dialog -->
+<p-dialog
+  [(visible)]="displayOfficerDialog"
+  [header]="editingOfficer ? 'Edit Officer' : 'Add Officer'"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  appendTo="body"
+>
+  <div class="flex flex-col gap-4 py-2">
+    <div class="flex flex-col gap-1">
+      <label for="golfer" class="font-bold">Select Golfer</label>
+      <p-select
+        [options]="golfers"
+        [(ngModel)]="newOfficer.golfer_id"
+        optionLabel="name"
+        optionValue="id"
+        id="golfer"
+        placeholder="Select a golfer"
+        [filter]="true"
+        filterBy="name"
+        [showClear]="true"
+      ></p-select>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="name" class="font-bold">Manual Name (if not in list)</label>
+      <input pInputText id="name" [(ngModel)]="newOfficer.name" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="committee" class="font-bold">Committee</label>
+      <p-select
+        [options]="committees"
+        [(ngModel)]="newOfficer.committee"
+        id="committee"
+      ></p-select>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="role" class="font-bold">Role</label>
+      <input pInputText id="role" [(ngModel)]="newOfficer.role" placeholder="e.g. President" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="email" class="font-bold">Email</label>
+      <input pInputText id="email" [(ngModel)]="newOfficer.email" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="phone" class="font-bold">Phone</label>
+      <input pInputText id="phone" [(ngModel)]="newOfficer.phone" />
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      icon="pi pi-times"
+      (onClick)="displayOfficerDialog = false"
+      class="p-button-text"
+    ></p-button>
+    <p-button label="Save" icon="pi pi-check" (onClick)="onSaveOfficer()"></p-button>
+  </ng-template>
+</p-dialog>
