@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   inject,
   Input,
   OnChanges,
@@ -14,16 +15,27 @@ import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { TournamentInfo } from '../../shared/tournament.model';
 import { TournamentsService } from '../tournaments.service';
 import { Season } from 'src/app/shared/season.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-tournaments-dashboard',
   templateUrl: './tournaments-dashboard.component.html',
   styleUrls: ['./tournaments-dashboard.component.css'],
-  imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CardModule,
+    DataViewModule,
+    ProgressSpinnerModule,
+    ButtonModule,
+    TooltipModule,
+  ],
 })
 export class TournamentsDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;
@@ -33,12 +45,23 @@ export class TournamentsDashboardComponent implements OnInit, OnDestroy, OnChang
   tournaments = signal<TournamentInfo[]>([]);
   private tournamentsSub: Subscription;
   private tournamentsService = inject(TournamentsService);
+  private authService = inject(AuthService);
+
+  user = signal(this.authService.user.value);
+  canEdit = computed(() => {
+    const u = this.user();
+    return u?.is_admin || u?.edit_tournaments;
+  });
 
   ngOnInit(): void {
     this.tournamentsSub = this.tournamentsService.getListUpdateListener().subscribe((result) => {
       console.log(`[TournamentsDashboardComponent] Received list of ${result.length} tournaments`);
       this.tournaments.set([...result]);
       this.isLoading = false;
+    });
+
+    this.authService.user.subscribe((u) => {
+      this.user.set(u);
     });
   }
 

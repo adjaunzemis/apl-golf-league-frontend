@@ -1,0 +1,274 @@
+<div class="p-4 flex justify-center">
+  <p-card
+    [header]="isEditMode() ? 'Edit Flight' : 'Create New Flight'"
+    [style]="{ width: '100%', maxWidth: '800px' }"
+  >
+    <form [formGroup]="flightForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Name -->
+        <div class="flex flex-col gap-2">
+          <label for="name" class="font-semibold">Flight Name</label>
+          <input
+            pInputText
+            id="name"
+            formControlName="name"
+            placeholder="e.g. Monday Night Flight"
+          />
+          @if (flightForm.get('name')?.touched && flightForm.get('name')?.invalid) {
+            <p-message severity="error" text="Name is required" />
+          }
+        </div>
+
+        <!-- Year -->
+        <div class="flex flex-col gap-2">
+          <label for="year" class="font-semibold">Year</label>
+          <p-inputNumber id="year" formControlName="year" [useGrouping]="false" />
+          @if (flightForm.get('year')?.touched && flightForm.get('year')?.invalid) {
+            <p-message severity="error" text="Year is required" />
+          }
+        </div>
+
+        <!-- Course -->
+        <div class="flex flex-col gap-2">
+          <label for="course" class="font-semibold">Course</label>
+          <p-select
+            id="course"
+            [options]="courses()"
+            formControlName="course_id"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Select a Course"
+            class="w-full"
+          />
+          @if (flightForm.get('course_id')?.touched && flightForm.get('course_id')?.invalid) {
+            <p-message severity="error" text="Course is required" />
+          }
+        </div>
+
+        <!-- Weeks -->
+        <div class="flex flex-col gap-2">
+          <label for="weeks" class="font-semibold">Number of Weeks</label>
+          <p-inputNumber id="weeks" formControlName="weeks" [min]="1" />
+          @if (flightForm.get('weeks')?.touched && flightForm.get('weeks')?.invalid) {
+            <p-message severity="error" text="Weeks must be at least 1" />
+          }
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Signup Start Date -->
+        <div class="flex flex-col gap-2">
+          <label for="signup_start_date" class="font-semibold">Signup Start Date</label>
+          <p-datepicker
+            id="signup_start_date"
+            formControlName="signup_start_date"
+            [showIcon]="true"
+            appendTo="body"
+          />
+          @if (
+            flightForm.get('signup_start_date')?.touched &&
+            flightForm.get('signup_start_date')?.invalid
+          ) {
+            <p-message severity="error" text="Signup start date is required" />
+          }
+        </div>
+
+        <!-- Signup Stop Date -->
+        <div class="flex flex-col gap-2">
+          <label for="signup_stop_date" class="font-semibold">Signup Stop Date</label>
+          <p-datepicker
+            id="signup_stop_date"
+            formControlName="signup_stop_date"
+            [showIcon]="true"
+            appendTo="body"
+          />
+          @if (
+            flightForm.get('signup_stop_date')?.touched &&
+            flightForm.get('signup_stop_date')?.invalid
+          ) {
+            <p-message severity="error" text="Signup stop date is required" />
+          }
+        </div>
+
+        <!-- Start Date -->
+        <div class="flex flex-col gap-2">
+          <label for="start_date" class="font-semibold">League Start Date</label>
+          <p-datepicker
+            id="start_date"
+            formControlName="start_date"
+            [showIcon]="true"
+            appendTo="body"
+          />
+          @if (flightForm.get('start_date')?.touched && flightForm.get('start_date')?.invalid) {
+            <p-message severity="error" text="League start date is required" />
+          }
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Secretary Name -->
+        <div class="flex flex-col gap-2">
+          <label for="secretary" class="font-semibold">Secretary Name</label>
+          <input pInputText id="secretary" formControlName="secretary" />
+          @if (flightForm.get('secretary')?.touched && flightForm.get('secretary')?.invalid) {
+            <p-message severity="error" text="Secretary name is required" />
+          }
+        </div>
+
+        <!-- Secretary Email -->
+        <div class="flex flex-col gap-2">
+          <label for="secretary_email" class="font-semibold">Secretary Email</label>
+          <input pInputText id="secretary_email" formControlName="secretary_email" />
+          @if (
+            flightForm.get('secretary_email')?.touched && flightForm.get('secretary_email')?.invalid
+          ) {
+            <p-message severity="error" text="Valid email is required" />
+          }
+        </div>
+
+        <!-- Secretary Phone -->
+        <div class="flex flex-col gap-2">
+          <label for="secretary_phone" class="font-semibold">Secretary Phone</label>
+          <input pInputText id="secretary_phone" formControlName="secretary_phone" />
+          @if (
+            flightForm.get('secretary_phone')?.touched && flightForm.get('secretary_phone')?.invalid
+          ) {
+            <p-message severity="error" text="Phone is required" />
+          }
+        </div>
+
+        <!-- Tee Times -->
+        <div class="flex flex-col gap-2">
+          <label for="tee_times" class="font-semibold">Tee Times</label>
+          <input
+            pInputText
+            id="tee_times"
+            formControlName="tee_times"
+            placeholder="e.g. 4:30 PM - 5:30 PM"
+          />
+        </div>
+      </div>
+
+      <!-- Logo URL -->
+      <div class="flex flex-col gap-2">
+        <label for="logo_url" class="font-semibold">Logo URL</label>
+        <input pInputText id="logo_url" formControlName="logo_url" />
+      </div>
+
+      <!-- Divisions Section -->
+      <div class="mt-4 border-t pt-4">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Divisions</h3>
+          <p-button
+            label="Add Division"
+            icon="pi pi-plus"
+            size="small"
+            (click)="addDivision()"
+            type="button"
+          />
+        </div>
+
+        <div formArrayName="divisions" class="flex flex-col gap-6">
+          @for (division of divisions.controls; track division; let i = $index) {
+            <div
+              [formGroupName]="i"
+              class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-700 relative"
+            >
+              @if (divisions.length > 1) {
+                <p-button
+                  icon="pi pi-times"
+                  [rounded]="true"
+                  [text]="true"
+                  severity="danger"
+                  class="absolute top-2 right-2"
+                  (click)="removeDivision(i)"
+                  type="button"
+                />
+              }
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-2">
+                  <label [for]="'div-name-' + i" class="font-semibold">Division Name</label>
+                  <input
+                    pInputText
+                    [id]="'div-name-' + i"
+                    formControlName="name"
+                    placeholder="e.g. Championship"
+                  />
+                  @if (division.get('name')?.touched && division.get('name')?.invalid) {
+                    <p-message severity="error" text="Division name is required" />
+                  }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                  <label [for]="'div-gender-' + i" class="font-semibold">Gender</label>
+                  <p-select
+                    [id]="'div-gender-' + i"
+                    [options]="genderOptions"
+                    formControlName="gender"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Select Gender"
+                    class="w-full"
+                  />
+                  @if (division.get('gender')?.touched && division.get('gender')?.invalid) {
+                    <p-message severity="error" text="Gender is required" />
+                  }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                  <label [for]="'div-primary-' + i" class="font-semibold">Primary Tee</label>
+                  <p-select
+                    [id]="'div-primary-' + i"
+                    [options]="getFilteredTees(division.get('gender')?.value)"
+                    formControlName="primary_tee_id"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Select Primary Tee"
+                    class="w-full"
+                  />
+                  @if (
+                    division.get('primary_tee_id')?.touched &&
+                    division.get('primary_tee_id')?.invalid
+                  ) {
+                    <p-message severity="error" text="Primary tee is required" />
+                  }
+                </div>
+
+                <div class="flex flex-col gap-2">
+                  <label [for]="'div-secondary-' + i" class="font-semibold">Secondary Tee</label>
+                  <p-select
+                    [id]="'div-secondary-' + i"
+                    [options]="getFilteredTees(division.get('gender')?.value)"
+                    formControlName="secondary_tee_id"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Select Secondary Tee"
+                    class="w-full"
+                  />
+                  @if (
+                    division.get('secondary_tee_id')?.touched &&
+                    division.get('secondary_tee_id')?.invalid
+                  ) {
+                    <p-message severity="error" text="Secondary tee is required" />
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-2 mt-6">
+        <p-button label="Cancel" severity="secondary" (click)="cancel()" type="button" />
+        <p-button
+          [label]="isEditMode() ? 'Update Flight' : 'Create Flight'"
+          icon="pi pi-check"
+          [loading]="isLoading()"
+          type="submit"
+        />
+      </div>
+    </form>
+  </p-card>
+</div>

@@ -236,6 +236,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: this.currentUser?.is_admin,
             route: '/auth/manage',
           },
+          {
+            label: 'Season Setup',
+            icon: 'pi pi-calendar',
+            visible: this.currentUser?.is_admin,
+            route: '/season/setup',
+          },
         ],
       },
     ];

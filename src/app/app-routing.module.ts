@@ -13,12 +13,15 @@ import { PrimeNGExampleComponent } from './primeng/primeng-example.component';
 import { FlightHomeComponent } from './flights/flight-home/flight-home.component';
 import { TeamHomeComponent } from './flights/team-home/team-home.component';
 import { FlightSignupComponent } from './flights/flight-signup/flight-signup.component';
+import { FlightCreateComponent } from './flights/flight-create/flight-create.component';
 import { TournamentSignupComponent } from './tournaments/tournament-signup/tournament-signup.component';
 import { TournamentHomeComponent } from './tournaments/tournament-home/tournament-home.component';
+import { TournamentCreateComponent } from './tournaments/tournament-create/tournament-create.component';
 import { UnderConstructionComponent } from './maintenance/under-construction/under-construction.component';
 import { UnderConstructionGuard } from './maintenance/under-construction/under-construction.guard';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MaintenanceGuard } from './maintenance/maintenance.guard';
+import { SeasonSetupComponent } from './seasons/season-setup/season-setup.component';
 
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
@@ -30,6 +33,16 @@ const routes: Routes = [
       { path: '', component: LeagueHomeComponent },
       { path: 'under-construction', component: UnderConstructionComponent },
       { path: 'flight', component: FlightHomeComponent },
+      {
+        path: 'flight/create',
+        component: FlightCreateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'flight/edit/:id',
+        component: FlightCreateComponent,
+        canActivate: [AuthGuard],
+      },
       { path: 'flight-signup', component: FlightSignupComponent },
       { path: 'flight-team', component: TeamHomeComponent },
       { path: 'flight-scorecard', component: FlightMatchScorecardComponent },
@@ -49,6 +62,16 @@ const routes: Routes = [
       //   canActivate: [AuthGuard],
       // },
       { path: 'tournament', component: TournamentHomeComponent },
+      {
+        path: 'tournament/create',
+        component: TournamentCreateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'tournament/edit/:id',
+        component: TournamentCreateComponent,
+        canActivate: [AuthGuard],
+      },
       { path: 'tournament-signup', component: TournamentSignupComponent },
       // {
       //   path: 'tournament/scores',
@@ -77,6 +100,11 @@ const routes: Routes = [
       // },
       { path: 'handicaps', component: HandicapsComponent, canActivate: [UnderConstructionGuard] },
       { path: 'primeng-example', component: PrimeNGExampleComponent, canActivate: [AuthGuard] },
+      {
+        path: 'season/setup',
+        component: SeasonSetupComponent,
+        canActivate: [AuthGuard],
+      },
     ],
   },
   { path: '**', redirectTo: '' },

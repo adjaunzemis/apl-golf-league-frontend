@@ -28,6 +28,24 @@ export class SeasonsService {
     );
   }
 
+  createSeason(year: number): Observable<Season> {
+    return this.http.post<Season>(environment.apiUrl + 'seasons/', { year }).pipe(
+      tap(() => {
+        this.seasons = null;
+      }),
+    );
+  }
+
+  setActiveSeason(year: number): Observable<Season> {
+    return this.http.patch<Season>(environment.apiUrl + `seasons/active/${year}`, {}).pipe(
+      tap((result) => {
+        console.log(`[SeasonsService] Set active season to: year=${result.year}`);
+        this.activeSeason = result;
+        this.seasons = null;
+      }),
+    );
+  }
+
   getSeason(year: number): Observable<Season> {
     if (this.seasons) {
       const found = this.seasons.find((s) => s.year === +year);

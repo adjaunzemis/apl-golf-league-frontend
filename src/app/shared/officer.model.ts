@@ -9,6 +9,8 @@ export enum Committee {
 }
 
 export interface Officer {
+  id?: number;
+  golfer_id?: number;
   name: string;
   year: number;
   committee: Committee;

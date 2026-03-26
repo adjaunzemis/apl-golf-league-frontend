@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   inject,
   Input,
   OnChanges,
@@ -14,16 +15,27 @@ import { Subscription } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { FlightsService } from '../flights.service';
 import { FlightInfo } from '../../shared/flight.model';
 import { Season } from 'src/app/shared/season.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-flights-dashboard',
   templateUrl: './flights-dashboard.component.html',
   styleUrls: ['./flights-dashboard.component.css'],
-  imports: [CommonModule, RouterModule, CardModule, DataViewModule, ProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    CardModule,
+    DataViewModule,
+    ProgressSpinnerModule,
+    ButtonModule,
+    TooltipModule,
+  ],
 })
 export class FlightsDashboardComponent implements OnInit, OnDestroy, OnChanges {
   isLoading = true;
@@ -33,12 +45,23 @@ export class FlightsDashboardComponent implements OnInit, OnDestroy, OnChanges {
   flights = signal<FlightInfo[]>([]);
   private flightsSub: Subscription;
   private flightsService = inject(FlightsService);
+  private authService = inject(AuthService);
+
+  user = signal(this.authService.user.value);
+  canEdit = computed(() => {
+    const u = this.user();
+    return u?.is_admin || u?.edit_flights;
+  });
 
   ngOnInit(): void {
     this.flightsSub = this.flightsService.getListUpdateListener().subscribe((result) => {
       console.log(`[FlightsDashboardComponent] Received list of ${result.length} flights`);
       this.flights.set([...result]);
       this.isLoading = false;
+    });
+
+    this.authService.user.subscribe((u) => {
+      this.user.set(u);
     });
   }
 

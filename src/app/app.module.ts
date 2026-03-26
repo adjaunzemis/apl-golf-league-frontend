@@ -33,6 +33,7 @@ import { OfficersDashboardComponent } from './officers/officers-dashboard/office
 import { RulesDashboardComponent } from './rules-dashboard/rules-dashboard.component';
 import { AnnouncementsDashboardComponent } from './announcements-dashboard/announcements-dashboard.component';
 import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.component';
+import { SeasonSetupComponent } from './seasons/season-setup/season-setup.component';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, HandicapsComponent],
@@ -61,6 +62,7 @@ import { GolferSearchComponent } from './golfers/golfer-search/golfer-search.com
     RulesDashboardComponent,
     AnnouncementsDashboardComponent,
     GolferSearchComponent,
+    SeasonSetupComponent,
   ],
   providers: [
     {

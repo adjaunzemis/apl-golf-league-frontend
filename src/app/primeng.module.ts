@@ -13,6 +13,9 @@ import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   exports: [
@@ -30,6 +33,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     TagModule,
     DatePickerModule,
     ProgressSpinnerModule,
+    InputNumberModule,
+    InputTextModule,
+    TableModule,
   ],
 })
 export class PrimeNGModule {}
