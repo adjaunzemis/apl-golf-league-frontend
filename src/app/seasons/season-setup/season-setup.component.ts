@@ -151,7 +151,10 @@ export class SeasonSetupComponent implements OnInit {
           this.loadOfficers();
         },
         error: (err) => {
-          this.notificationService.showError('Error', err.error?.detail || 'Failed to update officer');
+          this.notificationService.showError(
+            'Error',
+            err.error?.detail || 'Failed to update officer',
+          );
         },
       });
     } else {
@@ -162,7 +165,10 @@ export class SeasonSetupComponent implements OnInit {
           this.loadOfficers();
         },
         error: (err) => {
-          this.notificationService.showError('Error', err.error?.detail || 'Failed to create officer');
+          this.notificationService.showError(
+            'Error',
+            err.error?.detail || 'Failed to create officer',
+          );
         },
       });
     }

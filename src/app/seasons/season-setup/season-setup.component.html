@@ -141,7 +141,12 @@
                   <td>{{ due.type }}</td>
                   <td>{{ due.amount | currency }}</td>
                   <td>
-                    <p-button icon="pi pi-pencil" label="Edit" size="small" [disabled]="true"></p-button>
+                    <p-button
+                      icon="pi pi-pencil"
+                      label="Edit"
+                      size="small"
+                      [disabled]="true"
+                    ></p-button>
                   </td>
                 </tr>
               </ng-template>
@@ -187,11 +192,7 @@
 
     <div class="flex flex-col gap-1">
       <label for="committee" class="font-bold">Committee</label>
-      <p-select
-        [options]="committees"
-        [(ngModel)]="newOfficer.committee"
-        id="committee"
-      ></p-select>
+      <p-select [options]="committees" [(ngModel)]="newOfficer.committee" id="committee"></p-select>
     </div>
 
     <div class="flex flex-col gap-1">
