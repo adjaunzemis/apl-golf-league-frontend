@@ -15,6 +15,7 @@ import { SeasonsService } from '../seasons/seasons.service';
 import { Season } from '../shared/season.model';
 import { TeamCreateComponent } from '../teams/team-create/team-create.component';
 import { ThemeService } from '../theme/theme.service';
+import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
 
 @Component({
   selector: 'app-header',
@@ -49,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private seasonsService = inject(SeasonsService);
   private tournamentsService = inject(TournamentsService);
   private teamCreateComponent = inject(TeamCreateComponent);
+  private dialogService = inject(DialogService);
 
   ngOnInit(): void {
     this.updateMenuItems();
@@ -137,7 +139,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             label: 'League Dues',
             icon: 'pi pi-venus',
             visible: true,
-            // callback: () => this.onPayDues(),
+            callback: () => this.onPayDues(),
           },
           {
             label: 'Entry Fees',
@@ -199,18 +201,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: this.currentUser?.is_admin,
             route: '/courses/edit',
           },
-          // {
-          //   label: 'Add Flight',
-          //   icon: 'pi pi-plus',
-          //   visible: this.currentUser?.is_admin,
-          //   callback: () => this.onAddNewFlight(),
-          // },
-          // {
-          //   label: 'Add Tournament',
-          //   icon: 'pi pi-plus',
-          //   visible: this.currentUser?.is_admin,
-          //   callback: () => this.onAddNewTournament(),
-          // },
           {
             label: 'Treasury',
             icon: 'pi pi-dollar',
@@ -253,9 +243,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.updateMenuItems();
   }
 
-  // onPayDues(): void {
-  //   this.signupComponent.onPayDues();
-  // }
+  onPayDues(): void {
+    this.dialogService.open(LeagueDuesPaymentComponent, {
+      header: 'Pay League Dues',
+      width: 'auto',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+    });
+  }
 
   // onPayEntryFees(): void {
   //   this.signupComponent.onPayEntryFees();

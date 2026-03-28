@@ -1,13 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-
-import { PrimeNGModule } from '../primeng.module';
+import { LeagueDuesPaymentComponent } from './league-dues-payment/league-dues-payment.component';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule, FormsModule, PrimeNGModule],
-  exports: [],
+  imports: [LeagueDuesPaymentComponent],
+  exports: [LeagueDuesPaymentComponent],
 })
 export class PaymentsModule {}
