@@ -110,4 +110,19 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
     this.payments[index] = this.clonedPayments[payment.id];
     delete this.clonedPayments[payment.id];
   }
+
+  getMethodSeverity(method: string): 'info' | 'success' | 'warn' | 'secondary' | 'contrast' {
+    switch (method) {
+      case 'Paypal':
+        return 'info';
+      case 'Cash Or Check':
+        return 'success';
+      case 'Exempt':
+        return 'warn';
+      case 'Linked':
+        return 'secondary';
+      default:
+        return 'contrast';
+    }
+  }
 }
