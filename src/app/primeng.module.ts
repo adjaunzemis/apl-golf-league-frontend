@@ -16,6 +16,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { RippleModule } from 'primeng/ripple';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   exports: [
@@ -36,6 +39,9 @@ import { TableModule } from 'primeng/table';
     InputNumberModule,
     InputTextModule,
     TableModule,
+    AutoCompleteModule,
+    RippleModule,
+    ToastModule,
   ],
 })
 export class PrimeNGModule {}

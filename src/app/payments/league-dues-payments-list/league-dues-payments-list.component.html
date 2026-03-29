@@ -1,0 +1,255 @@
+<div class="p-4">
+  <p-card class="mb-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-bold">League Dues Payments</h1>
+        <p-button
+          label="Email Unpaid Golfers"
+          icon="pi pi-envelope"
+          severity="secondary"
+          (onClick)="emailUnpaidGolfers()"
+          [disabled]="isLoading || !payments.length"
+        />
+      </div>
+      <div class="flex items-center">
+        <span class="text-lg font-semibold">Season</span>
+        <p-select
+          class="ring-1 ring-gray-300 text-center ml-4"
+          [options]="seasons"
+          [(ngModel)]="selectedSeason"
+          optionLabel="year"
+          placeholder="Season"
+          (onChange)="onSeasonChange()"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            @if (selectedOption) {
+              <div class="flex items-center gap-2">
+                <span>{{ selectedOption.year }}</span>
+                @if (selectedOption.is_active) {
+                  <p-tag value="Active" severity="info" />
+                }
+              </div>
+            }
+          </ng-template>
+          <ng-template let-option #item>
+            <div class="flex items-center gap-2">
+              <span>{{ option.year }}</span>
+              @if (option.is_active) {
+                <p-tag value="Active" severity="info" />
+              }
+            </div>
+          </ng-template>
+        </p-select>
+      </div>
+    </div>
+  </p-card>
+
+  <p-card>
+    <p-table
+      [value]="payments"
+      dataKey="id"
+      editMode="row"
+      [loading]="isLoading"
+      [paginator]="true"
+      [rows]="25"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [rowsPerPageOptions]="[25, 50, 100]"
+      styleClass="p-datatable-sm"
+      [globalFilterFields]="['golfer_name', 'year', 'type', 'method', 'comment']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="golfer_name">
+            <div class="flex items-center">
+              Golfer <p-sortIcon field="golfer_name" class="ml-4" />
+              <p-columnFilter type="text" field="golfer_name" display="menu" class="ml-auto" />
+            </div>
+          </th>
+          <th pSortableColumn="year">
+            <div class="flex items-center">
+              Year <p-sortIcon field="year" class="ml-4" />
+              <p-columnFilter type="numeric" field="year" display="menu" class="ml-auto" />
+            </div>
+          </th>
+          <th pSortableColumn="type">
+            <div class="flex items-center">
+              Type <p-sortIcon field="type" class="ml-4" />
+              <p-columnFilter type="text" field="type" display="menu" class="ml-auto" />
+            </div>
+          </th>
+          <th pSortableColumn="amount_due">
+            <div class="flex items-center">
+              Amount Due <p-sortIcon field="amount_due" class="ml-4" />
+              <p-columnFilter
+                type="numeric"
+                field="amount_due"
+                display="menu"
+                currency="USD"
+                class="ml-auto"
+              />
+            </div>
+          </th>
+          <th pSortableColumn="amount_paid">
+            <div class="flex items-center">
+              Amount Paid <p-sortIcon field="amount_paid" class="ml-4" />
+              <p-columnFilter
+                type="numeric"
+                field="amount_paid"
+                display="menu"
+                currency="USD"
+                class="ml-auto"
+              />
+            </div>
+          </th>
+          <th pSortableColumn="is_paid">
+            <div class="flex items-center">
+              Status <p-sortIcon field="is_paid" class="ml-4" />
+              <p-columnFilter type="numeric" field="is_paid" display="menu" class="ml-auto" />
+            </div>
+          </th>
+          <th pSortableColumn="method">
+            <div class="flex items-center">
+              Method <p-sortIcon field="method" class="ml-4" />
+              <p-columnFilter type="text" field="method" display="menu" class="ml-auto" />
+            </div>
+          </th>
+          <th>Comment</th>
+          <th style="width: 8rem"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payment let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="payment">
+          <td>{{ payment.golfer_name }}</td>
+          <td>{{ payment.year }}</td>
+          <td>{{ payment.type }}</td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber
+                  [(ngModel)]="payment.amount_due"
+                  mode="currency"
+                  currency="USD"
+                  locale="en-US"
+                  [minFractionDigits]="2"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ payment.amount_due | currency }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber
+                  [(ngModel)]="payment.amount_paid"
+                  mode="currency"
+                  currency="USD"
+                  locale="en-US"
+                  [minFractionDigits]="2"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ payment.amount_paid | currency }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-select
+                  [options]="statusOptions"
+                  [(ngModel)]="payment.is_paid"
+                  optionLabel="label"
+                  optionValue="value"
+                  appendTo="body"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                @if (payment.is_paid) {
+                  <p-tag value="Paid" severity="success" />
+                } @else {
+                  <p-tag value="Unpaid" severity="danger" />
+                }
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-select
+                  [options]="methodOptions"
+                  [(ngModel)]="payment.method"
+                  optionLabel="label"
+                  optionValue="value"
+                  appendTo="body"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                @if (payment.method) {
+                  <p-tag [value]="payment.method" [severity]="getMethodSeverity(payment.method)" />
+                }
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="payment.comment" class="w-full" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ payment.comment }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <div class="flex items-center justify-center gap-2">
+              @if (!editing) {
+                <p-button
+                  pRipple
+                  type="button"
+                  pInitEditableRow
+                  icon="pi pi-pencil"
+                  (click)="onRowEditInit(payment)"
+                  rounded
+                  text
+                  ariaLabel="Edit"
+                />
+              } @else {
+                <p-button
+                  pRipple
+                  type="button"
+                  pSaveEditableRow
+                  icon="pi pi-check"
+                  (click)="onRowEditSave(payment)"
+                  rounded
+                  text
+                  severity="success"
+                  class="mr-2"
+                  ariaLabel="Save"
+                />
+                <p-button
+                  pRipple
+                  type="button"
+                  pCancelEditableRow
+                  icon="pi pi-times"
+                  (click)="onRowEditCancel(payment, ri)"
+                  rounded
+                  text
+                  severity="danger"
+                  ariaLabel="Cancel"
+                />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="9" class="text-center p-4">No payments found for the selected season.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>

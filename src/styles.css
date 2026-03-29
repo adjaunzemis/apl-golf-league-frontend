@@ -62,7 +62,7 @@ body {
 }
 
 .p-menubar-item-link {
-  @apply h-12 px-2;
+  @apply h-10 px-2;
 }
 
 .course-logo {
