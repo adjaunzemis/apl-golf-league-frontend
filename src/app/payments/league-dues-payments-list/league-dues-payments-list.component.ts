@@ -125,4 +125,21 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
         return 'contrast';
     }
   }
-}
+
+  emailUnpaidGolfers(): void {
+    const unpaidGolfers = this.payments.filter(
+      (p) => p.is_paid === 0 && p.method !== 'Exempt' && p.golfer_email,
+    );
+    const emails = unpaidGolfers.map((p) => p.golfer_email).join(',');
+    if (emails) {
+      window.location.href = `mailto:?bcc=${emails}&subject=APL Golf League Dues&body=Friendly reminder that your league dues for the ${this.selectedSeason?.year} season are still outstanding.`;
+    } else {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'No Unpaid Golfers',
+        detail: 'No unpaid golfers were found matching the criteria.',
+      });
+    }
+  }
+  }
+

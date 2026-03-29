@@ -1,38 +1,48 @@
 <div class="p-4">
-  <p-card class="flex items-center mb-6">
-    <h1 class="text-2xl font-bold">League Dues Payments</h1>
-    <div class="mt-4 flex flex-1 items-center">
-      <span class="text-lg font-semibold">Season</span>
-      <div class="mx-auto"></div>
-      <p-select
-        class="ring-1 ring-gray-300 text-center ml-4"
-        [options]="seasons"
-        [(ngModel)]="selectedSeason"
-        optionLabel="year"
-        placeholder="Season"
-        (onChange)="onSeasonChange()"
-      >
-        <ng-template #selectedItem let-selectedOption>
-          @if (selectedOption) {
+  <p-card class="mb-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-bold">League Dues Payments</h1>
+        <p-button
+          label="Email Unpaid Golfers"
+          icon="pi pi-envelope"
+          severity="secondary"
+          (onClick)="emailUnpaidGolfers()"
+          [disabled]="isLoading || !payments.length"
+        />
+      </div>
+      <div class="flex items-center">
+        <span class="text-lg font-semibold">Season</span>
+        <p-select
+          class="ring-1 ring-gray-300 text-center ml-4"
+          [options]="seasons"
+          [(ngModel)]="selectedSeason"
+          optionLabel="year"
+          placeholder="Season"
+          (onChange)="onSeasonChange()"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            @if (selectedOption) {
+              <div class="flex items-center gap-2">
+                <span>{{ selectedOption.year }}</span>
+                @if (selectedOption.is_active) {
+                  <p-tag value="Active" severity="info" />
+                }
+              </div>
+            }
+          </ng-template>
+          <ng-template let-option #item>
             <div class="flex items-center gap-2">
-              <span>{{ selectedOption.year }}</span>
-              @if (selectedOption.is_active) {
+              <span>{{ option.year }}</span>
+              @if (option.is_active) {
                 <p-tag value="Active" severity="info" />
               }
             </div>
-          }
-        </ng-template>
-        <ng-template let-option #item>
-          <div class="flex items-center gap-2">
-            <span>{{ option.year }}</span>
-            @if (option.is_active) {
-              <p-tag value="Active" severity="info" />
-            }
-          </div>
-        </ng-template>
-      </p-select>
+          </ng-template>
+        </p-select>
+      </div>
     </div>
-    </p-card>
+  </p-card>
 
   <p-card>
     <p-table
