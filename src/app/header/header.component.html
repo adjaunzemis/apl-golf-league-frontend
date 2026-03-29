@@ -4,36 +4,28 @@
   </ng-template>
 
   <ng-template #item let-item>
-    @if (item.visible && item.route) {
-      <a [routerLink]="item.route" class="p-menubar-item-link">
-        <span [class]="item.icon"></span>
-        <span>{{ item.label }}</span>
-      </a>
-    } @else {
-      @if (item.visible && item.url) {
-        <a [href]="item.url" class="p-menubar-item-link">
+    @if (item.visible) {
+      @if (item.route) {
+        <a class="p-menubar-item-link" [routerLink]="item.route">
           <span [class]="item.icon"></span>
-          <span class="pl-2">{{ item.label }}</span>
+          <span>{{ item.label }}</span>
         </a>
+      } @else if (item.url) {
+        <a class="p-menubar-item-link" [href]="item.url">
+          <span [class]="item.icon"></span>
+          <span>{{ item.label }}</span>
+        </a>
+      } @else if (item.callback) {
+        <button class="p-menubar-item-link" (click)="item.callback()">
+          <span [class]="item.icon"></span>
+          <span>{{ item.label }}</span>
+        </button>
       } @else {
-        @if (item.visible) {
-          <div class="p-menubar-item-link">
-            @if (item.visible && item.callback) {
-              <button (click)="item.callback()">
-                <span [class]="item.icon"></span>
-                <span class="pl-2">{{ item.label }}</span>
-              </button>
-            } @else {
-              @if (item.visible) {
-                <div class="p-menubar-item-link">
-                  <span [class]="item.icon"></span>
-                  <span class="pl-2">{{ item.label }}</span>
-                  <span class="pi pi-fw pi-angle-down"></span>
-                </div>
-              }
-            }
-          </div>
-        }
+        <div class="p-menubar-item-link">
+          <span [class]="item.icon"></span>
+          <span>{{ item.label }}</span>
+          <span class="pi pi-fw pi-angle-down"></span>
+        </div>
       }
     }
   </ng-template>
@@ -50,12 +42,12 @@
       </p-button>
       @if (isAuthenticated) {
         <!-- TODO: Add profile page here? Routerlink: /auth/user -->
-        <button (click)="onLogout()" class="p-menubar-item-link">
+        <button class="p-menubar-item-link" (click)="onLogout()">
           <span class="pi pi-sign-out"></span>
           <span>Logout</span>
         </button>
       } @else {
-        <a routerLink="/auth/login" class="p-menubar-item-link">
+        <a class="p-menubar-item-link" routerLink="/auth/login">
           <span class="pi pi-sign-in"></span>
           <span>Login</span>
         </a>
