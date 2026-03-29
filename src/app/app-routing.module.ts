@@ -23,6 +23,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MaintenanceGuard } from './maintenance/maintenance.guard';
 import { SeasonSetupComponent } from './seasons/season-setup/season-setup.component';
 import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments-list/league-dues-payments-list.component';
+import { UserManageComponent } from './auth/user-manage/user-manage.component';
 
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
@@ -89,11 +90,12 @@ const routes: Routes = [
       // { path: 'courses', component: CourseListComponent, canActivate: [UnderConstructionGuard] },
       // { path: 'courses/edit', component: CourseCreateComponent, canActivate: [AuthGuard] },
       { path: 'auth/login', component: LoginComponent },
-      // {
-      //   path: 'auth/manage',
-      //   component: UserManageComponent,
-      //   canActivate: [AuthGuard],
-      // },
+      {
+        path: 'auth/manage',
+        component: UserManageComponent,
+        canActivate: [AuthGuard],
+        data: { adminOnly: true },
+      },
       // {
       //   path: 'auth/user',
       //   component: UserHomeComponent,
