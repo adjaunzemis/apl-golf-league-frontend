@@ -112,14 +112,14 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   }
 
   getMethodSeverity(method: string): 'info' | 'success' | 'warn' | 'secondary' | 'contrast' {
-    switch (method) {
-      case 'Paypal':
+    switch (method.toLowerCase()) {
+      case 'paypal':
         return 'info';
-      case 'Cash Or Check':
+      case 'cash or check':
         return 'success';
-      case 'Exempt':
+      case 'exempt':
         return 'warn';
-      case 'Linked':
+      case 'linked':
         return 'secondary';
       default:
         return 'contrast';
