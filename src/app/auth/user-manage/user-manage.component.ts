@@ -61,21 +61,14 @@ export class UserManageComponent {
 
   onSubmit(): void {
     if (this.manageFormGroup.valid) {
-      const {
-        usernameControl,
-        currentPasswordControl,
-        newPasswordControl,
-      } = this.manageFormGroup.value;
+      const { usernameControl, currentPasswordControl, newPasswordControl } =
+        this.manageFormGroup.value;
 
       this.authService
         .changePassword(usernameControl!, currentPasswordControl!, newPasswordControl!)
         .subscribe({
           next: () => {
-            this.notificationService.showSuccess(
-              'Success',
-              'Password changed successfully!',
-              5000,
-            );
+            this.notificationService.showSuccess('Success', 'Password changed successfully!', 5000);
             this.manageFormGroup.reset();
           },
           error: (err) => {

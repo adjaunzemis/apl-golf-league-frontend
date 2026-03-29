@@ -96,7 +96,10 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
         });
       },
       error: () => {
-        this.onRowEditCancel(payment, this.payments.findIndex((p) => p.id === payment.id));
+        this.onRowEditCancel(
+          payment,
+          this.payments.findIndex((p) => p.id === payment.id),
+        );
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -141,5 +144,4 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
       });
     }
   }
-  }
-
+}

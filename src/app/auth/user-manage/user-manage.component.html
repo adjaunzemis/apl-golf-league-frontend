@@ -61,7 +61,10 @@
           ></p-password>
           <label for="confirmNewPassword">Confirm New Password</label>
         </p-floatlabel>
-        @if (manageFormGroup.errors?.['passwordMismatch'] && manageFormGroup.get('confirmNewPasswordControl')?.touched) {
+        @if (
+          manageFormGroup.errors?.['passwordMismatch'] &&
+          manageFormGroup.get('confirmNewPasswordControl')?.touched
+        ) {
           <div class="mt-1">
             <small class="text-red-500">Passwords do not match.</small>
           </div>

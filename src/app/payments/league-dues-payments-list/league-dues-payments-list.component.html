@@ -81,13 +81,25 @@
           <th pSortableColumn="amount_due">
             <div class="flex items-center">
               Amount Due <p-sortIcon field="amount_due" class="ml-4" />
-              <p-columnFilter type="numeric" field="amount_due" display="menu" currency="USD" class="ml-auto" />
+              <p-columnFilter
+                type="numeric"
+                field="amount_due"
+                display="menu"
+                currency="USD"
+                class="ml-auto"
+              />
             </div>
           </th>
           <th pSortableColumn="amount_paid">
             <div class="flex items-center">
               Amount Paid <p-sortIcon field="amount_paid" class="ml-4" />
-              <p-columnFilter type="numeric" field="amount_paid" display="menu" currency="USD" class="ml-auto" />
+              <p-columnFilter
+                type="numeric"
+                field="amount_paid"
+                display="menu"
+                currency="USD"
+                class="ml-auto"
+              />
             </div>
           </th>
           <th pSortableColumn="is_paid">
@@ -106,12 +118,7 @@
           <th style="width: 8rem"></th>
         </tr>
       </ng-template>
-      <ng-template
-        pTemplate="body"
-        let-payment
-        let-editing="editing"
-        let-ri="rowIndex"
-      >
+      <ng-template pTemplate="body" let-payment let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="payment">
           <td>{{ payment.golfer_name }}</td>
           <td>{{ payment.year }}</td>
@@ -189,12 +196,7 @@
           <td>
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input
-                  pInputText
-                  type="text"
-                  [(ngModel)]="payment.comment"
-                  class="w-full"
-                />
+                <input pInputText type="text" [(ngModel)]="payment.comment" class="w-full" />
               </ng-template>
               <ng-template pTemplate="output">
                 {{ payment.comment }}
