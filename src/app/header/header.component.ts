@@ -141,12 +141,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: true,
             callback: () => this.onPayDues(),
           },
-          {
-            label: 'Entry Fees',
-            icon: 'pi pi-trophy',
-            visible: true,
-            // callback: () => this.onPayEntryFees(),
-          },
+          // {
+          //   label: 'Entry Fees',
+          //   icon: 'pi pi-trophy',
+          //   visible: true,
+          //   // callback: () => this.onPayEntryFees(),
+          // },
         ],
       },
       {
@@ -166,12 +166,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
             route: '/flight-scorecard/edit',
           },
-          {
-            label: 'Post Tournament Scores',
-            icon: 'pi pi-pen-to-square',
-            visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
-            route: '/tournament/scores',
-          },
+          // {
+          //   label: 'Post Tournament Scores',
+          //   icon: 'pi pi-pen-to-square',
+          //   visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
+          //   route: '/tournament/scores',
+          // },
         ],
       },
       {
@@ -189,6 +189,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.currentUser?.edit_tournaments ||
           this.currentUser?.edit_payments,
         items: [
+          {
+            label: 'Season Setup',
+            icon: 'pi pi-calendar',
+            visible: this.currentUser?.is_admin,
+            route: '/season/setup',
+          },
           {
             label: 'Qualifying Scores',
             icon: 'pi pi-venus',
@@ -212,12 +218,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
                 route: '/dues-payments',
               },
-              {
-                label: 'Tournaments',
-                icon: 'pi pi-trophy',
-                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
-                route: '/fee-payments',
-              },
+              // {
+              //   label: 'Tournaments',
+              //   icon: 'pi pi-trophy',
+              //   visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+              //   route: '/fee-payments',
+              // },
             ],
           },
           {
@@ -225,12 +231,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
             icon: 'pi pi-users',
             visible: this.currentUser?.is_admin,
             route: '/auth/manage',
-          },
-          {
-            label: 'Season Setup',
-            icon: 'pi pi-calendar',
-            visible: this.currentUser?.is_admin,
-            route: '/season/setup',
           },
         ],
       },
