@@ -56,7 +56,6 @@ Work step-by-step.
 
 - Use reactive forms
 - Add validation for:
-
   - required inputs
   - valid ranges
   - backend consistency
