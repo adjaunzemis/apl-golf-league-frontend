@@ -1,11 +1,11 @@
 export enum Committee {
-  LEAGUE = 'LEAGUE',
-  EXECUTIVE = 'EXECUTIVE',
-  RULES = 'RULES',
-  TOURNAMENT = 'TOURNAMENT',
-  BANQUET_AND_AWARDS = 'BANQUET_AND_AWARDS',
-  PUBLICITY = 'PUBLICITY',
-  PLANNING = 'PLANNING',
+  LEAGUE = 'League',
+  EXECUTIVE = 'Executive',
+  RULES = 'Rules',
+  TOURNAMENT = 'Tournament',
+  BANQUET_AND_AWARDS = 'Banquet And Awards',
+  PUBLICITY = 'Publicity',
+  PLANNING = 'Planning',
 }
 
 export interface Officer {
