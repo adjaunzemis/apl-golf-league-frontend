@@ -1,5 +1,5 @@
 <div class="flex justify-center p-4">
-  <p-card header="Add Qualifying Scores" class="w-full max-w-2xl">
+  <p-card header="Add Qualifying Scores" class="w-full max-w-4xl">
     <div class="flex flex-col gap-4">
       <!-- Golfer Selection -->
       <div class="flex flex-col gap-2">
@@ -83,21 +83,48 @@
                 </small>
               </div>
 
-              <p-button
-                label="Submit Qualifying Scores"
-                icon="pi pi-check"
-                (click)="onSubmit()"
-                [disabled]="officialHandicapIndex === null"
-                class="w-full"
-              ></p-button>
+              <div class="flex justify-center mt-4">
+                <p-button
+                  label="Submit"
+                  icon="pi pi-check"
+                  (click)="onSubmit()"
+                  [disabled]="officialHandicapIndex === null"
+                ></p-button>
+              </div>
             </div>
           }
 
-          <!-- Qualifying Round (Not Implemented) -->
+          <!-- Qualifying Round Input -->
           @if (qualifyingScoreType === QualifyingScoreType.QUALIFYING_ROUND) {
             <div class="flex flex-col gap-4">
-              <p-message severity="info" text="Qualifying Round entry is not yet implemented." icon="pi pi-info-circle"></p-message>
-              <p-button label="Submit" [disabled]="true" class="w-full"></p-button>
+              <p-tabs value="0">
+                <p-tablist>
+                  <p-tab value="0">Round 1</p-tab>
+                  <p-tab value="1">Round 2</p-tab>
+                </p-tablist>
+                <p-tabpanels>
+                  <p-tabpanel value="0">
+                    <app-qualifying-round-entry instanceId="round-1" (statusChange)="onRound1StatusChange($event)" />
+                  </p-tabpanel>
+                  <p-tabpanel value="1">
+                    <app-qualifying-round-entry instanceId="round-2" (statusChange)="onRound2StatusChange($event)" />
+                  </p-tabpanel>
+                </p-tabpanels>
+              </p-tabs>
+
+              <div class="flex flex-col items-center mt-4">
+                <p-button
+                  label="Submit"
+                  icon="pi pi-check"
+                  (click)="onSubmit()"
+                  [disabled]="!isQualifyingRoundValid"
+                ></p-button>
+                @if (!isQualifyingRoundValid) {
+                  <small class="text-orange-500 block mt-2 text-center">
+                    Please complete both round scorecards and all metadata to submit.
+                  </small>
+                }
+              </div>
             </div>
           }
         </div>
@@ -112,4 +139,3 @@
     </div>
   </p-card>
 </div>
-

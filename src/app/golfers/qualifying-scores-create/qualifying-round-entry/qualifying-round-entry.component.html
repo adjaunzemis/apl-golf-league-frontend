@@ -1,0 +1,138 @@
+<form [formGroup]="roundForm" class="flex flex-col gap-6 p-4 border border-gray-100 rounded-lg">
+  <!-- Round Metadata -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-date'" class="text-sm font-semibold">Date Played</label>
+      <p-datepicker
+        [inputId]="instanceId + '-date'"
+        formControlName="date_played"
+        [showIcon]="true"
+        placeholder="Select date"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-course'" class="text-sm font-semibold">Course Name</label>
+      <input
+        [id]="instanceId + '-course'"
+        pInputText
+        formControlName="course_name"
+        placeholder="Ex: Blue Mash"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-track'" class="text-sm font-semibold">Track Name</label>
+      <input
+        [id]="instanceId + '-track'"
+        pInputText
+        formControlName="track_name"
+        placeholder="Ex: Front Nine"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-tee'" class="text-sm font-semibold">Tee Name</label>
+      <input
+        [id]="instanceId + '-tee'"
+        pInputText
+        formControlName="tee_name"
+        placeholder="Ex: Blue"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-rating'" class="text-sm font-semibold">9-Hole Rating</label>
+      <p-inputNumber
+        [inputId]="instanceId + '-rating'"
+        formControlName="tee_rating"
+        [minFractionDigits]="1"
+        [maxFractionDigits]="1"
+        placeholder="Ex: 35.5"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-slope'" class="text-sm font-semibold">9-Hole Slope</label>
+      <p-inputNumber
+        [inputId]="instanceId + '-slope'"
+        formControlName="tee_slope"
+        [min]="55"
+        [max]="155"
+        placeholder="Ex: 113"
+        class="w-full"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label [for]="instanceId + '-comment'" class="text-sm font-semibold">Comments</label>
+    <textarea
+      [id]="instanceId + '-comment'"
+      pTextarea
+      formControlName="comment"
+      rows="2"
+      placeholder="Additional notes"
+      class="w-full"
+    ></textarea>
+  </div>
+
+  <!-- Scorecard -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-center border-collapse">
+      <thead>
+        <tr class="bg-gray-50 dark:bg-slate-700 border-b">
+          <th class="p-1 sm:p-2 border text-xs sm:text-sm">Hole</th>
+          @for (h of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track h) {
+            <th class="p-1 sm:p-2 border text-xs sm:text-sm">{{ h }}</th>
+          }
+          <th class="p-1 sm:p-2 border font-bold text-xs sm:text-sm">Sum</th>
+        </tr>
+      </thead>
+      <tbody formArrayName="holes">
+        <!-- Par Row -->
+        <tr>
+          <td class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm">Par</td>
+          @for (holeGroup of holesControls; track holeGroup; let i = $index) {
+            <td [formGroupName]="i" class="p-0.5 border">
+              <p-inputNumber
+                [inputId]="instanceId + '-par-' + i"
+                formControlName="par"
+                [min]="3"
+                [max]="5"
+                [showButtons]="false"
+                class="w-8 sm:w-12 text-center"
+                inputStyleClass="text-center w-8 sm:w-12 px-0.5 sm:px-1 text-xs sm:text-sm"
+                [ariaLabel]="'Hole ' + (i + 1) + ' Par'"
+              />
+            </td>
+          }
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">{{ totalPar }}</td>
+        </tr>
+        <!-- Score Row -->
+        <tr>
+          <td class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm">Score</td>
+          @for (holeGroup of holesControls; track holeGroup; let i = $index) {
+            <td [formGroupName]="i" class="p-0.5 border">
+              <p-inputNumber
+                [inputId]="instanceId + '-score-' + i"
+                formControlName="score"
+                [min]="1"
+                [showButtons]="false"
+                class="w-8 sm:w-12 text-center"
+                inputStyleClass="text-center w-8 sm:w-12 px-0.5 sm:px-1 font-semibold text-xs sm:text-sm"
+                [ariaLabel]="'Hole ' + (i + 1) + ' Score'"
+              />
+            </td>
+          }
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">{{ totalScore }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</form>
