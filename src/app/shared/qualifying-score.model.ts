@@ -1,7 +1,12 @@
+export enum QualifyingScoreType {
+  QUALIFYING_ROUND = 'QUALIFYING_ROUND',
+  OFFICIAL_HANDICAP_INDEX = 'OFFICIAL_HANDICAP_INDEX',
+}
+
 export interface QualifyingScore {
   golfer_id: number;
   year: number;
-  type: string;
+  type: QualifyingScoreType | string;
   score_differential: number;
   date_updated: Date;
   date_played?: Date;

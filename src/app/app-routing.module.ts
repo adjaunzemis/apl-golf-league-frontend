@@ -24,6 +24,7 @@ import { MaintenanceGuard } from './maintenance/maintenance.guard';
 import { SeasonSetupComponent } from './seasons/season-setup/season-setup.component';
 import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments-list/league-dues-payments-list.component';
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
+import { QualifyingScoresCreateComponent } from './golfers/qualifying-scores-create/qualifying-scores-create.component';
 
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
@@ -82,11 +83,11 @@ const routes: Routes = [
       // },
       { path: 'golfer', component: GolferHomeComponent },
       { path: 'golfer-search', component: GolferSearchComponent },
-      // {
-      //   path: 'golfer/qualifying',
-      //   component: AddQualifyingScoreComponent,
-      //   canActivate: [AuthGuard],
-      // },
+      {
+        path: 'golfer/qualifying',
+        component: QualifyingScoresCreateComponent,
+        canActivate: [AuthGuard],
+      },
       // { path: 'courses', component: CourseListComponent, canActivate: [UnderConstructionGuard] },
       // { path: 'courses/edit', component: CourseCreateComponent, canActivate: [AuthGuard] },
       { path: 'auth/login', component: LoginComponent },

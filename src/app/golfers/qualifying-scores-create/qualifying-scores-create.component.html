@@ -1,0 +1,115 @@
+<div class="flex justify-center p-4">
+  <p-card header="Add Qualifying Scores" class="w-full max-w-2xl">
+    <div class="flex flex-col gap-4">
+      <!-- Golfer Selection -->
+      <div class="flex flex-col gap-2">
+        <label for="golfer" class="font-semibold">Select Golfer</label>
+        <p-select
+          inputId="golfer"
+          [options]="golferOptions"
+          [(ngModel)]="selectedGolfer"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          placeholder="Search for a golfer"
+          class="w-full"
+        >
+          <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2">
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-golfer #item>
+            <div class="flex items-center gap-2">
+              <div>{{ golfer.name }}</div>
+            </div>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <!-- Handicap Index Info (if already has one) -->
+      @if (selectedGolfer && hasHandicap) {
+        <div class="p-4 bg-gray-50 dark:bg-zinc-700 border border-blue-200 rounded-md">
+          <p>
+            <strong>{{ selectedGolfer.name }}</strong> already has a handicap index of
+            <strong>{{ selectedGolfer.handicap_index | number: '1.1-1' }}</strong>.
+          </p>
+          @if (selectedGolfer.handicap_index_updated) {
+            <p class="text-sm mt-1">
+              Last updated: {{ selectedGolfer.handicap_index_updated | date: 'mediumDate' }}
+            </p>
+          }
+          <p class="text-sm mt-2">
+            Adding more qualifying scores is disabled for golfers with an existing handicap index.
+          </p>
+        </div>
+      }
+
+      <!-- Form for adding qualifying scores (only if no handicap) -->
+      @if (selectedGolfer && !hasHandicap) {
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="scoreType" class="font-semibold">Score Type</label>
+            <p-select
+              inputId="scoreType"
+              [options]="qualifyingScoreTypeOptions"
+              [(ngModel)]="qualifyingScoreType"
+              optionLabel="label"
+              optionValue="value"
+              class="w-full"
+            ></p-select>
+          </div>
+
+          <!-- Official Handicap Index Input -->
+          @if (qualifyingScoreType === QualifyingScoreType.OFFICIAL_HANDICAP_INDEX) {
+            <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-2">
+                <label for="handicapIndex" class="font-semibold">Handicap Index</label>
+                <p-inputgroup>
+                  <p-inputgroup-addon><i class="pi pi-id-card"></i></p-inputgroup-addon>
+                  <p-inputNumber
+                    inputId="handicapIndex"
+                    [(ngModel)]="officialHandicapIndex"
+                    [min]="-10"
+                    [max]="54"
+                    [minFractionDigits]="1"
+                    [maxFractionDigits]="1"
+                    placeholder="Enter Official Handicap Index"
+                    class="w-full"
+                  ></p-inputNumber>
+                </p-inputgroup>
+                <small class="text-gray-500">
+                  This will create two qualifying scores, each with a differential of {{ (officialHandicapIndex || 0) / 2 | number: '1.1-1' }}.
+                </small>
+              </div>
+
+              <p-button
+                label="Submit Qualifying Scores"
+                icon="pi pi-check"
+                (click)="onSubmit()"
+                [disabled]="officialHandicapIndex === null"
+                class="w-full"
+              ></p-button>
+            </div>
+          }
+
+          <!-- Qualifying Round (Not Implemented) -->
+          @if (qualifyingScoreType === QualifyingScoreType.QUALIFYING_ROUND) {
+            <div class="flex flex-col gap-4">
+              <p-message severity="info" text="Qualifying Round entry is not yet implemented." icon="pi pi-info-circle"></p-message>
+              <p-button label="Submit" [disabled]="true" class="w-full"></p-button>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- No Golfer Selected Message -->
+      @if (!selectedGolfer) {
+        <div class="text-center py-8 text-gray-500">
+          Please select a golfer to add qualifying scores.
+        </div>
+      }
+    </div>
+  </p-card>
+</div>
+
