@@ -11,6 +11,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MessageModule } from 'primeng/message';
 import { TabsModule } from 'primeng/tabs';
+import { DatePickerModule } from 'primeng/datepicker';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { GolfersService } from '../golfers.service';
 import { Golfer } from '../../shared/golfer.model';
@@ -32,6 +34,8 @@ import { QualifyingRoundEntryComponent, RoundEntryData } from './qualifying-roun
     InputGroupAddonModule,
     MessageModule,
     TabsModule,
+    DatePickerModule,
+    InputTextModule,
     QualifyingRoundEntryComponent,
   ],
   templateUrl: './qualifying-scores-create.component.html',
@@ -54,6 +58,8 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
   ];
 
   officialHandicapIndex: number | null = null;
+  officialDatePlayed: Date | null = new Date();
+  officialComment = '';
 
   // Qualifying Round Data
   round1Data: RoundEntryData | null = null;
@@ -102,6 +108,50 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  private toMidnightET(date: Date): Date {
+    try {
+      if (!date || isNaN(date.getTime())) {
+        date = new Date();
+      }
+
+      // 1. Get the calendar date parts from the input date
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const day = date.getDate();
+
+      // 2. Create a Date object representing midnight UTC for that calendar day
+      const utcMidnight = new Date(Date.UTC(year, month, day));
+
+      // 3. Determine the hour offset of America/New_York at that specific moment
+      // We use Intl.DateTimeFormat with hour12: false to get a 0-23 hour value
+      const etHourStr = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        hour: 'numeric',
+        hour12: false,
+      }).format(utcMidnight);
+
+      const etHour = parseInt(etHourStr, 10);
+
+      // 4. Calculate the difference. 
+      // If etHour is 20 (8 PM day before), diff is -4.
+      // If etHour is 19 (7 PM day before), diff is -5.
+      const diff = etHour > 12 ? etHour - 24 : etHour;
+
+      // 5. Midnight ET = UTC Midnight - diff hours
+      // e.g., if offset is -4, Midnight ET is UTC Midnight + 4 hours (04:00 UTC)
+      const result = new Date(utcMidnight.getTime() - diff * 60 * 60 * 1000);
+
+      if (isNaN(result.getTime())) {
+        throw new Error('Invalid date calculation');
+      }
+
+      return result;
+    } catch {
+      // Fallback to UTC midnight if anything goes wrong, to ensure we don't send NULL
+      return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    }
+  }
+
   private submitOfficialHandicapIndex(): void {
     if (this.officialHandicapIndex === null || !this.selectedGolfer) return;
 
@@ -115,7 +165,12 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       type: QualifyingScoreType.OFFICIAL_HANDICAP_INDEX,
       score_differential: halfValue,
       date_updated: now,
+      comment: this.officialComment,
     };
+
+    // Explicitly use officialDatePlayed if it exists, otherwise use 'now' but to midnight ET
+    const dateToUse = this.officialDatePlayed || now;
+    score1.date_played = this.toMidnightET(dateToUse);
 
     const score2: QualifyingScore = { ...score1 };
 
@@ -134,7 +189,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       type: QualifyingScoreType.QUALIFYING_ROUND,
       score_differential: 0.0, // Placeholder
       date_updated: now,
-      date_played: this.round1Data.date_played,
+      date_played: this.toMidnightET(this.round1Data.date_played),
       course_name: this.round1Data.course_name,
       track_name: this.round1Data.track_name,
       tee_name: this.round1Data.tee_name,
@@ -143,7 +198,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       tee_slope: this.round1Data.tee_slope,
       gross_score: this.round1Data.total_score,
       adjusted_gross_score: 0.0, // Placeholder
-      comment: this.round1Data.comment as any,
+      comment: this.round1Data.comment,
     };
 
     const score2: QualifyingScore = {
@@ -152,7 +207,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       type: QualifyingScoreType.QUALIFYING_ROUND,
       score_differential: 0.0, // Placeholder
       date_updated: now,
-      date_played: this.round2Data.date_played,
+      date_played: this.toMidnightET(this.round2Data.date_played),
       course_name: this.round2Data.course_name,
       track_name: this.round2Data.track_name,
       tee_name: this.round2Data.tee_name,
@@ -161,7 +216,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       tee_slope: this.round2Data.tee_slope,
       gross_score: this.round2Data.total_score,
       adjusted_gross_score: 0.0, // Placeholder
-      comment: this.round2Data.comment as any,
+      comment: this.round2Data.comment,
     };
 
     this.postTwoScores(score1, score2);
@@ -193,6 +248,8 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
   clearForm(): void {
     this.selectedGolfer = null;
     this.officialHandicapIndex = null;
+    this.officialDatePlayed = new Date();
+    this.officialComment = '';
     this.qualifyingScoreType = QualifyingScoreType.OFFICIAL_HANDICAP_INDEX;
     this.round1Data = null;
     this.round1Valid = false;
@@ -200,3 +257,4 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
     this.round2Valid = false;
   }
 }
+

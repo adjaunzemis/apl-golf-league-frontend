@@ -72,14 +72,13 @@
 
   <div class="flex flex-col gap-1">
     <label [for]="instanceId + '-comment'" class="text-sm font-semibold">Comments</label>
-    <textarea
+    <input
       [id]="instanceId + '-comment'"
-      pTextarea
+      pInputText
       formControlName="comment"
-      rows="2"
       placeholder="Additional notes"
       class="w-full"
-    ></textarea>
+    />
   </div>
 
   <!-- Scorecard -->

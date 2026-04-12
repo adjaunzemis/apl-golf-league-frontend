@@ -63,32 +63,57 @@
           <!-- Official Handicap Index Input -->
           @if (qualifyingScoreType === QualifyingScoreType.OFFICIAL_HANDICAP_INDEX) {
             <div class="flex flex-col gap-4">
-              <div class="flex flex-col gap-2">
-                <label for="handicapIndex" class="font-semibold">Handicap Index</label>
-                <p-inputgroup>
-                  <p-inputgroup-addon><i class="pi pi-id-card"></i></p-inputgroup-addon>
-                  <p-inputNumber
-                    inputId="handicapIndex"
-                    [(ngModel)]="officialHandicapIndex"
-                    [min]="-10"
-                    [max]="54"
-                    [minFractionDigits]="1"
-                    [maxFractionDigits]="1"
-                    placeholder="Enter Official Handicap Index"
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-2">
+                  <label for="handicapIndex" class="font-semibold">Handicap Index</label>
+                  <p-inputgroup>
+                    <p-inputgroup-addon><i class="pi pi-id-card"></i></p-inputgroup-addon>
+                    <p-inputNumber
+                      inputId="handicapIndex"
+                      [(ngModel)]="officialHandicapIndex"
+                      [min]="-10"
+                      [max]="54"
+                      [minFractionDigits]="1"
+                      [maxFractionDigits]="1"
+                      placeholder="Enter Official Handicap Index"
+                      class="w-full"
+                    ></p-inputNumber>
+                  </p-inputgroup>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                  <label for="datePlayed" class="font-semibold">Date Played</label>
+                  <p-datepicker
+                    inputId="datePlayed"
+                    [(ngModel)]="officialDatePlayed"
+                    [showIcon]="true"
+                    placeholder="Select date"
                     class="w-full"
-                  ></p-inputNumber>
-                </p-inputgroup>
-                <small class="text-gray-500">
-                  This will create two qualifying scores, each with a differential of {{ (officialHandicapIndex || 0) / 2 | number: '1.1-1' }}.
-                </small>
+                  />
+                </div>
               </div>
+
+              <div class="flex flex-col gap-2">
+                <label for="officialComment" class="font-semibold">Comments</label>
+                <input
+                  id="officialComment"
+                  pInputText
+                  [(ngModel)]="officialComment"
+                  placeholder="Ex: GHIN #"
+                  class="w-full"
+                />
+              </div>
+
+              <small class="text-gray-500">
+                This will create two qualifying scores, each with a differential of {{ (officialHandicapIndex || 0) / 2 | number: '1.1-1' }}.
+              </small>
 
               <div class="flex justify-center mt-4">
                 <p-button
                   label="Submit"
                   icon="pi pi-check"
                   (click)="onSubmit()"
-                  [disabled]="officialHandicapIndex === null"
+                  [disabled]="officialHandicapIndex === null || officialDatePlayed === null"
                 ></p-button>
               </div>
             </div>

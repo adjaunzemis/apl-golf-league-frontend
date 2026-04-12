@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -11,7 +11,6 @@ import {
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { TextareaModule } from 'primeng/textarea';
 
 export interface RoundEntryData {
   date_played: Date;
@@ -35,22 +34,22 @@ export interface RoundEntryData {
     DatePickerModule,
     InputTextModule,
     InputNumberModule,
-    TextareaModule,
   ],
   templateUrl: './qualifying-round-entry.component.html',
   styleUrl: './qualifying-round-entry.component.css',
 })
 export class QualifyingRoundEntryComponent implements OnInit {
-  @Input() instanceId: string = 'round-1';
+  @Input() instanceId = 'round-1';
 
   @Output() statusChange = new EventEmitter<{
     isValid: boolean;
     data: RoundEntryData | null;
   }>();
 
+  private fb = inject(FormBuilder);
   roundForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
     this.roundForm = this.fb.group({
       date_played: [new Date(), Validators.required],
       course_name: ['', Validators.required],

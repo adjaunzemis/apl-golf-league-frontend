@@ -19,5 +19,5 @@ export interface QualifyingScore {
   tee_slope?: number;
   gross_score?: number;
   adjusted_gross_score?: number;
-  comment?: number;
+  comment?: string;
 }
