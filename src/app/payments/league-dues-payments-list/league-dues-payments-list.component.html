@@ -253,3 +253,66 @@
     </p-table>
   </p-card>
 </div>
+
+<p-dialog
+  header="Confirm Email Send"
+  [(visible)]="displayConfirmDialog"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="space-y-4">
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between">
+        <span>Total Unpaid Golfers:</span>
+        <span class="font-bold">{{
+          unpaidGolfersWithEmail.length + unpaidGolfersWithoutEmail.length
+        }}</span>
+      </div>
+      <div class="flex justify-between text-green-600">
+        <span>Will be contacted (with email):</span>
+        <span class="font-bold">{{ unpaidGolfersWithEmail.length }}</span>
+      </div>
+      <div class="flex justify-between text-red-600">
+        <span>Cannot contact (no email):</span>
+        <span class="font-bold">{{ unpaidGolfersWithoutEmail.length }}</span>
+      </div>
+    </div>
+
+    @if (unpaidGolfersWithoutEmail.length > 0) {
+      <div class="border rounded-md p-2">
+        <p class="text-sm font-semibold mb-2 text-gray-600">
+          Golfers without email addresses:
+        </p>
+        <div class="max-h-32 overflow-y-auto">
+          <ul class="list-disc list-inside text-sm text-gray-700">
+            @for (golfer of unpaidGolfersWithoutEmail; track golfer.id) {
+              <li>{{ golfer.golfer_name }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    }
+
+    <p class="text-sm text-gray-500 italic mt-4">
+      Clicking 'Send' will open your default email client with all valid addresses in the BCC field.
+    </p>
+  </div>
+
+  <ng-template #footer>
+    <div class="flex justify-end gap-2">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        text
+        (onClick)="displayConfirmDialog = false"
+      />
+      <p-button
+        label="Send"
+        severity="primary"
+        (onClick)="confirmSendEmail()"
+      />
+    </div>
+  </ng-template>
+</p-dialog>
