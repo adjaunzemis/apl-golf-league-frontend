@@ -11,12 +11,14 @@ import {
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { SelectModule } from 'primeng/select';
 
 export interface RoundEntryData {
   date_played: Date;
   course_name: string;
   track_name: string;
   tee_name: string;
+  tee_gender: string;
   tee_rating: number;
   tee_slope: number;
   comment: string;
@@ -34,6 +36,7 @@ export interface RoundEntryData {
     DatePickerModule,
     InputTextModule,
     InputNumberModule,
+    SelectModule,
   ],
   templateUrl: './qualifying-round-entry.component.html',
   styleUrl: './qualifying-round-entry.component.css',
@@ -49,12 +52,18 @@ export class QualifyingRoundEntryComponent implements OnInit {
   private fb = inject(FormBuilder);
   roundForm: FormGroup;
 
+  genderOptions = [
+    { label: "Men's", value: 'MENS' },
+    { label: "Ladies'", value: 'LADIES' },
+  ];
+
   constructor() {
     this.roundForm = this.fb.group({
       date_played: [new Date(), Validators.required],
       course_name: ['', Validators.required],
       track_name: ['', Validators.required],
       tee_name: ['', Validators.required],
+      tee_gender: [null, Validators.required],
       tee_rating: [null, [Validators.required, Validators.min(0)]],
       tee_slope: [null, [Validators.required, Validators.min(55), Validators.max(155)]],
       comment: [''],

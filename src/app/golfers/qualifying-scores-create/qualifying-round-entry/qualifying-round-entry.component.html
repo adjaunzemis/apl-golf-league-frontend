@@ -46,6 +46,19 @@
     </div>
 
     <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-gender'" class="text-sm font-semibold">Tee Gender</label>
+      <p-select
+        [inputId]="instanceId + '-gender'"
+        formControlName="tee_gender"
+        [options]="genderOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select gender"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
       <label [for]="instanceId + '-rating'" class="text-sm font-semibold">9-Hole Rating</label>
       <p-inputNumber
         [inputId]="instanceId + '-rating'"
