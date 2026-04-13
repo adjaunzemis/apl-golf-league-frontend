@@ -15,7 +15,7 @@ export interface LeagueDuesPaymentInfo {
   type: string;
   amount_due: number;
   amount_paid: number;
-  is_paid: number;
+  is_paid: boolean;
 }
 
 export interface LeagueDuesPaymentData {
@@ -27,7 +27,7 @@ export interface LeagueDuesPaymentData {
   type: string;
   amount_due: number;
   amount_paid: number;
-  is_paid: number;
+  is_paid: boolean;
   linked_payment_id: number;
   method: string;
   comment: string;
@@ -61,7 +61,7 @@ export interface TournamentEntryFeePaymentInfo {
   type: string;
   amount_due: number;
   amount_paid: number;
-  is_paid: number;
+  is_paid: boolean;
 }
 
 export interface TournamentEntryFeePaymentData {
@@ -74,7 +74,7 @@ export interface TournamentEntryFeePaymentData {
   type: string;
   amount_due: number;
   amount_paid: number;
-  is_paid: number;
+  is_paid: boolean;
   linked_payment_id: number;
   method: string;
   comment: string;

@@ -33,8 +33,8 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   isLoading = false;
 
   statusOptions = [
-    { label: 'Paid', value: 1 },
-    { label: 'Unpaid', value: 0 },
+    { label: 'Paid', value: true },
+    { label: 'Unpaid', value: false },
   ];
 
   methodOptions = [
@@ -131,11 +131,15 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
 
   emailUnpaidGolfers(): void {
     const unpaidGolfers = this.payments.filter(
-      (p) => p.is_paid === 0 && p.method !== 'Exempt' && p.golfer_email,
+      (p) => !p.is_paid && p.method?.toLowerCase() !== 'exempt' && p.golfer_email,
     );
     const emails = unpaidGolfers.map((p) => p.golfer_email).join(',');
     if (emails) {
-      window.location.href = `mailto:?bcc=${emails}&subject=APL Golf League Dues&body=Friendly reminder that your league dues for the ${this.selectedSeason?.year} season are still outstanding.`;
+      const subject = encodeURIComponent('APL Golf League Dues');
+      const body = encodeURIComponent(
+        `Friendly reminder that your league dues for the ${this.selectedSeason?.year} season are still outstanding.`,
+      );
+      window.location.href = `mailto:?bcc=${emails}&subject=${subject}&body=${body}`;
     } else {
       this.messageService.add({
         severity: 'info',
