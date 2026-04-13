@@ -1,0 +1,201 @@
+<form [formGroup]="roundForm" class="flex flex-col gap-6 p-4 border border-gray-100 rounded-lg">
+  <!-- Round Metadata -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-date'" class="text-sm font-semibold">Date Played</label>
+      <p-datepicker
+        [inputId]="instanceId + '-date'"
+        formControlName="date_played"
+        [showIcon]="true"
+        placeholder="Select date"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-course'" class="text-sm font-semibold">Course Name</label>
+      <input
+        [id]="instanceId + '-course'"
+        pInputText
+        formControlName="course_name"
+        placeholder="Ex: Blue Mash"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-track'" class="text-sm font-semibold">Track Name</label>
+      <input
+        [id]="instanceId + '-track'"
+        pInputText
+        formControlName="track_name"
+        placeholder="Ex: Front Nine"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-tee'" class="text-sm font-semibold">Tee Name</label>
+      <input
+        [id]="instanceId + '-tee'"
+        pInputText
+        formControlName="tee_name"
+        placeholder="Ex: Blue"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-gender'" class="text-sm font-semibold">Tee Gender</label>
+      <p-select
+        [inputId]="instanceId + '-gender'"
+        formControlName="tee_gender"
+        [options]="genderOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select gender"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-rating'" class="text-sm font-semibold">9-Hole Rating</label>
+      <p-inputNumber
+        [inputId]="instanceId + '-rating'"
+        formControlName="tee_rating"
+        [minFractionDigits]="1"
+        [maxFractionDigits]="1"
+        placeholder="Ex: 35.5"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label [for]="instanceId + '-slope'" class="text-sm font-semibold">9-Hole Slope</label>
+      <p-inputNumber
+        [inputId]="instanceId + '-slope'"
+        formControlName="tee_slope"
+        [min]="55"
+        [max]="155"
+        placeholder="Ex: 113"
+        class="w-full"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label [for]="instanceId + '-comment'" class="text-sm font-semibold">Comments</label>
+    <input
+      [id]="instanceId + '-comment'"
+      pInputText
+      formControlName="comment"
+      placeholder="Additional notes"
+      class="w-full"
+    />
+  </div>
+
+  <!-- Scorecard -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-center border-collapse">
+      <thead>
+        <tr class="bg-gray-50 dark:bg-slate-700 border-b">
+          <th class="p-1 sm:p-2 border text-xs sm:text-sm">Hole</th>
+          @for (h of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track h) {
+            <th class="p-1 sm:p-2 border text-xs sm:text-sm">{{ h }}</th>
+          }
+          <th class="p-1 sm:p-2 border font-bold text-xs sm:text-sm">TOT</th>
+        </tr>
+      </thead>
+      <tbody formArrayName="holes">
+        <!-- Par Row -->
+        <tr>
+          <td
+            class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm"
+          >
+            Par
+          </td>
+          @for (holeGroup of holesControls; track holeGroup; let i = $index) {
+            <td [formGroupName]="i" class="p-0.5 border">
+              <p-inputNumber
+                [inputId]="instanceId + '-par-' + i"
+                formControlName="par"
+                [min]="3"
+                [max]="5"
+                [showButtons]="false"
+                class="w-8 sm:w-12 text-center"
+                inputStyleClass="text-center w-8 sm:w-12 px-0.5 sm:px-1 text-xs sm:text-sm"
+                [ariaLabel]="'Hole ' + (i + 1) + ' Par'"
+              />
+            </td>
+          }
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">
+            {{ totalPar }}
+          </td>
+        </tr>
+        <!-- Score Row -->
+        <tr>
+          <td
+            class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm"
+          >
+            Gross
+          </td>
+          @for (holeGroup of holesControls; track holeGroup; let i = $index) {
+            <td [formGroupName]="i" class="p-0.5 border">
+              <p-inputNumber
+                [inputId]="instanceId + '-score-' + i"
+                formControlName="score"
+                [min]="1"
+                [showButtons]="false"
+                class="w-8 sm:w-12 text-center"
+                inputStyleClass="text-center w-8 sm:w-12 px-0.5 sm:px-1 font-semibold text-xs sm:text-sm"
+                [ariaLabel]="'Hole ' + (i + 1) + ' Score'"
+              />
+            </td>
+          }
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">
+            {{ formatScore(totalScore, totalPar) }}
+          </td>
+        </tr>
+        <!-- Adjusted Gross Row -->
+        <tr>
+          <td
+            class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm"
+          >
+            A.G.
+          </td>
+          @for (adjScore of holeAdjustedScores; track $index; let i = $index) {
+            <td
+              class="p-0.5 border text-xs sm:text-sm"
+              [class.bg-orange-100]="isAdjusted(i)"
+              [class.dark:bg-orange-900/30]="isAdjusted(i)"
+              [class.text-orange-700]="isAdjusted(i)"
+              [class.dark:text-orange-400]="isAdjusted(i)"
+              [class.font-bold]="isAdjusted(i)"
+            >
+              {{ adjScore || '' }}
+            </td>
+          }
+          <td
+            class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm"
+            [class.bg-orange-100]="isTotalAdjusted"
+            [class.dark:bg-orange-900/30]="isTotalAdjusted"
+            [class.text-orange-700]="isTotalAdjusted"
+            [class.dark:text-orange-400]="isTotalAdjusted"
+          >
+            {{ formatScore(totalAdjustedScore, totalPar) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Summary Info -->
+  <div class="flex justify-end items-center gap-4 pt-4 border-t">
+    <div class="flex flex-col items-end">
+      <span class="text-xs text-gray-500 uppercase font-semibold">Score Differential</span>
+      <span class="text-xl font-bold" [class.text-blue-600]="scoreDifferential !== null">
+        {{ scoreDifferential !== null ? (scoreDifferential | number: '1.1-1') : '--' }}
+      </span>
+    </div>
+  </div>
+</form>
