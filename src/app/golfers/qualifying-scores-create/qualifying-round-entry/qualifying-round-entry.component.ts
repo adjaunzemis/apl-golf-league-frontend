@@ -26,6 +26,7 @@ export interface RoundEntryData {
   total_par: number;
   total_score: number;
   total_adjusted_score: number;
+  score_differential: number | null;
 }
 
 @Component({
@@ -114,8 +115,28 @@ export class QualifyingRoundEntryComponent implements OnInit {
     return this.holeAdjustedScores.reduce((sum, s) => sum + s, 0);
   }
 
+  get scoreDifferential(): number | null {
+    const rating = this.roundForm.get('tee_rating')?.value;
+    const slope = this.roundForm.get('tee_slope')?.value;
+    const adjScore = this.totalAdjustedScore;
+
+    if (!rating || !slope || !adjScore || this.roundForm.get('holes')?.invalid) {
+      return null;
+    }
+
+    return (113 / slope) * (adjScore - rating);
+  }
+
   get isTotalAdjusted(): boolean {
     return this.totalAdjustedScore < this.totalScore;
+  }
+
+  formatScore(score: number, par: number): string {
+    if (!score) return '0';
+    if (!par) return score.toString();
+    const diff = score - par;
+    const diffStr = diff === 0 ? 'E' : (diff > 0 ? `+${diff}` : `${diff}`);
+    return `${score} (${diffStr})`;
   }
 
   isAdjusted(index: number): boolean {
@@ -132,6 +153,7 @@ export class QualifyingRoundEntryComponent implements OnInit {
         total_par: this.totalPar,
         total_score: this.totalScore,
         total_adjusted_score: this.totalAdjustedScore,
+        score_differential: this.scoreDifferential,
       };
       this.statusChange.emit({ isValid: true, data });
     } else {

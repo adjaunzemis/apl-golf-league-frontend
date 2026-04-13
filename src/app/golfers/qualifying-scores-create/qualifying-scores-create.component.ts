@@ -95,7 +95,12 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
   }
 
   get isQualifyingRoundValid(): boolean {
-    return this.round1Valid && this.round2Valid;
+    return (
+      this.round1Valid &&
+      this.round2Valid &&
+      this.round1Data?.score_differential !== null &&
+      this.round2Data?.score_differential !== null
+    );
   }
 
   onSubmit(): void {
@@ -187,7 +192,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       golfer_id: this.selectedGolfer.id,
       year: year,
       type: QualifyingScoreType.QUALIFYING_ROUND,
-      score_differential: 0.0, // Placeholder
+      score_differential: this.round1Data.score_differential!,
       date_updated: now,
       date_played: this.toMidnightET(this.round1Data.date_played),
       course_name: this.round1Data.course_name,
@@ -206,7 +211,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       golfer_id: this.selectedGolfer.id,
       year: year,
       type: QualifyingScoreType.QUALIFYING_ROUND,
-      score_differential: 0.0, // Placeholder
+      score_differential: this.round2Data.score_differential!,
       date_updated: now,
       date_played: this.toMidnightET(this.round2Data.date_played),
       course_name: this.round2Data.course_name,

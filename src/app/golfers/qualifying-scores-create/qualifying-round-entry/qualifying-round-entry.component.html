@@ -103,7 +103,7 @@
           @for (h of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track h) {
             <th class="p-1 sm:p-2 border text-xs sm:text-sm">{{ h }}</th>
           }
-          <th class="p-1 sm:p-2 border font-bold text-xs sm:text-sm">Sum</th>
+          <th class="p-1 sm:p-2 border font-bold text-xs sm:text-sm">TOT</th>
         </tr>
       </thead>
       <tbody formArrayName="holes">
@@ -142,7 +142,7 @@
               />
             </td>
           }
-          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">{{ totalScore }}</td>
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">{{ formatScore(totalScore, totalPar) }}</td>
         </tr>
         <!-- Adjusted Gross Row -->
         <tr>
@@ -166,10 +166,20 @@
             [class.text-orange-700]="isTotalAdjusted"
             [class.dark:text-orange-400]="isTotalAdjusted"
           >
-            {{ totalAdjustedScore }}
+            {{ formatScore(totalAdjustedScore, totalPar) }}
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Summary Info -->
+  <div class="flex justify-end items-center gap-4 pt-4 border-t">
+    <div class="flex flex-col items-end">
+      <span class="text-xs text-gray-500 uppercase font-semibold">Score Differential</span>
+      <span class="text-xl font-bold" [class.text-blue-600]="scoreDifferential !== null">
+        {{ scoreDifferential !== null ? (scoreDifferential | number: '1.1-1') : '--' }}
+      </span>
+    </div>
   </div>
 </form>
