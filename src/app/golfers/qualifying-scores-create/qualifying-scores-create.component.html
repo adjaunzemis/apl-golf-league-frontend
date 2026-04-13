@@ -32,7 +32,8 @@
         <div class="p-4 bg-gray-50 dark:bg-zinc-700 border border-blue-200 rounded-md">
           <p>
             <strong>{{ selectedGolfer.name }}</strong> already has a handicap index of
-            <strong>{{ selectedGolfer.handicap_index | number: '1.1-1' }}</strong>.
+            <strong>{{ selectedGolfer.handicap_index | number: '1.1-1' }}</strong
+            >.
           </p>
           @if (selectedGolfer.handicap_index_updated) {
             <p class="text-sm mt-1">
@@ -105,7 +106,8 @@
               </div>
 
               <small class="text-gray-500">
-                This will create two qualifying scores, each with a differential of {{ (officialHandicapIndex || 0) / 2 | number: '1.1-1' }}.
+                This will create two qualifying scores, each with a differential of
+                {{ (officialHandicapIndex || 0) / 2 | number: '1.1-1' }}.
               </small>
 
               <div class="flex justify-center mt-4">
@@ -129,10 +131,16 @@
                 </p-tablist>
                 <p-tabpanels>
                   <p-tabpanel value="0">
-                    <app-qualifying-round-entry instanceId="round-1" (statusChange)="onRound1StatusChange($event)" />
+                    <app-qualifying-round-entry
+                      instanceId="round-1"
+                      (statusChange)="onRound1StatusChange($event)"
+                    />
                   </p-tabpanel>
                   <p-tabpanel value="1">
-                    <app-qualifying-round-entry instanceId="round-2" (statusChange)="onRound2StatusChange($event)" />
+                    <app-qualifying-round-entry
+                      instanceId="round-2"
+                      (statusChange)="onRound2StatusChange($event)"
+                    />
                   </p-tabpanel>
                 </p-tabpanels>
               </p-tabs>

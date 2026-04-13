@@ -18,7 +18,10 @@ import { GolfersService } from '../golfers.service';
 import { Golfer } from '../../shared/golfer.model';
 import { QualifyingScore, QualifyingScoreType } from '../../shared/qualifying-score.model';
 import { NotificationService } from '../../notifications/notification.service';
-import { QualifyingRoundEntryComponent, RoundEntryData } from './qualifying-round-entry/qualifying-round-entry.component';
+import {
+  QualifyingRoundEntryComponent,
+  RoundEntryData,
+} from './qualifying-round-entry/qualifying-round-entry.component';
 
 @Component({
   selector: 'app-qualifying-scores-create',
@@ -81,7 +84,10 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
   }
 
   get hasHandicap(): boolean {
-    return this.selectedGolfer?.handicap_index !== undefined && this.selectedGolfer?.handicap_index !== null;
+    return (
+      this.selectedGolfer?.handicap_index !== undefined &&
+      this.selectedGolfer?.handicap_index !== null
+    );
   }
 
   onRound1StatusChange(event: { isValid: boolean; data: RoundEntryData | null }): void {
@@ -137,7 +143,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
 
       const etHour = parseInt(etHourStr, 10);
 
-      // 4. Calculate the difference. 
+      // 4. Calculate the difference.
       // If etHour is 20 (8 PM day before), diff is -4.
       // If etHour is 19 (7 PM day before), diff is -5.
       const diff = etHour > 12 ? etHour - 24 : etHour;
@@ -183,7 +189,13 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
   }
 
   private submitQualifyingRounds(): void {
-    if (!this.isQualifyingRoundValid || !this.selectedGolfer || !this.round1Data || !this.round2Data) return;
+    if (
+      !this.isQualifyingRoundValid ||
+      !this.selectedGolfer ||
+      !this.round1Data ||
+      !this.round2Data
+    )
+      return;
 
     const now = new Date();
     const year = now.getFullYear();
@@ -264,4 +276,3 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
     this.round2Valid = false;
   }
 }
-

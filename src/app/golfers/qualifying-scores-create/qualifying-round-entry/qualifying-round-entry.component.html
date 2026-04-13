@@ -109,7 +109,11 @@
       <tbody formArrayName="holes">
         <!-- Par Row -->
         <tr>
-          <td class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm">Par</td>
+          <td
+            class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm"
+          >
+            Par
+          </td>
           @for (holeGroup of holesControls; track holeGroup; let i = $index) {
             <td [formGroupName]="i" class="p-0.5 border">
               <p-inputNumber
@@ -124,11 +128,17 @@
               />
             </td>
           }
-          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">{{ totalPar }}</td>
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">
+            {{ totalPar }}
+          </td>
         </tr>
         <!-- Score Row -->
         <tr>
-          <td class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm">Gross</td>
+          <td
+            class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm"
+          >
+            Gross
+          </td>
           @for (holeGroup of holesControls; track holeGroup; let i = $index) {
             <td [formGroupName]="i" class="p-0.5 border">
               <p-inputNumber
@@ -142,11 +152,17 @@
               />
             </td>
           }
-          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">{{ formatScore(totalScore, totalPar) }}</td>
+          <td class="p-1 sm:p-2 border font-bold bg-gray-100 dark:bg-slate-600 text-xs sm:text-sm">
+            {{ formatScore(totalScore, totalPar) }}
+          </td>
         </tr>
         <!-- Adjusted Gross Row -->
         <tr>
-          <td class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm">A.G.</td>
+          <td
+            class="p-1 sm:p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs sm:text-sm"
+          >
+            A.G.
+          </td>
           @for (adjScore of holeAdjustedScores; track $index; let i = $index) {
             <td
               class="p-0.5 border text-xs sm:text-sm"

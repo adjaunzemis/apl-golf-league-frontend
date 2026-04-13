@@ -1,12 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputTextModule } from 'primeng/inputtext';
@@ -135,7 +129,7 @@ export class QualifyingRoundEntryComponent implements OnInit {
     if (!score) return '0';
     if (!par) return score.toString();
     const diff = score - par;
-    const diffStr = diff === 0 ? 'E' : (diff > 0 ? `+${diff}` : `${diff}`);
+    const diffStr = diff === 0 ? 'E' : diff > 0 ? `+${diff}` : `${diff}`;
     return `${score} (${diffStr})`;
   }
 
