@@ -14,7 +14,6 @@ import { PrimeNGModule } from '../../primeng.module';
   selector: 'app-league-dues-payments-list',
   standalone: true,
   imports: [CommonModule, FormsModule, PrimeNGModule],
-  providers: [MessageService],
   templateUrl: './league-dues-payments-list.component.html',
   styleUrls: ['./league-dues-payments-list.component.css'],
 })
@@ -31,10 +30,13 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
   selectedSeason: Season | null = null;
 
   isLoading = false;
+  displayConfirmDialog = false;
+  unpaidGolfersWithEmail: LeagueDuesPaymentData[] = [];
+  unpaidGolfersWithoutEmail: LeagueDuesPaymentData[] = [];
 
   statusOptions = [
-    { label: 'Paid', value: 1 },
-    { label: 'Unpaid', value: 0 },
+    { label: 'Paid', value: true },
+    { label: 'Unpaid', value: false },
   ];
 
   methodOptions = [
@@ -131,17 +133,40 @@ export class LeagueDuesPaymentsListComponent implements OnInit, OnDestroy {
 
   emailUnpaidGolfers(): void {
     const unpaidGolfers = this.payments.filter(
-      (p) => p.is_paid === 0 && p.method !== 'Exempt' && p.golfer_email,
+      (p) => !p.is_paid && p.method?.toLowerCase() !== 'exempt',
     );
-    const emails = unpaidGolfers.map((p) => p.golfer_email).join(',');
-    if (emails) {
-      window.location.href = `mailto:?bcc=${emails}&subject=APL Golf League Dues&body=Friendly reminder that your league dues for the ${this.selectedSeason?.year} season are still outstanding.`;
-    } else {
+
+    if (unpaidGolfers.length === 0) {
       this.messageService.add({
         severity: 'info',
         summary: 'No Unpaid Golfers',
         detail: 'No unpaid golfers were found matching the criteria.',
       });
+      return;
     }
+
+    this.unpaidGolfersWithEmail = unpaidGolfers.filter((p) => p.golfer_email);
+    this.unpaidGolfersWithoutEmail = unpaidGolfers.filter((p) => !p.golfer_email);
+
+    if (this.unpaidGolfersWithEmail.length === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'No Emails Available',
+        detail: 'None of the unpaid golfers have an email address on file.',
+      });
+      return;
+    }
+
+    this.displayConfirmDialog = true;
+  }
+
+  confirmSendEmail(): void {
+    const emails = this.unpaidGolfersWithEmail.map((p) => p.golfer_email).join(',');
+    const subject = encodeURIComponent('APL Golf League Dues');
+    const body = encodeURIComponent(
+      `Friendly reminder that your league dues for the ${this.selectedSeason?.year} season are still outstanding.`,
+    );
+    window.location.href = `mailto:?bcc=${emails}&subject=${subject}&body=${body}`;
+    this.displayConfirmDialog = false;
   }
 }
