@@ -25,6 +25,7 @@ export interface RoundEntryData {
   holes: { par: number; score: number }[];
   total_par: number;
   total_score: number;
+  total_adjusted_score: number;
 }
 
 @Component({
@@ -101,6 +102,28 @@ export class QualifyingRoundEntryComponent implements OnInit {
     return holes.reduce((sum, h) => sum + (h.score || 0), 0);
   }
 
+  get holeAdjustedScores(): number[] {
+    const holes = this.roundForm.get('holes')?.value as { par: number; score: number }[];
+    return holes.map((h) => {
+      if (!h.par || !h.score) return 0;
+      return Math.min(h.score, h.par + 5);
+    });
+  }
+
+  get totalAdjustedScore(): number {
+    return this.holeAdjustedScores.reduce((sum, s) => sum + s, 0);
+  }
+
+  get isTotalAdjusted(): boolean {
+    return this.totalAdjustedScore < this.totalScore;
+  }
+
+  isAdjusted(index: number): boolean {
+    const holeValue = this.holesControls[index].value;
+    if (!holeValue.par || !holeValue.score) return false;
+    return holeValue.score > holeValue.par + 5;
+  }
+
   private emitStatus(): void {
     if (this.roundForm.valid) {
       const formValue = this.roundForm.value;
@@ -108,6 +131,7 @@ export class QualifyingRoundEntryComponent implements OnInit {
         ...formValue,
         total_par: this.totalPar,
         total_score: this.totalScore,
+        total_adjusted_score: this.totalAdjustedScore,
       };
       this.statusChange.emit({ isValid: true, data });
     } else {

@@ -198,7 +198,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       tee_rating: this.round1Data.tee_rating,
       tee_slope: this.round1Data.tee_slope,
       gross_score: this.round1Data.total_score,
-      adjusted_gross_score: 0.0, // Placeholder
+      adjusted_gross_score: this.round1Data.total_adjusted_score,
       comment: this.round1Data.comment,
     };
 
@@ -217,7 +217,7 @@ export class QualifyingScoresCreateComponent implements OnInit, OnDestroy {
       tee_rating: this.round2Data.tee_rating,
       tee_slope: this.round2Data.tee_slope,
       gross_score: this.round2Data.total_score,
-      adjusted_gross_score: 0.0, // Placeholder
+      adjusted_gross_score: this.round2Data.total_adjusted_score,
       comment: this.round2Data.comment,
     };
 
