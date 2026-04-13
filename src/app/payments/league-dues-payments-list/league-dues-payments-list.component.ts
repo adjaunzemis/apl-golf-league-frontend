@@ -14,7 +14,6 @@ import { PrimeNGModule } from '../../primeng.module';
   selector: 'app-league-dues-payments-list',
   standalone: true,
   imports: [CommonModule, FormsModule, PrimeNGModule],
-  providers: [MessageService],
   templateUrl: './league-dues-payments-list.component.html',
   styleUrls: ['./league-dues-payments-list.component.css'],
 })
