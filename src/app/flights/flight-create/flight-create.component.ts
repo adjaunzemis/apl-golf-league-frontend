@@ -277,13 +277,13 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
 
     // Adjust dates to appropriate Eastern Time values
     if (flightData.signup_start_date) {
-      flightData.signup_start_date = this.setETTime(flightData.signup_start_date, 0, 0);
+      flightData.signup_start_date = this.setETTime(flightData.signup_start_date);
     }
     if (flightData.signup_stop_date) {
-      flightData.signup_stop_date = this.setETTime(flightData.signup_stop_date, 23, 55);
+      flightData.signup_stop_date = this.setETTime(flightData.signup_stop_date);
     }
     if (flightData.start_date) {
-      flightData.start_date = this.setETTime(flightData.start_date, 0, 0);
+      flightData.start_date = this.setETTime(flightData.start_date);
     }
 
     if (this.isEditMode()) {
@@ -316,9 +316,11 @@ export class FlightCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setETTime(date: Date, hour: number, minute: number): Date {
+  private setETTime(date: Date, hour?: number, minute?: number): Date {
     const localDate = new Date(date);
-    localDate.setHours(hour, minute, 0, 0);
+    if (hour !== undefined) {
+      localDate.setHours(hour, minute ?? 0, 0, 0);
+    }
     const nyDateStr = localDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
     const nyDate = new Date(nyDateStr);
     const offset = localDate.getTime() - nyDate.getTime();

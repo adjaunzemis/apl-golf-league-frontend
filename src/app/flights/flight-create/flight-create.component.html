@@ -63,6 +63,8 @@
             id="signup_start_date"
             formControlName="signup_start_date"
             [showIcon]="true"
+            [showTime]="true"
+            hourFormat="12"
             appendTo="body"
           />
           @if (
@@ -80,6 +82,8 @@
             id="signup_stop_date"
             formControlName="signup_stop_date"
             [showIcon]="true"
+            [showTime]="true"
+            hourFormat="12"
             appendTo="body"
           />
           @if (
@@ -97,6 +101,8 @@
             id="start_date"
             formControlName="start_date"
             [showIcon]="true"
+            [showTime]="true"
+            hourFormat="12"
             appendTo="body"
           />
           @if (flightForm.get('start_date')?.touched && flightForm.get('start_date')?.invalid) {
