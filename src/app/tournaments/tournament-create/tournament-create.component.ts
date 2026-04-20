@@ -290,17 +290,13 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
 
     // Adjust dates to ET
     if (tournamentData.signup_start_date) {
-      tournamentData.signup_start_date = this.setETTime(tournamentData.signup_start_date, 0, 0);
+      tournamentData.signup_start_date = this.setETTime(tournamentData.signup_start_date);
     }
     if (tournamentData.signup_stop_date) {
-      tournamentData.signup_stop_date = this.setETTime(tournamentData.signup_stop_date, 23, 55);
+      tournamentData.signup_stop_date = this.setETTime(tournamentData.signup_stop_date);
     }
     if (tournamentData.date) {
-      // For tournament date, we might want to preserve the time if it's set, or default to shotgun time
-      // The requirement was: Flight start date at midnight ET. Let's do same for Tournament for now or 8am?
-      // User said: "And the flight start date itself should be at midnight ET as well."
-      // Let's stick to midnight ET for tournament date as well unless specified otherwise.
-      tournamentData.date = this.setETTime(tournamentData.date, 0, 0);
+      tournamentData.date = this.setETTime(tournamentData.date);
     }
 
     if (this.isEditMode()) {
@@ -333,9 +329,11 @@ export class TournamentCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setETTime(date: Date, hour: number, minute: number): Date {
+  private setETTime(date: Date, hour?: number, minute?: number): Date {
     const localDate = new Date(date);
-    localDate.setHours(hour, minute, 0, 0);
+    if (hour !== undefined) {
+      localDate.setHours(hour, minute ?? 0, 0, 0);
+    }
     const nyDateStr = localDate.toLocaleString('en-US', { timeZone: 'America/New_York' });
     const nyDate = new Date(nyDateStr);
     const offset = localDate.getTime() - nyDate.getTime();
