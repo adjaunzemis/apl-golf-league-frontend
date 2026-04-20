@@ -45,7 +45,14 @@
         <!-- Tournament Date -->
         <div class="flex flex-col gap-2">
           <label for="date" class="font-semibold">Tournament Date</label>
-          <p-datepicker id="date" formControlName="date" [showIcon]="true" appendTo="body" />
+          <p-datepicker
+            id="date"
+            formControlName="date"
+            [showIcon]="true"
+            [showTime]="true"
+            hourFormat="12"
+            appendTo="body"
+          />
           @if (tournamentForm.get('date')?.touched && tournamentForm.get('date')?.invalid) {
             <p-message severity="error" text="Tournament date is required" />
           }
@@ -60,6 +67,8 @@
             id="signup_start_date"
             formControlName="signup_start_date"
             [showIcon]="true"
+            [showTime]="true"
+            hourFormat="12"
             appendTo="body"
           />
           @if (
@@ -77,6 +86,8 @@
             id="signup_stop_date"
             formControlName="signup_stop_date"
             [showIcon]="true"
+            [showTime]="true"
+            hourFormat="12"
             appendTo="body"
           />
           @if (
