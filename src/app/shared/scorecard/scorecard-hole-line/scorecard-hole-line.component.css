@@ -12,6 +12,8 @@
   background-color: #3f51b5;
   color: #ffffff;
   font-weight: bold;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact !important;
 }
 
 .styled-table th,

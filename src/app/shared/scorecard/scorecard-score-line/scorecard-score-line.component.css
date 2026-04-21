@@ -147,3 +147,40 @@ a:hover {
   );
   background-size: 5px 5px;
 }
+
+@media print {
+  .black-dot {
+    background-color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact !important;
+  }
+
+  .red-dot {
+    background-color: #dc2626 !important; /* red-600 */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact !important;
+  }
+
+  .circle {
+    background-color: #dbeafe !important; /* blue-100 */
+    border: 1px solid #60a5fa !important; /* blue-400 */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact !important;
+  }
+
+  .square {
+    background-color: #e4e4e7 !important; /* zinc-200 */
+    border: 1px solid #a1a1aa !important; /* zinc-400 */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact !important;
+  }
+
+  .styled-table tbody tr {
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+
+  .border-sides {
+    border-left: 1px solid #dddddd !important;
+    border-right: 1px solid #dddddd !important;
+  }
+}
