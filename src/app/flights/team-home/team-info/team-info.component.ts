@@ -18,12 +18,12 @@ export class TeamInfoComponent {
   @Input() teamStandings: FlightStandingsTeam | undefined;
 
   getCaptainName(): string | undefined {
-    const captain = this.teamData.golfers.filter((golfer) => golfer.role === 'Captain')[0];
-    return captain.golfer_name;
+    const captain = this.teamData?.golfers?.find((golfer) => golfer.role === 'Captain');
+    return captain?.golfer_name;
   }
 
   getCaptainEmail(): string | undefined {
-    const captain = this.teamData.golfers.filter((golfer) => golfer.role === 'Captain')[0];
-    return captain.golfer_email;
+    const captain = this.teamData?.golfers?.find((golfer) => golfer.role === 'Captain');
+    return captain?.golfer_email;
   }
 }

@@ -82,6 +82,14 @@ export class TeamsService {
     this.http
       .get<FlightTeamDataWithMatches>(environment.apiUrl + `teams/${id}`)
       .subscribe((result) => {
+        if (result.golfers) {
+          result.golfers = result.golfers.map((golfer) => ({
+            ...golfer,
+            role: golfer.role
+              ? golfer.role.charAt(0).toUpperCase() + golfer.role.slice(1).toLowerCase()
+              : golfer.role,
+          }));
+        }
         this.teamData = result;
         this.teamDataUpdated.next(result);
       });
