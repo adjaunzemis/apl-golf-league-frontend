@@ -1,0 +1,32 @@
+@media print {
+  .grid {
+    display: none !important;
+  }
+
+  .print-target {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.65rem !important; /* Scale down text */
+  }
+
+  /* Ensure tables use the smaller font size */
+  :host ::ng-deep .print-target .styled-table {
+    font-size: 0.65rem !important;
+  }
+
+  /* PrimeNG p-card might have some shadows and padding we want to remove for print */
+  :host ::ng-deep .print-target p-card .p-card {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  :host ::ng-deep .print-target p-card .p-card-content {
+    padding: 0 !important;
+  }
+
+  :host ::ng-deep .print-target p-card .p-card-body {
+    padding: 0 !important;
+  }
+}

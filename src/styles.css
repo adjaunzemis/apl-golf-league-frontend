@@ -69,3 +69,39 @@ body {
   @apply block xl:block mx-auto rounded-border p-1;
   @apply dark:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)];
 }
+
+@media print {
+  .p-toast,
+  .p-dialog-mask,
+  .p-dialog,
+  .p-confirm-dialog,
+  .p-message {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  /* Force light theme colors for printing */
+  .dark body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .dark .p-card {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  /* Adjust other common elements */
+  .dark .text-white {
+    color: black !important;
+  }
+
+  .dark .bg-zinc-800,
+  .dark .bg-zinc-900 {
+    background-color: white !important;
+  }
+}

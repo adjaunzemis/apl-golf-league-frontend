@@ -2,3 +2,9 @@ p-image {
   cursor: pointer;
   width: 60px;
 }
+
+@media print {
+  :host {
+    display: none !important;
+  }
+}

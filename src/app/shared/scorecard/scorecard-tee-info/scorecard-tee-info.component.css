@@ -48,3 +48,9 @@
   width: 8.333%;
   font-weight: bold;
 }
+
+@media print {
+  .styled-table tbody tr {
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+}
