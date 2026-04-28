@@ -76,10 +76,12 @@ export class TournamentEntryFeePaymentComponent implements OnInit, OnDestroy {
     });
     this.golfersService.getAllGolfers();
 
-    this.tournamentsSub = this.tournamentsService.getListUpdateListener().subscribe((tournaments) => {
-      this.tournaments = tournaments;
-      this.isLoadingTournaments = false;
-    });
+    this.tournamentsSub = this.tournamentsService
+      .getListUpdateListener()
+      .subscribe((tournaments) => {
+        this.tournaments = tournaments;
+        this.isLoadingTournaments = false;
+      });
 
     this.tournamentEntryFeePaymentInfoListSub = this.paymentsService
       .getTournamentEntryFeePaymentInfoListUpdateListener()
@@ -93,13 +95,15 @@ export class TournamentEntryFeePaymentComponent implements OnInit, OnDestroy {
       golferPayments: this.formBuilder.array([]),
     });
 
-    this.tournamentPaymentForm.get('tournament')?.valueChanges.subscribe((tournament: TournamentInfo) => {
-      this.selectedTournament = tournament;
-      if (tournament) {
-        this.isLoadingPaymentInfoList = true;
-        this.paymentsService.getTournamentEntryFeePaymentInfoList(tournament.id);
-      }
-    });
+    this.tournamentPaymentForm
+      .get('tournament')
+      ?.valueChanges.subscribe((tournament: TournamentInfo) => {
+        this.selectedTournament = tournament;
+        if (tournament) {
+          this.isLoadingPaymentInfoList = true;
+          this.paymentsService.getTournamentEntryFeePaymentInfoList(tournament.id);
+        }
+      });
 
     this.addNewGolferPaymentForm();
 
@@ -198,14 +202,16 @@ export class TournamentEntryFeePaymentComponent implements OnInit, OnDestroy {
               payer_email: payerEmail,
             };
 
-            this.paymentsService.postTournamentEntryFeePaypalTransaction(transaction).subscribe(() => {
-              this.notificationService.showSuccess(
-                'Payment Success',
-                'Payment was successful!',
-                5000,
-              );
-              this.ref.close(true);
-            });
+            this.paymentsService
+              .postTournamentEntryFeePaypalTransaction(transaction)
+              .subscribe(() => {
+                this.notificationService.showSuccess(
+                  'Payment Success',
+                  'Payment was successful!',
+                  5000,
+                );
+                this.ref.close(true);
+              });
           } catch (err) {
             this.notificationService.showError(
               'Payment Error',

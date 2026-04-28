@@ -65,10 +65,12 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
       });
     });
 
-    this.tournamentsSub = this.tournamentsService.getListUpdateListener().subscribe((tournaments) => {
-      this.tournaments = tournaments;
-      this.isLoading = false;
-    });
+    this.tournamentsSub = this.tournamentsService
+      .getListUpdateListener()
+      .subscribe((tournaments) => {
+        this.tournaments = tournaments;
+        this.isLoading = false;
+      });
 
     this.paymentsSub = this.paymentsService
       .getTournamentEntryFeePaymentDataListUpdateListener()
@@ -189,7 +191,9 @@ export class TournamentEntryFeePaymentsListComponent implements OnInit, OnDestro
 
   confirmSendEmail(): void {
     const emails = this.unpaidGolfersWithEmail.map((p) => p.golfer_email).join(',');
-    const subject = encodeURIComponent(`APL Tournament Entry Fee: ${this.selectedTournament?.name}`);
+    const subject = encodeURIComponent(
+      `APL Tournament Entry Fee: ${this.selectedTournament?.name}`,
+    );
     const body = encodeURIComponent(
       `Friendly reminder that your entry fee for the ${this.selectedTournament?.name} tournament is still outstanding.`,
     );

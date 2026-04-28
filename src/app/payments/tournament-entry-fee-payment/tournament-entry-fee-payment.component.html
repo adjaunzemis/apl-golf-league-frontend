@@ -33,8 +33,10 @@
       @if (selectedTournament) {
         <div class="mb-4">
           <p class="font-semibold text-lg">
-            Member Fee: <span class="text-green-600">${{ selectedTournament.members_entry_fee }}</span> | 
-            Non-Member Fee: <span class="text-green-600">${{ selectedTournament.non_members_entry_fee }}</span>
+            Member Fee:
+            <span class="text-green-600">${{ selectedTournament.members_entry_fee }}</span> |
+            Non-Member Fee:
+            <span class="text-green-600">${{ selectedTournament.non_members_entry_fee }}</span>
           </p>
         </div>
 
@@ -143,12 +145,7 @@
 
   @if (!selectedTournament && !isLoadingTournaments) {
     <div class="mt-6 flex justify-end">
-      <p-button
-        label="Cancel"
-        severity="secondary"
-        [outlined]="true"
-        (click)="onCancelClick()"
-      />
+      <p-button label="Cancel" severity="secondary" [outlined]="true" (click)="onCancelClick()" />
     </div>
   }
 </div>
