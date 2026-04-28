@@ -219,12 +219,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
                 route: '/dues-payments',
               },
-              // {
-              //   label: 'Tournaments',
-              //   icon: 'pi pi-trophy',
-              //   visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
-              //   route: '/fee-payments',
-              // },
+              {
+                label: 'Tournaments',
+                icon: 'pi pi-trophy',
+                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+                route: '/fee-payments',
+              },
             ],
           },
           {

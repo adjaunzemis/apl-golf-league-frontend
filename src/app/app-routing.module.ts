@@ -23,6 +23,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MaintenanceGuard } from './maintenance/maintenance.guard';
 import { SeasonSetupComponent } from './seasons/season-setup/season-setup.component';
 import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments-list/league-dues-payments-list.component';
+import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
 import { QualifyingScoresCreateComponent } from './golfers/qualifying-scores-create/qualifying-scores-create.component';
 
@@ -61,7 +62,7 @@ const routes: Routes = [
       },
       {
         path: 'fee-payments',
-        component: UnderConstructionComponent,
+        component: TournamentEntryFeePaymentsListComponent,
         canActivate: [AuthGuard],
       },
       { path: 'tournament', component: TournamentHomeComponent },
