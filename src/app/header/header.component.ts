@@ -16,6 +16,7 @@ import { Season } from '../shared/season.model';
 import { TeamCreateComponent } from '../teams/team-create/team-create.component';
 import { ThemeService } from '../theme/theme.service';
 import { LeagueDuesPaymentComponent } from '../payments/league-dues-payment/league-dues-payment.component';
+import { TournamentEntryFeePaymentComponent } from '../payments/tournament-entry-fee-payment/tournament-entry-fee-payment.component';
 
 @Component({
   selector: 'app-header',
@@ -141,12 +142,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: true,
             callback: () => this.onPayDues(),
           },
-          // {
-          //   label: 'Entry Fees',
-          //   icon: 'pi pi-trophy',
-          //   visible: true,
-          //   // callback: () => this.onPayEntryFees(),
-          // },
+          {
+            label: 'Tournament Entry Fees',
+            icon: 'pi pi-trophy',
+            visible: true,
+            callback: () => this.onPayEntryFees(),
+          },
         ],
       },
       {
@@ -218,12 +219,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
                 route: '/dues-payments',
               },
-              // {
-              //   label: 'Tournaments',
-              //   icon: 'pi pi-trophy',
-              //   visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
-              //   route: '/fee-payments',
-              // },
+              {
+                label: 'Tournaments',
+                icon: 'pi pi-trophy',
+                visible: this.currentUser?.is_admin || this.currentUser?.edit_payments,
+                route: '/fee-payments',
+              },
             ],
           },
           {
@@ -255,7 +256,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  // onPayEntryFees(): void {
-  //   this.signupComponent.onPayEntryFees();
-  // }
+  onPayEntryFees(): void {
+    this.dialogService.open(TournamentEntryFeePaymentComponent, {
+      header: 'Pay Tournament Entry Fees',
+      width: 'auto',
+      modal: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+    });
+  }
 }
