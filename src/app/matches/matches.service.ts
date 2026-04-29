@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
 import { environment } from './../../environments/environment';
-import { MatchData, MatchInput } from '../shared/match.model';
+import { MatchData, MatchInput, MatchValidationRequest, MatchValidationResponse } from '../shared/match.model';
 
 @Injectable({
   providedIn: 'root',
@@ -56,5 +56,9 @@ export class MatchesService {
 
   postMatchRounds(matchInput: MatchInput): Observable<MatchData> {
     return this.http.post<MatchData>(environment.apiUrl + 'matches/rounds', matchInput);
+  }
+
+  validateMatch(match: MatchValidationRequest): Observable<MatchValidationResponse> {
+    return this.http.post<MatchValidationResponse>(environment.apiUrl + 'matches/validate/', match);
   }
 }

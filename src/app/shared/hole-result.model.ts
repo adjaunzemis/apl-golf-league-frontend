@@ -21,3 +21,18 @@ export interface HoleResultData {
   adjusted_gross_score: number;
   net_score: number;
 }
+
+export interface HoleResultValidationRequest {
+  number: number;
+  par: number;
+  stroke_index: number;
+  gross_score: number;
+}
+
+export interface HoleResultValidationResponse extends HoleResultValidationRequest {
+  handicap_strokes: number;
+  adjusted_gross_score: number;
+  net_score: number;
+  max_gross_score: number;
+  is_valid: boolean;
+}
