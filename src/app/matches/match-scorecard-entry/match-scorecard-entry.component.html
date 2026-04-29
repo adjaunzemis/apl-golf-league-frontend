@@ -1,0 +1,232 @@
+<div class="flex justify-center p-4">
+  <p-card header="Match Scorecard Entry" class="w-full max-w-6xl">
+    <form [formGroup]="matchForm" class="flex flex-col gap-6">
+      <!-- Selection Phase -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="flex flex-col gap-2">
+          <label for="date" class="font-semibold">Date Played</label>
+          <p-datepicker id="date" formControlName="date_played" [showIcon]="true" class="w-full" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="course" class="font-semibold">Course</label>
+          <p-select
+            id="course"
+            [options]="courses"
+            formControlName="course"
+            optionLabel="name"
+            placeholder="Select Course"
+            class="w-full"
+            [filter]="true"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="track" class="font-semibold">Track</label>
+          <p-select
+            id="track"
+            [options]="tracks"
+            formControlName="track"
+            optionLabel="name"
+            placeholder="Select Track"
+            class="w-full"
+            [disabled]="!tracks || tracks.length === 0"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Home Team -->
+        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800">
+          <h3 class="text-lg font-bold mb-4 border-b pb-2">Home Team</h3>
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
+              <label for="home-golfer" class="font-semibold">Golfer</label>
+              <p-select
+                id="home-golfer"
+                [options]="golfers"
+                formControlName="home_golfer"
+                optionLabel="name"
+                placeholder="Select Golfer"
+                class="w-full"
+                [filter]="true"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="home-tee" class="font-semibold">Tee</label>
+              <p-select
+                id="home-tee"
+                [options]="homeTees"
+                formControlName="home_tee"
+                optionLabel="name"
+                placeholder="Select Tee"
+                class="w-full"
+                [disabled]="!homeTees || homeTees.length === 0"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Away Team -->
+        <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800">
+          <h3 class="text-lg font-bold mb-4 border-b pb-2">Away Team</h3>
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
+              <label for="away-golfer" class="font-semibold">Golfer</label>
+              <p-select
+                id="away-golfer"
+                [options]="golfers"
+                formControlName="away_golfer"
+                optionLabel="name"
+                placeholder="Select Golfer"
+                class="w-full"
+                [filter]="true"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="away-tee" class="font-semibold">Tee</label>
+              <p-select
+                id="away-tee"
+                [options]="awayTees"
+                formControlName="away_tee"
+                optionLabel="name"
+                placeholder="Select Tee"
+                class="w-full"
+                [disabled]="!awayTees || awayTees.length === 0"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scorecard Phase -->
+      @if (selectedTeeHome && selectedTeeAway) {
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-center border-collapse">
+            <thead>
+              <tr class="bg-gray-100 dark:bg-slate-700 border-b">
+                <th class="p-2 border">Hole</th>
+                @for (h of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track h) {
+                  <th class="p-2 border">{{ h }}</th>
+                }
+                <th class="p-2 border font-bold">TOT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Par Row -->
+              <tr>
+                <td class="p-2 border font-semibold bg-gray-50 dark:bg-slate-700">Par</td>
+                @for (h of selectedTeeHome.holes; track h.id) {
+                  <td class="p-2 border">{{ h.par }}</td>
+                }
+                <td class="p-2 border font-bold bg-gray-50 dark:bg-slate-700">--</td>
+              </tr>
+              <!-- Stroke Index Row -->
+              <tr>
+                <td class="p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs">S.I.</td>
+                @for (h of selectedTeeHome.holes; track h.id) {
+                  <td class="p-2 border text-xs">{{ h.stroke_index }}</td>
+                }
+                <td class="p-2 border font-bold bg-gray-50 dark:bg-slate-700">--</td>
+              </tr>
+              <!-- Score Rows -->
+              <ng-container formArrayName="holes">
+                <!-- Home Gross Row -->
+                <tr>
+                  <td class="p-2 border font-bold bg-blue-50 dark:bg-blue-900/20">Home Gross</td>
+                  @for (holeGroup of holesControls; track holeGroup; let i = $index) {
+                    <td [formGroupName]="i" class="p-1 border">
+                      <p-inputNumber
+                        formControlName="gross_home"
+                        [min]="1"
+                        class="w-full"
+                        inputStyleClass="text-center w-full px-1 font-bold"
+                        [showButtons]="false"
+                      />
+                    </td>
+                  }
+                  <td class="p-2 border font-bold">--</td>
+                </tr>
+                <!-- Away Gross Row -->
+                <tr>
+                  <td class="p-2 border font-bold bg-red-50 dark:bg-red-900/20">Away Gross</td>
+                  @for (holeGroup of holesControls; track holeGroup; let i = $index) {
+                    <td [formGroupName]="i" class="p-1 border">
+                      <p-inputNumber
+                        formControlName="gross_away"
+                        [min]="1"
+                        class="w-full"
+                        inputStyleClass="text-center w-full px-1 font-bold"
+                        [showButtons]="false"
+                      />
+                    </td>
+                  }
+                  <td class="p-2 border font-bold">--</td>
+                </tr>
+              </ng-container>
+
+              <!-- Validation Results -->
+              @if (validationResponse) {
+                <!-- Net Scores Row (Home) -->
+                <tr>
+                  <td class="p-2 border font-semibold bg-blue-50 dark:bg-blue-900/10">Home Net</td>
+                  @for (h of validationResponse.hole_results; track $index) {
+                    <td class="p-2 border text-blue-600 font-semibold">{{ h.home_team_net_score }}</td>
+                  }
+                  <td class="p-2 border font-bold text-blue-700">{{ validationResponse.home_team_score }} pts</td>
+                </tr>
+                <!-- Net Scores Row (Away) -->
+                <tr>
+                  <td class="p-2 border font-semibold bg-red-50 dark:bg-red-900/10">Away Net</td>
+                  @for (h of validationResponse.hole_results; track $index) {
+                    <td class="p-2 border text-red-600 font-semibold">{{ h.away_team_net_score }}</td>
+                  }
+                  <td class="p-2 border font-bold text-red-700">{{ validationResponse.away_team_score }} pts</td>
+                </tr>
+                <!-- Hole Winners Row -->
+                <tr>
+                  <td class="p-2 border font-bold">Winner</td>
+                  @for (h of validationResponse.hole_results; track $index) {
+                    <td class="p-2 border">
+                      <p-tag [value]="getHoleWinnerLabel(h.winner)" [severity]="getWinnerSeverity(h.winner)" />
+                    </td>
+                  }
+                  <td class="p-2 border">
+                    <p-tag 
+                      [value]="validationResponse.home_team_score > validationResponse.away_team_score ? 'Home' : (validationResponse.away_team_score > validationResponse.home_team_score ? 'Away' : 'Tie')" 
+                      [severity]="validationResponse.home_team_score > validationResponse.away_team_score ? 'success' : (validationResponse.away_team_score > validationResponse.home_team_score ? 'danger' : 'secondary')" 
+                    />
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <!-- Action Buttons -->
+      <div class="flex justify-center gap-4 mt-6">
+        <p-button
+          label="Validate"
+          icon="pi pi-search"
+          (click)="validateMatch()"
+          [loading]="isValidating"
+          [disabled]="matchForm.invalid"
+          severity="secondary"
+        />
+        <p-button
+          label="Submit Scorecard"
+          icon="pi pi-check"
+          (click)="onSubmit()"
+          [disabled]="!validationResponse?.is_valid"
+          severity="success"
+        />
+      </div>
+
+      <!-- Errors -->
+      @if (validationResponse && !validationResponse.is_valid) {
+        <p-message severity="error" text="One or more scores are invalid. Please check for scores exceeding the maximum allowed for the golfer's handicap." />
+      }
+    </form>
+  </p-card>
+</div>

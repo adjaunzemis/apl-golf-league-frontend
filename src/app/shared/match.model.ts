@@ -1,4 +1,4 @@
-import { RoundData } from './round.model';
+import { RoundData, RoundValidationRequest, RoundValidationResponse } from './round.model';
 
 export interface MatchSummary {
   match_id: number;
@@ -57,4 +57,34 @@ export interface RoundInput {
 export interface HoleResultInput {
   hole_id: number;
   gross_score: number;
+}
+
+export enum MatchHoleWinner {
+  HOME = 'HOME',
+  AWAY = 'AWAY',
+  TIE = 'TIE',
+}
+
+export interface MatchHoleResult {
+  home_team_gross_score: number;
+  home_team_net_score: number;
+  home_team_handicap_strokes: number;
+  away_team_gross_score: number;
+  away_team_net_score: number;
+  away_team_handicap_strokes: number;
+  winner: MatchHoleWinner;
+}
+
+export interface MatchValidationRequest {
+  home_team_rounds: RoundValidationRequest[];
+  away_team_rounds: RoundValidationRequest[];
+}
+
+export interface MatchValidationResponse {
+  home_team_rounds: RoundValidationResponse[];
+  away_team_rounds: RoundValidationResponse[];
+  home_team_score: number;
+  away_team_score: number;
+  hole_results: MatchHoleResult[];
+  is_valid: boolean;
 }
