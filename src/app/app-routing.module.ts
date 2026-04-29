@@ -26,6 +26,7 @@ import { LeagueDuesPaymentsListComponent } from './payments/league-dues-payments
 import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-entry-fee-payments-list/tournament-entry-fee-payments-list.component';
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
 import { QualifyingScoresCreateComponent } from './golfers/qualifying-scores-create/qualifying-scores-create.component';
+import { MatchScorecardEntryComponent } from './matches/match-scorecard-entry/match-scorecard-entry.component';
 
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
@@ -53,6 +54,11 @@ const routes: Routes = [
       {
         path: 'flight-scorecard/edit',
         component: FlightMatchCreateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'matches/scorecard-entry',
+        component: MatchScorecardEntryComponent,
         canActivate: [AuthGuard],
       },
       {
