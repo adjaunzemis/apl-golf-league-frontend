@@ -1,6 +1,6 @@
 import { Tee } from './tee.model';
 import { Golfer } from './golfer.model';
-import { HoleResult, HoleResultData } from './hole-result.model';
+import { HoleResult, HoleResultData, HoleResultValidationRequest, HoleResultValidationResponse } from './hole-result.model';
 
 export interface Round {
   id: number;
@@ -55,4 +55,17 @@ export interface RoundSummary {
   adjusted_gross_score: number;
   net_score: number;
   score_differential: number;
+}
+
+export interface RoundValidationRequest {
+  date_played: Date;
+  course_handicap: number;
+  holes: HoleResultValidationRequest[];
+}
+
+export interface RoundValidationResponse {
+  date_played: Date;
+  course_handicap: number;
+  holes: HoleResultValidationResponse[];
+  is_valid: boolean;
 }
