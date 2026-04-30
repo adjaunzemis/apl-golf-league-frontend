@@ -46,6 +46,7 @@
 
   <p-card>
     <p-table
+      #dt
       [value]="payments"
       dataKey="id"
       editMode="row"
@@ -56,63 +57,42 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [rowsPerPageOptions]="[25, 50, 100]"
       styleClass="p-datatable-sm"
-      [globalFilterFields]="['golfer_name', 'year', 'type', 'method', 'comment']"
+      [globalFilterFields]="['golfer_name', 'type', 'status', 'method', 'comment']"
     >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-start">
+          <p-iconfield iconPosition="right">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search..."
+            />
+            <p-inputicon class="pi pi-search" />
+          </p-iconfield>
+        </div>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="golfer_name">
             <div class="flex items-center">
               Golfer <p-sortIcon field="golfer_name" class="ml-4" />
-              <p-columnFilter type="text" field="golfer_name" display="menu" class="ml-auto" />
-            </div>
-          </th>
-          <th pSortableColumn="year">
-            <div class="flex items-center">
-              Year <p-sortIcon field="year" class="ml-4" />
-              <p-columnFilter type="numeric" field="year" display="menu" class="ml-auto" />
             </div>
           </th>
           <th pSortableColumn="type">
-            <div class="flex items-center">
-              Type <p-sortIcon field="type" class="ml-4" />
-              <p-columnFilter type="text" field="type" display="menu" class="ml-auto" />
-            </div>
+            <div class="flex items-center">Type <p-sortIcon field="type" class="ml-4" /></div>
           </th>
-          <th pSortableColumn="amount_due">
-            <div class="flex items-center">
-              Amount Due <p-sortIcon field="amount_due" class="ml-4" />
-              <p-columnFilter
-                type="numeric"
-                field="amount_due"
-                display="menu"
-                currency="USD"
-                class="ml-auto"
-              />
-            </div>
+          <th>
+            <div class="flex items-center">Amount Due</div>
           </th>
-          <th pSortableColumn="amount_paid">
-            <div class="flex items-center">
-              Amount Paid <p-sortIcon field="amount_paid" class="ml-4" />
-              <p-columnFilter
-                type="numeric"
-                field="amount_paid"
-                display="menu"
-                currency="USD"
-                class="ml-auto"
-              />
-            </div>
+          <th>
+            <div class="flex items-center">Amount Paid</div>
           </th>
           <th pSortableColumn="is_paid">
-            <div class="flex items-center">
-              Status <p-sortIcon field="is_paid" class="ml-4" />
-              <p-columnFilter type="boolean" field="is_paid" display="menu" class="ml-auto" />
-            </div>
+            <div class="flex items-center">Status <p-sortIcon field="is_paid" class="ml-4" /></div>
           </th>
           <th pSortableColumn="method">
-            <div class="flex items-center">
-              Method <p-sortIcon field="method" class="ml-4" />
-              <p-columnFilter type="text" field="method" display="menu" class="ml-auto" />
-            </div>
+            <div class="flex items-center">Method <p-sortIcon field="method" class="ml-4" /></div>
           </th>
           <th>Comment</th>
           <th style="width: 8rem"></th>
@@ -121,7 +101,6 @@
       <ng-template pTemplate="body" let-payment let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="payment">
           <td>{{ payment.golfer_name }}</td>
-          <td>{{ payment.year }}</td>
           <td>{{ payment.type }}</td>
           <td>
             <p-cellEditor>
@@ -247,7 +226,7 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="9" class="text-center p-4">No payments found for the selected season.</td>
+          <td colspan="8" class="text-center p-4">No payments found for the selected season.</td>
         </tr>
       </ng-template>
     </p-table>
