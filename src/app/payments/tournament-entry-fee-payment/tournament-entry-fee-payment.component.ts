@@ -252,9 +252,9 @@ export class TournamentEntryFeePaymentComponent implements OnInit, OnDestroy {
     let total = 0;
     for (const golferPaymentForm of this.getGolferPaymentsArray().controls) {
       const type = golferPaymentForm.get('type')?.value;
-      if (type === 'Member') {
+      if (type === 'Member Fee') {
         total += this.selectedTournament.members_entry_fee;
-      } else if (type === 'Non-Member') {
+      } else if (type === 'Non-Member Fee') {
         total += this.selectedTournament.non_members_entry_fee;
       }
     }
