@@ -64,7 +64,7 @@ export class TournamentEntryFeePaymentComponent implements OnInit, OnDestroy {
 
   tournamentPaymentForm: UntypedFormGroup;
 
-  typeOptions = ['Member', 'Non-Member'];
+  typeOptions = ['Member Fee', 'Non-Member Fee'];
 
   isLoadingTournaments = true;
   isLoadingPaymentInfoList = false;
