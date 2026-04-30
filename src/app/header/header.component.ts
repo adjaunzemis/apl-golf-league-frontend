@@ -145,7 +145,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           {
             label: 'Tournament Entry Fees',
             icon: 'pi pi-trophy',
-            visible: this.currentUser?.is_admin,
+            visible: true,
             callback: () => this.onPayEntryFees(),
           },
         ],
