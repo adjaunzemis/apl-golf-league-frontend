@@ -15,6 +15,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { TableModule } from 'primeng/table';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RippleModule } from 'primeng/ripple';
@@ -38,6 +40,8 @@ import { ToastModule } from 'primeng/toast';
     ProgressSpinnerModule,
     InputNumberModule,
     InputTextModule,
+    IconFieldModule,
+    InputIconModule,
     TableModule,
     AutoCompleteModule,
     RippleModule,

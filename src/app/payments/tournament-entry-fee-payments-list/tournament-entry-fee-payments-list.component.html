@@ -61,6 +61,7 @@
 
   <p-card>
     <p-table
+      #dt
       [value]="payments"
       dataKey="id"
       editMode="row"
@@ -73,12 +74,24 @@
       styleClass="p-datatable-sm"
       [globalFilterFields]="['golfer_name', 'type', 'method', 'comment']"
     >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-end">
+          <p-iconfield iconPosition="right">
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Search..."
+            />
+            <p-inputicon class="pi pi-search" />
+          </p-iconfield>
+        </div>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="golfer_name">
             <div class="flex items-center">
               Golfer <p-sortIcon field="golfer_name" class="ml-4" />
-              <p-columnFilter type="text" field="golfer_name" display="menu" class="ml-auto" />
             </div>
           </th>
           <th pSortableColumn="type">
