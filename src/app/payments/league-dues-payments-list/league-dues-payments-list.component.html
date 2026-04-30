@@ -57,10 +57,10 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [rowsPerPageOptions]="[25, 50, 100]"
       styleClass="p-datatable-sm"
-      [globalFilterFields]="['golfer_name', 'type', 'method', 'comment']"
+      [globalFilterFields]="['golfer_name', 'type', 'status', 'method', 'comment']"
     >
       <ng-template pTemplate="caption">
-        <div class="flex justify-end">
+        <div class="flex justify-start">
           <p-iconfield iconPosition="right">
             <input
               pInputText
