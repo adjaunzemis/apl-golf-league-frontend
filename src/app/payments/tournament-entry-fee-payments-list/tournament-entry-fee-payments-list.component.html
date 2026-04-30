@@ -71,7 +71,7 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [rowsPerPageOptions]="[25, 50, 100]"
       styleClass="p-datatable-sm"
-      [globalFilterFields]="['golfer_name', 'year', 'type', 'method', 'comment']"
+      [globalFilterFields]="['golfer_name', 'type', 'method', 'comment']"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -79,11 +79,6 @@
             <div class="flex items-center">
               Golfer <p-sortIcon field="golfer_name" class="ml-4" />
               <p-columnFilter type="text" field="golfer_name" display="menu" class="ml-auto" />
-            </div>
-          </th>
-          <th>
-            <div class="flex items-center">
-              Year
             </div>
           </th>
           <th pSortableColumn="type">
@@ -118,7 +113,6 @@
       <ng-template pTemplate="body" let-payment let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="payment">
           <td>{{ payment.golfer_name }}</td>
-          <td>{{ payment.year }}</td>
           <td>{{ payment.type }}</td>
           <td>
             <p-cellEditor>
@@ -244,7 +238,7 @@
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="9" class="text-center p-4">
+          <td colspan="8" class="text-center p-4">
             @if (!selectedTournament) {
               Select a tournament to view payments.
             } @else {
