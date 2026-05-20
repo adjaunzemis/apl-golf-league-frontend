@@ -38,24 +38,50 @@
   }
 
   @if (!isLoading && selectedTeam && rounds.length > 0) {
-    <div class="mt-8">
-      <h2 class="text-xl font-bold mb-4">{{ selectedTeam.name }} Scorecard</h2>
+    <div class="mt-8 overflow-x-auto">
+      <div class="min-w-[800px] p-4 border rounded shadow-sm bg-white dark:bg-gray-800">
+        <h2 class="text-xl font-bold mb-4">{{ selectedTeam.name }} Scorecard</h2>
 
-      @for (golfer of selectedTeam.golfers; track golfer.golfer_id) {
-        <div class="mb-8 p-4 border rounded shadow-sm bg-white dark:bg-gray-800">
-          <h3 class="text-lg font-semibold mb-2">{{ golfer.name }}</h3>
-          @for (round of getGolferRounds(golfer.golfer_id); track round.track_id) {
-            <div class="mb-4 overflow-x-auto">
+        @for (trackId of uniqueTrackIds; track trackId) {
+          <div class="mb-8">
+            <app-scorecard-title-line
+              [rounds]="getRoundsForTrack(trackId)"
+              [title]="getTrackName(trackId)"
+              [subtitle]="(selectedTournamentData?.date | date: 'fullDate') || ''"
+            ></app-scorecard-title-line>
+
+            <app-scorecard-hole-line
+              [holeResultData]="getRoundsForTrack(trackId)[0].holes"
+              [showScoreModeButtons]="false"
+            ></app-scorecard-hole-line>
+
+            <app-scorecard-tee-info
+              [holeResultData]="getRoundsForTrack(trackId)[0].holes"
+              [showDetails]="true"
+            ></app-scorecard-tee-info>
+
+            @for (round of getRoundsForTrack(trackId); track round.golfer_id + '-' + round.track_id) {
               <app-scorecard-score-line
                 [round]="round"
+                (roundChange)="onRoundChange()"
                 [enterScores]="true"
-                [title]="round.track_name"
+                [showScores]="false"
+                [title]="round.golfer_name"
                 [subtitle]="round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
               ></app-scorecard-score-line>
-            </div>
-          }
-        </div>
-      }
+            }
+
+            <app-scorecard-score-line
+              class="team-score-line"
+              [round]="getTrackTeamRound(trackId)"
+              [teamScore]="true"
+              [showScores]="true"
+              [title]="selectedTeam.name + ' Total'"
+              subtitle="Rollup"
+            ></app-scorecard-score-line>
+          </div>
+        }
+      </div>
 
       <div class="flex justify-end mt-6">
         <p-button

@@ -10,14 +10,10 @@ import { MessageService } from 'primeng/api';
 import { TournamentsService } from '../tournaments.service';
 import { SeasonsService } from '../../seasons/seasons.service';
 import { CoursesService } from '../../courses/courses.service';
-import {
-  TournamentData,
-  TournamentInfo,
-  TournamentTeam,
-  TournamentTeamGolfer,
-} from '../../shared/tournament.model';
+import { TournamentTeamGolfer, TournamentTeam, TournamentInfo, TournamentData } from '../../shared/tournament.model';
 import { DivisionData } from '../../shared/division.model';
 import { RoundData } from '../../shared/round.model';
+import { HoleResultData } from '../../shared/hole-result.model';
 import { Course } from '../../shared/course.model';
 import { Tee } from '../../shared/tee.model';
 import { ScorecardModule } from '../../shared/scorecard/scorecard.module';
@@ -56,8 +52,21 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   course: Course | null = null;
 
   rounds: RoundData[] = [];
+  teamRounds = new Map<number, RoundData>();
 
   private subscriptions = new Subscription();
+
+  get uniqueTrackIds(): number[] {
+    return Array.from(new Set(this.rounds.map((r) => r.track_id)));
+  }
+
+  getTrackName(trackId: number): string {
+    return this.rounds.find((r) => r.track_id === trackId)?.track_name || 'Track';
+  }
+
+  getRoundsForTrack(trackId: number): RoundData[] {
+    return this.rounds.filter((r) => r.track_id === trackId);
+  }
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -130,10 +139,15 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     if (!this.selectedTeam || !this.course || !this.selectedTournamentData) return;
 
     this.rounds = [];
+
     for (const golfer of this.selectedTeam.golfers) {
+      // Find division by name (case-insensitive)
       const division = this.selectedTournamentData.divisions.find(
-        (d) => d.name === golfer.division,
+        (d) =>
+          d.name.trim().toLowerCase() === golfer.division?.trim().toLowerCase() ||
+          d.name.trim().toLowerCase() === golfer.role?.trim().toLowerCase(),
       );
+
       if (division) {
         // Primary Round
         const primaryRound = this.createRound(golfer, division, true);
@@ -142,7 +156,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         }
 
         // Secondary Round (if 18 holes)
-        if (division.secondary_track_id) {
+        if (division.secondary_track_id != null && division.secondary_track_id !== 0) {
           const secondaryRound = this.createRound(golfer, division, false);
           if (secondaryRound) {
             this.rounds.push(secondaryRound);
@@ -150,6 +164,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         }
       }
     }
+    this.updateTeamRounds();
   }
 
   private createRound(
@@ -162,10 +177,14 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     const trackId = isPrimary ? division.primary_track_id : division.secondary_track_id;
     const teeId = isPrimary ? division.primary_tee_id : division.secondary_tee_id;
 
-    const track = this.course.tracks.find((t) => t.id === trackId);
+    console.log(`golfer: ${golfer.name} | isPrimary: ${isPrimary} | trackId: ${trackId} | teeId: ${teeId}`);
+
+    if (trackId == null || trackId === 0) return null;
+
+    const track = this.course.tracks.find((t) => t.id == trackId);
     if (!track) return null;
 
-    const tee = track.tees.find((t) => t.id === teeId);
+    const tee = track.tees.find((t) => t.id == teeId);
     if (!tee) return null;
 
     const playingHandicap = this.computePlayingHandicap(golfer, tee);
@@ -291,5 +310,148 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   getGolferRounds(golferId: number): RoundData[] {
     return this.rounds.filter((r) => r.golfer_id === golferId);
+  }
+
+  getTrackTeamRound(trackId: number): RoundData {
+    return this.teamRounds.get(trackId) || this.calculateTeamRound(trackId);
+  }
+
+  private calculateTeamRound(trackId: number): RoundData {
+    const rounds = this.getRoundsForTrack(trackId);
+    if (rounds.length === 0) {
+      // Return a dummy round data if no rounds are found
+      return {
+        round_id: -1,
+        date_played: new Date(),
+        round_type: 'Tournament',
+        golfer_id: -1,
+        golfer_name: 'n/a',
+        course_id: -1,
+        course_name: 'n/a',
+        track_id: trackId,
+        track_name: 'n/a',
+        tee_id: -1,
+        tee_name: 'n/a',
+        tee_gender: 'n/a',
+        tee_rating: 0,
+        tee_slope: 0,
+        tee_par: 0,
+        tee_color: 'n/a',
+        gross_score: 0,
+        adjusted_gross_score: 0,
+        net_score: 0,
+        holes: [],
+      };
+    }
+    const teamFirstRound = rounds[0];
+    const playingHandicap = this.selectedTournamentData?.scramble
+      ? teamFirstRound.golfer_playing_handicap
+      : undefined;
+
+    const teamRound: RoundData = {
+      round_id: -1,
+      team_id: teamFirstRound.team_id,
+      date_played: this.selectedTournamentData!.date,
+      round_type: 'Tournament',
+      golfer_id: -1,
+      golfer_name: teamFirstRound.team_name || 'n/a',
+      golfer_playing_handicap: playingHandicap,
+      team_name: teamFirstRound.team_name,
+      course_id: teamFirstRound.course_id,
+      course_name: teamFirstRound.course_name,
+      track_id: teamFirstRound.track_id,
+      track_name: teamFirstRound.track_name,
+      tee_id: teamFirstRound.tee_id,
+      tee_name: teamFirstRound.tee_name,
+      tee_gender: teamFirstRound.tee_gender,
+      tee_rating: teamFirstRound.tee_rating,
+      tee_slope: teamFirstRound.tee_slope,
+      tee_par: this.selectedTournamentData?.bestball
+        ? this.selectedTournamentData.bestball * teamFirstRound.tee_par
+        : teamFirstRound.tee_par,
+      tee_color: teamFirstRound.tee_color,
+      gross_score: 0,
+      adjusted_gross_score: 0,
+      net_score: 0,
+      holes: this.createHoleResultDataForTeam(rounds, playingHandicap),
+    };
+    return teamRound;
+  }
+
+  private updateTeamRounds(): void {
+    this.teamRounds.clear();
+    for (const trackId of this.uniqueTrackIds) {
+      this.teamRounds.set(trackId, this.calculateTeamRound(trackId));
+    }
+  }
+
+  private createHoleResultDataForTeam(
+    rounds: RoundData[],
+    playingHandicap: number | undefined,
+  ): HoleResultData[] {
+    const holeResultData: HoleResultData[] = [];
+    if (rounds.length === 0) return [];
+
+    for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
+      const hole = rounds[0].holes[holeIdx];
+      let holePar = hole.par;
+      let grossScore = 0;
+      let netScore = 0;
+
+      if (this.selectedTournamentData?.bestball === 2) {
+        holePar = hole.par * 2;
+        const grossScores = rounds
+          .map((r) => r.holes[holeIdx].gross_score)
+          .sort((a, b) => a - b)
+          .slice(0, 2);
+        grossScore = grossScores.length === 2 ? grossScores[0] + grossScores[1] : 0;
+
+        const netScores = rounds
+          .map((r) => r.holes[holeIdx].gross_score - r.holes[holeIdx].handicap_strokes)
+          .sort((a, b) => a - b)
+          .slice(0, 2);
+        netScore = netScores.length === 2 ? netScores[0] + netScores[1] : 0;
+      } else if (this.selectedTournamentData?.bestball === 1) {
+        grossScore = Math.min(...rounds.map((r) => r.holes[holeIdx].gross_score || 99));
+        netScore = Math.min(
+          ...rounds.map(
+            (r) => (r.holes[holeIdx].gross_score || 99) - r.holes[holeIdx].handicap_strokes,
+          ),
+        );
+      } else if (this.selectedTournamentData?.scramble) {
+        grossScore = rounds[0].holes[holeIdx].gross_score;
+        netScore = grossScore - rounds[0].holes[holeIdx].handicap_strokes;
+      } else {
+        // Default to sum if not specified
+        grossScore = rounds.reduce((sum, r) => sum + r.holes[holeIdx].gross_score, 0);
+        netScore = rounds.reduce(
+          (sum, r) =>
+            sum + (r.holes[holeIdx].gross_score - r.holes[holeIdx].handicap_strokes),
+          0,
+        );
+      }
+
+      holeResultData.push({
+        hole_result_id: -1,
+        round_id: -1,
+        tee_id: hole.tee_id,
+        hole_id: hole.hole_id,
+        number: hole.number,
+        par: holePar,
+        yardage: hole.yardage,
+        stroke_index: hole.stroke_index,
+        handicap_strokes: this.computeHandicapStrokes(hole.stroke_index, playingHandicap),
+        gross_score: grossScore === 99 ? 0 : grossScore,
+        adjusted_gross_score: 0,
+        net_score: netScore >= 90 ? 0 : netScore,
+      });
+    }
+    return holeResultData;
+  }
+
+  onRoundChange(): void {
+    // Trigger change detection for team round rollup
+    this.rounds = [...this.rounds];
+    this.updateTeamRounds();
   }
 }
