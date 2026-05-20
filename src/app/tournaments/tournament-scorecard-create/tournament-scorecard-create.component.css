@@ -1,5 +1,12 @@
 :host ::ng-deep .p-select {
   width: 100%;
+  max-width: 300px;
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep .p-select {
+    max-width: none;
+  }
 }
 
 .team-score-line {

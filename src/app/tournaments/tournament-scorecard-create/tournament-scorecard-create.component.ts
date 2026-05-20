@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { SelectModule, SelectChangeEvent } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 
@@ -17,6 +18,7 @@ import { RoundData } from '../../shared/round.model';
 import { HoleResultData } from '../../shared/hole-result.model';
 import { Course } from '../../shared/course.model';
 import { Tee } from '../../shared/tee.model';
+import { Season } from '../../shared/season.model';
 import { ScorecardModule } from '../../shared/scorecard/scorecard.module';
 import { TournamentInput } from '../../shared/match.model';
 
@@ -31,6 +33,7 @@ import { TournamentInput } from '../../shared/match.model';
     SelectModule,
     ButtonModule,
     CardModule,
+    TagModule,
     ProgressSpinnerModule,
     ScorecardModule,
   ],
@@ -43,6 +46,9 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   isLoading = false;
   isSubmitting = false;
+
+  seasons: Season[] = [];
+  selectedSeason: Season | null = null;
 
   tournaments: TournamentInfo[] = [];
   selectedTournamentInfo: TournamentInfo | null = null;
@@ -72,8 +78,16 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isLoading = true;
+
+    this.subscriptions.add(
+      this.seasonsService.getSeasons().subscribe((seasons) => {
+        this.seasons = seasons;
+      }),
+    );
+
     this.subscriptions.add(
       this.seasonsService.getActiveSeason().subscribe((season) => {
+        this.selectedSeason = season;
         this.tournamentsService.getList(season.year);
       }),
     );
@@ -116,11 +130,20 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+  onSeasonChange(event: SelectChangeEvent): void {
+    this.selectedSeason = event.value;
+    this.clearTournamentSelection();
+    if (this.selectedSeason) {
+      this.isLoading = true;
+      this.tournamentsService.getList(this.selectedSeason.year);
+    } else {
+      this.tournaments = [];
+    }
+  }
+
   onTournamentChange(event: SelectChangeEvent): void {
     this.selectedTournamentInfo = event.value;
-    this.selectedTournamentData = null;
-    this.selectedTeam = null;
-    this.rounds = [];
+    this.clearTeamSelection();
     if (this.selectedTournamentInfo) {
       this.isLoading = true;
       this.tournamentsService.getTournament(this.selectedTournamentInfo.id);
@@ -134,7 +157,20 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       this.initializeRounds();
     } else {
       this.rounds = [];
+      this.teamRounds.clear();
     }
+  }
+
+  private clearTournamentSelection(): void {
+    this.selectedTournamentInfo = null;
+    this.selectedTournamentData = null;
+    this.clearTeamSelection();
+  }
+
+  private clearTeamSelection(): void {
+    this.selectedTeam = null;
+    this.rounds = [];
+    this.teamRounds.clear();
   }
 
   private initializeRounds(): void {
