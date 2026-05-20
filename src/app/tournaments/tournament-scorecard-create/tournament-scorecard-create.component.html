@@ -64,7 +64,30 @@
               placeholder="Select Team"
               (onChange)="onTeamChange($event)"
               [style]="{ width: '100%' }"
-            ></p-select>
+            >
+              <ng-template #selectedItem let-selectedOption>
+                @if (selectedOption) {
+                  <div class="flex items-center gap-2">
+                    <span>{{ selectedOption.name }}</span>
+                    @if (selectedOption.rounds?.length) {
+                      <span class="text-xs text-blue-500 font-normal">
+                        ({{ selectedOption.rounds.length }} rounds)
+                      </span>
+                    }
+                  </div>
+                }
+              </ng-template>
+              <ng-template let-option #item>
+                <div class="flex items-center gap-2">
+                  <span>{{ option.name }}</span>
+                  @if (option.rounds?.length) {
+                    <span class="text-xs text-blue-500 font-normal">
+                      ({{ option.rounds.length }} rounds)
+                    </span>
+                  }
+                </div>
+              </ng-template>
+            </p-select>
           </div>
         }
       </div>

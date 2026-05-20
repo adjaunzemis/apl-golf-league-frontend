@@ -1,6 +1,7 @@
 import { DivisionCreate, DivisionData } from './division.model';
 import { TeamGolferStatistics } from './golfer.model';
 import { TournamentTeamData } from './team.model';
+import { RoundData } from './round.model';
 
 export interface TournamentData {
   id: number;
@@ -117,6 +118,7 @@ export interface TournamentTeam {
   team_id: number;
   name: string;
   golfers: TournamentTeamGolfer[];
+  rounds?: RoundData[];
 }
 
 export interface TournamentStandingsTeam {

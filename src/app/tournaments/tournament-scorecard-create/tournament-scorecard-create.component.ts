@@ -105,13 +105,33 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         if (data.course_id) {
           this.coursesService.getCourse(data.course_id);
         }
-      }),
-    );
 
-    this.subscriptions.add(
-      this.tournamentsService.getTeamsUpdateListener().subscribe((teams) => {
-        this.teams = teams;
+        // Map teams from TournamentData (TournamentTeamData[]) to our local format (TournamentTeam[])
+        if (data.teams) {
+          this.teams = data.teams.map((ttd) => ({
+            tournament_id: ttd.tournament_id,
+            team_id: ttd.id,
+            name: ttd.name,
+            golfers: ttd.golfers.map((g) => ({
+              golfer_id: g.golfer_id,
+              name: g.golfer_name,
+              role: g.role,
+              division: g.division_name,
+              handicap_index: g.handicap_index,
+              email: g.golfer_email,
+            })),
+            rounds: ttd.rounds,
+          }));
+        }
         this.isLoading = false;
+        if (this.selectedTeam) {
+          // Refresh selection if it was already selected
+          const updatedTeam = this.teams.find((t) => t.team_id === this.selectedTeam?.team_id);
+          if (updatedTeam) {
+            this.selectedTeam = updatedTeam;
+            this.initializeRounds();
+          }
+        }
       }),
     );
 
@@ -147,7 +167,6 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     if (this.selectedTournamentInfo) {
       this.isLoading = true;
       this.tournamentsService.getTournament(this.selectedTournamentInfo.id);
-      this.tournamentsService.getTeams(this.selectedTournamentInfo.id);
     }
   }
 
@@ -214,8 +233,6 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
     const trackId = isPrimary ? division.primary_track_id : division.secondary_track_id;
     const teeId = isPrimary ? division.primary_tee_id : division.secondary_tee_id;
-
-    console.log(`golfer: ${golfer.name} | isPrimary: ${isPrimary} | trackId: ${trackId} | teeId: ${teeId}`);
 
     if (trackId == null || trackId === 0) return null;
 
@@ -326,8 +343,13 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
           summary: 'Success',
           detail: 'Scores posted successfully!',
         });
+        // Refresh full tournament data to show updated submission status
+        if (this.selectedTournamentInfo) {
+          this.tournamentsService.getTournament(this.selectedTournamentInfo.id);
+        }
         this.selectedTeam = null;
         this.rounds = [];
+        this.teamRounds.clear();
       },
       error: (err) => {
         this.isSubmitting = false;
