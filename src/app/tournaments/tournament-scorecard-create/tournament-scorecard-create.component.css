@@ -1,0 +1,11 @@
+.container {
+  max-width: 1000px;
+}
+
+:host ::ng-deep .p-select {
+  width: 100%;
+}
+
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
