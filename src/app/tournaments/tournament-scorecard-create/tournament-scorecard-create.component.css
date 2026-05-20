@@ -1,9 +1,14 @@
-.container {
-  max-width: 1000px;
-}
-
 :host ::ng-deep .p-select {
   width: 100%;
+}
+
+.team-score-line {
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.dark .team-score-line {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .overflow-x-auto {

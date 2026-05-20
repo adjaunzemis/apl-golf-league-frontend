@@ -1,103 +1,120 @@
-<div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold mb-4">Post Tournament Scores</h1>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-    <div class="flex flex-col">
-      <label for="tournament" class="font-semibold mb-2">Select Tournament</label>
-      <p-select
-        id="tournament"
-        [options]="tournaments"
-        [(ngModel)]="selectedTournamentInfo"
-        optionLabel="name"
-        placeholder="Select a Tournament"
-        (onChange)="onTournamentChange($event)"
-        [style]="{ width: '100%' }"
-      ></p-select>
-    </div>
-
-    @if (selectedTournamentData) {
-      <div class="flex flex-col">
-        <label for="team" class="font-semibold mb-2">Select Team</label>
-        <p-select
-          id="team"
-          [options]="teams"
-          [(ngModel)]="selectedTeam"
-          optionLabel="name"
-          placeholder="Select a Team"
-          (onChange)="onTeamChange($event)"
-          [style]="{ width: '100%' }"
-        ></p-select>
+@if (!isLoading) {
+  <div class="grid grid-cols-12 place-items-stretch gap-4 p-4">
+    <div class="hidden md:block md:col-span-1 bg-transparent"></div>
+    <p-card class="col-span-12 md:col-span-10">
+      <div class="flex flex-col sm:flex-row sm:items-center px-4 py-4">
+        <span class="text-2xl font-semibold">Post Tournament Scores</span>
       </div>
-    }
-  </div>
 
-  @if (isLoading) {
-    <div class="flex justify-center p-8">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
-  }
+      <div class="flex flex-col sm:flex-row sm:items-center px-4 pb-4 gap-4">
+        <div class="flex flex-col w-full md:w-1/2">
+          <label for="tournament" class="font-semibold mb-2">Select Tournament</label>
+          <p-select
+            id="tournament"
+            [options]="tournaments"
+            [(ngModel)]="selectedTournamentInfo"
+            optionLabel="name"
+            placeholder="Select a Tournament"
+            (onChange)="onTournamentChange($event)"
+            [style]="{ width: '100%' }"
+          ></p-select>
+        </div>
 
-  @if (!isLoading && selectedTeam && rounds.length > 0) {
-    <div class="mt-8 overflow-x-auto">
-      <div class="min-w-[800px] p-4 border rounded shadow-sm bg-white dark:bg-gray-800">
-        <h2 class="text-xl font-bold mb-4">{{ selectedTeam.name }} Scorecard</h2>
-
-        @for (trackId of uniqueTrackIds; track trackId) {
-          <div class="mb-8">
-            <app-scorecard-title-line
-              [rounds]="getRoundsForTrack(trackId)"
-              [title]="getTrackName(trackId)"
-              [subtitle]="(selectedTournamentData?.date | date: 'fullDate') || ''"
-            ></app-scorecard-title-line>
-
-            <app-scorecard-hole-line
-              [holeResultData]="getRoundsForTrack(trackId)[0].holes"
-              [showScoreModeButtons]="false"
-            ></app-scorecard-hole-line>
-
-            <app-scorecard-tee-info
-              [holeResultData]="getRoundsForTrack(trackId)[0].holes"
-              [showDetails]="true"
-            ></app-scorecard-tee-info>
-
-            @for (round of getRoundsForTrack(trackId); track round.golfer_id + '-' + round.track_id) {
-              <app-scorecard-score-line
-                [round]="round"
-                (roundChange)="onRoundChange()"
-                [enterScores]="true"
-                [showScores]="false"
-                [title]="round.golfer_name"
-                [subtitle]="round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
-              ></app-scorecard-score-line>
-            }
-
-            <app-scorecard-score-line
-              class="team-score-line"
-              [round]="getTrackTeamRound(trackId)"
-              [teamScore]="true"
-              [showScores]="true"
-              [title]="selectedTeam.name + ' Total'"
-              subtitle="Rollup"
-            ></app-scorecard-score-line>
+        @if (selectedTournamentData) {
+          <div class="flex flex-col w-full md:w-1/2">
+            <label for="team" class="font-semibold mb-2">Select Team</label>
+            <p-select
+              id="team"
+              [options]="teams"
+              [(ngModel)]="selectedTeam"
+              optionLabel="name"
+              placeholder="Select a Team"
+              (onChange)="onTeamChange($event)"
+              [style]="{ width: '100%' }"
+            ></p-select>
           </div>
         }
       </div>
+    </p-card>
+    <div class="hidden md:block md:col-span-1 bg-transparent"></div>
+  </div>
 
-      <div class="flex justify-end mt-6">
-        <p-button
-          label="Post Scores"
-          icon="pi pi-check"
-          (onClick)="onSubmit()"
-          [loading]="isSubmitting"
-          [disabled]="!isValid()"
-        ></p-button>
-      </div>
+  @if (selectedTeam && rounds.length > 0) {
+    <div class="px-4 pb-8">
+      <p-card>
+        <div class="flex flex-col p-4 text-sm overflow-x-auto">
+          <h2 class="text-xl font-bold mb-4">{{ selectedTeam.name }} Scorecard</h2>
+
+          @for (trackId of uniqueTrackIds; track trackId) {
+            <div class="mb-8 min-w-[800px]">
+              <app-scorecard-title-line
+                [rounds]="getRoundsForTrack(trackId)"
+                [title]="getTrackName(trackId)"
+                [subtitle]="(selectedTournamentData?.date | date: 'fullDate') || ''"
+              ></app-scorecard-title-line>
+
+              <app-scorecard-hole-line
+                [holeResultData]="getRoundsForTrack(trackId)[0].holes"
+                [showScoreModeButtons]="false"
+              ></app-scorecard-hole-line>
+
+              <app-scorecard-tee-info
+                [holeResultData]="getRoundsForTrack(trackId)[0].holes"
+                [showDetails]="true"
+              ></app-scorecard-tee-info>
+
+              @for (round of getRoundsForTrack(trackId); track round.golfer_id + '-' + round.track_id) {
+                <app-scorecard-score-line
+                  [round]="round"
+                  (roundChange)="onRoundChange()"
+                  [enterScores]="true"
+                  [showScores]="false"
+                  [title]="round.golfer_name"
+                  [subtitle]="round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
+                ></app-scorecard-score-line>
+              }
+
+              <app-scorecard-score-line
+                class="team-score-line"
+                [round]="getTrackTeamRound(trackId)"
+                [teamScore]="true"
+                [showScores]="true"
+                [title]="selectedTeam.name + ' Total'"
+                subtitle="Rollup"
+              ></app-scorecard-score-line>
+            </div>
+          }
+
+          <div class="flex justify-end mt-6">
+            <p-button
+              label="Post Scores"
+              icon="pi pi-check"
+              (onClick)="onSubmit()"
+              [loading]="isSubmitting"
+              [disabled]="!isValid()"
+            ></p-button>
+          </div>
+        </div>
+      </p-card>
     </div>
   }
 
-  @if (!isLoading && selectedTeam && rounds.length === 0) {
-    <div class="text-center p-8 text-red-500">
-      No scorecard data found for the selected team/division.
+  @if (selectedTeam && rounds.length === 0) {
+    <div class="px-4">
+      <p-card>
+        <div class="text-center p-8 text-red-500 font-semibold">
+          No scorecard data found for the selected team/division.
+        </div>
+      </p-card>
     </div>
   }
-</div>
+} @else {
+  <div class="flex flex-col items-center w-full p-10">
+    <p-progress-spinner
+      strokeWidth="4"
+      fill="transparent"
+      animationDuration="2s"
+      [style]="{ width: '100px', height: '100px' }"
+    />
+  </div>
+}

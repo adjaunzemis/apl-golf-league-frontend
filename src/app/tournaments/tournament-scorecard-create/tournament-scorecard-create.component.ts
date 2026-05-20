@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SelectModule, SelectChangeEvent } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 
@@ -29,6 +30,7 @@ import { TournamentInput } from '../../shared/match.model';
     ReactiveFormsModule,
     SelectModule,
     ButtonModule,
+    CardModule,
     ProgressSpinnerModule,
     ScorecardModule,
   ],
