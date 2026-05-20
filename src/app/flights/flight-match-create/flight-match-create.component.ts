@@ -834,7 +834,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
         course_id: this.selectedCourse.id,
         track_id: this.selectedTrack.id,
         tee_id: round.tee_id,
-        golfer_id: round.golfer_id,
+        golfer_ids: [round.golfer_id],
         golfer_playing_handicap: round.golfer_playing_handicap,
         holes: holes,
       };
@@ -854,7 +854,7 @@ export class FlightMatchCreateComponent implements OnInit, OnDestroy {
         course_id: this.selectedCourse.id,
         track_id: this.selectedTrack.id,
         tee_id: round.tee_id,
-        golfer_id: round.golfer_id,
+        golfer_ids: [round.golfer_id],
         golfer_playing_handicap: round.golfer_playing_handicap,
         holes: holes,
       };

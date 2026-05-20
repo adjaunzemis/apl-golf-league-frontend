@@ -126,18 +126,20 @@
                   [enterScores]="!isReadOnly"
                   [showScores]="isReadOnly"
                   [title]="round.golfer_name"
-                  [subtitle]="round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
+                  [subtitle]="selectedTournamentData?.scramble ? 'Team Round | ' + round.tee_name : round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
                 ></app-scorecard-score-line>
               }
 
-              <app-scorecard-score-line
-                class="team-score-line"
-                [round]="getTrackTeamRound(trackId)"
-                [teamScore]="true"
-                [showScores]="true"
-                [title]="selectedTeam.name + ' Total'"
-                subtitle="Rollup"
-              ></app-scorecard-score-line>
+              @if (!selectedTournamentData?.scramble) {
+                <app-scorecard-score-line
+                  class="team-score-line"
+                  [round]="getTrackTeamRound(trackId)"
+                  [teamScore]="true"
+                  [showScores]="true"
+                  [title]="selectedTeam.name + ' Total'"
+                  subtitle="Rollup"
+                ></app-scorecard-score-line>
+              }
             </div>
           }
 

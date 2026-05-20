@@ -20,7 +20,7 @@ import { Course } from '../../shared/course.model';
 import { Tee } from '../../shared/tee.model';
 import { Season } from '../../shared/season.model';
 import { ScorecardModule } from '../../shared/scorecard/scorecard.module';
-import { TournamentInput } from '../../shared/match.model';
+import { TournamentInput, RoundInput } from '../../shared/match.model';
 
 @Component({
   selector: 'app-tournament-scorecard-create',
@@ -198,31 +198,71 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
     if (this.selectedTeam.rounds && this.selectedTeam.rounds.length > 0) {
       this.isReadOnly = true;
-      this.rounds = this.selectedTeam.rounds.map((r) => this.ensureHandicapStrokes(r));
+      if (this.selectedTournamentData.scramble) {
+        // Scramble: Only show the rounds for the first golfer to avoid duplicate rows in UI
+        const firstRoundGolferId = this.selectedTeam.rounds[0].golfer_id;
+        this.rounds = this.selectedTeam.rounds
+          .filter((r) => r.golfer_id === firstRoundGolferId)
+          .map((r) => {
+            const round = this.ensureHandicapStrokes(r);
+            round.golfer_name = this.selectedTeam!.name; // Display team name
+            return round;
+          });
+      } else {
+        this.rounds = this.selectedTeam.rounds.map((r) => this.ensureHandicapStrokes(r));
+      }
     } else {
       this.isReadOnly = false;
       this.rounds = [];
 
-      for (const golfer of this.selectedTeam.golfers) {
-        // Find division by name (case-insensitive)
+      if (this.selectedTournamentData.scramble) {
+        // Scramble: Initialize only one round per track for the entire team
+        const firstGolfer = this.selectedTeam.golfers[0];
         const division = this.selectedTournamentData.divisions.find(
           (d) =>
-            d.name.trim().toLowerCase() === golfer.division?.trim().toLowerCase() ||
-            d.name.trim().toLowerCase() === golfer.role?.trim().toLowerCase(),
+            d.name.trim().toLowerCase() === firstGolfer.division?.trim().toLowerCase() ||
+            d.name.trim().toLowerCase() === firstGolfer.role?.trim().toLowerCase(),
         );
 
         if (division) {
           // Primary Round
-          const primaryRound = this.createRound(golfer, division, true);
+          const primaryRound = this.createRound(firstGolfer, division, true);
           if (primaryRound) {
+            primaryRound.golfer_name = this.selectedTeam.name;
             this.rounds.push(primaryRound);
           }
 
-          // Secondary Round (if 18 holes)
+          // Secondary Round
           if (division.secondary_track_id != null && division.secondary_track_id !== 0) {
-            const secondaryRound = this.createRound(golfer, division, false);
+            const secondaryRound = this.createRound(firstGolfer, division, false);
             if (secondaryRound) {
+              secondaryRound.golfer_name = this.selectedTeam.name;
               this.rounds.push(secondaryRound);
+            }
+          }
+        }
+      } else {
+        for (const golfer of this.selectedTeam.golfers) {
+          // Find division by name (case-insensitive)
+          const division = this.selectedTournamentData.divisions.find(
+            (d) =>
+              d.name.trim().toLowerCase() === golfer.division?.trim().toLowerCase() ||
+              d.name.trim().toLowerCase() === golfer.role?.trim().toLowerCase(),
+          );
+
+          if (division) {
+            // Primary Round
+            const primaryRound = this.createRound(golfer, division, true);
+            if (primaryRound) {
+              this.rounds.push(primaryRound);
+            }
+
+            // Secondary Round (if 18 holes)
+            if (division.secondary_track_id != null && division.secondary_track_id !== 0) {
+              const secondaryRound = this.createRound(golfer, division, false);
+              if (secondaryRound) {
+                this.rounds.push(secondaryRound);
+              }
             }
           }
         }
@@ -338,12 +378,29 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const tournamentInput: TournamentInput = {
-      tournament_id: this.selectedTournamentData.id,
-      date_played: this.selectedTournamentData.date,
-      rounds: this.rounds.map((round) => ({
+    let roundsInput: RoundInput[] = [];
+
+    if (this.selectedTournamentData.scramble) {
+      // Scramble: Submit a single team round for all golfers
+      const golferIds = this.selectedTeam!.golfers.map((golfer) => golfer.golfer_id);
+      for (const teamRound of this.rounds) {
+        roundsInput.push({
+          team_id: this.selectedTeam!.team_id,
+          golfer_ids: golferIds,
+          golfer_playing_handicap: teamRound.golfer_playing_handicap,
+          course_id: teamRound.course_id,
+          track_id: teamRound.track_id,
+          tee_id: teamRound.tee_id,
+          holes: teamRound.holes.map((h) => ({
+            hole_id: h.hole_id,
+            gross_score: h.gross_score,
+          })),
+        });
+      }
+    } else {
+      roundsInput = this.rounds.map((round) => ({
         team_id: round.team_id!,
-        golfer_id: round.golfer_id,
+        golfer_ids: [round.golfer_id],
         golfer_playing_handicap: round.golfer_playing_handicap,
         course_id: round.course_id,
         track_id: round.track_id,
@@ -352,7 +409,13 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
           hole_id: h.hole_id,
           gross_score: h.gross_score,
         })),
-      })),
+      }));
+    }
+
+    const tournamentInput: TournamentInput = {
+      tournament_id: this.selectedTournamentData.id,
+      date_played: this.selectedTournamentData.date,
+      rounds: roundsInput,
     };
 
     this.isSubmitting = true;
