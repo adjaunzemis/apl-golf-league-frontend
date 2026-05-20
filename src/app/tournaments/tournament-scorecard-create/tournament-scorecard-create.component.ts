@@ -46,6 +46,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
 
   isLoading = false;
   isSubmitting = false;
+  isReadOnly = false;
 
   seasons: Season[] = [];
   selectedSeason: Season | null = null;
@@ -195,33 +196,53 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
   private initializeRounds(): void {
     if (!this.selectedTeam || !this.course || !this.selectedTournamentData) return;
 
-    this.rounds = [];
+    if (this.selectedTeam.rounds && this.selectedTeam.rounds.length > 0) {
+      this.isReadOnly = true;
+      this.rounds = this.selectedTeam.rounds.map((r) => this.ensureHandicapStrokes(r));
+    } else {
+      this.isReadOnly = false;
+      this.rounds = [];
 
-    for (const golfer of this.selectedTeam.golfers) {
-      // Find division by name (case-insensitive)
-      const division = this.selectedTournamentData.divisions.find(
-        (d) =>
-          d.name.trim().toLowerCase() === golfer.division?.trim().toLowerCase() ||
-          d.name.trim().toLowerCase() === golfer.role?.trim().toLowerCase(),
-      );
+      for (const golfer of this.selectedTeam.golfers) {
+        // Find division by name (case-insensitive)
+        const division = this.selectedTournamentData.divisions.find(
+          (d) =>
+            d.name.trim().toLowerCase() === golfer.division?.trim().toLowerCase() ||
+            d.name.trim().toLowerCase() === golfer.role?.trim().toLowerCase(),
+        );
 
-      if (division) {
-        // Primary Round
-        const primaryRound = this.createRound(golfer, division, true);
-        if (primaryRound) {
-          this.rounds.push(primaryRound);
-        }
+        if (division) {
+          // Primary Round
+          const primaryRound = this.createRound(golfer, division, true);
+          if (primaryRound) {
+            this.rounds.push(primaryRound);
+          }
 
-        // Secondary Round (if 18 holes)
-        if (division.secondary_track_id != null && division.secondary_track_id !== 0) {
-          const secondaryRound = this.createRound(golfer, division, false);
-          if (secondaryRound) {
-            this.rounds.push(secondaryRound);
+          // Secondary Round (if 18 holes)
+          if (division.secondary_track_id != null && division.secondary_track_id !== 0) {
+            const secondaryRound = this.createRound(golfer, division, false);
+            if (secondaryRound) {
+              this.rounds.push(secondaryRound);
+            }
           }
         }
       }
     }
     this.updateTeamRounds();
+  }
+
+  private ensureHandicapStrokes(round: RoundData): RoundData {
+    // Deep copy and ensure handicap strokes are populated for existing rounds
+    const r = { ...round, holes: round.holes.map((h) => ({ ...h })) };
+    for (const hole of r.holes) {
+      if (hole.handicap_strokes == null) {
+        hole.handicap_strokes = this.computeHandicapStrokes(
+          hole.stroke_index,
+          r.golfer_playing_handicap,
+        );
+      }
+    }
+    return r;
   }
 
   private createRound(

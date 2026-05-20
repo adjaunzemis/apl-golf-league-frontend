@@ -123,8 +123,8 @@
                 <app-scorecard-score-line
                   [round]="round"
                   (roundChange)="onRoundChange()"
-                  [enterScores]="true"
-                  [showScores]="false"
+                  [enterScores]="!isReadOnly"
+                  [showScores]="isReadOnly"
                   [title]="round.golfer_name"
                   [subtitle]="round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
                 ></app-scorecard-score-line>
@@ -141,15 +141,17 @@
             </div>
           }
 
-          <div class="flex justify-end mt-6">
-            <p-button
-              label="Post Scores"
-              icon="pi pi-check"
-              (onClick)="onSubmit()"
-              [loading]="isSubmitting"
-              [disabled]="!isValid()"
-            ></p-button>
-          </div>
+          @if (!isReadOnly) {
+            <div class="flex justify-end mt-6">
+              <p-button
+                label="Post Scores"
+                icon="pi pi-check"
+                (onClick)="onSubmit()"
+                [loading]="isSubmitting"
+                [disabled]="!isValid()"
+              ></p-button>
+            </div>
+          }
         </div>
       </p-card>
     </div>
