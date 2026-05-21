@@ -124,9 +124,11 @@
                   [round]="round"
                   (roundChange)="onRoundChange()"
                   [enterScores]="!isReadOnly"
+                  [editHandicap]="!isReadOnly"
                   [showScores]="isReadOnly"
+                  [editHandicap]="!isReadOnly"
                   [title]="round.golfer_name"
-                  [subtitle]="selectedTournamentData?.scramble ? 'Team Round | ' + round.tee_name : round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
+                  [subtitle]="selectedTournamentData?.scramble ? 'Scramble' : round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
                 ></app-scorecard-score-line>
               }
 
@@ -136,8 +138,8 @@
                   [round]="getTrackTeamRound(trackId)"
                   [teamScore]="true"
                   [showScores]="true"
-                  [title]="selectedTeam.name + ' Total'"
-                  subtitle="Rollup"
+                  [title]="selectedTeam.name"
+                  subtitle="Team Score"
                 ></app-scorecard-score-line>
               }
             </div>
