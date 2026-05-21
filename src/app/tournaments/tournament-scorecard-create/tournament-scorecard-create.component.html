@@ -128,7 +128,7 @@
                   [showScores]="isReadOnly"
                   [editHandicap]="!isReadOnly"
                   [title]="round.golfer_name"
-                  [subtitle]="selectedTournamentData?.scramble ? 'Scramble' : round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
+                  [subtitle]="selectedTournamentData?.scramble ? 'Scramble | Hcp: ' : round.tee_name + ' | Hcp: ' + (round.golfer_playing_handicap ?? '--')"
                 ></app-scorecard-score-line>
               }
 
