@@ -12,7 +12,12 @@ import { MessageService } from 'primeng/api';
 import { TournamentsService } from '../tournaments.service';
 import { SeasonsService } from '../../seasons/seasons.service';
 import { CoursesService } from '../../courses/courses.service';
-import { TournamentTeamGolfer, TournamentTeam, TournamentInfo, TournamentData } from '../../shared/tournament.model';
+import {
+  TournamentTeamGolfer,
+  TournamentTeam,
+  TournamentInfo,
+  TournamentData,
+} from '../../shared/tournament.model';
 import { DivisionData } from '../../shared/division.model';
 import { RoundData } from '../../shared/round.model';
 import { HoleResultData } from '../../shared/hole-result.model';
@@ -363,7 +368,9 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     if (playingHandicap < 0) {
       return -playingHandicap * 2 > 18 - strokeIndex ? -1 : 0;
     }
-    return Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0);
+    return (
+      Math.floor((playingHandicap * 2) / 18) + ((playingHandicap * 2) % 18 >= strokeIndex ? 1 : 0)
+    );
   }
 
   onSubmit(): void {
@@ -569,8 +576,7 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
         // Default to sum if not specified
         grossScore = rounds.reduce((sum, r) => sum + r.holes[holeIdx].gross_score, 0);
         netScore = rounds.reduce(
-          (sum, r) =>
-            sum + (r.holes[holeIdx].gross_score - r.holes[holeIdx].handicap_strokes),
+          (sum, r) => sum + (r.holes[holeIdx].gross_score - r.holes[holeIdx].handicap_strokes),
           0,
         );
       }
