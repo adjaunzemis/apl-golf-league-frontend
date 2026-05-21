@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://aplgolfapi.staging.jaunzenet.com/',
+  apiUrl: 'https://aplgolfapi.jaunzenet.com/',
   title: 'APL Golf League - DEVELOPMENT',
   version: 'DEVELOPMENT',
   maintenance: false,

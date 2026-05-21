@@ -167,12 +167,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
             route: '/flight-scorecard/edit',
           },
-          // {
-          //   label: 'Post Tournament Scores',
-          //   icon: 'pi pi-pen-to-square',
-          //   visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
-          //   route: '/tournament/scores',
-          // },
+          {
+            label: 'Post Tournament Scores',
+            icon: 'pi pi-pen-to-square',
+            visible: this.currentUser?.is_admin || this.currentUser?.edit_tournaments,
+            route: '/tournament/scores',
+          },
         ],
       },
       {

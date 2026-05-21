@@ -45,7 +45,7 @@ export interface TournamentInput {
 // TODO: Move to Round model?
 export interface RoundInput {
   team_id: number;
-  golfer_id: number;
+  golfer_ids: number[];
   golfer_playing_handicap?: number;
   course_id: number;
   track_id: number;

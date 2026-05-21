@@ -27,6 +27,8 @@ import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-e
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
 import { QualifyingScoresCreateComponent } from './golfers/qualifying-scores-create/qualifying-scores-create.component';
 
+import { TournamentScorecardCreateComponent } from './tournaments/tournament-scorecard-create/tournament-scorecard-create.component';
+
 const routes: Routes = [
   { path: 'auth/login', component: LoginComponent },
   { path: 'maintenance', component: MaintenanceComponent },
@@ -77,11 +79,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       { path: 'tournament-signup', component: TournamentSignupComponent },
-      // {
-      //   path: 'tournament/scores',
-      //   component: TournamentScorecardCreateComponent,
-      //   canActivate: [AuthGuard],
-      // },
+      {
+        path: 'tournament/scores',
+        component: TournamentScorecardCreateComponent,
+        canActivate: [AuthGuard],
+      },
       { path: 'golfer', component: GolferHomeComponent },
       { path: 'golfer-search', component: GolferSearchComponent },
       {
