@@ -39,7 +39,7 @@
         <!-- Home Team -->
         <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800">
           <h3 class="text-lg font-bold mb-4 border-b pb-2">Home Team</h3>
-          <div class="flex flex-col gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label for="home-golfer" class="font-semibold">Golfer</label>
               <p-select
@@ -58,7 +58,7 @@
                 id="home-tee"
                 [options]="homeTees"
                 formControlName="home_tee"
-                optionLabel="name"
+                optionLabel="display_name"
                 placeholder="Select Tee"
                 class="w-full"
                 [disabled]="!homeTees || homeTees.length === 0"
@@ -70,7 +70,7 @@
         <!-- Away Team -->
         <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800">
           <h3 class="text-lg font-bold mb-4 border-b pb-2">Away Team</h3>
-          <div class="flex flex-col gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label for="away-golfer" class="font-semibold">Golfer</label>
               <p-select
@@ -89,7 +89,7 @@
                 id="away-tee"
                 [options]="awayTees"
                 formControlName="away_tee"
-                optionLabel="name"
+                optionLabel="display_name"
                 placeholder="Select Tee"
                 class="w-full"
                 [disabled]="!awayTees || awayTees.length === 0"

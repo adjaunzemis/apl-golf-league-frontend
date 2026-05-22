@@ -139,8 +139,13 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     // Handle Track Selection
     this.subs.add(
       this.matchForm.get('track')?.valueChanges.subscribe((track: Track) => {
-        this.homeTees = track?.tees ?? [];
-        this.awayTees = track?.tees ?? [];
+        const tees = (track?.tees ?? []).map(tee => ({
+          ...tee,
+          display_name: `${tee.name} (${tee.gender.charAt(0).toUpperCase()}: ${tee.rating.toFixed(1)}/${tee.slope})`,
+          total_par: tee.holes.reduce((sum, h) => sum + h.par, 0)
+        }));
+        this.homeTees = tees;
+        this.awayTees = tees;
         this.matchForm.get('home_tee')?.setValue(null);
         this.matchForm.get('away_tee')?.setValue(null);
       }),
@@ -172,6 +177,10 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
 
   get selectedTeeAway(): Tee | null {
     return this.matchForm.get('away_tee')?.value;
+  }
+
+  get currentTrackTees(): any[] {
+    return this.homeTees;
   }
 
   validateMatch(): void {
