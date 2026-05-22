@@ -171,30 +171,53 @@
                 <tr>
                   <td class="p-2 border font-semibold bg-blue-50 dark:bg-blue-900/10">Home Net</td>
                   @for (h of validationResponse.hole_results; track $index) {
-                    <td class="p-2 border text-blue-600 font-semibold">{{ h.home_team_net_score }}</td>
+                    <td class="p-2 border text-blue-600 font-semibold">
+                      {{ h.home_team_net_score }}
+                    </td>
                   }
-                  <td class="p-2 border font-bold text-blue-700">{{ validationResponse.home_team_score }} pts</td>
+                  <td class="p-2 border font-bold text-blue-700">
+                    {{ validationResponse.home_team_score }} pts
+                  </td>
                 </tr>
                 <!-- Net Scores Row (Away) -->
                 <tr>
                   <td class="p-2 border font-semibold bg-red-50 dark:bg-red-900/10">Away Net</td>
                   @for (h of validationResponse.hole_results; track $index) {
-                    <td class="p-2 border text-red-600 font-semibold">{{ h.away_team_net_score }}</td>
+                    <td class="p-2 border text-red-600 font-semibold">
+                      {{ h.away_team_net_score }}
+                    </td>
                   }
-                  <td class="p-2 border font-bold text-red-700">{{ validationResponse.away_team_score }} pts</td>
+                  <td class="p-2 border font-bold text-red-700">
+                    {{ validationResponse.away_team_score }} pts
+                  </td>
                 </tr>
                 <!-- Hole Winners Row -->
                 <tr>
                   <td class="p-2 border font-bold">Winner</td>
                   @for (h of validationResponse.hole_results; track $index) {
                     <td class="p-2 border">
-                      <p-tag [value]="getHoleWinnerLabel(h.winner)" [severity]="getWinnerSeverity(h.winner)" />
+                      <p-tag
+                        [value]="getHoleWinnerLabel(h.winner)"
+                        [severity]="getWinnerSeverity(h.winner)"
+                      />
                     </td>
                   }
                   <td class="p-2 border">
-                    <p-tag 
-                      [value]="validationResponse.home_team_score > validationResponse.away_team_score ? 'Home' : (validationResponse.away_team_score > validationResponse.home_team_score ? 'Away' : 'Tie')" 
-                      [severity]="validationResponse.home_team_score > validationResponse.away_team_score ? 'success' : (validationResponse.away_team_score > validationResponse.home_team_score ? 'danger' : 'secondary')" 
+                    <p-tag
+                      [value]="
+                        validationResponse.home_team_score > validationResponse.away_team_score
+                          ? 'Home'
+                          : validationResponse.away_team_score > validationResponse.home_team_score
+                            ? 'Away'
+                            : 'Tie'
+                      "
+                      [severity]="
+                        validationResponse.home_team_score > validationResponse.away_team_score
+                          ? 'success'
+                          : validationResponse.away_team_score > validationResponse.home_team_score
+                            ? 'danger'
+                            : 'secondary'
+                      "
                     />
                   </td>
                 </tr>
@@ -225,7 +248,10 @@
 
       <!-- Errors -->
       @if (validationResponse && !validationResponse.is_valid) {
-        <p-message severity="error" text="One or more scores are invalid. Please check for scores exceeding the maximum allowed for the golfer's handicap." />
+        <p-message
+          severity="error"
+          text="One or more scores are invalid. Please check for scores exceeding the maximum allowed for the golfer's handicap."
+        />
       }
     </form>
   </p-card>
