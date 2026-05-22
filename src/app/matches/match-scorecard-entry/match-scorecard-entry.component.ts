@@ -139,10 +139,10 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     // Handle Track Selection
     this.subs.add(
       this.matchForm.get('track')?.valueChanges.subscribe((track: Track) => {
-        const tees = (track?.tees ?? []).map(tee => ({
+        const tees = (track?.tees ?? []).map((tee) => ({
           ...tee,
           display_name: `${tee.name} (${tee.gender.charAt(0).toUpperCase()}: ${tee.rating.toFixed(1)}/${tee.slope})`,
-          total_par: tee.holes.reduce((sum, h) => sum + h.par, 0)
+          total_par: tee.holes.reduce((sum, h) => sum + h.par, 0),
         }));
         this.homeTees = tees;
         this.awayTees = tees;
@@ -224,7 +224,10 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
         this.validationResponse = response;
         this.isValidating = false;
         if (!response.is_valid) {
-          this.notificationService.showError('Validation Error', 'Some scores are invalid (e.g. exceed max score).');
+          this.notificationService.showError(
+            'Validation Error',
+            'Some scores are invalid (e.g. exceed max score).',
+          );
         }
       },
       error: (err) => {
@@ -252,19 +255,29 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
 
   getHoleWinnerLabel(winner: MatchHoleWinner): string {
     switch (winner) {
-      case MatchHoleWinner.HOME: return 'Home';
-      case MatchHoleWinner.AWAY: return 'Away';
-      case MatchHoleWinner.TIE: return 'Tie';
-      default: return '';
+      case MatchHoleWinner.HOME:
+        return 'Home';
+      case MatchHoleWinner.AWAY:
+        return 'Away';
+      case MatchHoleWinner.TIE:
+        return 'Tie';
+      default:
+        return '';
     }
   }
 
-  getWinnerSeverity(winner: MatchHoleWinner): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
+  getWinnerSeverity(
+    winner: MatchHoleWinner,
+  ): 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast' | undefined {
     switch (winner) {
-      case MatchHoleWinner.HOME: return 'success';
-      case MatchHoleWinner.AWAY: return 'danger';
-      case MatchHoleWinner.TIE: return 'secondary';
-      default: return 'secondary';
+      case MatchHoleWinner.HOME:
+        return 'success';
+      case MatchHoleWinner.AWAY:
+        return 'danger';
+      case MatchHoleWinner.TIE:
+        return 'secondary';
+      default:
+        return 'secondary';
     }
   }
 }
