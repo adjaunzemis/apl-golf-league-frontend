@@ -4,7 +4,12 @@ import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 
 import { environment } from './../../environments/environment';
-import { MatchData, MatchInput, MatchValidationRequest, MatchValidationResponse } from '../shared/match.model';
+import {
+  MatchData,
+  MatchInput,
+  MatchValidationRequest,
+  MatchValidationResponse,
+} from '../shared/match.model';
 
 @Injectable({
   providedIn: 'root',

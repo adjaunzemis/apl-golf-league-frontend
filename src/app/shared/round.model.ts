@@ -1,6 +1,11 @@
 import { Tee } from './tee.model';
 import { Golfer } from './golfer.model';
-import { HoleResult, HoleResultData, HoleResultValidationRequest, HoleResultValidationResponse } from './hole-result.model';
+import {
+  HoleResult,
+  HoleResultData,
+  HoleResultValidationRequest,
+  HoleResultValidationResponse,
+} from './hole-result.model';
 
 export interface Round {
   id: number;
