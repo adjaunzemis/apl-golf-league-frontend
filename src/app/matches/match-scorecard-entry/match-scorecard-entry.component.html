@@ -56,7 +56,8 @@
               />
               @if (matchForm.get('home_golfer')?.value) {
                 <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
-                  Current Index: {{ homeHandicapIndex !== null ? (homeHandicapIndex | number: '1.1-1') : '--' }}
+                  Current Index:
+                  {{ homeHandicapIndex !== null ? (homeHandicapIndex | number: '1.1-1') : '--' }}
                 </span>
               }
             </div>
@@ -74,12 +75,16 @@
               />
               @if (selectedTeeHome) {
                 <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
-                  Par: {{ totalParHome }} ({{ selectedTeeHome.rating | number: '1.1-1' }}/{{ selectedTeeHome.slope }})
+                  Par: {{ totalParHome }} ({{ selectedTeeHome.rating | number: '1.1-1' }}/{{
+                    selectedTeeHome.slope
+                  }})
                 </span>
               }
             </div>
             <div class="flex flex-col gap-2 lg:col-span-1">
-              <label class="font-semibold text-sm text-center" title="Playing Handicap">Handicap</label>
+              <label class="font-semibold text-sm text-center" title="Playing Handicap"
+                >Handicap</label
+              >
               <div
                 class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex items-center justify-center text-sm font-bold"
               >
@@ -107,7 +112,8 @@
               />
               @if (matchForm.get('away_golfer')?.value) {
                 <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
-                  Current Index: {{ awayHandicapIndex !== null ? (awayHandicapIndex | number: '1.1-1') : '--' }}
+                  Current Index:
+                  {{ awayHandicapIndex !== null ? (awayHandicapIndex | number: '1.1-1') : '--' }}
                 </span>
               }
             </div>
@@ -125,12 +131,16 @@
               />
               @if (selectedTeeAway) {
                 <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
-                  Par: {{ totalParAway }} ({{ selectedTeeAway.rating | number: '1.1-1' }}/{{ selectedTeeAway.slope }})
+                  Par: {{ totalParAway }} ({{ selectedTeeAway.rating | number: '1.1-1' }}/{{
+                    selectedTeeAway.slope
+                  }})
                 </span>
               }
             </div>
             <div class="flex flex-col gap-2 lg:col-span-1">
-              <label class="font-semibold text-sm text-center" title="Playing Handicap">Handicap</label>
+              <label class="font-semibold text-sm text-center" title="Playing Handicap"
+                >Handicap</label
+              >
               <div
                 class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex items-center justify-center text-sm font-bold"
               >

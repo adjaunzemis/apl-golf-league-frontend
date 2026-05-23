@@ -266,7 +266,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.isValidating = false;
-        console.error(`Failed to validate match: ${err}`)
+        console.error(`Failed to validate match: ${err}`);
         this.notificationService.showError('Error', 'Failed to validate match.');
       },
     });
