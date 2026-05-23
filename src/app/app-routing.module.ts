@@ -59,7 +59,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'matches/scorecard-entry',
+        path: 'match-scorecard',
         component: MatchScorecardEntryComponent,
         canActivate: [AuthGuard],
       },

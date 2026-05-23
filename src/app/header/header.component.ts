@@ -162,6 +162,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
             route: '/flight-scorecard',
           },
           {
+            label: 'Submit Scorecard',
+            icon: 'pi pi-pen-to-square',
+            visible: this.currentUser?.is_admin,
+            route: '/match-scorecard',
+          },
+          {
             label: 'Post Flight Scores',
             icon: 'pi pi-pen-to-square',
             visible: this.currentUser?.is_admin || this.currentUser?.edit_flights,
