@@ -141,7 +141,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
       this.matchForm.get('track')?.valueChanges.subscribe((track: Track) => {
         const tees = (track?.tees ?? []).map((tee) => ({
           ...tee,
-          display_name: `${tee.name} (${tee.gender.charAt(0).toUpperCase()}: ${tee.rating.toFixed(1)}/${tee.slope})`,
+          display_name: `${tee.name} (${tee.gender.charAt(0).toUpperCase()})`,
           total_par: tee.holes.reduce((sum, h) => sum + h.par, 0),
         }));
         this.homeTees = tees;
@@ -179,6 +179,40 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     return this.matchForm.get('away_tee')?.value;
   }
 
+  get homeHandicapIndex(): number | null {
+    return this.matchForm.get('home_golfer')?.value?.handicap_index ?? null;
+  }
+
+  get awayHandicapIndex(): number | null {
+    return this.matchForm.get('away_golfer')?.value?.handicap_index ?? null;
+  }
+
+  get totalParHome(): number {
+    return this.selectedTeeHome?.holes.reduce((sum, h) => sum + h.par, 0) ?? 0;
+  }
+
+  get totalParAway(): number {
+    return this.selectedTeeAway?.holes.reduce((sum, h) => sum + h.par, 0) ?? 0;
+  }
+
+  get homePlayingHandicap(): number | null {
+    const golfer = this.matchForm.get('home_golfer')?.value;
+    const tee = this.matchForm.get('home_tee')?.value;
+    if (golfer && tee) {
+      return this.calculateCourseHandicap(golfer, tee);
+    }
+    return null;
+  }
+
+  get awayPlayingHandicap(): number | null {
+    const golfer = this.matchForm.get('away_golfer')?.value;
+    const tee = this.matchForm.get('away_tee')?.value;
+    if (golfer && tee) {
+      return this.calculateCourseHandicap(golfer, tee);
+    }
+    return null;
+  }
+
   get currentTrackTees(): any[] {
     return this.homeTees;
   }
@@ -194,7 +228,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
 
     const homeRound: RoundValidationRequest = {
       date_played: formValue.date_played,
-      course_handicap: this.calculateCourseHandicap(formValue.home_golfer, homeTee),
+      course_handicap: this.homePlayingHandicap ?? 0,
       holes: holes.map((h, i) => ({
         number: homeTee.holes[i].number,
         par: homeTee.holes[i].par,
@@ -205,7 +239,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
 
     const awayRound: RoundValidationRequest = {
       date_played: formValue.date_played,
-      course_handicap: this.calculateCourseHandicap(formValue.away_golfer, awayTee),
+      course_handicap: this.awayPlayingHandicap ?? 0,
       holes: holes.map((h, i) => ({
         number: awayTee.holes[i].number,
         par: awayTee.holes[i].par,
@@ -232,6 +266,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.isValidating = false;
+        console.error(`Failed to validate match: ${err}`)
         this.notificationService.showError('Error', 'Failed to validate match.');
       },
     });
@@ -239,13 +274,9 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
 
   private calculateCourseHandicap(golfer: Golfer, tee: Tee): number {
     if (!golfer.handicap_index) return 0;
-    // Simple course handicap calculation: Index * (Slope / 113) + (Rating - Par)
-    // For 9 holes, we usually halve the index first if it's an 18-hole index.
-    // However, the backend likely handles the final validation.
-    // For now, let's just use the index as a placeholder or a simple 9-hole version.
-    const index = golfer.handicap_index / 2;
+    // Formula: index * (slope / 113) + (rating - par)
     const par = tee.holes.reduce((sum, h) => sum + h.par, 0);
-    return Math.round(index * (tee.slope / 113) + (tee.rating - par));
+    return Math.round(golfer.handicap_index * (tee.slope / 113) + (tee.rating - par));
   }
 
   onSubmit(): void {

@@ -1,5 +1,5 @@
 <div class="flex justify-center p-4">
-  <p-card header="Match Scorecard Entry" class="w-full max-w-6xl">
+  <p-card header="Match Scorecard Entry" class="w-full max-w-7xl">
     <form [formGroup]="matchForm" class="flex flex-col gap-6">
       <!-- Selection Phase -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -17,6 +17,7 @@
             optionLabel="name"
             placeholder="Select Course"
             class="w-full"
+            [style]="{ width: '100%' }"
             [filter]="true"
           />
         </div>
@@ -30,18 +31,19 @@
             optionLabel="name"
             placeholder="Select Track"
             class="w-full"
+            [style]="{ width: '100%' }"
             [disabled]="!tracks || tracks.length === 0"
           />
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Home Team -->
         <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800">
           <h3 class="text-lg font-bold mb-4 border-b pb-2">Home Team</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="flex flex-col gap-2">
-              <label for="home-golfer" class="font-semibold">Golfer</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+            <div class="flex flex-col gap-2 lg:col-span-3">
+              <label for="home-golfer" class="font-semibold text-sm">Golfer</label>
               <p-select
                 id="home-golfer"
                 [options]="golfers"
@@ -49,11 +51,17 @@
                 optionLabel="name"
                 placeholder="Select Golfer"
                 class="w-full"
+                [style]="{ width: '100%' }"
                 [filter]="true"
               />
+              @if (matchForm.get('home_golfer')?.value) {
+                <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
+                  Current Index: {{ homeHandicapIndex !== null ? (homeHandicapIndex | number: '1.1-1') : '--' }}
+                </span>
+              }
             </div>
-            <div class="flex flex-col gap-2">
-              <label for="home-tee" class="font-semibold">Tee</label>
+            <div class="flex flex-col gap-2 lg:col-span-2">
+              <label for="home-tee" class="font-semibold text-sm">Tee</label>
               <p-select
                 id="home-tee"
                 [options]="homeTees"
@@ -61,8 +69,22 @@
                 optionLabel="display_name"
                 placeholder="Select Tee"
                 class="w-full"
+                [style]="{ width: '100%' }"
                 [disabled]="!homeTees || homeTees.length === 0"
               />
+              @if (selectedTeeHome) {
+                <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
+                  Par: {{ totalParHome }} ({{ selectedTeeHome.rating | number: '1.1-1' }}/{{ selectedTeeHome.slope }})
+                </span>
+              }
+            </div>
+            <div class="flex flex-col gap-2 lg:col-span-1">
+              <label class="font-semibold text-sm text-center" title="Playing Handicap">Handicap</label>
+              <div
+                class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex items-center justify-center text-sm font-bold"
+              >
+                {{ homePlayingHandicap ?? '--' }}
+              </div>
             </div>
           </div>
         </div>
@@ -70,9 +92,9 @@
         <!-- Away Team -->
         <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800">
           <h3 class="text-lg font-bold mb-4 border-b pb-2">Away Team</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="flex flex-col gap-2">
-              <label for="away-golfer" class="font-semibold">Golfer</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+            <div class="flex flex-col gap-2 lg:col-span-3">
+              <label for="away-golfer" class="font-semibold text-sm">Golfer</label>
               <p-select
                 id="away-golfer"
                 [options]="golfers"
@@ -80,11 +102,17 @@
                 optionLabel="name"
                 placeholder="Select Golfer"
                 class="w-full"
+                [style]="{ width: '100%' }"
                 [filter]="true"
               />
+              @if (matchForm.get('away_golfer')?.value) {
+                <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
+                  Current Index: {{ awayHandicapIndex !== null ? (awayHandicapIndex | number: '1.1-1') : '--' }}
+                </span>
+              }
             </div>
-            <div class="flex flex-col gap-2">
-              <label for="away-tee" class="font-semibold">Tee</label>
+            <div class="flex flex-col gap-2 lg:col-span-2">
+              <label for="away-tee" class="font-semibold text-sm">Tee</label>
               <p-select
                 id="away-tee"
                 [options]="awayTees"
@@ -92,8 +120,22 @@
                 optionLabel="display_name"
                 placeholder="Select Tee"
                 class="w-full"
+                [style]="{ width: '100%' }"
                 [disabled]="!awayTees || awayTees.length === 0"
               />
+              @if (selectedTeeAway) {
+                <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
+                  Par: {{ totalParAway }} ({{ selectedTeeAway.rating | number: '1.1-1' }}/{{ selectedTeeAway.slope }})
+                </span>
+              }
+            </div>
+            <div class="flex flex-col gap-2 lg:col-span-1">
+              <label class="font-semibold text-sm text-center" title="Playing Handicap">Handicap</label>
+              <div
+                class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex items-center justify-center text-sm font-bold"
+              >
+                {{ awayPlayingHandicap ?? '--' }}
+              </div>
             </div>
           </div>
         </div>
