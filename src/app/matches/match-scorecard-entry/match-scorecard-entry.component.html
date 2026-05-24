@@ -38,10 +38,10 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Home Team -->
+        <!-- Team A -->
         <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800 flex flex-col gap-4">
           <div class="flex justify-between items-center border-b pb-2">
-            <h3 class="text-lg font-bold">Home Team</h3>
+            <h3 class="text-lg font-bold">Team A</h3>
             <p-button
               icon="pi pi-plus"
               [rounded]="true"
@@ -121,10 +121,10 @@
           </div>
         </div>
 
-        <!-- Away Team -->
+        <!-- Team B -->
         <div class="p-4 border rounded-lg bg-gray-50 dark:bg-zinc-800 flex flex-col gap-4">
           <div class="flex justify-between items-center border-b pb-2">
-            <h3 class="text-lg font-bold">Away Team</h3>
+            <h3 class="text-lg font-bold">Team B</h3>
             <p-button
               icon="pi pi-plus"
               [rounded]="true"
@@ -236,12 +236,12 @@
                 <td class="p-2 border font-bold bg-gray-50 dark:bg-slate-700">--</td>
               </tr>
 
-              <!-- Home Gross Rows -->
+              <!-- Team A Gross Rows -->
               <ng-container formArrayName="home_rounds">
                 @for (roundGroup of homeRounds.controls; track roundGroup; let i = $index) {
                   <tr [formGroupName]="i">
                     <td class="p-2 border font-bold bg-blue-50 dark:bg-blue-900/20 text-xs">
-                      {{ roundGroup.get('golfer')?.value?.name || 'Home Golfer ' + (i + 1) }}
+                      {{ roundGroup.get('golfer')?.value?.name || 'Team A Golfer ' + (i + 1) }}
                     </td>
                     <ng-container formArrayName="holes">
                       @for (
@@ -265,12 +265,12 @@
                 }
               </ng-container>
 
-              <!-- Away Gross Rows -->
+              <!-- Team B Gross Rows -->
               <ng-container formArrayName="away_rounds">
                 @for (roundGroup of awayRounds.controls; track roundGroup; let i = $index) {
                   <tr [formGroupName]="i">
                     <td class="p-2 border font-bold bg-red-50 dark:bg-red-900/20 text-xs">
-                      {{ roundGroup.get('golfer')?.value?.name || 'Away Golfer ' + (i + 1) }}
+                      {{ roundGroup.get('golfer')?.value?.name || 'Team B Golfer ' + (i + 1) }}
                     </td>
                     <ng-container formArrayName="holes">
                       @for (
@@ -296,9 +296,9 @@
 
               <!-- Validation Results -->
               @if (validationResponse) {
-                <!-- Net Scores Row (Home) -->
+                <!-- Net Scores Row (Team A) -->
                 <tr>
-                  <td class="p-2 border font-semibold bg-blue-50 dark:bg-blue-900/10">Home Net</td>
+                  <td class="p-2 border font-semibold bg-blue-50 dark:bg-blue-900/10">Team A Net</td>
                   @for (h of validationResponse.hole_results; track $index) {
                     <td class="p-2 border text-blue-600 font-semibold">
                       {{ h.home_team_net_score }}
@@ -308,9 +308,9 @@
                     {{ validationResponse.home_team_score }} pts
                   </td>
                 </tr>
-                <!-- Net Scores Row (Away) -->
+                <!-- Net Scores Row (Team B) -->
                 <tr>
-                  <td class="p-2 border font-semibold bg-red-50 dark:bg-red-900/10">Away Net</td>
+                  <td class="p-2 border font-semibold bg-red-50 dark:bg-red-900/10">Team B Net</td>
                   @for (h of validationResponse.hole_results; track $index) {
                     <td class="p-2 border text-red-600 font-semibold">
                       {{ h.away_team_net_score }}
@@ -335,9 +335,9 @@
                     <p-tag
                       [value]="
                         validationResponse.home_team_score > validationResponse.away_team_score
-                          ? 'Home'
+                          ? 'Team A'
                           : validationResponse.away_team_score > validationResponse.home_team_score
-                            ? 'Away'
+                            ? 'Team B'
                             : 'Tie'
                       "
                       [severity]="
