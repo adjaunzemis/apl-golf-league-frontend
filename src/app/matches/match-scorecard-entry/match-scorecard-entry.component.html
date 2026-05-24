@@ -239,9 +239,7 @@
               <span class="title uppercase tracking-wide">
                 {{ getMatchResultTitle() }}
               </span>
-              <span class="subtitle italic text-gray-500">
-                Match Results & Validation
-              </span>
+              <span class="subtitle italic text-gray-500"> Match Results & Validation </span>
             </div>
           }
 
@@ -291,7 +289,9 @@
                             <div class="handicap-strokes">
                               @if (getGolferValidationHole('home', i, j)) {
                                 @for (
-                                  dot of getRange(getGolferValidationHole('home', i, j)!.handicap_strokes);
+                                  dot of getRange(
+                                    getGolferValidationHole('home', i, j)!.handicap_strokes
+                                  );
                                   track $index
                                 ) {
                                   <div class="black-dot"></div>
@@ -344,7 +344,7 @@
                             'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400':
                               h.winner === 'AWAY',
                             'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400':
-                              h.winner === 'TIE'
+                              h.winner === 'TIE',
                           }"
                         >
                           {{ getHoleWinnerLabel(h.winner) }}
@@ -408,7 +408,9 @@
                             <div class="handicap-strokes">
                               @if (getGolferValidationHole('away', i, j)) {
                                 @for (
-                                  dot of getRange(getGolferValidationHole('away', i, j)!.handicap_strokes);
+                                  dot of getRange(
+                                    getGolferValidationHole('away', i, j)!.handicap_strokes
+                                  );
                                   track $index
                                 ) {
                                   <div class="black-dot"></div>
