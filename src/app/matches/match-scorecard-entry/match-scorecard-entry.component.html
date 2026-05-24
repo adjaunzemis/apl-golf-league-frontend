@@ -55,8 +55,11 @@
 
           <div formArrayName="home_rounds" class="flex flex-col gap-6">
             @for (round of homeRounds.controls; track round; let i = $index) {
-              <div [formGroupName]="i" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 items-start relative pb-4 border-b last:border-b-0">
-                <div class="flex flex-col gap-2 lg:col-span-3">
+              <div
+                [formGroupName]="i"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-start relative pb-4 border-b last:border-b-0"
+              >
+                <div class="flex flex-col gap-2 lg:col-span-5">
                   <label [for]="'home-golfer-' + i" class="font-semibold text-sm">Golfer</label>
                   <p-select
                     [id]="'home-golfer-' + i"
@@ -69,14 +72,14 @@
                     [filter]="true"
                   />
                   @if (round.get('golfer')?.value) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
+                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
                       Current Index: {{ getHandicapIndex(round) !== null ? (getHandicapIndex(round) | number: '1.1-1') : '--' }}
                     </span>
-                  }
-                </div>
-                <div class="flex flex-col gap-2 lg:col-span-2">
-                  <label [for]="'home-tee-' + i" class="font-semibold text-sm">Tee</label>
-                  <p-select
+                    }
+                    </div>
+                    <div class="flex flex-col gap-2 lg:col-span-4">
+                    <label [for]="'home-tee-' + i" class="font-semibold text-sm">Tee</label>
+                    <p-select
                     [id]="'home-tee-' + i"
                     [options]="homeTees"
                     formControlName="tee"
@@ -85,29 +88,32 @@
                     class="w-full"
                     [style]="{ width: '100%' }"
                     [disabled]="!homeTees || homeTees.length === 0"
-                  />
-                  @if (round.get('tee')?.value) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
-                      Par: {{ getTotalPar(round.get('tee')?.value) }} ({{ round.get('tee')?.value.rating | number: '1.1-1' }}/{{ round.get('tee')?.value.slope }})
+                    />
+                    @if (getTee(round)) {
+                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
+                      Par: {{ getTotalPar(getTee(round)) }} ({{ getTee(round)?.rating | number: '1.1-1' }}/{{ getTee(round)?.slope }})
                     </span>
-                  }
-                </div>
-                <div class="flex flex-col gap-2 lg:col-span-1">
-                  <label class="font-semibold text-sm text-center" title="Playing Handicap">Handicap</label>
-                  <div class="flex items-center gap-2">
-                    <div class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold">
-                      {{ getPlayingHandicap(round) ?? '--' }}
-                    </div>
-                    @if (homeRounds.length > 1) {
-                      <p-button
-                        icon="pi pi-trash"
-                        [rounded]="true"
-                        [text]="true"
-                        severity="danger"
-                        (click)="removeHomeGolfer(i)"
-                        size="small"
-                      />
                     }
+                </div>
+                <div class="flex flex-col gap-2 lg:col-span-3">
+                  <div class="flex flex-col gap-2 flex-grow">
+                    <label class="font-semibold text-sm" title="Playing Handicap">Handicap</label>
+                    <div class="flex items-center gap-2">
+                      <div class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold">
+                        {{ getPlayingHandicap(round) ?? '--' }}
+                      </div>
+                      <div class="flex items-end h-full pb-[6px]">
+                        <p-button
+                          icon="pi pi-trash"
+                          [rounded]="true"
+                          [text]="true"
+                          severity="danger"
+                          (click)="removeHomeGolfer(i)"
+                          size="small"
+                          [disabled]="homeRounds.length === 1"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -132,8 +138,11 @@
 
           <div formArrayName="away_rounds" class="flex flex-col gap-6">
             @for (round of awayRounds.controls; track round; let i = $index) {
-              <div [formGroupName]="i" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 items-start relative pb-4 border-b last:border-b-0">
-                <div class="flex flex-col gap-2 lg:col-span-3">
+              <div
+                [formGroupName]="i"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-start relative pb-4 border-b last:border-b-0"
+              >
+                <div class="flex flex-col gap-2 lg:col-span-5">
                   <label [for]="'away-golfer-' + i" class="font-semibold text-sm">Golfer</label>
                   <p-select
                     [id]="'away-golfer-' + i"
@@ -146,14 +155,14 @@
                     [filter]="true"
                   />
                   @if (round.get('golfer')?.value) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
+                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
                       Current Index: {{ getHandicapIndex(round) !== null ? (getHandicapIndex(round) | number: '1.1-1') : '--' }}
                     </span>
-                  }
-                </div>
-                <div class="flex flex-col gap-2 lg:col-span-2">
-                  <label [for]="'away-tee-' + i" class="font-semibold text-sm">Tee</label>
-                  <p-select
+                    }
+                    </div>
+                    <div class="flex flex-col gap-2 lg:col-span-4">
+                    <label [for]="'away-tee-' + i" class="font-semibold text-sm">Tee</label>
+                    <p-select
                     [id]="'away-tee-' + i"
                     [options]="awayTees"
                     formControlName="tee"
@@ -162,29 +171,32 @@
                     class="w-full"
                     [style]="{ width: '100%' }"
                     [disabled]="!awayTees || awayTees.length === 0"
-                  />
-                  @if (round.get('tee')?.value) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center">
-                      Par: {{ getTotalPar(round.get('tee')?.value) }} ({{ round.get('tee')?.value.rating | number: '1.1-1' }}/{{ round.get('tee')?.value.slope }})
+                    />
+                    @if (getTee(round)) {
+                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
+                      Par: {{ getTotalPar(getTee(round)) }} ({{ getTee(round)?.rating | number: '1.1-1' }}/{{ getTee(round)?.slope }})
                     </span>
-                  }
-                </div>
-                <div class="flex flex-col gap-2 lg:col-span-1">
-                  <label class="font-semibold text-sm text-center" title="Playing Handicap">Handicap</label>
-                  <div class="flex items-center gap-2">
-                    <div class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold">
-                      {{ getPlayingHandicap(round) ?? '--' }}
-                    </div>
-                    @if (awayRounds.length > 1) {
-                      <p-button
-                        icon="pi pi-trash"
-                        [rounded]="true"
-                        [text]="true"
-                        severity="danger"
-                        (click)="removeAwayGolfer(i)"
-                        size="small"
-                      />
                     }
+                </div>
+                <div class="flex flex-col gap-2 lg:col-span-3">
+                  <div class="flex flex-col gap-2 flex-grow">
+                    <label class="font-semibold text-sm" title="Playing Handicap">Handicap</label>
+                    <div class="flex items-center gap-2">
+                      <div class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold">
+                        {{ getPlayingHandicap(round) ?? '--' }}
+                      </div>
+                      <div class="flex items-end h-full pb-[6px]">
+                        <p-button
+                          icon="pi pi-trash"
+                          [rounded]="true"
+                          [text]="true"
+                          severity="danger"
+                          (click)="removeAwayGolfer(i)"
+                          size="small"
+                          [disabled]="awayRounds.length === 1"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -232,7 +244,11 @@
                       {{ roundGroup.get('golfer')?.value?.name || 'Home Golfer ' + (i + 1) }}
                     </td>
                     <ng-container formArrayName="holes">
-                      @for (holeGroup of getHolesControls(roundGroup); track holeGroup; let j = $index) {
+                      @for (
+                        holeGroup of getHolesControls(roundGroup);
+                        track holeGroup;
+                        let j = $index
+                      ) {
                         <td [formGroupName]="j" class="p-1 border">
                           <p-inputNumber
                             formControlName="gross_score"
@@ -257,7 +273,11 @@
                       {{ roundGroup.get('golfer')?.value?.name || 'Away Golfer ' + (i + 1) }}
                     </td>
                     <ng-container formArrayName="holes">
-                      @for (holeGroup of getHolesControls(roundGroup); track holeGroup; let j = $index) {
+                      @for (
+                        holeGroup of getHolesControls(roundGroup);
+                        track holeGroup;
+                        let j = $index
+                      ) {
                         <td [formGroupName]="j" class="p-1 border">
                           <p-inputNumber
                             formControlName="gross_score"
