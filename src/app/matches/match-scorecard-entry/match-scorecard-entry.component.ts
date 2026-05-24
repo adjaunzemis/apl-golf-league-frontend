@@ -96,7 +96,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     // Load Golfers
     this.subs.add(
       this.golfersService.getAllGolfersUpdateListener().subscribe((golfers) => {
-        this.golfers = golfers;
+        this.golfers = [...golfers].sort((a, b) => a.name.localeCompare(b.name));
       }),
     );
     this.golfersService.getAllGolfers();
