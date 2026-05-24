@@ -75,25 +75,15 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
       date_played: [new Date(), Validators.required],
       course: [null, Validators.required],
       track: [null, Validators.required],
-      home_golfer: [null, Validators.required],
-      home_tee: [null, Validators.required],
-      away_golfer: [null, Validators.required],
-      away_tee: [null, Validators.required],
-      holes: this.fb.array([]),
+      home_rounds: this.fb.array([]),
+      away_rounds: this.fb.array([]),
     });
   }
 
   ngOnInit(): void {
-    // Initialize 9 holes
-    const holesArray = this.matchForm.get('holes') as FormArray;
-    for (let i = 0; i < 9; i++) {
-      holesArray.push(
-        this.fb.group({
-          gross_home: [null, [Validators.required, Validators.min(1)]],
-          gross_away: [null, [Validators.required, Validators.min(1)]],
-        }),
-      );
-    }
+    // Initialize with one golfer each
+    this.addHomeGolfer();
+    this.addAwayGolfer();
 
     // Load Courses
     this.subs.add(
@@ -111,11 +101,10 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     );
     this.golfersService.getAllGolfers();
 
-    // Listen for Course Details (Standard Flow)
+    // Listen for Course Details
     this.subs.add(
       this.coursesService.getSelectedCourseUpdateListener().subscribe((course: Course) => {
         this.tracks = course?.tracks ?? [];
-        // If there's only one track, select it automatically
         if (this.tracks.length === 1) {
           this.matchForm.get('track')?.setValue(this.tracks[0]);
         }
@@ -128,7 +117,7 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
       this.matchForm.get('course')?.valueChanges.subscribe((course: Course) => {
         if (course) {
           this.isValidating = true;
-          this.coursesService.getCourse(course.id); // Triggers subject
+          this.coursesService.getCourse(course.id);
         } else {
           this.tracks = [];
         }
@@ -142,16 +131,17 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
         const tees = (track?.tees ?? []).map((tee) => ({
           ...tee,
           display_name: `${tee.name} (${tee.gender.charAt(0).toUpperCase()})`,
-          total_par: tee.holes.reduce((sum, h) => sum + h.par, 0),
         }));
         this.homeTees = tees;
         this.awayTees = tees;
-        this.matchForm.get('home_tee')?.setValue(null);
-        this.matchForm.get('away_tee')?.setValue(null);
+
+        // Reset all tees when track changes
+        this.homeRounds.controls.forEach((c) => c.get('tee')?.setValue(null));
+        this.awayRounds.controls.forEach((c) => c.get('tee')?.setValue(null));
       }),
     );
 
-    // Auto-validate on changes (debounced)
+    // Auto-validate on changes
     this.subs.add(
       this.matchForm.valueChanges.pipe(debounceTime(1000)).subscribe(() => {
         if (this.matchForm.valid) {
@@ -167,54 +157,74 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  get holesControls() {
-    return (this.matchForm.get('holes') as FormArray).controls as FormGroup[];
+  get homeRounds(): FormArray {
+    return this.matchForm.get('home_rounds') as FormArray;
   }
 
-  get selectedTeeHome(): Tee | null {
-    return this.matchForm.get('home_tee')?.value;
+  get awayRounds(): FormArray {
+    return this.matchForm.get('away_rounds') as FormArray;
   }
 
-  get selectedTeeAway(): Tee | null {
-    return this.matchForm.get('away_tee')?.value;
+  createRoundGroup(): FormGroup {
+    const holes: FormGroup[] = [];
+    for (let i = 0; i < 9; i++) {
+      holes.push(
+        this.fb.group({
+          gross_score: [null, [Validators.required, Validators.min(1)]],
+        }),
+      );
+    }
+
+    return this.fb.group({
+      golfer: [null, Validators.required],
+      tee: [null, Validators.required],
+      holes: this.fb.array(holes),
+    });
   }
 
-  get homeHandicapIndex(): number | null {
-    return this.matchForm.get('home_golfer')?.value?.handicap_index ?? null;
+  addHomeGolfer(): void {
+    this.homeRounds.push(this.createRoundGroup());
   }
 
-  get awayHandicapIndex(): number | null {
-    return this.matchForm.get('away_golfer')?.value?.handicap_index ?? null;
+  removeHomeGolfer(index: number): void {
+    if (this.homeRounds.length > 1) {
+      this.homeRounds.removeAt(index);
+    }
   }
 
-  get totalParHome(): number {
-    return this.selectedTeeHome?.holes.reduce((sum, h) => sum + h.par, 0) ?? 0;
+  addAwayGolfer(): void {
+    this.awayRounds.push(this.createRoundGroup());
   }
 
-  get totalParAway(): number {
-    return this.selectedTeeAway?.holes.reduce((sum, h) => sum + h.par, 0) ?? 0;
+  removeAwayGolfer(index: number): void {
+    if (this.awayRounds.length > 1) {
+      this.awayRounds.removeAt(index);
+    }
   }
 
-  get homePlayingHandicap(): number | null {
-    const golfer = this.matchForm.get('home_golfer')?.value;
-    const tee = this.matchForm.get('home_tee')?.value;
+  getHolesControls(roundGroup: any): FormGroup[] {
+    return (roundGroup.get('holes') as FormArray).controls as FormGroup[];
+  }
+
+  getHandicapIndex(roundGroup: any): number | null {
+    return roundGroup.get('golfer')?.value?.handicap_index ?? null;
+  }
+
+  getTee(roundGroup: any): Tee | null {
+    return roundGroup?.get('tee')?.value ?? null;
+  }
+
+  getPlayingHandicap(roundGroup: any): number | null {
+    const golfer = roundGroup.get('golfer')?.value;
+    const tee = roundGroup.get('tee')?.value;
     if (golfer && tee) {
       return this.calculateCourseHandicap(golfer, tee);
     }
     return null;
   }
 
-  get awayPlayingHandicap(): number | null {
-    const golfer = this.matchForm.get('away_golfer')?.value;
-    const tee = this.matchForm.get('away_tee')?.value;
-    if (golfer && tee) {
-      return this.calculateCourseHandicap(golfer, tee);
-    }
-    return null;
-  }
-
-  get currentTrackTees(): any[] {
-    return this.homeTees;
+  getTotalPar(tee: Tee | null): number {
+    return tee?.holes.reduce((sum, h) => sum + h.par, 0) ?? 0;
   }
 
   validateMatch(): void {
@@ -222,35 +232,32 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
 
     this.isValidating = true;
     const formValue = this.matchForm.value;
-    const homeTee = formValue.home_tee as Tee;
-    const awayTee = formValue.away_tee as Tee;
-    const holes = formValue.holes as { gross_home: number; gross_away: number }[];
 
-    const homeRound: RoundValidationRequest = {
+    const homeRounds: RoundValidationRequest[] = formValue.home_rounds.map((round: any) => ({
       date_played: formValue.date_played,
-      course_handicap: this.homePlayingHandicap ?? 0,
-      holes: holes.map((h, i) => ({
-        number: homeTee.holes[i].number,
-        par: homeTee.holes[i].par,
-        stroke_index: homeTee.holes[i].stroke_index,
-        gross_score: h.gross_home,
+      course_handicap: this.calculateCourseHandicap(round.golfer, round.tee),
+      holes: round.holes.map((h: any, i: number) => ({
+        number: round.tee.holes[i].number,
+        par: round.tee.holes[i].par,
+        stroke_index: round.tee.holes[i].stroke_index,
+        gross_score: h.gross_score,
       })),
-    };
+    }));
 
-    const awayRound: RoundValidationRequest = {
+    const awayRounds: RoundValidationRequest[] = formValue.away_rounds.map((round: any) => ({
       date_played: formValue.date_played,
-      course_handicap: this.awayPlayingHandicap ?? 0,
-      holes: holes.map((h, i) => ({
-        number: awayTee.holes[i].number,
-        par: awayTee.holes[i].par,
-        stroke_index: awayTee.holes[i].stroke_index,
-        gross_score: h.gross_away,
+      course_handicap: this.calculateCourseHandicap(round.golfer, round.tee),
+      holes: round.holes.map((h: any, i: number) => ({
+        number: round.tee.holes[i].number,
+        par: round.tee.holes[i].par,
+        stroke_index: round.tee.holes[i].stroke_index,
+        gross_score: h.gross_score,
       })),
-    };
+    }));
 
     const request: MatchValidationRequest = {
-      home_team_rounds: [homeRound],
-      away_team_rounds: [awayRound],
+      home_team_rounds: homeRounds,
+      away_team_rounds: awayRounds,
     };
 
     this.matchesService.validateMatch(request).subscribe({
@@ -273,10 +280,12 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
   }
 
   private calculateCourseHandicap(golfer: Golfer, tee: Tee): number {
-    if (!golfer.handicap_index) return 0;
-    // Formula: index * (slope / 113) + (rating - par)
+    if (golfer.handicap_index === null || golfer.handicap_index === undefined) return 0;
+    // Formula: (index / 2) * (slope / 113) + (rating - par)
+    // We halve the index because this is a 9-hole scorecard.
+    const index = golfer.handicap_index / 2;
     const par = tee.holes.reduce((sum, h) => sum + h.par, 0);
-    return Math.round(golfer.handicap_index * (tee.slope / 113) + (tee.rating - par));
+    return Math.round(index * (tee.slope / 113) + (tee.rating - par));
   }
 
   onSubmit(): void {
