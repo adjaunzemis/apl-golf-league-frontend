@@ -29,7 +29,10 @@ import {
   MatchHoleWinner,
 } from '../../shared/match.model';
 import { RoundValidationRequest } from '../../shared/round.model';
-import { HoleResultValidationRequest } from '../../shared/hole-result.model';
+import {
+  HoleResultValidationRequest,
+  HoleResultValidationResponse,
+} from '../../shared/hole-result.model';
 
 @Component({
   selector: 'app-match-scorecard-entry',
@@ -227,6 +230,42 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
     return tee?.holes.reduce((sum, h) => sum + h.par, 0) ?? 0;
   }
 
+  getGolferTotal(roundGroup: any): number {
+    const holes = roundGroup.get('holes') as FormArray;
+    return holes.controls
+      .map((c) => c.get('gross_score')?.value || 0)
+      .reduce((sum, score) => sum + score, 0);
+  }
+
+  getTeamGrossTotal(team: 'home' | 'away'): number {
+    if (!this.validationResponse) return 0;
+    return this.validationResponse.hole_results
+      .map((h) => (team === 'home' ? h.home_team_gross_score : h.away_team_gross_score))
+      .reduce((sum, score) => sum + score, 0);
+  }
+
+  getTeamNetTotal(team: 'home' | 'away'): number {
+    if (!this.validationResponse) return 0;
+    return this.validationResponse.hole_results
+      .map((h) => (team === 'home' ? h.home_team_net_score : h.away_team_net_score))
+      .reduce((sum, score) => sum + score, 0);
+  }
+
+  getMatchResultTitle(): string {
+    if (!this.validationResponse) return '';
+
+    const homeScore = this.validationResponse.home_team_score;
+    const awayScore = this.validationResponse.away_team_score;
+
+    if (homeScore > awayScore) {
+      return `Team A (${homeScore.toFixed(1)}) def. Team B (${awayScore.toFixed(1)})`;
+    } else if (awayScore > homeScore) {
+      return `Team B (${awayScore.toFixed(1)}) def. Team A (${homeScore.toFixed(1)})`;
+    } else {
+      return `Team A (${homeScore.toFixed(1)}) tied with Team B (${awayScore.toFixed(1)})`;
+    }
+  }
+
   validateMatch(): void {
     if (this.matchForm.invalid) return;
 
@@ -319,5 +358,26 @@ export class MatchScorecardEntryComponent implements OnInit, OnDestroy {
       default:
         return 'secondary';
     }
+  }
+
+  abs(num: number): number {
+    return Math.abs(num);
+  }
+
+  getRange(num: number): number[] {
+    return Array(Math.abs(Math.floor(num))).fill(0);
+  }
+
+  getGolferValidationHole(
+    team: 'home' | 'away',
+    roundIndex: number,
+    holeIndex: number,
+  ): HoleResultValidationResponse | null {
+    if (!this.validationResponse) return null;
+    const rounds =
+      team === 'home'
+        ? this.validationResponse.home_team_rounds
+        : this.validationResponse.away_team_rounds;
+    return rounds[roundIndex]?.holes[holeIndex] || null;
   }
 }
