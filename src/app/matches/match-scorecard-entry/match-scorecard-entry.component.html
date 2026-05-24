@@ -314,9 +314,9 @@
 
                 <!-- Validation Results (Middle) -->
                 @if (validationResponse) {
-                  <!-- Team A Gross -->
+                  <!-- Team A Net -->
                   <tr class="net-score-row">
-                    <td class="label text-blue-700">Team A Gross</td>
+                    <td class="label text-blue-700">Team A Net</td>
                     @for (h of validationResponse.hole_results; track $index) {
                       <td class="hole text-blue-600">
                         <div class="handicap-strokes">
@@ -324,18 +324,6 @@
                             <div class="black-dot"></div>
                           }
                         </div>
-                        {{ h.home_team_gross_score }}
-                      </td>
-                    }
-                    <td class="total text-blue-700 font-bold">
-                      {{ getTeamGrossTotal('home') }}
-                    </td>
-                  </tr>
-                  <!-- Team A Net -->
-                  <tr class="net-score-row">
-                    <td class="label text-blue-700">Team A Net</td>
-                    @for (h of validationResponse.hole_results; track $index) {
-                      <td class="hole text-blue-600">
                         {{ h.home_team_net_score }}
                       </td>
                     }
@@ -389,28 +377,16 @@
                     <td class="label text-red-700">Team B Net</td>
                     @for (h of validationResponse.hole_results; track $index) {
                       <td class="hole text-red-600">
-                        {{ h.away_team_net_score }}
-                      </td>
-                    }
-                    <td class="total text-red-700 font-bold">
-                      {{ getTeamNetTotal('away') }}
-                    </td>
-                  </tr>
-                  <!-- Team B Gross -->
-                  <tr class="net-score-row">
-                    <td class="label text-red-700">Team B Gross</td>
-                    @for (h of validationResponse.hole_results; track $index) {
-                      <td class="hole text-red-600">
                         <div class="handicap-strokes">
                           @for (dot of getRange(h.away_team_handicap_strokes); track $index) {
                             <div class="black-dot"></div>
                           }
                         </div>
-                        {{ h.away_team_gross_score }}
+                        {{ h.away_team_net_score }}
                       </td>
                     }
                     <td class="total text-red-700 font-bold">
-                      {{ getTeamGrossTotal('away') }}
+                      {{ getTeamNetTotal('away') }}
                     </td>
                   </tr>
                 }
