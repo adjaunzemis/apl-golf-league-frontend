@@ -27,7 +27,6 @@ import { TournamentEntryFeePaymentsListComponent } from './payments/tournament-e
 import { UserManageComponent } from './auth/user-manage/user-manage.component';
 import { QualifyingScoresCreateComponent } from './golfers/qualifying-scores-create/qualifying-scores-create.component';
 import { MatchScorecardEntryComponent } from './matches/match-scorecard-entry/match-scorecard-entry.component';
-
 import { TournamentScorecardCreateComponent } from './tournaments/tournament-scorecard-create/tournament-scorecard-create.component';
 
 const routes: Routes = [

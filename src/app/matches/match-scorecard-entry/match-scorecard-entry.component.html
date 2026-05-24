@@ -72,14 +72,21 @@
                     [filter]="true"
                   />
                   @if (round.get('golfer')?.value) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
-                      Current Index: {{ getHandicapIndex(round) !== null ? (getHandicapIndex(round) | number: '1.1-1') : '--' }}
+                    <span
+                      class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block"
+                    >
+                      Current Index:
+                      {{
+                        getHandicapIndex(round) !== null
+                          ? (getHandicapIndex(round) | number: '1.1-1')
+                          : '--'
+                      }}
                     </span>
-                    }
-                    </div>
-                    <div class="flex flex-col gap-2 lg:col-span-4">
-                    <label [for]="'home-tee-' + i" class="font-semibold text-sm">Tee</label>
-                    <p-select
+                  }
+                </div>
+                <div class="flex flex-col gap-2 lg:col-span-4">
+                  <label [for]="'home-tee-' + i" class="font-semibold text-sm">Tee</label>
+                  <p-select
                     [id]="'home-tee-' + i"
                     [options]="homeTees"
                     formControlName="tee"
@@ -88,18 +95,24 @@
                     class="w-full"
                     [style]="{ width: '100%' }"
                     [disabled]="!homeTees || homeTees.length === 0"
-                    />
-                    @if (getTee(round)) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
-                      Par: {{ getTotalPar(getTee(round)) }} ({{ getTee(round)?.rating | number: '1.1-1' }}/{{ getTee(round)?.slope }})
+                  />
+                  @if (getTee(round)) {
+                    <span
+                      class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block"
+                    >
+                      Par: {{ getTotalPar(getTee(round)) }} ({{
+                        getTee(round)?.rating | number: '1.1-1'
+                      }}/{{ getTee(round)?.slope }})
                     </span>
-                    }
+                  }
                 </div>
                 <div class="flex flex-col gap-2 lg:col-span-3">
                   <div class="flex flex-col gap-2 flex-grow">
                     <label class="font-semibold text-sm" title="Playing Handicap">Handicap</label>
                     <div class="flex items-center gap-2">
-                      <div class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold">
+                      <div
+                        class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold"
+                      >
                         {{ getPlayingHandicap(round) ?? '--' }}
                       </div>
                       <div class="flex items-end h-full pb-[6px]">
@@ -155,14 +168,21 @@
                     [filter]="true"
                   />
                   @if (round.get('golfer')?.value) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
-                      Current Index: {{ getHandicapIndex(round) !== null ? (getHandicapIndex(round) | number: '1.1-1') : '--' }}
+                    <span
+                      class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block"
+                    >
+                      Current Index:
+                      {{
+                        getHandicapIndex(round) !== null
+                          ? (getHandicapIndex(round) | number: '1.1-1')
+                          : '--'
+                      }}
                     </span>
-                    }
-                    </div>
-                    <div class="flex flex-col gap-2 lg:col-span-4">
-                    <label [for]="'away-tee-' + i" class="font-semibold text-sm">Tee</label>
-                    <p-select
+                  }
+                </div>
+                <div class="flex flex-col gap-2 lg:col-span-4">
+                  <label [for]="'away-tee-' + i" class="font-semibold text-sm">Tee</label>
+                  <p-select
                     [id]="'away-tee-' + i"
                     [options]="awayTees"
                     formControlName="tee"
@@ -171,18 +191,24 @@
                     class="w-full"
                     [style]="{ width: '100%' }"
                     [disabled]="!awayTees || awayTees.length === 0"
-                    />
-                    @if (getTee(round)) {
-                    <span class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block">
-                      Par: {{ getTotalPar(getTee(round)) }} ({{ getTee(round)?.rating | number: '1.1-1' }}/{{ getTee(round)?.slope }})
+                  />
+                  @if (getTee(round)) {
+                    <span
+                      class="text-xs italic text-gray-500 dark:text-gray-400 text-center hidden lg:block"
+                    >
+                      Par: {{ getTotalPar(getTee(round)) }} ({{
+                        getTee(round)?.rating | number: '1.1-1'
+                      }}/{{ getTee(round)?.slope }})
                     </span>
-                    }
+                  }
                 </div>
                 <div class="flex flex-col gap-2 lg:col-span-3">
                   <div class="flex flex-col gap-2 flex-grow">
                     <label class="font-semibold text-sm" title="Playing Handicap">Handicap</label>
                     <div class="flex items-center gap-2">
-                      <div class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold">
+                      <div
+                        class="p-2 border rounded bg-white dark:bg-zinc-900 min-h-[42px] flex-grow flex items-center justify-center text-sm font-bold"
+                      >
                         {{ getPlayingHandicap(round) ?? '--' }}
                       </div>
                       <div class="flex items-end h-full pb-[6px]">
@@ -207,152 +233,228 @@
 
       <!-- Scorecard Phase -->
       @if (getTee(homeRounds.at(0)) && getTee(awayRounds.at(0))) {
-        <div class="overflow-x-auto mt-4">
-          <table class="w-full text-center border-collapse">
-            <thead>
-              <tr class="bg-gray-100 dark:bg-slate-700 border-b">
-                <th class="p-2 border">Hole</th>
-                @for (h of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track h) {
-                  <th class="p-2 border">{{ h }}</th>
-                }
-                <th class="p-2 border font-bold">TOT</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Par Row (using first home golfer's tee as reference) -->
-              <tr>
-                <td class="p-2 border font-semibold bg-gray-50 dark:bg-slate-700">Par</td>
-                @for (h of getTee(homeRounds.at(0))?.holes; track h.id) {
-                  <td class="p-2 border">{{ h.par }}</td>
-                }
-                <td class="p-2 border font-bold bg-gray-50 dark:bg-slate-700">--</td>
-              </tr>
-              <!-- Stroke Index Row -->
-              <tr>
-                <td class="p-2 border font-semibold bg-gray-50 dark:bg-slate-700 text-xs">S.I.</td>
-                @for (h of getTee(homeRounds.at(0))?.holes; track h.id) {
-                  <td class="p-2 border text-xs">{{ h.stroke_index }}</td>
-                }
-                <td class="p-2 border font-bold bg-gray-50 dark:bg-slate-700">--</td>
-              </tr>
+        <div class="mt-8 flex flex-col gap-4">
+          @if (validationResponse) {
+            <div class="flex flex-col items-center gap-1 mb-2">
+              <span class="title uppercase tracking-wide">
+                {{ getMatchResultTitle() }}
+              </span>
+              <span class="subtitle italic text-gray-500">
+                Match Results & Validation
+              </span>
+            </div>
+          }
 
-              <!-- Team A Gross Rows -->
-              <ng-container formArrayName="home_rounds">
-                @for (roundGroup of homeRounds.controls; track roundGroup; let i = $index) {
-                  <tr [formGroupName]="i">
-                    <td class="p-2 border font-bold bg-blue-50 dark:bg-blue-900/20 text-xs">
-                      {{ roundGroup.get('golfer')?.value?.name || 'Team A Golfer ' + (i + 1) }}
-                    </td>
-                    <ng-container formArrayName="holes">
-                      @for (
-                        holeGroup of getHolesControls(roundGroup);
-                        track holeGroup;
-                        let j = $index
-                      ) {
-                        <td [formGroupName]="j" class="p-1 border">
-                          <p-inputNumber
-                            formControlName="gross_score"
-                            [min]="1"
-                            class="w-full"
-                            inputStyleClass="text-center w-full px-1 font-bold"
-                            [showButtons]="false"
-                          />
-                        </td>
-                      }
-                    </ng-container>
-                    <td class="p-2 border font-bold">--</td>
-                  </tr>
-                }
-              </ng-container>
-
-              <!-- Team B Gross Rows -->
-              <ng-container formArrayName="away_rounds">
-                @for (roundGroup of awayRounds.controls; track roundGroup; let i = $index) {
-                  <tr [formGroupName]="i">
-                    <td class="p-2 border font-bold bg-red-50 dark:bg-red-900/20 text-xs">
-                      {{ roundGroup.get('golfer')?.value?.name || 'Team B Golfer ' + (i + 1) }}
-                    </td>
-                    <ng-container formArrayName="holes">
-                      @for (
-                        holeGroup of getHolesControls(roundGroup);
-                        track holeGroup;
-                        let j = $index
-                      ) {
-                        <td [formGroupName]="j" class="p-1 border">
-                          <p-inputNumber
-                            formControlName="gross_score"
-                            [min]="1"
-                            class="w-full"
-                            inputStyleClass="text-center w-full px-1 font-bold"
-                            [showButtons]="false"
-                          />
-                        </td>
-                      }
-                    </ng-container>
-                    <td class="p-2 border font-bold">--</td>
-                  </tr>
-                }
-              </ng-container>
-
-              <!-- Validation Results -->
-              @if (validationResponse) {
-                <!-- Net Scores Row (Team A) -->
-                <tr>
-                  <td class="p-2 border font-semibold bg-blue-50 dark:bg-blue-900/10">Team A Net</td>
-                  @for (h of validationResponse.hole_results; track $index) {
-                    <td class="p-2 border text-blue-600 font-semibold">
-                      {{ h.home_team_net_score }}
-                    </td>
+          <div class="overflow-x-auto">
+            <table class="styled-table">
+              <thead>
+                <tr class="hole">
+                  <th class="label">Hole</th>
+                  @for (h of [1, 2, 3, 4, 5, 6, 7, 8, 9]; track h) {
+                    <th class="hole">{{ h }}</th>
                   }
-                  <td class="p-2 border font-bold text-blue-700">
-                    {{ validationResponse.home_team_score }} pts
-                  </td>
+                  <th class="total">TOT</th>
                 </tr>
-                <!-- Net Scores Row (Team B) -->
-                <tr>
-                  <td class="p-2 border font-semibold bg-red-50 dark:bg-red-900/10">Team B Net</td>
-                  @for (h of validationResponse.hole_results; track $index) {
-                    <td class="p-2 border text-red-600 font-semibold">
-                      {{ h.away_team_net_score }}
-                    </td>
+              </thead>
+              <tbody>
+                <!-- Par Row -->
+                <tr class="par">
+                  <td class="label">Par</td>
+                  @for (h of getTee(homeRounds.at(0))?.holes; track h.id) {
+                    <td class="hole">{{ h.par }}</td>
                   }
-                  <td class="p-2 border font-bold text-red-700">
-                    {{ validationResponse.away_team_score }} pts
-                  </td>
+                  <td class="total">{{ getTotalPar(getTee(homeRounds.at(0))) }}</td>
                 </tr>
-                <!-- Hole Winners Row -->
-                <tr>
-                  <td class="p-2 border font-bold">Winner</td>
-                  @for (h of validationResponse.hole_results; track $index) {
-                    <td class="p-2 border">
+                <!-- Stroke Index Row -->
+                <tr class="stroke-index">
+                  <td class="label">Hcp</td>
+                  @for (h of getTee(homeRounds.at(0))?.holes; track h.id) {
+                    <td class="hole">{{ h.stroke_index }}</td>
+                  }
+                  <td class="total">--</td>
+                </tr>
+
+                <!-- Team A Gross Rows -->
+                <ng-container formArrayName="home_rounds">
+                  @for (roundGroup of homeRounds.controls; track roundGroup; let i = $index) {
+                    <tr [formGroupName]="i" class="score">
+                      <td class="label text-blue-600">
+                        {{ roundGroup.get('golfer')?.value?.name || 'Team A' }}
+                      </td>
+                      <ng-container formArrayName="holes">
+                        @for (
+                          holeGroup of getHolesControls(roundGroup);
+                          track holeGroup;
+                          let j = $index
+                        ) {
+                          <td [formGroupName]="j" class="hole">
+                            <div class="handicap-strokes">
+                              @if (getGolferValidationHole('home', i, j)) {
+                                @for (
+                                  dot of getRange(getGolferValidationHole('home', i, j)!.handicap_strokes);
+                                  track $index
+                                ) {
+                                  <div class="black-dot"></div>
+                                }
+                              }
+                            </div>
+                            <input
+                              type="number"
+                              formControlName="gross_score"
+                              class="score-entry-field"
+                              placeholder="-"
+                            />
+                          </td>
+                        }
+                      </ng-container>
+                      <td class="total">{{ getGolferTotal(roundGroup) || '--' }}</td>
+                    </tr>
+                  }
+                </ng-container>
+
+                <!-- Validation Results (Middle) -->
+                @if (validationResponse) {
+                  <!-- Team A Gross -->
+                  <tr class="net-score-row">
+                    <td class="label text-blue-700">Team A Gross</td>
+                    @for (h of validationResponse.hole_results; track $index) {
+                      <td class="hole text-blue-600">
+                        <div class="handicap-strokes">
+                          @for (dot of getRange(h.home_team_handicap_strokes); track $index) {
+                            <div class="black-dot"></div>
+                          }
+                        </div>
+                        {{ h.home_team_gross_score }}
+                      </td>
+                    }
+                    <td class="total text-blue-700 font-bold">
+                      {{ getTeamGrossTotal('home') }}
+                    </td>
+                  </tr>
+                  <!-- Team A Net -->
+                  <tr class="net-score-row">
+                    <td class="label text-blue-700">Team A Net</td>
+                    @for (h of validationResponse.hole_results; track $index) {
+                      <td class="hole text-blue-600">
+                        {{ h.home_team_net_score }}
+                      </td>
+                    }
+                    <td class="total text-blue-700 font-bold">
+                      {{ getTeamNetTotal('home') }}
+                    </td>
+                  </tr>
+                  <!-- Hole Winners Row -->
+                  <tr class="winner-row">
+                    <td class="label">Winner</td>
+                    @for (h of validationResponse.hole_results; track $index) {
+                      <td class="hole">
+                        <span
+                          class="winner-tag"
+                          [ngClass]="{
+                            'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400':
+                              h.winner === 'HOME',
+                            'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400':
+                              h.winner === 'AWAY',
+                            'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400':
+                              h.winner === 'TIE'
+                          }"
+                        >
+                          {{ getHoleWinnerLabel(h.winner) }}
+                        </span>
+                      </td>
+                    }
+                    <td class="total">
                       <p-tag
-                        [value]="getHoleWinnerLabel(h.winner)"
-                        [severity]="getWinnerSeverity(h.winner)"
+                        [value]="
+                          validationResponse.home_team_score > validationResponse.away_team_score
+                            ? 'Team A'
+                            : validationResponse.away_team_score >
+                                validationResponse.home_team_score
+                              ? 'Team B'
+                              : 'Tie'
+                        "
+                        [severity]="
+                          validationResponse.home_team_score > validationResponse.away_team_score
+                            ? 'success'
+                            : validationResponse.away_team_score >
+                                validationResponse.home_team_score
+                              ? 'danger'
+                              : 'secondary'
+                        "
                       />
                     </td>
+                  </tr>
+                  <!-- Team B Net -->
+                  <tr class="net-score-row">
+                    <td class="label text-red-700">Team B Net</td>
+                    @for (h of validationResponse.hole_results; track $index) {
+                      <td class="hole text-red-600">
+                        {{ h.away_team_net_score }}
+                      </td>
+                    }
+                    <td class="total text-red-700 font-bold">
+                      {{ getTeamNetTotal('away') }}
+                    </td>
+                  </tr>
+                  <!-- Team B Gross -->
+                  <tr class="net-score-row">
+                    <td class="label text-red-700">Team B Gross</td>
+                    @for (h of validationResponse.hole_results; track $index) {
+                      <td class="hole text-red-600">
+                        <div class="handicap-strokes">
+                          @for (dot of getRange(h.away_team_handicap_strokes); track $index) {
+                            <div class="black-dot"></div>
+                          }
+                        </div>
+                        {{ h.away_team_gross_score }}
+                      </td>
+                    }
+                    <td class="total text-red-700 font-bold">
+                      {{ getTeamGrossTotal('away') }}
+                    </td>
+                  </tr>
+                }
+
+                <!-- Team B Gross Rows -->
+                <ng-container formArrayName="away_rounds">
+                  @for (roundGroup of awayRounds.controls; track roundGroup; let i = $index) {
+                    <tr [formGroupName]="i" class="score">
+                      <td class="label text-red-600">
+                        {{ roundGroup.get('golfer')?.value?.name || 'Team B' }}
+                      </td>
+                      <ng-container formArrayName="holes">
+                        @for (
+                          holeGroup of getHolesControls(roundGroup);
+                          track holeGroup;
+                          let j = $index
+                        ) {
+                          <td [formGroupName]="j" class="hole">
+                            <div class="handicap-strokes">
+                              @if (getGolferValidationHole('away', i, j)) {
+                                @for (
+                                  dot of getRange(getGolferValidationHole('away', i, j)!.handicap_strokes);
+                                  track $index
+                                ) {
+                                  <div class="black-dot"></div>
+                                }
+                              }
+                            </div>
+                            <input
+                              type="number"
+                              formControlName="gross_score"
+                              class="score-entry-field"
+                              placeholder="-"
+                            />
+                          </td>
+                        }
+                      </ng-container>
+                      <td class="total">{{ getGolferTotal(roundGroup) || '--' }}</td>
+                    </tr>
                   }
-                  <td class="p-2 border">
-                    <p-tag
-                      [value]="
-                        validationResponse.home_team_score > validationResponse.away_team_score
-                          ? 'Team A'
-                          : validationResponse.away_team_score > validationResponse.home_team_score
-                            ? 'Team B'
-                            : 'Tie'
-                      "
-                      [severity]="
-                        validationResponse.home_team_score > validationResponse.away_team_score
-                          ? 'success'
-                          : validationResponse.away_team_score > validationResponse.home_team_score
-                            ? 'danger'
-                            : 'secondary'
-                      "
-                    />
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
         </div>
       }
 
