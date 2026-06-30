@@ -1,0 +1,112 @@
+.styled-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 800px;
+  font-size: 1em;
+  font-family: sans-serif;
+  text-align: center;
+  vertical-align: center;
+}
+
+.styled-table thead tr {
+  @apply bg-blue-600 dark:bg-blue-800 text-white font-bold;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact !important;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 5px 5px;
+}
+
+.styled-table tbody tr {
+  border-bottom: thin solid;
+  @apply border-zinc-200 dark:border-zinc-700;
+}
+
+.styled-table .label,
+.styled-table .total {
+  width: 12.5%;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.styled-table .hole {
+  width: 8.333%;
+  font-weight: bold;
+}
+
+.styled-table tr.par,
+.styled-table tr.stroke-index {
+  @apply bg-gray-50 dark:bg-zinc-800/50;
+}
+
+.styled-table tr.stroke-index {
+  font-size: 0.8em;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.score-entry-field {
+  width: 100%;
+  max-width: 42px;
+  font-size: 12pt;
+  text-align: center;
+  border: 0;
+  outline: 0;
+  @apply bg-transparent dark:text-white font-bold;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.handicap-strokes {
+  width: 100%;
+  min-height: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.black-dot {
+  @apply h-1 w-1 rounded-full bg-black dark:bg-white;
+  margin: 0 1px;
+}
+
+.net-score-row {
+  @apply bg-zinc-50 dark:bg-zinc-900/30;
+}
+
+.winner-row {
+  @apply border-t-2 border-zinc-300 dark:border-zinc-600;
+}
+
+.winner-tag {
+  @apply text-xs font-bold px-2 py-0.5 rounded-full;
+}
+
+@media print {
+  .styled-table tbody tr {
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+}
