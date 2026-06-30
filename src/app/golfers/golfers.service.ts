@@ -164,9 +164,9 @@ export class GolfersService {
     }
 
     this.http
-      .get<
-        ScoringRecordRound[]
-      >(environment.apiUrl + `handicaps/scoring-record-rounds/${golferId}?year=${year}`)
+      .get<ScoringRecordRound[]>(
+        environment.apiUrl + `handicaps/scoring-record-rounds/${golferId}?year=${year}`,
+      )
       .subscribe((result) => {
         this.golferHandicapScoringRecordCache.set(cacheKey, result);
         this.golferHandicapScoringRecordUpdated.next([...result]);

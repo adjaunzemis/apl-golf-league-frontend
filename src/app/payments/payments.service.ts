@@ -102,9 +102,9 @@ export class PaymentsService {
   /** TOURNAMENT ENTRY FEES */
   getTournamentEntryFeePaymentInfoList(tournament_id: number): void {
     this.http
-      .get<
-        TournamentEntryFeePaymentInfo[]
-      >(environment.apiUrl + `payments/fees/info/${tournament_id}`)
+      .get<TournamentEntryFeePaymentInfo[]>(
+        environment.apiUrl + `payments/fees/info/${tournament_id}`,
+      )
       .subscribe((result) => {
         this.tournamentEntryFeePaymentInfoList = result;
         this.tournamentEntryFeePaymentInfoListUpdated.next(result);
@@ -119,9 +119,9 @@ export class PaymentsService {
 
   getTournamentEntryFeePaymentDataList(tournament_id: number): void {
     this.http
-      .get<
-        TournamentEntryFeePaymentData[]
-      >(environment.apiUrl + `payments/fees/data/${tournament_id}`)
+      .get<TournamentEntryFeePaymentData[]>(
+        environment.apiUrl + `payments/fees/data/${tournament_id}`,
+      )
       .subscribe((result) => {
         this.tournamentEntryFeePaymentDataList = result;
         this.tournamentEntryFeePaymentDataListUpdated.next(result);
