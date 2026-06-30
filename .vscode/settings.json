@@ -2,7 +2,7 @@
   "files.associations": {
     "*.{css,scss}": "tailwindcss"
   },
-  
+
   "eslint.useFlatConfig": true,
   "eslint.validate": ["javascript", "typescript", "html"],
   "eslint.nodePath": "./node_modules",

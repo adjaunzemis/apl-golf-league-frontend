@@ -546,9 +546,9 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
       let holePar = hole.par;
-      // eslint-disable-next-line no-useless-assignment
+       
       let grossScore = 0;
-      // eslint-disable-next-line no-useless-assignment
+       
       let netScore = 0;
 
       if (this.selectedTournamentData?.bestball === 2) {

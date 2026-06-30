@@ -194,9 +194,9 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
       const hole = rounds[0].holes[holeIdx];
 
       let holePar = hole.par;
-      // eslint-disable-next-line no-useless-assignment
+       
       let grossScore = 99;
-      // eslint-disable-next-line no-useless-assignment
+       
       let netScore = 99;
       if (this.info.bestball === 2) {
         holePar = hole.par * 2;
