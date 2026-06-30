@@ -192,7 +192,6 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     const holeResultData: HoleResultData[] = [];
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
-
       let holePar = hole.par;
       let grossScore = 99;
       let netScore = 99;
@@ -202,7 +201,7 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
         const netScores = [99, 99];
         for (const round of rounds) {
           const handicapStrokes = this.computeHandicapStrokes(
-            hole.stroke_index,
+            round.holes[holeIdx].stroke_index,
             round.golfer_playing_handicap,
           );
           if (round.holes[holeIdx].gross_score < grossScores[1]) {
