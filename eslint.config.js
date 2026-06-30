@@ -14,6 +14,9 @@ module.exports = tseslint.config(
       prettier,
     ],
     processor: angular.processInlineTemplates,
+    rules: {
+      '@angular-eslint/prefer-standalone': 'off', // TODO: refactor to use standalone components
+    }
   },
   {
     files: ['**/*.html'],
