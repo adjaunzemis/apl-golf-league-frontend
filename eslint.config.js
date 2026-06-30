@@ -16,7 +16,7 @@ module.exports = tseslint.config(
     processor: angular.processInlineTemplates,
     rules: {
       '@angular-eslint/prefer-standalone': 'off', // TODO: refactor to use standalone components
-    }
+    },
   },
   {
     files: ['**/*.html'],
