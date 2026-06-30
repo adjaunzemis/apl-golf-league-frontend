@@ -548,7 +548,6 @@ export class TournamentScorecardCreateComponent implements OnInit, OnDestroy {
       let holePar = hole.par;
       let grossScore = 0;
       let netScore = 0;
-
       if (this.selectedTournamentData?.bestball === 2) {
         holePar = hole.par * 2;
         const grossScores = rounds
