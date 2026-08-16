@@ -10,12 +10,28 @@ import { User } from 'src/app/shared/user.model';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authServiceMock: any;
+  let authServiceMock: {
+    user: BehaviorSubject<User | null>;
+    login: jasmine.Spy;
+    logout: jasmine.Spy;
+  };
   let notificationServiceMock: jasmine.SpyObj<NotificationService>;
   let userSubject: BehaviorSubject<User | null>;
 
   const futureDate = new Date(Date.now() + 3600 * 1000);
-  const mockUser = new User(1, 'golfer1', 'g@a.com', 'Tiger Woods', false, false, false, false, false, 'tkn', futureDate);
+  const mockUser = new User(
+    1,
+    'golfer1',
+    'g@a.com',
+    'Tiger Woods',
+    false,
+    false,
+    false,
+    false,
+    false,
+    'tkn',
+    futureDate,
+  );
 
   beforeEach(async () => {
     userSubject = new BehaviorSubject<User | null>(null);
@@ -29,7 +45,10 @@ describe('LoginComponent', () => {
       logout: jasmine.createSpy('logout'),
     };
 
-    notificationServiceMock = jasmine.createSpyObj('NotificationService', ['showSuccess', 'showError']);
+    notificationServiceMock = jasmine.createSpyObj('NotificationService', [
+      'showSuccess',
+      'showError',
+    ]);
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent, ReactiveFormsModule],

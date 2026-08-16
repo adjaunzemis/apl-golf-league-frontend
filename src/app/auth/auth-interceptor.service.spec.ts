@@ -1,5 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HttpClient,
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { BehaviorSubject } from 'rxjs';
 import { AuthInterceptorService } from './auth-interceptor.service';
@@ -12,7 +17,19 @@ describe('AuthInterceptorService', () => {
   let userSubject: BehaviorSubject<User | null>;
 
   const futureDate = new Date(Date.now() + 3600 * 1000);
-  const loggedInUser = new User(1, 'golfer1', 'g@a.com', 'Golfer One', false, false, false, false, false, 'bearer-token-999', futureDate);
+  const loggedInUser = new User(
+    1,
+    'golfer1',
+    'g@a.com',
+    'Golfer One',
+    false,
+    false,
+    false,
+    false,
+    false,
+    'bearer-token-999',
+    futureDate,
+  );
 
   beforeEach(() => {
     userSubject = new BehaviorSubject<User | null>(null);

@@ -10,10 +10,7 @@ describe('NotificationService', () => {
     messageServiceMock = jasmine.createSpyObj('MessageService', ['add']);
 
     TestBed.configureTestingModule({
-      providers: [
-        NotificationService,
-        { provide: MessageService, useValue: messageServiceMock },
-      ],
+      providers: [NotificationService, { provide: MessageService, useValue: messageServiceMock }],
     });
 
     service = TestBed.inject(NotificationService);

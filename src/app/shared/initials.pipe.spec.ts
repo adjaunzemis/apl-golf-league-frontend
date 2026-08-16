@@ -13,8 +13,8 @@ describe('InitialsPipe', () => {
 
   it('should return empty string for empty or falsy inputs', () => {
     expect(pipe.transform('')).toBe('');
-    expect(pipe.transform(null as any)).toBe('');
-    expect(pipe.transform(undefined as any)).toBe('');
+    expect(pipe.transform(null as unknown as string)).toBe('');
+    expect(pipe.transform(undefined as unknown as string)).toBe('');
   });
 
   it('should transform full name "Tiger Woods" to "TW"', () => {

@@ -78,7 +78,7 @@ describe('User Model', () => {
       false,
       false,
       'secret-token-123',
-      null as any,
+      null as unknown as Date,
     );
 
     expect(user.token).toBeNull();

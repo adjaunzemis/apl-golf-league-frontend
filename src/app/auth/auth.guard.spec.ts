@@ -11,15 +11,41 @@ describe('AuthGuard', () => {
   let routerMock: jasmine.SpyObj<Router>;
 
   const futureDate = new Date(Date.now() + 3600 * 1000);
-  const standardUser = new User(1, 'golfer1', 'g@a.com', 'Standard User', false, false, false, false, false, 'token-123', futureDate);
-  const adminUser = new User(2, 'admin1', 'a@a.com', 'Admin User', false, true, true, true, true, 'token-admin', futureDate);
+  const standardUser = new User(
+    1,
+    'golfer1',
+    'g@a.com',
+    'Standard User',
+    false,
+    false,
+    false,
+    false,
+    false,
+    'token-123',
+    futureDate,
+  );
+  const adminUser = new User(
+    2,
+    'admin1',
+    'a@a.com',
+    'Admin User',
+    false,
+    true,
+    true,
+    true,
+    true,
+    'token-admin',
+    futureDate,
+  );
 
   beforeEach(() => {
     authServiceMock = {
       user: new BehaviorSubject<User | null>(null),
     };
     routerMock = jasmine.createSpyObj('Router', ['createUrlTree']);
-    routerMock.createUrlTree.and.callFake((commands: any[]) => ({ url: commands.join('/') } as unknown as UrlTree));
+    routerMock.createUrlTree.and.callFake(
+      (commands: string[]) => ({ url: commands.join('/') }) as unknown as UrlTree,
+    );
 
     TestBed.configureTestingModule({
       providers: [
@@ -43,7 +69,7 @@ describe('AuthGuard', () => {
     const result = guard.canActivate(dummyRoute) as Observable<boolean | UrlTree>;
     result.subscribe((val) => {
       expect(routerMock.createUrlTree).toHaveBeenCalledWith(['/auth/login']);
-      expect(val).toEqual({ url: '/auth/login' } as any);
+      expect(val).toEqual({ url: '/auth/login' } as unknown as UrlTree);
       done();
     });
   });
@@ -66,7 +92,7 @@ describe('AuthGuard', () => {
     const result = guard.canActivate(adminRoute) as Observable<boolean | UrlTree>;
     result.subscribe((val) => {
       expect(routerMock.createUrlTree).toHaveBeenCalledWith(['/']);
-      expect(val).toEqual({ url: '/' } as any);
+      expect(val).toEqual({ url: '/' } as unknown as UrlTree);
       done();
     });
   });
