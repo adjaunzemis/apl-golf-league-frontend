@@ -41,3 +41,20 @@ jobs:
 
       - name: Run linter
         run: npm run lint:check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test -- --no-watch --browsers=ChromeHeadless
+
