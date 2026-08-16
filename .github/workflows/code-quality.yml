@@ -62,7 +62,7 @@ jobs:
       - name: Generate Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: coverage/apl-golf-league/lcov.info
+          filename: coverage/apl-golf-league/cobertura-coverage.xml
           badge: true
           format: markdown
           hide_branch_rate: false

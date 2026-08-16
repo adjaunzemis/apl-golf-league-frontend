@@ -30,6 +30,7 @@ module.exports = function (config) {
         { type: 'html' },
         { type: 'text-summary' },
         { type: 'lcovonly', file: 'lcov.info' },
+        { type: 'cobertura', file: 'cobertura-coverage.xml' },
       ],
     },
     reporters: ['progress', 'kjhtml'],
