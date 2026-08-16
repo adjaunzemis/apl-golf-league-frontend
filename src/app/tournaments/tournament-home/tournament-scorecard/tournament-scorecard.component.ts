@@ -193,8 +193,8 @@ export class TournamentScorecardComponent implements OnInit, OnChanges {
     for (let holeIdx = 0; holeIdx < rounds[0].holes.length; holeIdx++) {
       const hole = rounds[0].holes[holeIdx];
       let holePar = hole.par;
-      let grossScore = 99;
-      let netScore = 99;
+      let grossScore;
+      let netScore;
       if (this.info.bestball === 2) {
         holePar = hole.par * 2;
         const grossScores = [99, 99];
