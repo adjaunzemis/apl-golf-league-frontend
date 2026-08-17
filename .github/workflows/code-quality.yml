@@ -60,6 +60,7 @@ jobs:
         run: npm test -- --no-watch --code-coverage --browsers=ChromeHeadless
 
       - name: Generate Code Coverage Summary Report
+        id: code_coverage
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: coverage/apl-golf-league/cobertura-coverage.xml
@@ -72,10 +73,11 @@ jobs:
 
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && hashFiles('code-coverage-summary.md') != ''
         with:
+          header: code-coverage
+          path: ./code-coverage-summary.md
           recreate: true
-          path: code-coverage-summary.md
 
       - name: Upload HTML Coverage Artifact
         uses: actions/upload-artifact@v4
