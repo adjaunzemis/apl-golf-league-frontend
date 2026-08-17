@@ -24,9 +24,14 @@ module.exports = function (config) {
       suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/angular-material'),
+      dir: require('path').join(__dirname, './coverage/apl-golf-league'),
       subdir: '.',
-      reporters: [{ type: 'html' }, { type: 'text-summary' }],
+      reporters: [
+        { type: 'html' },
+        { type: 'text-summary' },
+        { type: 'lcovonly', file: 'lcov.info' },
+        { type: 'cobertura', file: 'cobertura-coverage.xml' },
+      ],
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,

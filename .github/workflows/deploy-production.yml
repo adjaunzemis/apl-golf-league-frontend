@@ -40,8 +40,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # - name: Run Tests # TODO: Re-enable tests
-      #   run: npm test -- --watch=false
+      - name: Run Tests
+        run: npm test -- --no-watch --browsers=ChromeHeadless
 
       # TODO: Enable linting checks
 
