@@ -472,7 +472,7 @@
               >Match card must be selected before generating scorecard!</span
             >
           }
-          @if (!isMatchDataInvalid()) {
+          @if (isMatchDataInvalid()) {
             <span class="italic" style="color: red; margin-bottom: 12px"
               >Check hole-by-hole scores: must be greater than zero and less than league maximum (2
               x par + handicap strokes)</span
