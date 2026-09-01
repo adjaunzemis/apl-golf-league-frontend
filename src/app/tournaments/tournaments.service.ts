@@ -10,10 +10,12 @@ import {
   TournamentData,
   TournamentDivision,
   TournamentFreeAgentGolfer,
+  TournamentGolferHandicapData,
   TournamentInfo,
   TournamentStandings,
   TournamentStatistics,
   TournamentTeam,
+  TournamentTeamHandicapData,
 } from '../shared/tournament.model';
 import { environment } from './../../environments/environment';
 
@@ -50,6 +52,11 @@ export class TournamentsService {
 
   private tournamentData: TournamentData;
   private tournamentDataUpdated = new Subject<TournamentData>();
+
+  private tournamentHandicaps: [TournamentGolferHandicapData[], TournamentTeamHandicapData[]];
+  private tournamentHandicapsUpdated = new Subject<
+    [TournamentGolferHandicapData[], TournamentTeamHandicapData[]]
+  >();
 
   getList(year?: number): void {
     let queryParams = ``;
@@ -205,5 +212,22 @@ export class TournamentsService {
   }
   getRoundsForTeamUpdateListener(): Observable<RoundData[]> {
     return this.tournamentRoundsForTeamUpdated.asObservable();
+  }
+
+  getHandicaps(id: number): void {
+    this.http
+      .get<[TournamentGolferHandicapData[], TournamentTeamHandicapData[]]>(
+        environment.apiUrl + `tournaments/handicaps/${id}`,
+      )
+      .subscribe((result) => {
+        this.tournamentHandicaps = result;
+        this.tournamentHandicapsUpdated.next(result);
+      });
+  }
+
+  getHandicapsUpdateListener(): Observable<
+    [TournamentGolferHandicapData[], TournamentTeamHandicapData[]]
+  > {
+    return this.tournamentHandicapsUpdated.asObservable();
   }
 }
