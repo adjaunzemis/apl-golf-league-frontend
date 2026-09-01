@@ -1,4 +1,4 @@
-@if (info && divisions && teams && standings && statistics) {
+@if (info && divisions && teams && standings && statistics && handicaps) {
   <div class="flex flex-col gap-4 p-4">
     <!-- Row 1: Info (30%), Standings (40%), Divisions (30%) -->
     <div class="flex flex-col xl:flex-row gap-4 items-stretch justify-center">
@@ -41,8 +41,16 @@
         />
       }
     </div>
+
+    <!-- Row 4: Handicaps (Full Width) -->
+    @if (handicaps) {
+      <div class="flex flex-col xl:flex-row gap-4 items-stretch justify-center">
+        <app-tournament-handicaps class="w-full" [handicaps]="handicaps" />
+      </div>
+    }
   </div>
-} @else {
+}
+ @else {
   <div class="flex flex-col items-center w-full p-10">
     <p-progress-spinner
       strokeWidth="4"
