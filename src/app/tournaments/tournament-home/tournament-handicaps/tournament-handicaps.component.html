@@ -1,0 +1,96 @@
+@if (handicaps) {
+  <p-card>
+    <div class="flex flex-col sm:flex-row sm:items-center px-4 pt-4">
+      <span class="text-2xl font-semibold">Handicaps</span>
+    </div>
+
+    <p-tabs class="pt-2" value="0">
+      <p-tablist>
+        <p-tab class="px-8 py-2" value="0">Individual</p-tab>
+        @if (teamHandicaps.length > 0) {
+          <p-tab class="px-8 py-2" value="1">Team</p-tab>
+        }
+      </p-tablist>
+
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <p-table
+            #dt
+            [value]="golferHandicaps"
+            dataKey="golfer"
+            sortField="tournament_course_handicap"
+            [sortOrder]="1"
+            stripedRows
+            selectionMode="single"
+            [paginator]="true"
+            [rows]="10"
+          >
+            <ng-template #header>
+              <tr>
+                <th pSortableColumn="golfer">Golfer <p-sortIcon field="golfer" /></th>
+                <th pSortableColumn="team">Team <p-sortIcon field="team" /></th>
+                <th pSortableColumn="division">Division <p-sortIcon field="division" /></th>
+                <th pSortableColumn="handicap_index">
+                  Handicap Index <p-sortIcon field="handicap_index" />
+                </th>
+                <th pSortableColumn="front_course_handicap">
+                  Front 9 CH <p-sortIcon field="front_course_handicap" />
+                </th>
+                <th pSortableColumn="back_course_handicap">
+                  Back 9 CH <p-sortIcon field="back_course_handicap" />
+                </th>
+                <th pSortableColumn="tournament_course_handicap">
+                  Tournament CH <p-sortIcon field="tournament_course_handicap" />
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-golfer>
+              <tr [pSelectableRow]="golfer">
+                <td class="font-semibold">{{ golfer.golfer }}</td>
+                <td>{{ golfer.team }}</td>
+                <td>{{ golfer.division }}</td>
+                <td>
+                  {{ golfer.handicap_index !== null ? (golfer.handicap_index | number: '1.1-1') : '--' }}
+                </td>
+                <td>{{ golfer.front_course_handicap | number: '1.1-1' }}</td>
+                <td>{{ golfer.back_course_handicap | number: '1.1-1' }}</td>
+                <td class="font-semibold">{{ golfer.tournament_course_handicap }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-tabpanel>
+
+        @if (teamHandicaps.length > 0) {
+          <p-tabpanel value="1">
+            <p-table
+              #dtTeams
+              [value]="teamHandicaps"
+              dataKey="team"
+              sortField="tournament_team_handicap"
+              [sortOrder]="1"
+              stripedRows
+              selectionMode="single"
+              [paginator]="true"
+              [rows]="10"
+            >
+              <ng-template #header>
+                <tr>
+                  <th pSortableColumn="team">Team <p-sortIcon field="team" /></th>
+                  <th pSortableColumn="tournament_team_handicap">
+                    Tournament Team Handicap <p-sortIcon field="tournament_team_handicap" />
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template #body let-team>
+                <tr [pSelectableRow]="team">
+                  <td class="font-semibold">{{ team.team }}</td>
+                  <td class="font-semibold">{{ team.tournament_team_handicap }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
+  </p-card>
+}
