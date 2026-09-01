@@ -148,3 +148,26 @@ export interface TournamentStatistics {
   tournament_id: number;
   golfers: TeamGolferStatistics[];
 }
+
+export interface TournamentGolferHandicapData {
+  team: string;
+  golfer: string;
+  handicap_index: number | null;
+  division: string;
+  front_tee: string;
+  front_par: number;
+  front_rating: number;
+  front_slope: number;
+  front_course_handicap: number;
+  back_tee: string;
+  back_par: number;
+  back_rating: number;
+  back_slope: number;
+  back_course_handicap: number;
+  tournament_course_handicap: number;
+}
+
+export interface TournamentTeamHandicapData {
+  team: string;
+  tournament_team_handicap: number;
+}
